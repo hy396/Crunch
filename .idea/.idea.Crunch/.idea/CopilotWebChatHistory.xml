@@ -4548,16 +4548,7 @@
                     </option>
                     <option name="status" value="SUCCESS" />
                     <option name="variables">
-                      <list>
-                        <KnowledgeVariable>
-                          <option name="selectedPlaceHolder">
-                            <Object />
-                          </option>
-                          <option name="selectedVariable">
-                            <Object />
-                          </option>
-                        </KnowledgeVariable>
-                      </list>
+                      <list />
                     </option>
                     <knowledgeReferenceMaps>
                       <map>
@@ -4715,16 +4706,7 @@
                     </option>
                     <option name="status" value="SUCCESS" />
                     <option name="variables">
-                      <list>
-                        <KnowledgeVariable>
-                          <option name="selectedPlaceHolder">
-                            <Object />
-                          </option>
-                          <option name="selectedVariable">
-                            <Object />
-                          </option>
-                        </KnowledgeVariable>
-                      </list>
+                      <list />
                     </option>
                     <knowledgeReferenceMaps>
                       <map>
@@ -4882,16 +4864,7 @@
                     </option>
                     <option name="status" value="SUCCESS" />
                     <option name="variables">
-                      <list>
-                        <KnowledgeVariable>
-                          <option name="selectedPlaceHolder">
-                            <Object />
-                          </option>
-                          <option name="selectedVariable">
-                            <Object />
-                          </option>
-                        </KnowledgeVariable>
-                      </list>
+                      <list />
                     </option>
                     <knowledgeReferenceMaps>
                       <map>
@@ -5049,16 +5022,7 @@
                     </option>
                     <option name="status" value="SUCCESS" />
                     <option name="variables">
-                      <list>
-                        <KnowledgeVariable>
-                          <option name="selectedPlaceHolder">
-                            <Object />
-                          </option>
-                          <option name="selectedVariable">
-                            <Object />
-                          </option>
-                        </KnowledgeVariable>
-                      </list>
+                      <list />
                     </option>
                     <knowledgeReferenceMaps>
                       <map>
@@ -5216,16 +5180,7 @@
                     </option>
                     <option name="status" value="SUCCESS" />
                     <option name="variables">
-                      <list>
-                        <KnowledgeVariable>
-                          <option name="selectedPlaceHolder">
-                            <Object />
-                          </option>
-                          <option name="selectedVariable">
-                            <Object />
-                          </option>
-                        </KnowledgeVariable>
-                      </list>
+                      <list />
                     </option>
                     <knowledgeReferenceMaps>
                       <map>
@@ -5288,6 +5243,1672 @@
         </WebConversation>
       </list>
     </option>
-    <option name="currentConversation" />
+    <option name="currentConversation">
+      <WebConversation>
+        <option name="session">
+          <ChatSession>
+            <option name="messages">
+              <list>
+                <UIChatMessage>
+                  <option name="command" value="" />
+                  <option name="content" value="PS D:\ue_texiao\Crunch&gt; git remote set-url origin git@github.com:hy396/Crunch.git&#10;PS D:\ue_texiao\Crunch&gt; git remote -v&#10;origin  git@github.com:hy396/Crunch.git (fetch)&#10;origin  git@github.com:hy396/Crunch.git (push)&#10;PS D:\ue_texiao\Crunch&gt; git push -v origin master:master&#10;Pushing to github.com:hy396/Crunch.git&#10;Enter passphrase for key '/c/Users/幻雨/.ssh/id_ed25519':&#10;Enumerating objects: 2072, done.&#10;Counting objects: 100% (2072/2072), done.&#10;Delta compression using up to 20 threads&#10;Compressing objects: 100% (2037/2037), done.&#10;remote: fatal: pack exceeds maximum allowed size (2.00 GiB)&#10;fatal: sha1 file '&lt;stdout&gt;' write error: Broken pipe&#10;error: remote unpack failed: index-pack failed&#10;To github.com:hy396/Crunch.git&#10; ! [remote rejected] master -&gt; master (failed)&#10;error: failed to push some refs to 'github.com:hy396/Crunch.git'     &#10;PS D:\ue_texiao\Crunch&gt;&#10;" />
+                  <option name="cost" value="0" />
+                  <option name="createdAt" value="1751349849359" />
+                  <option name="localReferences">
+                    <list>
+                      <LocalReferences>
+                        <option name="isRequestStage" value="true" />
+                        <option name="range">
+                          <RefRange />
+                        </option>
+                        <option name="uri" value="{&quot;path&quot;:&quot;file:///D:/ue_texiao/Crunch/Source/Crunch/Private/Animations/CAnimInstance.h&quot;}" />
+                      </LocalReferences>
+                    </list>
+                  </option>
+                  <option name="parser">
+                    <SimpleMarkdownStreamParser>
+                      <option name="columns">
+                        <list>
+                          <option value="80" />
+                          <option value="36" />
+                          <option value="46" />
+                          <option value="45" />
+                          <option value="55" />
+                          <option value="37" />
+                          <option value="54" />
+                          <option value="31" />
+                          <option value="40" />
+                          <option value="39" />
+                          <option value="43" />
+                          <option value="58" />
+                          <option value="51" />
+                          <option value="45" />
+                          <option value="29" />
+                          <option value="45" />
+                          <option value="68" />
+                          <option value="22" />
+                        </list>
+                      </option>
+                      <option name="content" value="PS D:\ue_texiao\Crunch&gt; git remote set-url origin git@github.com:hy396/Crunch.git&#10;PS D:\ue_texiao\Crunch&gt; git remote -v&#10;origin  git@github.com:hy396/Crunch.git (fetch)&#10;origin  git@github.com:hy396/Crunch.git (push)&#10;PS D:\ue_texiao\Crunch&gt; git push -v origin master:master&#10;Pushing to github.com:hy396/Crunch.git&#10;Enter passphrase for key '/c/Users/幻雨/.ssh/id_ed25519':&#10;Enumerating objects: 2072, done.&#10;Counting objects: 100% (2072/2072), done.&#10;Delta compression using up to 20 threads&#10;Compressing objects: 100% (2037/2037), done.&#10;remote: fatal: pack exceeds maximum allowed size (2.00 GiB)&#10;fatal: sha1 file '&lt;stdout&gt;' write error: Broken pipe&#10;error: remote unpack failed: index-pack failed&#10;To github.com:hy396/Crunch.git&#10; ! [remote rejected] master -&gt; master (failed)&#10;error: failed to push some refs to 'github.com:hy396/Crunch.git'     &#10;PS D:\ue_texiao\Crunch&gt;&#10;" />
+                      <option name="nodes">
+                        <list>
+                          <MarkdownNode>
+                            <option name="children">
+                              <list />
+                            </option>
+                            <option name="content" value="PS D:\ue_texiao\Crunch&gt; git remote set-url origin git@github.com:hy396/Crunch.git" />
+                            <option name="contentId" value="-445224912" />
+                            <option name="settled" value="true" />
+                            <option name="type" value="line" />
+                            <option name="xmlData">
+                              <XmlNode />
+                            </option>
+                          </MarkdownNode>
+                          <MarkdownNode>
+                            <option name="children">
+                              <list />
+                            </option>
+                            <option name="content" value="PS D:\ue_texiao\Crunch&gt; git remote -v" />
+                            <option name="contentId" value="-2138009472" />
+                            <option name="settled" value="true" />
+                            <option name="type" value="line" />
+                            <option name="xmlData">
+                              <XmlNode />
+                            </option>
+                          </MarkdownNode>
+                          <MarkdownNode>
+                            <option name="children">
+                              <list />
+                            </option>
+                            <option name="content" value="origin  git@github.com:hy396/Crunch.git (fetch)" />
+                            <option name="contentId" value="710435400" />
+                            <option name="settled" value="true" />
+                            <option name="type" value="line" />
+                            <option name="xmlData">
+                              <XmlNode />
+                            </option>
+                          </MarkdownNode>
+                          <MarkdownNode>
+                            <option name="children">
+                              <list />
+                            </option>
+                            <option name="content" value="origin  git@github.com:hy396/Crunch.git (push)" />
+                            <option name="contentId" value="-660108394" />
+                            <option name="settled" value="true" />
+                            <option name="type" value="line" />
+                            <option name="xmlData">
+                              <XmlNode />
+                            </option>
+                          </MarkdownNode>
+                          <MarkdownNode>
+                            <option name="children">
+                              <list />
+                            </option>
+                            <option name="content" value="PS D:\ue_texiao\Crunch&gt; git push -v origin master:master" />
+                            <option name="contentId" value="-327140812" />
+                            <option name="settled" value="true" />
+                            <option name="type" value="line" />
+                            <option name="xmlData">
+                              <XmlNode />
+                            </option>
+                          </MarkdownNode>
+                          <MarkdownNode>
+                            <option name="children">
+                              <list />
+                            </option>
+                            <option name="content" value="Pushing to github.com:hy396/Crunch.git" />
+                            <option name="contentId" value="-956809480" />
+                            <option name="settled" value="true" />
+                            <option name="type" value="line" />
+                            <option name="xmlData">
+                              <XmlNode />
+                            </option>
+                          </MarkdownNode>
+                          <MarkdownNode>
+                            <option name="children">
+                              <list />
+                            </option>
+                            <option name="content" value="Enter passphrase for key '/c/Users/幻雨/.ssh/id_ed25519':" />
+                            <option name="contentId" value="221837758" />
+                            <option name="settled" value="true" />
+                            <option name="type" value="line" />
+                            <option name="xmlData">
+                              <XmlNode />
+                            </option>
+                          </MarkdownNode>
+                          <MarkdownNode>
+                            <option name="children">
+                              <list />
+                            </option>
+                            <option name="content" value="Enumerating objects: 2072, done." />
+                            <option name="contentId" value="-808417916" />
+                            <option name="settled" value="true" />
+                            <option name="type" value="line" />
+                            <option name="xmlData">
+                              <XmlNode />
+                            </option>
+                          </MarkdownNode>
+                          <MarkdownNode>
+                            <option name="children">
+                              <list />
+                            </option>
+                            <option name="content" value="Counting objects: 100% (2072/2072), done." />
+                            <option name="contentId" value="629487253" />
+                            <option name="settled" value="true" />
+                            <option name="type" value="line" />
+                            <option name="xmlData">
+                              <XmlNode />
+                            </option>
+                          </MarkdownNode>
+                          <MarkdownNode>
+                            <option name="children">
+                              <list />
+                            </option>
+                            <option name="content" value="Delta compression using up to 20 threads" />
+                            <option name="contentId" value="1467345765" />
+                            <option name="settled" value="true" />
+                            <option name="type" value="line" />
+                            <option name="xmlData">
+                              <XmlNode />
+                            </option>
+                          </MarkdownNode>
+                          <MarkdownNode>
+                            <option name="children">
+                              <list />
+                            </option>
+                            <option name="content" value="Compressing objects: 100% (2037/2037), done." />
+                            <option name="contentId" value="-849722040" />
+                            <option name="settled" value="true" />
+                            <option name="type" value="line" />
+                            <option name="xmlData">
+                              <XmlNode />
+                            </option>
+                          </MarkdownNode>
+                          <MarkdownNode>
+                            <option name="children">
+                              <list />
+                            </option>
+                            <option name="content" value="remote: fatal: pack exceeds maximum allowed size (2.00 GiB)" />
+                            <option name="contentId" value="-1603293758" />
+                            <option name="settled" value="true" />
+                            <option name="type" value="line" />
+                            <option name="xmlData">
+                              <XmlNode />
+                            </option>
+                          </MarkdownNode>
+                          <MarkdownNode>
+                            <option name="children">
+                              <list />
+                            </option>
+                            <option name="content" value="fatal: sha1 file '&lt;stdout&gt;' write error: Broken pipe" />
+                            <option name="contentId" value="-554604752" />
+                            <option name="settled" value="true" />
+                            <option name="type" value="line" />
+                            <option name="xmlData">
+                              <XmlNode />
+                            </option>
+                          </MarkdownNode>
+                          <MarkdownNode>
+                            <option name="children">
+                              <list />
+                            </option>
+                            <option name="content" value="error: remote unpack failed: index-pack failed" />
+                            <option name="contentId" value="15398180" />
+                            <option name="settled" value="true" />
+                            <option name="type" value="line" />
+                            <option name="xmlData">
+                              <XmlNode />
+                            </option>
+                          </MarkdownNode>
+                          <MarkdownNode>
+                            <option name="children">
+                              <list />
+                            </option>
+                            <option name="content" value="To github.com:hy396/Crunch.git" />
+                            <option name="contentId" value="-1104346528" />
+                            <option name="settled" value="true" />
+                            <option name="type" value="line" />
+                            <option name="xmlData">
+                              <XmlNode />
+                            </option>
+                          </MarkdownNode>
+                          <MarkdownNode>
+                            <option name="children">
+                              <list />
+                            </option>
+                            <option name="content" value=" ! [remote rejected] master -&gt; master (failed)" />
+                            <option name="contentId" value="-1620637358" />
+                            <option name="settled" value="true" />
+                            <option name="type" value="line" />
+                            <option name="xmlData">
+                              <XmlNode />
+                            </option>
+                          </MarkdownNode>
+                          <MarkdownNode>
+                            <option name="children">
+                              <list />
+                            </option>
+                            <option name="content" value="error: failed to push some refs to 'github.com:hy396/Crunch.git'     " />
+                            <option name="contentId" value="-1928195182" />
+                            <option name="settled" value="true" />
+                            <option name="type" value="line" />
+                            <option name="xmlData">
+                              <XmlNode />
+                            </option>
+                          </MarkdownNode>
+                          <MarkdownNode>
+                            <option name="children">
+                              <list />
+                            </option>
+                            <option name="content" value="PS D:\ue_texiao\Crunch&gt;" />
+                            <option name="contentId" value="1203238571" />
+                            <option name="settled" value="true" />
+                            <option name="type" value="line" />
+                            <option name="xmlData">
+                              <XmlNode />
+                            </option>
+                          </MarkdownNode>
+                          <MarkdownNode>
+                            <option name="children">
+                              <list />
+                            </option>
+                            <option name="content" value="" />
+                            <option name="contentId" value="0" />
+                            <option name="settled" value="false" />
+                            <option name="type" value="undetermined" />
+                            <option name="xmlData">
+                              <XmlNode />
+                            </option>
+                          </MarkdownNode>
+                        </list>
+                      </option>
+                      <option name="parserState">
+                        <ParserState>
+                          <option name="line" value="18" />
+                          <option name="column" value="-1" />
+                          <option name="offset" value="860" />
+                          <option name="moveCursor" value="true" />
+                        </ParserState>
+                      </option>
+                    </SimpleMarkdownStreamParser>
+                  </option>
+                  <option name="role" value="user" />
+                  <option name="selectedRanges">
+                    <list />
+                  </option>
+                  <option name="uri" value="" />
+                  <option name="variables">
+                    <list />
+                  </option>
+                </UIChatMessage>
+                <UIChatMessage>
+                  <option name="actions">
+                    <list />
+                  </option>
+                  <option name="codebaseReferences">
+                    <list />
+                  </option>
+                  <option name="codebaseStatus" value="init" />
+                  <option name="command" value="" />
+                  <option name="content" value="当您尝试推送大文件到GitHub时，可能会遇到“fatal: pack exceeds maximum allowed size (2.00 GiB)”错误。这是因为GitHub对单个文件的大小有限制，通常为100MB。以下是几种解决这个问题的方法：&#10;。&#10;&#10;### 使用Git Large File Storage (Git LFS)&#10;&#10;- **安装Git LFS**：首先，您需要安装Git LFS。可以从[Git LFS官网](https://git-lfs.github.com/)下载并安装。&#10;- **跟踪大文件**：安装完成后，在终端中执行以下命令来初始化Git LFS：&#10;  ```sh&#10;  git lfs install&#10;  ```&#10;- **添加大文件的命令**：告诉Git LFS跟踪哪些大文件类型：&#10;  ```sh&#10;  git lfs track &quot;*.psd&quot;&#10;  ```&#10;  这会创建一个`.gitattributes`文件来标记需要使用Git LFS存储的文件类型。&#10;- **添加和提交文件**：将`.gitattributes`文件添加到Git并提交：&#10;  ```sh&#10;  git add .gitattributes&#10;  git add xxx/xxx.psd&#10;  git commit -m &quot;Track .psd files with Git LFS&quot;&#10;  ```&#10;- **推送到远程仓库**：最后，再次推送代码到GitHub：&#10;  ```sh&#10;  git push -u origin main&#10;  ```。&#10;&#10;### 清理历史记录中的大文件&#10;&#10;如果历史提交记录中包含大文件，可以使用以下方法清理历史记录：&#10;&#10;- **使用`git filter-branch`**：&#10;  ```sh&#10;  git filter-branch --force --index-filter 'git rm --cached --ignore-unmatch path/to/large_file' --prune-empty --tag-name-filter cat -- --all&#10;  ```&#10;  然后清理本地仓库缓存并推送更改：&#10;  ```sh&#10;  rm -rf .git/refs/original/&#10;  git reflog expire --expire=now --all&#10;  git gc --prune=now --aggressive&#10;  git push --force origin main&#10;  ```。&#10;&#10;### 修改本地Git配置&#10;&#10;- **增加`http.postBuffer`大小**：&#10;  ```sh&#10;  git config --global http.postBuffer 524288000&#10;  ```&#10;  或者针对当前仓库配置：&#10;  ```sh&#10;  git config http.postBuffer 524288000&#10;  ```&#10;  查看当前的Git配置以确认设置成功：&#10;  ```sh&#10;  git config --list&#10;  ```&#10;  修改配置后重新推送。。&#10;&#10;希望这些方法能帮助您解决推送大文件时遇到的问题。如果问题依然存在，请提供更多的错误信息以便进一步诊断。" />
+                  <option name="cost" value="16052" />
+                  <option name="createdAt" value="1751349865449" />
+                  <option name="followup">
+                    <list />
+                  </option>
+                  <option name="id" value="0197c495ed0f7ee8b9423bb0bd59ed1b" />
+                  <option name="knowledgeReferences">
+                    <list />
+                  </option>
+                  <option name="localReferences">
+                    <list>
+                      <LocalReferences>
+                        <option name="isRequestStage" value="true" />
+                        <option name="range">
+                          <RefRange />
+                        </option>
+                        <option name="uri" value="{&quot;path&quot;:&quot;file:///D:/ue_texiao/Crunch/Source/Crunch/Private/Animations/CAnimInstance.h&quot;}" />
+                      </LocalReferences>
+                    </list>
+                  </option>
+                  <option name="parser">
+                    <SimpleMarkdownStreamParser>
+                      <option name="columns">
+                        <list>
+                          <option value="124" />
+                          <option value="0" />
+                          <option value="-1" />
+                          <option value="37" />
+                          <option value="-1" />
+                          <option value="80" />
+                          <option value="39" />
+                          <option value="6" />
+                          <option value="16" />
+                          <option value="4" />
+                          <option value="33" />
+                          <option value="6" />
+                          <option value="22" />
+                          <option value="4" />
+                          <option value="47" />
+                          <option value="42" />
+                          <option value="6" />
+                          <option value="23" />
+                          <option value="20" />
+                          <option value="46" />
+                          <option value="4" />
+                          <option value="30" />
+                          <option value="6" />
+                          <option value="24" />
+                          <option value="5" />
+                          <option value="-1" />
+                          <option value="14" />
+                          <option value="-1" />
+                          <option value="29" />
+                          <option value="-1" />
+                          <option value="27" />
+                          <option value="6" />
+                          <option value="140" />
+                          <option value="4" />
+                          <option value="17" />
+                          <option value="6" />
+                          <option value="27" />
+                          <option value="37" />
+                          <option value="32" />
+                          <option value="29" />
+                          <option value="5" />
+                          <option value="-1" />
+                          <option value="12" />
+                          <option value="-1" />
+                          <option value="27" />
+                          <option value="6" />
+                          <option value="46" />
+                          <option value="4" />
+                          <option value="12" />
+                          <option value="6" />
+                          <option value="37" />
+                          <option value="4" />
+                          <option value="19" />
+                          <option value="6" />
+                          <option value="18" />
+                          <option value="4" />
+                          <option value="12" />
+                          <option value="-1" />
+                          <option value="50" />
+                        </list>
+                      </option>
+                      <option name="content" value="当您尝试推送大文件到GitHub时，可能会遇到“fatal: pack exceeds maximum allowed size (2.00 GiB)”错误。这是因为GitHub对单个文件的大小有限制，通常为100MB。以下是几种解决这个问题的方法：&#10;。&#10;&#10;### 使用Git Large File Storage (Git LFS)&#10;&#10;- **安装Git LFS**：首先，您需要安装Git LFS。可以从[Git LFS官网](https://git-lfs.github.com/)下载并安装。&#10;- **跟踪大文件**：安装完成后，在终端中执行以下命令来初始化Git LFS：&#10;  ```sh&#10;  git lfs install&#10;  ```&#10;- **添加大文件的命令**：告诉Git LFS跟踪哪些大文件类型：&#10;  ```sh&#10;  git lfs track &quot;*.psd&quot;&#10;  ```&#10;  这会创建一个`.gitattributes`文件来标记需要使用Git LFS存储的文件类型。&#10;- **添加和提交文件**：将`.gitattributes`文件添加到Git并提交：&#10;  ```sh&#10;  git add .gitattributes&#10;  git add xxx/xxx.psd&#10;  git commit -m &quot;Track .psd files with Git LFS&quot;&#10;  ```&#10;- **推送到远程仓库**：最后，再次推送代码到GitHub：&#10;  ```sh&#10;  git push -u origin main&#10;  ```。&#10;&#10;### 清理历史记录中的大文件&#10;&#10;如果历史提交记录中包含大文件，可以使用以下方法清理历史记录：&#10;&#10;- **使用`git filter-branch`**：&#10;  ```sh&#10;  git filter-branch --force --index-filter 'git rm --cached --ignore-unmatch path/to/large_file' --prune-empty --tag-name-filter cat -- --all&#10;  ```&#10;  然后清理本地仓库缓存并推送更改：&#10;  ```sh&#10;  rm -rf .git/refs/original/&#10;  git reflog expire --expire=now --all&#10;  git gc --prune=now --aggressive&#10;  git push --force origin main&#10;  ```。&#10;&#10;### 修改本地Git配置&#10;&#10;- **增加`http.postBuffer`大小**：&#10;  ```sh&#10;  git config --global http.postBuffer 524288000&#10;  ```&#10;  或者针对当前仓库配置：&#10;  ```sh&#10;  git config http.postBuffer 524288000&#10;  ```&#10;  查看当前的Git配置以确认设置成功：&#10;  ```sh&#10;  git config --list&#10;  ```&#10;  修改配置后重新推送。。&#10;&#10;希望这些方法能帮助您解决推送大文件时遇到的问题。如果问题依然存在，请提供更多的错误信息以便进一步诊断。&#10;" />
+                      <option name="nodes">
+                        <list>
+                          <MarkdownNode>
+                            <option name="children">
+                              <list />
+                            </option>
+                            <option name="content" value="当您尝试推送大文件到GitHub时，可能会遇到“fatal: pack exceeds maximum allowed size (2.00 GiB)”错误。这是因为GitHub对单个文件的大小有限制，通常为100MB。以下是几种解决这个问题的方法：" />
+                            <option name="contentId" value="658141983" />
+                            <option name="settled" value="true" />
+                            <option name="type" value="line" />
+                            <option name="xmlData">
+                              <XmlNode />
+                            </option>
+                          </MarkdownNode>
+                          <MarkdownNode>
+                            <option name="children">
+                              <list />
+                            </option>
+                            <option name="content" value="。" />
+                            <option name="contentId" value="12290" />
+                            <option name="settled" value="true" />
+                            <option name="type" value="line" />
+                            <option name="xmlData">
+                              <XmlNode />
+                            </option>
+                          </MarkdownNode>
+                          <MarkdownNode>
+                            <option name="children">
+                              <list />
+                            </option>
+                            <option name="content" value="" />
+                            <option name="contentId" value="0" />
+                            <option name="settled" value="true" />
+                            <option name="type" value="line" />
+                            <option name="xmlData">
+                              <XmlNode />
+                            </option>
+                          </MarkdownNode>
+                          <MarkdownNode>
+                            <option name="children">
+                              <list />
+                            </option>
+                            <option name="content" value=" 使用Git Large File Storage (Git LFS)" />
+                            <option name="contentId" value="2012396025" />
+                            <option name="level" value="3" />
+                            <option name="settled" value="true" />
+                            <option name="type" value="heading" />
+                            <option name="xmlData">
+                              <XmlNode />
+                            </option>
+                          </MarkdownNode>
+                          <MarkdownNode>
+                            <option name="children">
+                              <list />
+                            </option>
+                            <option name="content" value="" />
+                            <option name="contentId" value="0" />
+                            <option name="settled" value="true" />
+                            <option name="type" value="line" />
+                            <option name="xmlData">
+                              <XmlNode />
+                            </option>
+                          </MarkdownNode>
+                          <MarkdownNode>
+                            <option name="children">
+                              <list />
+                            </option>
+                            <option name="content" value=" **安装Git LFS**：首先，您需要安装Git LFS。可以从[Git LFS官网](https://git-lfs.github.com/)下载并安装。" />
+                            <option name="contentId" value="1537317648" />
+                            <option name="indentSize" value="0" />
+                            <option name="settled" value="true" />
+                            <option name="startSymbol" value="-" />
+                            <option name="type" value="list-item" />
+                            <option name="xmlData">
+                              <XmlNode />
+                            </option>
+                          </MarkdownNode>
+                          <MarkdownNode>
+                            <option name="children">
+                              <list />
+                            </option>
+                            <option name="content" value=" **跟踪大文件**：安装完成后，在终端中执行以下命令来初始化Git LFS：" />
+                            <option name="contentId" value="1528705903" />
+                            <option name="indentSize" value="0" />
+                            <option name="settled" value="true" />
+                            <option name="startSymbol" value="-" />
+                            <option name="type" value="list-item" />
+                            <option name="xmlData">
+                              <XmlNode />
+                            </option>
+                          </MarkdownNode>
+                          <MarkdownNode>
+                            <option name="children">
+                              <list />
+                            </option>
+                            <option name="content" value="git lfs install&#10;" />
+                            <option name="contentId" value="-1102954140" />
+                            <option name="expectEnding" value="  ```" />
+                            <option name="indentSize" value="2" />
+                            <option name="language" value="sh" />
+                            <option name="settled" value="true" />
+                            <option name="type" value="code-block" />
+                            <option name="xmlData">
+                              <XmlNode />
+                            </option>
+                          </MarkdownNode>
+                          <MarkdownNode>
+                            <option name="children">
+                              <list />
+                            </option>
+                            <option name="content" value=" **添加大文件的命令**：告诉Git LFS跟踪哪些大文件类型：" />
+                            <option name="contentId" value="187402428" />
+                            <option name="indentSize" value="0" />
+                            <option name="settled" value="true" />
+                            <option name="startSymbol" value="-" />
+                            <option name="type" value="list-item" />
+                            <option name="xmlData">
+                              <XmlNode />
+                            </option>
+                          </MarkdownNode>
+                          <MarkdownNode>
+                            <option name="children">
+                              <list />
+                            </option>
+                            <option name="content" value="git lfs track &quot;*.psd&quot;&#10;" />
+                            <option name="contentId" value="364890253" />
+                            <option name="expectEnding" value="  ```" />
+                            <option name="indentSize" value="2" />
+                            <option name="language" value="sh" />
+                            <option name="settled" value="true" />
+                            <option name="type" value="code-block" />
+                            <option name="xmlData">
+                              <XmlNode />
+                            </option>
+                          </MarkdownNode>
+                          <MarkdownNode>
+                            <option name="children">
+                              <list />
+                            </option>
+                            <option name="content" value="  这会创建一个`.gitattributes`文件来标记需要使用Git LFS存储的文件类型。" />
+                            <option name="contentId" value="1758837536" />
+                            <option name="settled" value="true" />
+                            <option name="type" value="line" />
+                            <option name="xmlData">
+                              <XmlNode />
+                            </option>
+                          </MarkdownNode>
+                          <MarkdownNode>
+                            <option name="children">
+                              <list />
+                            </option>
+                            <option name="content" value=" **添加和提交文件**：将`.gitattributes`文件添加到Git并提交：" />
+                            <option name="contentId" value="-765668319" />
+                            <option name="indentSize" value="0" />
+                            <option name="settled" value="true" />
+                            <option name="startSymbol" value="-" />
+                            <option name="type" value="list-item" />
+                            <option name="xmlData">
+                              <XmlNode />
+                            </option>
+                          </MarkdownNode>
+                          <MarkdownNode>
+                            <option name="children">
+                              <list />
+                            </option>
+                            <option name="content" value="git add .gitattributes&#10;git add xxx/xxx.psd&#10;git commit -m &quot;Track .psd files with Git LFS&quot;&#10;" />
+                            <option name="contentId" value="1930088482" />
+                            <option name="expectEnding" value="  ```" />
+                            <option name="indentSize" value="2" />
+                            <option name="language" value="sh" />
+                            <option name="settled" value="true" />
+                            <option name="type" value="code-block" />
+                            <option name="xmlData">
+                              <XmlNode />
+                            </option>
+                          </MarkdownNode>
+                          <MarkdownNode>
+                            <option name="children">
+                              <list />
+                            </option>
+                            <option name="content" value=" **推送到远程仓库**：最后，再次推送代码到GitHub：" />
+                            <option name="contentId" value="733403900" />
+                            <option name="indentSize" value="0" />
+                            <option name="settled" value="true" />
+                            <option name="startSymbol" value="-" />
+                            <option name="type" value="list-item" />
+                            <option name="xmlData">
+                              <XmlNode />
+                            </option>
+                          </MarkdownNode>
+                          <MarkdownNode>
+                            <option name="children">
+                              <list />
+                            </option>
+                            <option name="content" value="git push -u origin main&#10;```。&#10;&#10;### 清理历史记录中的大文件&#10;&#10;如果历史提交记录中包含大文件，可以使用以下方法清理历史记录：&#10;&#10;- **使用`git filter-branch`**：&#10;```sh&#10;git filter-branch --force --index-filter 'git rm --cached --ignore-unmatch path/to/large_file' --prune-empty --tag-name-filter cat -- --all&#10;" />
+                            <option name="contentId" value="-1262525257" />
+                            <option name="expectEnding" value="  ```" />
+                            <option name="indentSize" value="2" />
+                            <option name="language" value="sh" />
+                            <option name="settled" value="true" />
+                            <option name="type" value="code-block" />
+                            <option name="xmlData">
+                              <XmlNode />
+                            </option>
+                          </MarkdownNode>
+                          <MarkdownNode>
+                            <option name="children">
+                              <list />
+                            </option>
+                            <option name="content" value="  然后清理本地仓库缓存并推送更改：" />
+                            <option name="contentId" value="37053576" />
+                            <option name="settled" value="true" />
+                            <option name="type" value="line" />
+                            <option name="xmlData">
+                              <XmlNode />
+                            </option>
+                          </MarkdownNode>
+                          <MarkdownNode>
+                            <option name="children">
+                              <list />
+                            </option>
+                            <option name="content" value="rm -rf .git/refs/original/&#10;git reflog expire --expire=now --all&#10;git gc --prune=now --aggressive&#10;git push --force origin main&#10;```。&#10;&#10;### 修改本地Git配置&#10;&#10;- **增加`http.postBuffer`大小**：&#10;```sh&#10;git config --global http.postBuffer 524288000&#10;" />
+                            <option name="contentId" value="-251256355" />
+                            <option name="expectEnding" value="  ```" />
+                            <option name="indentSize" value="2" />
+                            <option name="language" value="sh" />
+                            <option name="settled" value="true" />
+                            <option name="type" value="code-block" />
+                            <option name="xmlData">
+                              <XmlNode />
+                            </option>
+                          </MarkdownNode>
+                          <MarkdownNode>
+                            <option name="children">
+                              <list />
+                            </option>
+                            <option name="content" value="  或者针对当前仓库配置：" />
+                            <option name="contentId" value="-1853254945" />
+                            <option name="settled" value="true" />
+                            <option name="type" value="line" />
+                            <option name="xmlData">
+                              <XmlNode />
+                            </option>
+                          </MarkdownNode>
+                          <MarkdownNode>
+                            <option name="children">
+                              <list />
+                            </option>
+                            <option name="content" value="git config http.postBuffer 524288000&#10;" />
+                            <option name="contentId" value="-640833153" />
+                            <option name="expectEnding" value="  ```" />
+                            <option name="indentSize" value="2" />
+                            <option name="language" value="sh" />
+                            <option name="settled" value="true" />
+                            <option name="type" value="code-block" />
+                            <option name="xmlData">
+                              <XmlNode />
+                            </option>
+                          </MarkdownNode>
+                          <MarkdownNode>
+                            <option name="children">
+                              <list />
+                            </option>
+                            <option name="content" value="  查看当前的Git配置以确认设置成功：" />
+                            <option name="contentId" value="-909001009" />
+                            <option name="settled" value="true" />
+                            <option name="type" value="line" />
+                            <option name="xmlData">
+                              <XmlNode />
+                            </option>
+                          </MarkdownNode>
+                          <MarkdownNode>
+                            <option name="children">
+                              <list />
+                            </option>
+                            <option name="content" value="git config --list&#10;" />
+                            <option name="contentId" value="2015393980" />
+                            <option name="expectEnding" value="  ```" />
+                            <option name="indentSize" value="2" />
+                            <option name="language" value="sh" />
+                            <option name="settled" value="true" />
+                            <option name="type" value="code-block" />
+                            <option name="xmlData">
+                              <XmlNode />
+                            </option>
+                          </MarkdownNode>
+                          <MarkdownNode>
+                            <option name="children">
+                              <list />
+                            </option>
+                            <option name="content" value="  修改配置后重新推送。。" />
+                            <option name="contentId" value="-591177890" />
+                            <option name="settled" value="true" />
+                            <option name="type" value="line" />
+                            <option name="xmlData">
+                              <XmlNode />
+                            </option>
+                          </MarkdownNode>
+                          <MarkdownNode>
+                            <option name="children">
+                              <list />
+                            </option>
+                            <option name="content" value="" />
+                            <option name="contentId" value="0" />
+                            <option name="settled" value="true" />
+                            <option name="type" value="line" />
+                            <option name="xmlData">
+                              <XmlNode />
+                            </option>
+                          </MarkdownNode>
+                          <MarkdownNode>
+                            <option name="children">
+                              <list />
+                            </option>
+                            <option name="content" value="希望这些方法能帮助您解决推送大文件时遇到的问题。如果问题依然存在，请提供更多的错误信息以便进一步诊断。" />
+                            <option name="contentId" value="160083893" />
+                            <option name="settled" value="true" />
+                            <option name="type" value="line" />
+                            <option name="xmlData">
+                              <XmlNode />
+                            </option>
+                          </MarkdownNode>
+                          <MarkdownNode>
+                            <option name="children">
+                              <list />
+                            </option>
+                            <option name="content" value="" />
+                            <option name="contentId" value="0" />
+                            <option name="settled" value="false" />
+                            <option name="type" value="undetermined" />
+                            <option name="xmlData">
+                              <XmlNode />
+                            </option>
+                          </MarkdownNode>
+                        </list>
+                      </option>
+                      <option name="parserState">
+                        <ParserState>
+                          <option name="line" value="59" />
+                          <option name="column" value="-1" />
+                          <option name="offset" value="1370" />
+                          <option name="moveCursor" value="true" />
+                        </ParserState>
+                      </option>
+                    </SimpleMarkdownStreamParser>
+                  </option>
+                  <option name="references">
+                    <list />
+                  </option>
+                  <option name="role" value="assistant" />
+                  <option name="topic" value="" />
+                </UIChatMessage>
+                <UIChatMessage>
+                  <option name="command" value="" />
+                  <option name="content" value="添加注释" />
+                  <option name="cost" value="0" />
+                  <option name="createdAt" value="1751377735823" />
+                  <option name="knowledge">
+                    <list>
+                      <KnowledgeBase>
+                        <option name="description" value="UnrealEngine 4.5版本知识库" />
+                        <option name="id" value="preset14" />
+                        <option name="knowledgeBaseType" value="common" />
+                        <option name="name" value="UnrealEngine 4.5" />
+                      </KnowledgeBase>
+                    </list>
+                  </option>
+                  <option name="localReferences">
+                    <list>
+                      <LocalReferences>
+                        <option name="isRequestStage" value="true" />
+                        <option name="range">
+                          <RefRange />
+                        </option>
+                        <option name="uri" value="{&quot;path&quot;:&quot;file:///D:/ue_texiao/Crunch/Source/Crunch/Private/Animations/CAnimInstance.cpp&quot;}" />
+                      </LocalReferences>
+                    </list>
+                  </option>
+                  <option name="parser">
+                    <SimpleMarkdownStreamParser>
+                      <option name="content" value="添加注释" />
+                      <option name="nodes">
+                        <list>
+                          <MarkdownNode>
+                            <option name="children">
+                              <list />
+                            </option>
+                            <option name="content" value="添加注释" />
+                            <option name="contentId" value="859994279" />
+                            <option name="settled" value="false" />
+                            <option name="type" value="line" />
+                            <option name="xmlData">
+                              <XmlNode />
+                            </option>
+                          </MarkdownNode>
+                        </list>
+                      </option>
+                      <option name="parserState">
+                        <ParserState>
+                          <option name="column" value="3" />
+                          <option name="offset" value="4" />
+                          <option name="moveCursor" value="true" />
+                        </ParserState>
+                      </option>
+                    </SimpleMarkdownStreamParser>
+                  </option>
+                  <option name="role" value="user" />
+                  <option name="selectedRanges">
+                    <list />
+                  </option>
+                  <option name="uri" value="" />
+                  <option name="variables">
+                    <list />
+                  </option>
+                </UIChatMessage>
+                <UIChatMessage>
+                  <option name="actions">
+                    <list />
+                  </option>
+                  <option name="codebaseReferences">
+                    <list />
+                  </option>
+                  <option name="codebaseStatus" value="init" />
+                  <option name="command" value="" />
+                  <option name="content" value="```cpp&#10;// CAnimInstance.cpp&#10;&#10;// 检查拥有者角色是否存在&#10;if (OwnerCharacter)&#10;{&#10;    // 获取拥有者角色的速度向量&#10;    FVector Velocity = OwnerCharacter-&gt;GetVelocity();&#10;    // 计算速度的大小&#10;    Speed = Velocity.Length();&#10;&#10;    // 获取拥有者角色的当前旋转&#10;    FRotator BodyRotator = OwnerCharacter-&gt;GetActorRotation();&#10;    // 计算当前旋转与前一帧旋转之间的差值，并归一化&#10;    FRotator BodyRotatorDelta = UKismetMathLibrary::NormalizedDeltaRotator(BodyRotator, BodyPrevRotator);&#10;    // 更新前一帧的旋转&#10;    BodyPrevRotator = BodyRotator;&#10;&#10;    // 计算偏航角速度&#10;    YawSpeed = BodyRotatorDelta.Yaw / DeltaSeconds;&#10;    // 获取平滑插值速度&#10;    float YawLerpSpeed = YawSpeedSmoothLerpSpeed;&#10;    // 如果偏航角速度为0，则使用特定的速度进行平滑插值&#10;    if (YawSpeed == 0)&#10;    {&#10;        YawLerpSpeed = YawSpeedLerpToZeroSpeed;&#10;    }&#10;    // 使用插值函数平滑偏航角速度&#10;    SmoothedYawSpeed = UKismetMathLibrary::FInterpTo(SmoothedYawSpeed, YawSpeed, DeltaSeconds, YawLerpSpeed);&#10;}&#10;```" />
+                  <option name="cost" value="10572" />
+                  <option name="createdAt" value="1751377748685" />
+                  <option name="followup">
+                    <list />
+                  </option>
+                  <option name="id" value="0197c63f708e7ee8b94245021af1b8e7" />
+                  <option name="knowledge">
+                    <list>
+                      <KnowledgeBase>
+                        <option name="id" value="preset14" />
+                        <option name="knowledgeBaseType" value="common" />
+                        <option name="name" value="UnrealEngine 4.5" />
+                      </KnowledgeBase>
+                    </list>
+                  </option>
+                  <option name="knowledgeReferences">
+                    <list>
+                      <KnowledgeReference>
+                        <option name="chunk" value="&#10;  // Override for AnnotationCollector::AddAnnotation." />
+                        <option name="knowledgeBaseId" value="preset14" />
+                        <option name="metadata">
+                          <KnowledgeReferenceMetadata>
+                            <option name="endPos" value="74" />
+                            <option name="fileName" value="Engine/Source/ThirdParty/WebRTC/rev.24472/Include/Linux/third_party/protobuf/src/google/protobuf/io/printer.h" />
+                            <option name="source" value="/Engine/Source/ThirdParty/WebRTC/rev.24472/Include/Linux/third_party/protobuf/src/google/protobuf/io/printer.h" />
+                            <option name="sourceType" value="code" />
+                            <option name="startPos" value="73" />
+                          </KnowledgeReferenceMetadata>
+                        </option>
+                        <option name="score" value="0.6385163" />
+                      </KnowledgeReference>
+                      <KnowledgeReference>
+                        <option name="chunk" value="&#10;  // Override for AnnotationCollector::AddAnnotation." />
+                        <option name="knowledgeBaseId" value="preset14" />
+                        <option name="metadata">
+                          <KnowledgeReferenceMetadata>
+                            <option name="endPos" value="74" />
+                            <option name="fileName" value="Engine/Source/ThirdParty/WebRTC/rev.24472/Include/Win64/VS2015/third_party/protobuf/src/google/protobuf/io/printer.h" />
+                            <option name="source" value="/Engine/Source/ThirdParty/WebRTC/rev.24472/Include/Win64/VS2015/third_party/protobuf/src/google/protobuf/io/printer.h" />
+                            <option name="sourceType" value="code" />
+                            <option name="startPos" value="73" />
+                          </KnowledgeReferenceMetadata>
+                        </option>
+                        <option name="score" value="0.6365769" />
+                      </KnowledgeReference>
+                      <KnowledgeReference>
+                        <option name="chunk" value="&#10;  // Override for AnnotationCollector::AddAnnotation." />
+                        <option name="knowledgeBaseId" value="preset14" />
+                        <option name="metadata">
+                          <KnowledgeReferenceMetadata>
+                            <option name="endPos" value="74" />
+                            <option name="fileName" value="Engine/Source/ThirdParty/WebRTC/rev.24472/Include/Mac/third_party/protobuf/src/google/protobuf/io/printer.h" />
+                            <option name="source" value="/Engine/Source/ThirdParty/WebRTC/rev.24472/Include/Mac/third_party/protobuf/src/google/protobuf/io/printer.h" />
+                            <option name="sourceType" value="code" />
+                            <option name="startPos" value="73" />
+                          </KnowledgeReferenceMetadata>
+                        </option>
+                        <option name="score" value="0.6365602" />
+                      </KnowledgeReference>
+                    </list>
+                  </option>
+                  <option name="knowledgeStatus" value="success" />
+                  <option name="localReferences">
+                    <list>
+                      <LocalReferences>
+                        <option name="isRequestStage" value="true" />
+                        <option name="range">
+                          <RefRange />
+                        </option>
+                        <option name="uri" value="{&quot;path&quot;:&quot;file:///D:/ue_texiao/Crunch/Source/Crunch/Private/Animations/CAnimInstance.cpp&quot;}" />
+                      </LocalReferences>
+                    </list>
+                  </option>
+                  <option name="parser">
+                    <SimpleMarkdownStreamParser>
+                      <option name="columns">
+                        <list>
+                          <option value="5" />
+                          <option value="19" />
+                          <option value="-1" />
+                          <option value="13" />
+                          <option value="18" />
+                          <option value="0" />
+                          <option value="18" />
+                          <option value="52" />
+                          <option value="13" />
+                          <option value="29" />
+                          <option value="-1" />
+                          <option value="18" />
+                          <option value="61" />
+                          <option value="28" />
+                          <option value="104" />
+                          <option value="14" />
+                          <option value="33" />
+                          <option value="-1" />
+                          <option value="13" />
+                          <option value="50" />
+                          <option value="14" />
+                          <option value="48" />
+                          <option value="30" />
+                          <option value="21" />
+                          <option value="4" />
+                          <option value="46" />
+                          <option value="4" />
+                          <option value="19" />
+                          <option value="108" />
+                          <option value="0" />
+                          <option value="2" />
+                        </list>
+                      </option>
+                      <option name="content" value="```cpp&#10;// CAnimInstance.cpp&#10;&#10;// 检查拥有者角色是否存在&#10;if (OwnerCharacter)&#10;{&#10;    // 获取拥有者角色的速度向量&#10;    FVector Velocity = OwnerCharacter-&gt;GetVelocity();&#10;    // 计算速度的大小&#10;    Speed = Velocity.Length();&#10;&#10;    // 获取拥有者角色的当前旋转&#10;    FRotator BodyRotator = OwnerCharacter-&gt;GetActorRotation();&#10;    // 计算当前旋转与前一帧旋转之间的差值，并归一化&#10;    FRotator BodyRotatorDelta = UKismetMathLibrary::NormalizedDeltaRotator(BodyRotator, BodyPrevRotator);&#10;    // 更新前一帧的旋转&#10;    BodyPrevRotator = BodyRotator;&#10;&#10;    // 计算偏航角速度&#10;    YawSpeed = BodyRotatorDelta.Yaw / DeltaSeconds;&#10;    // 获取平滑插值速度&#10;    float YawLerpSpeed = YawSpeedSmoothLerpSpeed;&#10;    // 如果偏航角速度为0，则使用特定的速度进行平滑插值&#10;    if (YawSpeed == 0)&#10;    {&#10;        YawLerpSpeed = YawSpeedLerpToZeroSpeed;&#10;    }&#10;    // 使用插值函数平滑偏航角速度&#10;    SmoothedYawSpeed = UKismetMathLibrary::FInterpTo(SmoothedYawSpeed, YawSpeed, DeltaSeconds, YawLerpSpeed);&#10;}&#10;```&#10;" />
+                      <option name="nodes">
+                        <list>
+                          <MarkdownNode>
+                            <option name="children">
+                              <list />
+                            </option>
+                            <option name="content" value="// CAnimInstance.cpp&#10;&#10;// 检查拥有者角色是否存在&#10;if (OwnerCharacter)&#10;{&#10;    // 获取拥有者角色的速度向量&#10;    FVector Velocity = OwnerCharacter-&gt;GetVelocity();&#10;    // 计算速度的大小&#10;    Speed = Velocity.Length();&#10;&#10;    // 获取拥有者角色的当前旋转&#10;    FRotator BodyRotator = OwnerCharacter-&gt;GetActorRotation();&#10;    // 计算当前旋转与前一帧旋转之间的差值，并归一化&#10;    FRotator BodyRotatorDelta = UKismetMathLibrary::NormalizedDeltaRotator(BodyRotator, BodyPrevRotator);&#10;    // 更新前一帧的旋转&#10;    BodyPrevRotator = BodyRotator;&#10;&#10;    // 计算偏航角速度&#10;    YawSpeed = BodyRotatorDelta.Yaw / DeltaSeconds;&#10;    // 获取平滑插值速度&#10;    float YawLerpSpeed = YawSpeedSmoothLerpSpeed;&#10;    // 如果偏航角速度为0，则使用特定的速度进行平滑插值&#10;    if (YawSpeed == 0)&#10;    {&#10;        YawLerpSpeed = YawSpeedLerpToZeroSpeed;&#10;    }&#10;    // 使用插值函数平滑偏航角速度&#10;    SmoothedYawSpeed = UKismetMathLibrary::FInterpTo(SmoothedYawSpeed, YawSpeed, DeltaSeconds, YawLerpSpeed);&#10;}&#10;" />
+                            <option name="contentId" value="1564077322" />
+                            <option name="expectEnding" value="```" />
+                            <option name="indentSize" value="0" />
+                            <option name="language" value="cpp" />
+                            <option name="settled" value="true" />
+                            <option name="type" value="code-block" />
+                            <option name="xmlData">
+                              <XmlNode />
+                            </option>
+                          </MarkdownNode>
+                          <MarkdownNode>
+                            <option name="children">
+                              <list />
+                            </option>
+                            <option name="content" value="" />
+                            <option name="contentId" value="0" />
+                            <option name="settled" value="false" />
+                            <option name="type" value="undetermined" />
+                            <option name="xmlData">
+                              <XmlNode />
+                            </option>
+                          </MarkdownNode>
+                        </list>
+                      </option>
+                      <option name="parserState">
+                        <ParserState>
+                          <option name="line" value="31" />
+                          <option name="column" value="-1" />
+                          <option name="offset" value="843" />
+                          <option name="moveCursor" value="true" />
+                        </ParserState>
+                      </option>
+                    </SimpleMarkdownStreamParser>
+                  </option>
+                  <option name="references">
+                    <list />
+                  </option>
+                  <option name="role" value="assistant" />
+                  <option name="topic" value="" />
+                </UIChatMessage>
+                <UIChatMessage>
+                  <option name="command" value="" />
+                  <option name="content" value="添加注释，解释变量的作用" />
+                  <option name="cost" value="0" />
+                  <option name="createdAt" value="1751377895853" />
+                  <option name="knowledge">
+                    <list>
+                      <KnowledgeBase>
+                        <option name="description" value="UnrealEngine 4.5版本知识库" />
+                        <option name="id" value="preset14" />
+                        <option name="knowledgeBaseType" value="common" />
+                        <option name="name" value="UnrealEngine 4.5" />
+                      </KnowledgeBase>
+                    </list>
+                  </option>
+                  <option name="localReferences">
+                    <list>
+                      <LocalReferences>
+                        <option name="isRequestStage" value="true" />
+                        <option name="range">
+                          <RefRange />
+                        </option>
+                        <option name="uri" value="{&quot;path&quot;:&quot;file:///D:/ue_texiao/Crunch/Source/Crunch/Private/Animations/CAnimInstance.h&quot;}" />
+                      </LocalReferences>
+                    </list>
+                  </option>
+                  <option name="parser">
+                    <SimpleMarkdownStreamParser>
+                      <option name="content" value="添加注释，解释变量的作用" />
+                      <option name="nodes">
+                        <list>
+                          <MarkdownNode>
+                            <option name="children">
+                              <list />
+                            </option>
+                            <option name="content" value="添加注释，解释变量的作用" />
+                            <option name="contentId" value="-1895697491" />
+                            <option name="settled" value="false" />
+                            <option name="type" value="line" />
+                            <option name="xmlData">
+                              <XmlNode />
+                            </option>
+                          </MarkdownNode>
+                        </list>
+                      </option>
+                      <option name="parserState">
+                        <ParserState>
+                          <option name="column" value="11" />
+                          <option name="offset" value="12" />
+                          <option name="moveCursor" value="true" />
+                        </ParserState>
+                      </option>
+                    </SimpleMarkdownStreamParser>
+                  </option>
+                  <option name="role" value="user" />
+                  <option name="selectedRanges">
+                    <list />
+                  </option>
+                  <option name="uri" value="" />
+                  <option name="variables">
+                    <list />
+                  </option>
+                </UIChatMessage>
+                <UIChatMessage>
+                  <option name="actions">
+                    <list />
+                  </option>
+                  <option name="codebaseReferences">
+                    <list />
+                  </option>
+                  <option name="codebaseStatus" value="init" />
+                  <option name="command" value="" />
+                  <option name="content" value="```cpp&#10;// CAnimInstance.h&#10;&#10;// YawSpeed: 表示当前帧的偏航角速度&#10;// 用于计算角色在水平面上的旋转速度&#10;float YawSpeed;&#10;&#10;// SmoothedYawSpeed: 表示平滑后的偏航角速度&#10;// 用于在多个帧之间平滑偏航角速度，以减少抖动&#10;float SmoothedYawSpeed;&#10;&#10;// YawSpeedSmoothLerpSpeed: 表示平滑插值的速度&#10;// 控制偏航角速度从当前值平滑过渡到零的速度&#10;UPROPERTY(EditAnywhere, Category = &quot;Animation&quot;)&#10;float YawSpeedSmoothLerpSpeed = 1.f;&#10;&#10;// YawSpeedLerpToZeroSpeed: 表示当偏航角速度降到零时使用的插值速度&#10;// 用于控制偏航角速度从当前值平滑过渡到零的加速度&#10;UPROPERTY(EditAnywhere, Category = &quot;Animation&quot;)&#10;float YawSpeedLerpToZeroSpeed = 30.f;&#10;&#10;// BodyPrevRotator: 表示前一帧的角色旋转&#10;// 用于计算当前帧的旋转变化量&#10;FRotator BodyPrevRotator;&#10;```" />
+                  <option name="cost" value="9297" />
+                  <option name="createdAt" value="1751377905520" />
+                  <option name="followup">
+                    <list />
+                  </option>
+                  <option name="id" value="0197c641e1ad7ee8b9424b9a123529f3" />
+                  <option name="knowledge">
+                    <list>
+                      <KnowledgeBase>
+                        <option name="id" value="preset14" />
+                        <option name="knowledgeBaseType" value="common" />
+                        <option name="name" value="UnrealEngine 4.5" />
+                      </KnowledgeBase>
+                    </list>
+                  </option>
+                  <option name="knowledgeReferences">
+                    <list>
+                      <KnowledgeReference>
+                        <option name="chunk" value="void Add(const T&amp; value) const {&#10;    accessor_-&gt;Add(data_, &amp;value);&#10;  }" />
+                        <option name="knowledgeBaseId" value="preset14" />
+                        <option name="metadata">
+                          <KnowledgeReferenceMetadata>
+                            <option name="endPos" value="273" />
+                            <option name="fileName" value="Engine/Source/ThirdParty/WebRTC/rev.24472/Include/Mac/third_party/protobuf/src/google/protobuf/reflection.h" />
+                            <option name="source" value="/Engine/Source/ThirdParty/WebRTC/rev.24472/Include/Mac/third_party/protobuf/src/google/protobuf/reflection.h" />
+                            <option name="sourceType" value="code" />
+                            <option name="startPos" value="271" />
+                          </KnowledgeReferenceMetadata>
+                        </option>
+                        <option name="score" value="0.60190797" />
+                      </KnowledgeReference>
+                      <KnowledgeReference>
+                        <option name="chunk" value="inline void FileDescriptorProto::add_dependency(const char* value, size_t size) {&#10;  dependency_.Add()-&gt;assign(reinterpret_cast&lt;const char*&gt;(value), size);&#10;  // @@protoc_insertion_point(field_add_pointer:google.protobuf.FileDescriptorProto.dependency)&#10;}" />
+                        <option name="knowledgeBaseId" value="preset14" />
+                        <option name="metadata">
+                          <KnowledgeReferenceMetadata>
+                            <option name="endPos" value="4333" />
+                            <option name="fileName" value="Engine/Source/ThirdParty/WebRTC/rev.24472/Include/Win32/VS2015/third_party/protobuf/src/google/protobuf/descriptor.pb.h" />
+                            <option name="source" value="/Engine/Source/ThirdParty/WebRTC/rev.24472/Include/Win32/VS2015/third_party/protobuf/src/google/protobuf/descriptor.pb.h" />
+                            <option name="sourceType" value="code" />
+                            <option name="startPos" value="4330" />
+                          </KnowledgeReferenceMetadata>
+                        </option>
+                        <option name="score" value="0.6016184" />
+                      </KnowledgeReference>
+                      <KnowledgeReference>
+                        <option name="chunk" value="void Add(const T&amp; value) const {&#10;    accessor_-&gt;Add(data_, &amp;value);&#10;  }" />
+                        <option name="knowledgeBaseId" value="preset14" />
+                        <option name="metadata">
+                          <KnowledgeReferenceMetadata>
+                            <option name="endPos" value="273" />
+                            <option name="fileName" value="Engine/Source/ThirdParty/WebRTC/rev.24472/Include/Linux/third_party/protobuf/src/google/protobuf/reflection.h" />
+                            <option name="source" value="/Engine/Source/ThirdParty/WebRTC/rev.24472/Include/Linux/third_party/protobuf/src/google/protobuf/reflection.h" />
+                            <option name="sourceType" value="code" />
+                            <option name="startPos" value="271" />
+                          </KnowledgeReferenceMetadata>
+                        </option>
+                        <option name="score" value="0.6008705" />
+                      </KnowledgeReference>
+                    </list>
+                  </option>
+                  <option name="knowledgeStatus" value="success" />
+                  <option name="localReferences">
+                    <list>
+                      <LocalReferences>
+                        <option name="isRequestStage" value="true" />
+                        <option name="range">
+                          <RefRange />
+                        </option>
+                        <option name="uri" value="{&quot;path&quot;:&quot;file:///D:/ue_texiao/Crunch/Source/Crunch/Private/Animations/CAnimInstance.h&quot;}" />
+                      </LocalReferences>
+                    </list>
+                  </option>
+                  <option name="parser">
+                    <SimpleMarkdownStreamParser>
+                      <option name="columns">
+                        <list>
+                          <option value="5" />
+                          <option value="17" />
+                          <option value="-1" />
+                          <option value="23" />
+                          <option value="18" />
+                          <option value="14" />
+                          <option value="-1" />
+                          <option value="31" />
+                          <option value="23" />
+                          <option value="22" />
+                          <option value="-1" />
+                          <option value="36" />
+                          <option value="22" />
+                          <option value="46" />
+                          <option value="35" />
+                          <option value="-1" />
+                          <option value="46" />
+                          <option value="25" />
+                          <option value="46" />
+                          <option value="36" />
+                          <option value="-1" />
+                          <option value="29" />
+                          <option value="15" />
+                          <option value="24" />
+                          <option value="2" />
+                        </list>
+                      </option>
+                      <option name="content" value="```cpp&#10;// CAnimInstance.h&#10;&#10;// YawSpeed: 表示当前帧的偏航角速度&#10;// 用于计算角色在水平面上的旋转速度&#10;float YawSpeed;&#10;&#10;// SmoothedYawSpeed: 表示平滑后的偏航角速度&#10;// 用于在多个帧之间平滑偏航角速度，以减少抖动&#10;float SmoothedYawSpeed;&#10;&#10;// YawSpeedSmoothLerpSpeed: 表示平滑插值的速度&#10;// 控制偏航角速度从当前值平滑过渡到零的速度&#10;UPROPERTY(EditAnywhere, Category = &quot;Animation&quot;)&#10;float YawSpeedSmoothLerpSpeed = 1.f;&#10;&#10;// YawSpeedLerpToZeroSpeed: 表示当偏航角速度降到零时使用的插值速度&#10;// 用于控制偏航角速度从当前值平滑过渡到零的加速度&#10;UPROPERTY(EditAnywhere, Category = &quot;Animation&quot;)&#10;float YawSpeedLerpToZeroSpeed = 30.f;&#10;&#10;// BodyPrevRotator: 表示前一帧的角色旋转&#10;// 用于计算当前帧的旋转变化量&#10;FRotator BodyPrevRotator;&#10;```&#10;" />
+                      <option name="nodes">
+                        <list>
+                          <MarkdownNode>
+                            <option name="children">
+                              <list />
+                            </option>
+                            <option name="content" value="// CAnimInstance.h&#10;&#10;// YawSpeed: 表示当前帧的偏航角速度&#10;// 用于计算角色在水平面上的旋转速度&#10;float YawSpeed;&#10;&#10;// SmoothedYawSpeed: 表示平滑后的偏航角速度&#10;// 用于在多个帧之间平滑偏航角速度，以减少抖动&#10;float SmoothedYawSpeed;&#10;&#10;// YawSpeedSmoothLerpSpeed: 表示平滑插值的速度&#10;// 控制偏航角速度从当前值平滑过渡到零的速度&#10;UPROPERTY(EditAnywhere, Category = &quot;Animation&quot;)&#10;float YawSpeedSmoothLerpSpeed = 1.f;&#10;&#10;// YawSpeedLerpToZeroSpeed: 表示当偏航角速度降到零时使用的插值速度&#10;// 用于控制偏航角速度从当前值平滑过渡到零的加速度&#10;UPROPERTY(EditAnywhere, Category = &quot;Animation&quot;)&#10;float YawSpeedLerpToZeroSpeed = 30.f;&#10;&#10;// BodyPrevRotator: 表示前一帧的角色旋转&#10;// 用于计算当前帧的旋转变化量&#10;FRotator BodyPrevRotator;&#10;" />
+                            <option name="contentId" value="1123908865" />
+                            <option name="expectEnding" value="```" />
+                            <option name="indentSize" value="0" />
+                            <option name="language" value="cpp" />
+                            <option name="settled" value="true" />
+                            <option name="type" value="code-block" />
+                            <option name="xmlData">
+                              <XmlNode />
+                            </option>
+                          </MarkdownNode>
+                          <MarkdownNode>
+                            <option name="children">
+                              <list />
+                            </option>
+                            <option name="content" value="" />
+                            <option name="contentId" value="0" />
+                            <option name="settled" value="false" />
+                            <option name="type" value="undetermined" />
+                            <option name="xmlData">
+                              <XmlNode />
+                            </option>
+                          </MarkdownNode>
+                        </list>
+                      </option>
+                      <option name="parserState">
+                        <ParserState>
+                          <option name="line" value="25" />
+                          <option name="column" value="-1" />
+                          <option name="offset" value="560" />
+                          <option name="moveCursor" value="true" />
+                        </ParserState>
+                      </option>
+                    </SimpleMarkdownStreamParser>
+                  </option>
+                  <option name="references">
+                    <list />
+                  </option>
+                  <option name="role" value="assistant" />
+                  <option name="topic" value="" />
+                </UIChatMessage>
+              </list>
+            </option>
+            <option name="messagesV3">
+              <list>
+                <ChatMessageV3>
+                  <option name="role" value="user" />
+                  <option name="content" value="PS D:\ue_texiao\Crunch&gt; git remote set-url origin git@github.com:hy396/Crunch.git&#10;PS D:\ue_texiao\Crunch&gt; git remote -v&#10;origin  git@github.com:hy396/Crunch.git (fetch)&#10;origin  git@github.com:hy396/Crunch.git (push)&#10;PS D:\ue_texiao\Crunch&gt; git push -v origin master:master&#10;Pushing to github.com:hy396/Crunch.git&#10;Enter passphrase for key '/c/Users/幻雨/.ssh/id_ed25519':&#10;Enumerating objects: 2072, done.&#10;Counting objects: 100% (2072/2072), done.&#10;Delta compression using up to 20 threads&#10;Compressing objects: 100% (2037/2037), done.&#10;remote: fatal: pack exceeds maximum allowed size (2.00 GiB)&#10;fatal: sha1 file '&lt;stdout&gt;' write error: Broken pipe&#10;error: remote unpack failed: index-pack failed&#10;To github.com:hy396/Crunch.git&#10; ! [remote rejected] master -&gt; master (failed)&#10;error: failed to push some refs to 'github.com:hy396/Crunch.git'     &#10;PS D:\ue_texiao\Crunch&gt;&#10;" />
+                  <option name="extra">
+                    <ChatMessageExtra>
+                      <option name="agent" value="default" />
+                      <option name="cmd" value="default" />
+                      <option name="code" value="FXOZHH()&#10;xozhh FXZmrnRmhgzmxv : kfyorx FZmrnRmhgzmxv&#10;{&#10;&#9;TVMVIZGVW_YLWB()&#10;kfyorx:&#10;&#9;/**&#10;&#9; * 动画实例原生初始化覆盖点&#10;&#9; * 用于执行动画实例的初始化逻辑，在实例创建时调用&#10;&#9; */&#10;&#9;erigfzo elrw MzgrevRmrgrzoravZmrnzgrlm() leviirwv;&#10;&#9;&#10;&#9;/**&#10;&#9; * 动画实例原生更新覆盖点&#10;&#9; * 主要用于在游戏线程中收集动画数据，实际计算建议放在 MzgrevGsivzwHzuvFkwzgvZmrnzgrlm 中&#10;&#9; * &#10;&#9; * @kzizn WvogzHvxlmwh 当前帧与上一帧之间的时间间隔（秒）&#10;&#9; */&#10;&#9;erigfzo elrw MzgrevFkwzgvZmrnzgrlm(uolzg WvogzHvxlmwh) leviirwv;&#10;" />
+                      <option name="path" value="D:\ue_texiao\Crunch\Source\Crunch\Private\Animations\CAnimInstance.h" />
+                    </ChatMessageExtra>
+                  </option>
+                </ChatMessageV3>
+                <ChatMessageV3>
+                  <option name="role" value="assistant" />
+                  <option name="content" value="当您尝试推送大文件到GitHub时，可能会遇到“fatal: pack exceeds maximum allowed size (2.00 GiB)”错误。这是因为GitHub对单个文件的大小有限制，通常为100MB。以下是几种解决这个问题的方法：&#10;。&#10;&#10;### 使用Git Large File Storage (Git LFS)&#10;&#10;- **安装Git LFS**：首先，您需要安装Git LFS。可以从[Git LFS官网](https://git-lfs.github.com/)下载并安装。&#10;- **跟踪大文件**：安装完成后，在终端中执行以下命令来初始化Git LFS：&#10;  ```sh&#10;  git lfs install&#10;  ```&#10;- **添加大文件的命令**：告诉Git LFS跟踪哪些大文件类型：&#10;  ```sh&#10;  git lfs track &quot;*.psd&quot;&#10;  ```&#10;  这会创建一个`.gitattributes`文件来标记需要使用Git LFS存储的文件类型。&#10;- **添加和提交文件**：将`.gitattributes`文件添加到Git并提交：&#10;  ```sh&#10;  git add .gitattributes&#10;  git add xxx/xxx.psd&#10;  git commit -m &quot;Track .psd files with Git LFS&quot;&#10;  ```&#10;- **推送到远程仓库**：最后，再次推送代码到GitHub：&#10;  ```sh&#10;  git push -u origin main&#10;  ```。&#10;&#10;### 清理历史记录中的大文件&#10;&#10;如果历史提交记录中包含大文件，可以使用以下方法清理历史记录：&#10;&#10;- **使用`git filter-branch`**：&#10;  ```sh&#10;  git filter-branch --force --index-filter 'git rm --cached --ignore-unmatch path/to/large_file' --prune-empty --tag-name-filter cat -- --all&#10;  ```&#10;  然后清理本地仓库缓存并推送更改：&#10;  ```sh&#10;  rm -rf .git/refs/original/&#10;  git reflog expire --expire=now --all&#10;  git gc --prune=now --aggressive&#10;  git push --force origin main&#10;  ```。&#10;&#10;### 修改本地Git配置&#10;&#10;- **增加`http.postBuffer`大小**：&#10;  ```sh&#10;  git config --global http.postBuffer 524288000&#10;  ```&#10;  或者针对当前仓库配置：&#10;  ```sh&#10;  git config http.postBuffer 524288000&#10;  ```&#10;  查看当前的Git配置以确认设置成功：&#10;  ```sh&#10;  git config --list&#10;  ```&#10;  修改配置后重新推送。。&#10;&#10;希望这些方法能帮助您解决推送大文件时遇到的问题。如果问题依然存在，请提供更多的错误信息以便进一步诊断。" />
+                  <option name="extra">
+                    <ChatMessageExtra />
+                  </option>
+                </ChatMessageV3>
+                <ChatMessageV3>
+                  <option name="role" value="user" />
+                  <option name="content" value="添加注释" />
+                  <option name="extra">
+                    <ChatMessageExtra>
+                      <option name="agent" value="default" />
+                      <option name="cmd" value="default" />
+                      <option name="code" value="&#9;ru (LdmviXszizxgvi)&#10;&#9;{&#10;&#9;&#9;UEvxgli Evolxrgb = LdmviXszizxgvi-&gt;TvgEvolxrgb();&#10;&#9;&#9;Hkvvw = Evolxrgb.Ovmtgs();&#10;&#9;&#9;UIlgzgli YlwbIlgzgli = LdmviXszizxgvi-&gt;TvgZxgliIlgzgrlm();&#10;&#9;&#9;UIlgzgli YlwbIlgzgliWvogz = FPrhnvgNzgsOryizib::MlinzoravwWvogzIlgzgli(YlwbIlgzgli, YlwbKiveIlgzgli);&#10;&#9;&#9;YlwbKiveIlgzgli = YlwbIlgzgli;&#10;&#10;&#9;&#9;BzdHkvvw = YlwbIlgzgliWvogz.Bzd / WvogzHvxlmwh;&#10;&#9;&#9;uolzg BzdOvikHkvvw = BzdHkvvwHnllgsOvikHkvvw;&#10;&#9;&#9;ru (BzdHkvvw == 9)&#10;&#9;&#9;{&#10;&#9;&#9;&#9;BzdOvikHkvvw = BzdHkvvwOvikGlAvilHkvvw;&#10;&#9;&#9;}&#10;&#9;&#9;HnllgsvwBzdHkvvw = FPrhnvgNzgsOryizib::URmgvikGl(HnllgsvwBzdHkvvw, BzdHkvvw, WvogzHvxlmwh, BzdOvikHkvvw);&#10;&#9;}" />
+                      <option name="path" value="D:\ue_texiao\Crunch\Source\Crunch\Private\Animations\CAnimInstance.cpp" />
+                    </ChatMessageExtra>
+                  </option>
+                </ChatMessageV3>
+                <ChatMessageV3>
+                  <option name="role" value="assistant" />
+                  <option name="content" value="```cpp&#10;// CAnimInstance.cpp&#10;&#10;// 检查拥有者角色是否存在&#10;if (OwnerCharacter)&#10;{&#10;    // 获取拥有者角色的速度向量&#10;    FVector Velocity = OwnerCharacter-&gt;GetVelocity();&#10;    // 计算速度的大小&#10;    Speed = Velocity.Length();&#10;&#10;    // 获取拥有者角色的当前旋转&#10;    FRotator BodyRotator = OwnerCharacter-&gt;GetActorRotation();&#10;    // 计算当前旋转与前一帧旋转之间的差值，并归一化&#10;    FRotator BodyRotatorDelta = UKismetMathLibrary::NormalizedDeltaRotator(BodyRotator, BodyPrevRotator);&#10;    // 更新前一帧的旋转&#10;    BodyPrevRotator = BodyRotator;&#10;&#10;    // 计算偏航角速度&#10;    YawSpeed = BodyRotatorDelta.Yaw / DeltaSeconds;&#10;    // 获取平滑插值速度&#10;    float YawLerpSpeed = YawSpeedSmoothLerpSpeed;&#10;    // 如果偏航角速度为0，则使用特定的速度进行平滑插值&#10;    if (YawSpeed == 0)&#10;    {&#10;        YawLerpSpeed = YawSpeedLerpToZeroSpeed;&#10;    }&#10;    // 使用插值函数平滑偏航角速度&#10;    SmoothedYawSpeed = UKismetMathLibrary::FInterpTo(SmoothedYawSpeed, YawSpeed, DeltaSeconds, YawLerpSpeed);&#10;}&#10;```" />
+                  <option name="extra">
+                    <ChatMessageExtra />
+                  </option>
+                </ChatMessageV3>
+                <ChatMessageV3>
+                  <option name="role" value="user" />
+                  <option name="content" value="添加注释，解释变量的作用" />
+                  <option name="extra">
+                    <ChatMessageExtra>
+                      <option name="agent" value="default" />
+                      <option name="cmd" value="default" />
+                      <option name="code" value="uolzg BzdHkvvw;&#10;&#9;uolzg HnllgsvwBzdHkvvw;&#10;&#9;&#10;&#9;FKILKVIGB(VwrgZmbdsviv, Xzgvtlib = &quot;Zmrnzgrlm&quot;)&#10;&#9;uolzg BzdHkvvwHnllgsOvikHkvvw = 8.u;&#10;&#10;&#9;FKILKVIGB(VwrgZmbdsviv, Xzgvtlib = &quot;Zmrnzgrlm&quot;)&#10;&#9;uolzg BzdHkvvwOvikGlAvilHkvvw = 69.u;&#10;&#9;&#10;&#9;UIlgzgli YlwbKiveIlgzgli;" />
+                      <option name="path" value="D:\ue_texiao\Crunch\Source\Crunch\Private\Animations\CAnimInstance.h" />
+                    </ChatMessageExtra>
+                  </option>
+                </ChatMessageV3>
+                <ChatMessageV3>
+                  <option name="role" value="assistant" />
+                  <option name="content" value="```cpp&#10;// CAnimInstance.h&#10;&#10;// YawSpeed: 表示当前帧的偏航角速度&#10;// 用于计算角色在水平面上的旋转速度&#10;float YawSpeed;&#10;&#10;// SmoothedYawSpeed: 表示平滑后的偏航角速度&#10;// 用于在多个帧之间平滑偏航角速度，以减少抖动&#10;float SmoothedYawSpeed;&#10;&#10;// YawSpeedSmoothLerpSpeed: 表示平滑插值的速度&#10;// 控制偏航角速度从当前值平滑过渡到零的速度&#10;UPROPERTY(EditAnywhere, Category = &quot;Animation&quot;)&#10;float YawSpeedSmoothLerpSpeed = 1.f;&#10;&#10;// YawSpeedLerpToZeroSpeed: 表示当偏航角速度降到零时使用的插值速度&#10;// 用于控制偏航角速度从当前值平滑过渡到零的加速度&#10;UPROPERTY(EditAnywhere, Category = &quot;Animation&quot;)&#10;float YawSpeedLerpToZeroSpeed = 30.f;&#10;&#10;// BodyPrevRotator: 表示前一帧的角色旋转&#10;// 用于计算当前帧的旋转变化量&#10;FRotator BodyPrevRotator;&#10;```" />
+                  <option name="extra">
+                    <ChatMessageExtra />
+                  </option>
+                </ChatMessageV3>
+              </list>
+            </option>
+            <option name="sessionId" value="0197c45603e47ee8b9422f8113debb1d" />
+          </ChatSession>
+        </option>
+        <option name="conversationId" value="0197c45603e47ee8b9422f8113debb1d" />
+        <option name="conversation">
+          <Conversation>
+            <option name="createTime" value="1751345661227" />
+            <option name="id" value="0197c45603e47ee8b9422f8113debb1d" />
+            <option name="title" value="PS D:\ue_texiao\Crunch&gt; git remote set-url origin git@github.com:hy396/Crunch.git&#10;PS D:\ue_texiao\Crunch&gt; git remote -v&#10;origin  git@github.com:hy396/Crunch.git (fetch)&#10;origin  git@github.com:hy396/Crunch.git (push)&#10;PS D:\ue_texiao\Crunch&gt; git push -v origin master:master&#10;Pushing to github.com:hy396/Crunch.git&#10;Enter passphrase for key '/c/Users/幻雨/.ssh/id_ed25519':&#10;Enumerating objects: 2072, done.&#10;Counting objects: 100% (2072/2072), done.&#10;Delta compression using up to 20 threads&#10;Compressing objects: 100% (2037/2037), done.&#10;remote: fatal: pack exceeds maximum allowed size (2.00 GiB)&#10;fatal: sha1 file '&lt;stdout&gt;' write error: Broken pipe&#10;error: remote unpack failed: index-pack failed&#10;To github.com:hy396/Crunch.git&#10; ! [remote rejected] master -&gt; master (failed)&#10;error: failed to push some refs to 'github.com:hy396/Crunch.git'     &#10;PS D:\ue_texiao\Crunch&gt;&#10;" />
+            <option name="turns">
+              <list>
+                <Turn>
+                  <option name="agent" value="" />
+                  <option name="answer" value="当您尝试推送大文件到TrgSfy时，可能会遇到“uzgzo: kzxp vcxvvwh nzcrnfn zooldvw hrav (7.99 TrY)”错误。这是因为TrgSfy对单个文件的大小有限制，通常为899NY。以下是几种解决这个问题的方法：&#10;。&#10;&#10;### 使用Trg Ozitv Urov Hgliztv (Trg OUH)&#10;&#10;- **安装Trg OUH**：首先，您需要安装Trg OUH。可以从[Trg OUH官网](sggkh://trg-ouh.trgsfy.xln/)下载并安装。&#10;- **跟踪大文件**：安装完成后，在终端中执行以下命令来初始化Trg OUH：&#10;  ```hs&#10;  trg ouh rmhgzoo&#10;  ```&#10;- **添加大文件的命令**：告诉Trg OUH跟踪哪些大文件类型：&#10;  ```hs&#10;  trg ouh gizxp &quot;*.khw&quot;&#10;  ```&#10;  这会创建一个`.trgzggiryfgvh`文件来标记需要使用Trg OUH存储的文件类型。&#10;- **添加和提交文件**：将`.trgzggiryfgvh`文件添加到Trg并提交：&#10;  ```hs&#10;  trg zww .trgzggiryfgvh&#10;  trg zww ccc/ccc.khw&#10;  trg xlnnrg -n &quot;Gizxp .khw urovh drgs Trg OUH&quot;&#10;  ```&#10;- **推送到远程仓库**：最后，再次推送代码到TrgSfy：&#10;  ```hs&#10;  trg kfhs -f lirtrm nzrm&#10;  ```。&#10;&#10;### 清理历史记录中的大文件&#10;&#10;如果历史提交记录中包含大文件，可以使用以下方法清理历史记录：&#10;&#10;- **使用`trg urogvi-yizmxs`**：&#10;  ```hs&#10;  trg urogvi-yizmxs --ulixv --rmwvc-urogvi 'trg in --xzxsvw --rtmliv-fmnzgxs kzgs/gl/ozitv_urov' --kifmv-vnkgb --gzt-mznv-urogvi xzg -- --zoo&#10;  ```&#10;  然后清理本地仓库缓存并推送更改：&#10;  ```hs&#10;  in -iu .trg/ivuh/lirtrmzo/&#10;  trg ivuolt vckriv --vckriv=mld --zoo&#10;  trg tx --kifmv=mld --zttivhhrev&#10;  trg kfhs --ulixv lirtrm nzrm&#10;  ```。&#10;&#10;### 修改本地Trg配置&#10;&#10;- **增加`sggk.klhgYfuuvi`大小**：&#10;  ```hs&#10;  trg xlmurt --tolyzo sggk.klhgYfuuvi 475711999&#10;  ```&#10;  或者针对当前仓库配置：&#10;  ```hs&#10;  trg xlmurt sggk.klhgYfuuvi 475711999&#10;  ```&#10;  查看当前的Trg配置以确认设置成功：&#10;  ```hs&#10;  trg xlmurt --orhg&#10;  ```&#10;  修改配置后重新推送。。&#10;&#10;希望这些方法能帮助您解决推送大文件时遇到的问题。如果问题依然存在，请提供更多的错误信息以便进一步诊断。" />
+                  <option name="chatResource" value="user" />
+                  <option name="codeReferences">
+                    <list>
+                      <CodeReferencesBean>
+                        <option name="content" value="FXOZHH()&#10;xozhh FXZmrnRmhgzmxv : kfyorx FZmrnRmhgzmxv&#10;{&#10;&#9;TVMVIZGVW_YLWB()&#10;kfyorx:&#10;&#9;/**&#10;&#9; * 动画实例原生初始化覆盖点&#10;&#9; * 用于执行动画实例的初始化逻辑，在实例创建时调用&#10;&#9; */&#10;&#9;erigfzo elrw MzgrevRmrgrzoravZmrnzgrlm() leviirwv;&#10;&#9;&#10;&#9;/**&#10;&#9; * 动画实例原生更新覆盖点&#10;&#9; * 主要用于在游戏线程中收集动画数据，实际计算建议放在 MzgrevGsivzwHzuvFkwzgvZmrnzgrlm 中&#10;&#9; * &#10;&#9; * @kzizn WvogzHvxlmwh 当前帧与上一帧之间的时间间隔（秒）&#10;&#9; */&#10;&#9;erigfzo elrw MzgrevFkwzgvZmrnzgrlm(uolzg WvogzHvxlmwh) leviirwv;&#10;" />
+                        <option name="end_line" value="29" />
+                        <option name="filename" value="CAnimInstance.h" />
+                        <option name="language" value="C++" />
+                        <option name="range">
+                          <Range>
+                            <option name="end">
+                              <Position>
+                                <option name="line" value="29" />
+                              </Position>
+                            </option>
+                            <option name="start">
+                              <Position>
+                                <option name="line" value="11" />
+                              </Position>
+                            </option>
+                          </Range>
+                        </option>
+                        <option name="start_line" value="11" />
+                        <option name="type" value="editor" />
+                        <option name="url" value="file:///D:/ue_texiao/Crunch/Source/Crunch/Private/Animations/CAnimInstance.h" />
+                      </CodeReferencesBean>
+                    </list>
+                  </option>
+                  <option name="command" value="" />
+                  <option name="conversationId" value="0197c45603e47ee8b9422f8113debb1d" />
+                  <option name="historyDocumentMap">
+                    <map>
+                      <entry key="file:///D:/ue_texiao/Crunch/Source/Crunch/Private/Animations/CAnimInstance.h" value="// 幻雨喜欢小猫咪&#10;&#10;#pragma once&#10;&#10;#include &quot;CoreMinimal.h&quot;&#10;#include &quot;Animation/AnimInstance.h&quot;&#10;#include &quot;CAnimInstance.generated.h&quot;&#10;&#10;/**&#10; * &#10; */&#10;UCLASS()&#10;class UCAnimInstance : public UAnimInstance&#10;{&#10;&#9;GENERATED_BODY()&#10;public:&#10;&#9;/**&#10;&#9; * 动画实例原生初始化覆盖点&#10;&#9; * 用于执行动画实例的初始化逻辑，在实例创建时调用&#10;&#9; */&#10;&#9;virtual void NativeInitializeAnimation() override;&#10;&#9;&#10;&#9;/**&#10;&#9; * 动画实例原生更新覆盖点&#10;&#9; * 主要用于在游戏线程中收集动画数据，实际计算建议放在 NativeThreadSafeUpdateAnimation 中&#10;&#9; * &#10;&#9; * @param DeltaSeconds 当前帧与上一帧之间的时间间隔（秒）&#10;&#9; */&#10;&#9;virtual void NativeUpdateAnimation(float DeltaSeconds) override;&#10;&#9;&#10;&#9;/**&#10;&#9; * 动画实例线程安全更新覆盖点&#10;&#9; * 在工作线程中执行，适用于链接动画实例的预处理计算&#10;&#9; * 仅当宿主节点相关时才会调用&#10;&#9; * &#10;&#9; * @param DeltaSeconds 当前帧与上一帧之间的时间间隔（秒）&#10;&#9; */&#10;&#9;virtual void NativeThreadSafeUpdateAnimation(float DeltaSeconds) override;&#10;&#10;&#9;UFUNCTION(BlueprintCallable, meta=(BlueprintThreadSafe))&#10;&#9;FORCEINLINE float GetSpeed() const { return Speed; }&#10;&#10;&#9;UFUNCTION(BlueprintCallable, meta=(BlueprintThreadSafe))&#10;&#9;FORCEINLINE bool IsMoving() const { return Speed != 0; }&#10;&#10;&#9;UFUNCTION(BlueprintCallable, meta=(BlueprintThreadSafe))&#10;&#9;FORCEINLINE bool IsNotMoving() const { return Speed == 0; }&#10;&#9;&#10;private:&#10;&#9;UPROPERTY()&#10;&#9;TObjectPtr&lt;class ACharacter&gt; OwnerCharacter;&#10;&#10;&#9;UPROPERTY()&#10;&#9;TObjectPtr&lt;class UCharacterMovementComponent&gt; OwnerMovementComponent;&#10;&#10;&#9;float Speed;&#10;};&#10;" />
+                    </map>
+                  </option>
+                  <option name="messageId" value="0197c495ed0f7ee8b9423bb0bd59ed1b" />
+                  <option name="question" value="KH W:\fv_gvcrzl\Xifmxs&gt; trg ivnlgv hvg-fio lirtrm trg@trgsfy.xln:sb603/Xifmxs.trg&#10;KH W:\fv_gvcrzl\Xifmxs&gt; trg ivnlgv -e&#10;lirtrm  trg@trgsfy.xln:sb603/Xifmxs.trg (uvgxs)&#10;lirtrm  trg@trgsfy.xln:sb603/Xifmxs.trg (kfhs)&#10;KH W:\fv_gvcrzl\Xifmxs&gt; trg kfhs -e lirtrm nzhgvi:nzhgvi&#10;Kfhsrmt gl trgsfy.xln:sb603/Xifmxs.trg&#10;Vmgvi kzhhksizhv uli pvb '/x/Fhvih/幻雨/.hhs/rw_vw74480':&#10;Vmfnvizgrmt lyqvxgh: 7927, wlmv.&#10;Xlfmgrmt lyqvxgh: 899% (7927/7927), wlmv.&#10;Wvogz xlnkivhhrlm fhrmt fk gl 79 gsivzwh&#10;Xlnkivhhrmt lyqvxgh: 899% (7962/7962), wlmv.&#10;ivnlgv: uzgzo: kzxp vcxvvwh nzcrnfn zooldvw hrav (7.99 TrY)&#10;uzgzo: hsz8 urov '&lt;hgwlfg&gt;' dirgv viili: Yilpvm krkv&#10;viili: ivnlgv fmkzxp uzrovw: rmwvc-kzxp uzrovw&#10;Gl trgsfy.xln:sb603/Xifmxs.trg&#10; ! [ivnlgv ivqvxgvw] nzhgvi -&gt; nzhgvi (uzrovw)&#10;viili: uzrovw gl kfhs hlnv ivuh gl 'trgsfy.xln:sb603/Xifmxs.trg'     &#10;KH W:\fv_gvcrzl\Xifmxs&gt;&#10;" />
+                  <option name="rating" value="UNRATED" />
+                  <option name="referenceBeans">
+                    <list />
+                  </option>
+                  <option name="status" value="SUCCESS" />
+                  <option name="variables">
+                    <list />
+                  </option>
+                </Turn>
+                <Turn>
+                  <option name="agent" value="" />
+                  <option name="answer" value="```xkk&#10;// XZmrnRmhgzmxv.xkk&#10;&#10;// 检查拥有者角色是否存在&#10;ru (LdmviXszizxgvi)&#10;{&#10;    // 获取拥有者角色的速度向量&#10;    UEvxgli Evolxrgb = LdmviXszizxgvi-&gt;TvgEvolxrgb();&#10;    // 计算速度的大小&#10;    Hkvvw = Evolxrgb.Ovmtgs();&#10;&#10;    // 获取拥有者角色的当前旋转&#10;    UIlgzgli YlwbIlgzgli = LdmviXszizxgvi-&gt;TvgZxgliIlgzgrlm();&#10;    // 计算当前旋转与前一帧旋转之间的差值，并归一化&#10;    UIlgzgli YlwbIlgzgliWvogz = FPrhnvgNzgsOryizib::MlinzoravwWvogzIlgzgli(YlwbIlgzgli, YlwbKiveIlgzgli);&#10;    // 更新前一帧的旋转&#10;    YlwbKiveIlgzgli = YlwbIlgzgli;&#10;&#10;    // 计算偏航角速度&#10;    BzdHkvvw = YlwbIlgzgliWvogz.Bzd / WvogzHvxlmwh;&#10;    // 获取平滑插值速度&#10;    uolzg BzdOvikHkvvw = BzdHkvvwHnllgsOvikHkvvw;&#10;    // 如果偏航角速度为9，则使用特定的速度进行平滑插值&#10;    ru (BzdHkvvw == 9)&#10;    {&#10;        BzdOvikHkvvw = BzdHkvvwOvikGlAvilHkvvw;&#10;    }&#10;    // 使用插值函数平滑偏航角速度&#10;    HnllgsvwBzdHkvvw = FPrhnvgNzgsOryizib::URmgvikGl(HnllgsvwBzdHkvvw, BzdHkvvw, WvogzHvxlmwh, BzdOvikHkvvw);&#10;}&#10;```" />
+                  <option name="chatResource" value="user" />
+                  <option name="codeReferences">
+                    <list>
+                      <CodeReferencesBean>
+                        <option name="content" value="&#9;ru (LdmviXszizxgvi)&#10;&#9;{&#10;&#9;&#9;UEvxgli Evolxrgb = LdmviXszizxgvi-&gt;TvgEvolxrgb();&#10;&#9;&#9;Hkvvw = Evolxrgb.Ovmtgs();&#10;&#9;&#9;UIlgzgli YlwbIlgzgli = LdmviXszizxgvi-&gt;TvgZxgliIlgzgrlm();&#10;&#9;&#9;UIlgzgli YlwbIlgzgliWvogz = FPrhnvgNzgsOryizib::MlinzoravwWvogzIlgzgli(YlwbIlgzgli, YlwbKiveIlgzgli);&#10;&#9;&#9;YlwbKiveIlgzgli = YlwbIlgzgli;&#10;&#10;&#9;&#9;BzdHkvvw = YlwbIlgzgliWvogz.Bzd / WvogzHvxlmwh;&#10;&#9;&#9;uolzg BzdOvikHkvvw = BzdHkvvwHnllgsOvikHkvvw;&#10;&#9;&#9;ru (BzdHkvvw == 9)&#10;&#9;&#9;{&#10;&#9;&#9;&#9;BzdOvikHkvvw = BzdHkvvwOvikGlAvilHkvvw;&#10;&#9;&#9;}&#10;&#9;&#9;HnllgsvwBzdHkvvw = FPrhnvgNzgsOryizib::URmgvikGl(HnllgsvwBzdHkvvw, BzdHkvvw, WvogzHvxlmwh, BzdOvikHkvvw);&#10;&#9;}" />
+                        <option name="end_line" value="37" />
+                        <option name="filename" value="CAnimInstance.cpp" />
+                        <option name="language" value="C++" />
+                        <option name="range">
+                          <Range>
+                            <option name="end">
+                              <Position>
+                                <option name="character" value="5" />
+                                <option name="line" value="37" />
+                              </Position>
+                            </option>
+                            <option name="start">
+                              <Position>
+                                <option name="line" value="22" />
+                              </Position>
+                            </option>
+                          </Range>
+                        </option>
+                        <option name="start_line" value="22" />
+                        <option name="type" value="editor" />
+                        <option name="url" value="file:///D:/ue_texiao/Crunch/Source/Crunch/Private/Animations/CAnimInstance.cpp" />
+                      </CodeReferencesBean>
+                    </list>
+                  </option>
+                  <option name="command" value="" />
+                  <option name="conversationId" value="0197c45603e47ee8b9422f8113debb1d" />
+                  <option name="historyDocumentMap">
+                    <map>
+                      <entry key="file:///D:/ue_texiao/Crunch/Source/Crunch/Private/Animations/CAnimInstance.cpp" value="// 幻雨喜欢小猫咪&#10;&#10;&#10;#include &quot;Animations/CAnimInstance.h&quot;&#10;&#10;#include &quot;GameFramework/Character.h&quot;&#10;#include &quot;GameFramework/CharacterMovementComponent.h&quot;&#10;#include &quot;Kismet/KismetMathLibrary.h&quot;&#10;&#10;void UCAnimInstance::NativeInitializeAnimation()&#10;{&#10;&#9;// 获取Owner转换为角色&#10;&#9;OwnerCharacter = Cast&lt;ACharacter&gt;(TryGetPawnOwner());&#10;&#9;if (OwnerCharacter)&#10;&#9;{&#10;&#9;&#9;// 获取Owner的移动组件&#10;&#9;&#9;OwnerMovementComponent = OwnerCharacter-&gt;GetCharacterMovement();&#10;&#9;}&#10;}&#10;&#10;void UCAnimInstance::NativeUpdateAnimation(float DeltaSeconds)&#10;{&#10;&#9;if (OwnerCharacter)&#10;&#9;{&#10;&#9;&#9;FVector Velocity = OwnerCharacter-&gt;GetVelocity();&#10;&#9;&#9;Speed = Velocity.Length();&#10;&#9;&#9;FRotator BodyRotator = OwnerCharacter-&gt;GetActorRotation();&#10;&#9;&#9;FRotator BodyRotatorDelta = UKismetMathLibrary::NormalizedDeltaRotator(BodyRotator, BodyPrevRotator);&#10;&#9;&#9;BodyPrevRotator = BodyRotator;&#10;&#10;&#9;&#9;YawSpeed = BodyRotatorDelta.Yaw / DeltaSeconds;&#10;&#9;&#9;float YawLerpSpeed = YawSpeedSmoothLerpSpeed;&#10;&#9;&#9;if (YawSpeed == 0)&#10;&#9;&#9;{&#10;&#9;&#9;&#9;YawLerpSpeed = YawSpeedLerpToZeroSpeed;&#10;&#9;&#9;}&#10;&#9;&#9;SmoothedYawSpeed = UKismetMathLibrary::FInterpTo(SmoothedYawSpeed, YawSpeed, DeltaSeconds, YawLerpSpeed);&#10;&#9;}&#10;&#10;&#9;if (OwnerMovementComponent)&#10;&#9;{&#10;&#9;&#9;&#10;&#9;}&#10;}&#10;&#10;void UCAnimInstance::NativeThreadSafeUpdateAnimation(float DeltaSeconds)&#10;{&#10;&#9;&#10;}&#10;" />
+                    </map>
+                  </option>
+                  <option name="knowledgeBases">
+                    <list>
+                      <KnowledgeBase>
+                        <option name="description" value="UnrealEngine 4.5版本知识库" />
+                        <option name="id" value="preset14" />
+                        <option name="knowledgeBaseType" value="common" />
+                        <option name="name" value="UnrealEngine 4.5" />
+                      </KnowledgeBase>
+                    </list>
+                  </option>
+                  <option name="knowledgeReferences">
+                    <list>
+                      <KnowledgeReference>
+                        <option name="chunk" value="&#10;  // Override for AnnotationCollector::AddAnnotation." />
+                        <option name="knowledgeBaseId" value="preset14" />
+                        <option name="metadata">
+                          <KnowledgeReferenceMetadata>
+                            <option name="endPos" value="74" />
+                            <option name="fileName" value="Engine/Source/ThirdParty/WebRTC/rev.24472/Include/Linux/third_party/protobuf/src/google/protobuf/io/printer.h" />
+                            <option name="source" value="/Engine/Source/ThirdParty/WebRTC/rev.24472/Include/Linux/third_party/protobuf/src/google/protobuf/io/printer.h" />
+                            <option name="sourceType" value="code" />
+                            <option name="startPos" value="73" />
+                          </KnowledgeReferenceMetadata>
+                        </option>
+                        <option name="score" value="0.6385163" />
+                      </KnowledgeReference>
+                      <KnowledgeReference>
+                        <option name="chunk" value="&#10;  // Override for AnnotationCollector::AddAnnotation." />
+                        <option name="knowledgeBaseId" value="preset14" />
+                        <option name="metadata">
+                          <KnowledgeReferenceMetadata>
+                            <option name="endPos" value="74" />
+                            <option name="fileName" value="Engine/Source/ThirdParty/WebRTC/rev.24472/Include/Win64/VS2015/third_party/protobuf/src/google/protobuf/io/printer.h" />
+                            <option name="source" value="/Engine/Source/ThirdParty/WebRTC/rev.24472/Include/Win64/VS2015/third_party/protobuf/src/google/protobuf/io/printer.h" />
+                            <option name="sourceType" value="code" />
+                            <option name="startPos" value="73" />
+                          </KnowledgeReferenceMetadata>
+                        </option>
+                        <option name="score" value="0.6365769" />
+                      </KnowledgeReference>
+                      <KnowledgeReference>
+                        <option name="chunk" value="&#10;  // Override for AnnotationCollector::AddAnnotation." />
+                        <option name="knowledgeBaseId" value="preset14" />
+                        <option name="metadata">
+                          <KnowledgeReferenceMetadata>
+                            <option name="endPos" value="74" />
+                            <option name="fileName" value="Engine/Source/ThirdParty/WebRTC/rev.24472/Include/Mac/third_party/protobuf/src/google/protobuf/io/printer.h" />
+                            <option name="source" value="/Engine/Source/ThirdParty/WebRTC/rev.24472/Include/Mac/third_party/protobuf/src/google/protobuf/io/printer.h" />
+                            <option name="sourceType" value="code" />
+                            <option name="startPos" value="73" />
+                          </KnowledgeReferenceMetadata>
+                        </option>
+                        <option name="score" value="0.6365602" />
+                      </KnowledgeReference>
+                    </list>
+                  </option>
+                  <option name="messageId" value="0197c63f708e7ee8b94245021af1b8e7" />
+                  <option name="question" value="添加注释" />
+                  <option name="rating" value="UNRATED" />
+                  <option name="referenceBeans">
+                    <list />
+                  </option>
+                  <option name="status" value="SUCCESS" />
+                  <option name="variables">
+                    <list>
+                      <KnowledgeVariable>
+                        <option name="selectedPlaceHolder">
+                          <Object />
+                        </option>
+                        <option name="selectedVariable">
+                          <Object />
+                        </option>
+                      </KnowledgeVariable>
+                    </list>
+                  </option>
+                  <knowledgeReferenceMaps>
+                    <map>
+                      <entry key="UnrealEngine 4.5">
+                        <value>
+                          <list>
+                            <KnowledgeReference>
+                              <option name="chunk" value="&#10;  // Override for AnnotationCollector::AddAnnotation." />
+                              <option name="knowledgeBaseId" value="preset14" />
+                              <option name="metadata">
+                                <KnowledgeReferenceMetadata>
+                                  <option name="endPos" value="74" />
+                                  <option name="fileName" value="Engine/Source/ThirdParty/WebRTC/rev.24472/Include/Linux/third_party/protobuf/src/google/protobuf/io/printer.h" />
+                                  <option name="source" value="/Engine/Source/ThirdParty/WebRTC/rev.24472/Include/Linux/third_party/protobuf/src/google/protobuf/io/printer.h" />
+                                  <option name="sourceType" value="code" />
+                                  <option name="startPos" value="73" />
+                                </KnowledgeReferenceMetadata>
+                              </option>
+                              <option name="score" value="0.6385163" />
+                            </KnowledgeReference>
+                            <KnowledgeReference>
+                              <option name="chunk" value="&#10;  // Override for AnnotationCollector::AddAnnotation." />
+                              <option name="knowledgeBaseId" value="preset14" />
+                              <option name="metadata">
+                                <KnowledgeReferenceMetadata>
+                                  <option name="endPos" value="74" />
+                                  <option name="fileName" value="Engine/Source/ThirdParty/WebRTC/rev.24472/Include/Win64/VS2015/third_party/protobuf/src/google/protobuf/io/printer.h" />
+                                  <option name="source" value="/Engine/Source/ThirdParty/WebRTC/rev.24472/Include/Win64/VS2015/third_party/protobuf/src/google/protobuf/io/printer.h" />
+                                  <option name="sourceType" value="code" />
+                                  <option name="startPos" value="73" />
+                                </KnowledgeReferenceMetadata>
+                              </option>
+                              <option name="score" value="0.6365769" />
+                            </KnowledgeReference>
+                            <KnowledgeReference>
+                              <option name="chunk" value="&#10;  // Override for AnnotationCollector::AddAnnotation." />
+                              <option name="knowledgeBaseId" value="preset14" />
+                              <option name="metadata">
+                                <KnowledgeReferenceMetadata>
+                                  <option name="endPos" value="74" />
+                                  <option name="fileName" value="Engine/Source/ThirdParty/WebRTC/rev.24472/Include/Mac/third_party/protobuf/src/google/protobuf/io/printer.h" />
+                                  <option name="source" value="/Engine/Source/ThirdParty/WebRTC/rev.24472/Include/Mac/third_party/protobuf/src/google/protobuf/io/printer.h" />
+                                  <option name="sourceType" value="code" />
+                                  <option name="startPos" value="73" />
+                                </KnowledgeReferenceMetadata>
+                              </option>
+                              <option name="score" value="0.6365602" />
+                            </KnowledgeReference>
+                          </list>
+                        </value>
+                      </entry>
+                    </map>
+                  </knowledgeReferenceMaps>
+                </Turn>
+                <Turn>
+                  <option name="agent" value="" />
+                  <option name="answer" value="```xkk&#10;// XZmrnRmhgzmxv.s&#10;&#10;// BzdHkvvw: 表示当前帧的偏航角速度&#10;// 用于计算角色在水平面上的旋转速度&#10;uolzg BzdHkvvw;&#10;&#10;// HnllgsvwBzdHkvvw: 表示平滑后的偏航角速度&#10;// 用于在多个帧之间平滑偏航角速度，以减少抖动&#10;uolzg HnllgsvwBzdHkvvw;&#10;&#10;// BzdHkvvwHnllgsOvikHkvvw: 表示平滑插值的速度&#10;// 控制偏航角速度从当前值平滑过渡到零的速度&#10;FKILKVIGB(VwrgZmbdsviv, Xzgvtlib = &quot;Zmrnzgrlm&quot;)&#10;uolzg BzdHkvvwHnllgsOvikHkvvw = 8.u;&#10;&#10;// BzdHkvvwOvikGlAvilHkvvw: 表示当偏航角速度降到零时使用的插值速度&#10;// 用于控制偏航角速度从当前值平滑过渡到零的加速度&#10;FKILKVIGB(VwrgZmbdsviv, Xzgvtlib = &quot;Zmrnzgrlm&quot;)&#10;uolzg BzdHkvvwOvikGlAvilHkvvw = 69.u;&#10;&#10;// YlwbKiveIlgzgli: 表示前一帧的角色旋转&#10;// 用于计算当前帧的旋转变化量&#10;UIlgzgli YlwbKiveIlgzgli;&#10;```" />
+                  <option name="chatResource" value="user" />
+                  <option name="codeReferences">
+                    <list>
+                      <CodeReferencesBean>
+                        <option name="content" value="uolzg BzdHkvvw;&#10;&#9;uolzg HnllgsvwBzdHkvvw;&#10;&#9;&#10;&#9;FKILKVIGB(VwrgZmbdsviv, Xzgvtlib = &quot;Zmrnzgrlm&quot;)&#10;&#9;uolzg BzdHkvvwHnllgsOvikHkvvw = 8.u;&#10;&#10;&#9;FKILKVIGB(VwrgZmbdsviv, Xzgvtlib = &quot;Zmrnzgrlm&quot;)&#10;&#9;uolzg BzdHkvvwOvikGlAvilHkvvw = 69.u;&#10;&#9;&#10;&#9;UIlgzgli YlwbKiveIlgzgli;" />
+                        <option name="end_line" value="71" />
+                        <option name="filename" value="CAnimInstance.h" />
+                        <option name="language" value="C++" />
+                        <option name="range">
+                          <Range>
+                            <option name="end">
+                              <Position>
+                                <option name="character" value="29" />
+                                <option name="line" value="71" />
+                              </Position>
+                            </option>
+                            <option name="start">
+                              <Position>
+                                <option name="character" value="4" />
+                                <option name="line" value="62" />
+                              </Position>
+                            </option>
+                          </Range>
+                        </option>
+                        <option name="start_line" value="62" />
+                        <option name="type" value="editor" />
+                        <option name="url" value="file:///D:/ue_texiao/Crunch/Source/Crunch/Private/Animations/CAnimInstance.h" />
+                      </CodeReferencesBean>
+                    </list>
+                  </option>
+                  <option name="command" value="" />
+                  <option name="conversationId" value="0197c45603e47ee8b9422f8113debb1d" />
+                  <option name="historyDocumentMap">
+                    <map>
+                      <entry key="file:///D:/ue_texiao/Crunch/Source/Crunch/Private/Animations/CAnimInstance.h" value="// 幻雨喜欢小猫咪&#10;&#10;#pragma once&#10;&#10;#include &quot;CoreMinimal.h&quot;&#10;#include &quot;Animation/AnimInstance.h&quot;&#10;#include &quot;CAnimInstance.generated.h&quot;&#10;&#10;/**&#10; * &#10; */&#10;UCLASS()&#10;class UCAnimInstance : public UAnimInstance&#10;{&#10;&#9;GENERATED_BODY()&#10;public:&#10;&#9;/**&#10;&#9; * 动画实例原生初始化覆盖点&#10;&#9; * 用于执行动画实例的初始化逻辑，在实例创建时调用&#10;&#9; */&#10;&#9;virtual void NativeInitializeAnimation() override;&#10;&#9;&#10;&#9;/**&#10;&#9; * 动画实例原生更新覆盖点&#10;&#9; * 主要用于在游戏线程中收集动画数据，实际计算建议放在 NativeThreadSafeUpdateAnimation 中&#10;&#9; * &#10;&#9; * @param DeltaSeconds 当前帧与上一帧之间的时间间隔（秒）&#10;&#9; */&#10;&#9;virtual void NativeUpdateAnimation(float DeltaSeconds) override;&#10;&#9;&#10;&#9;/**&#10;&#9; * 动画实例线程安全更新覆盖点&#10;&#9; * 在工作线程中执行，适用于链接动画实例的预处理计算&#10;&#9; * 仅当宿主节点相关时才会调用&#10;&#9; * &#10;&#9; * @param DeltaSeconds 当前帧与上一帧之间的时间间隔（秒）&#10;&#9; */&#10;&#9;virtual void NativeThreadSafeUpdateAnimation(float DeltaSeconds) override;&#10;&#10;&#9;UFUNCTION(BlueprintCallable, meta=(BlueprintThreadSafe))&#10;&#9;FORCEINLINE float GetSpeed() const { return Speed; }&#10;&#10;&#9;UFUNCTION(BlueprintCallable, meta=(BlueprintThreadSafe))&#10;&#9;FORCEINLINE bool IsMoving() const { return Speed != 0; }&#10;&#10;&#9;UFUNCTION(BlueprintCallable, meta=(BlueprintThreadSafe))&#10;&#9;FORCEINLINE bool IsNotMoving() const { return Speed == 0; }&#10;&#10;&#9;UFUNCTION(BlueprintCallable, meta=(BlueprintThreadSafe))&#10;&#9;FORCEINLINE float GetYawSpeed() const { return YawSpeed; }&#10;&#10;&#9;UFUNCTION(BlueprintCallable, meta=(BlueprintThreadSafe))&#10;&#9;FORCEINLINE float GetSmoothedYawSpeed() const { return SmoothedYawSpeed; }&#10;&#10;private:&#10;&#9;UPROPERTY()&#10;&#9;TObjectPtr&lt;class ACharacter&gt; OwnerCharacter;&#10;&#10;&#9;UPROPERTY()&#10;&#9;TObjectPtr&lt;class UCharacterMovementComponent&gt; OwnerMovementComponent;&#10;&#10;&#9;float Speed;&#10;&#9;float YawSpeed;&#10;&#9;float SmoothedYawSpeed;&#10;&#9;&#10;&#9;UPROPERTY(EditAnywhere, Category = &quot;Animation&quot;)&#10;&#9;float YawSpeedSmoothLerpSpeed = 1.f;&#10;&#10;&#9;UPROPERTY(EditAnywhere, Category = &quot;Animation&quot;)&#10;&#9;float YawSpeedLerpToZeroSpeed = 30.f;&#10;&#9;&#10;&#9;FRotator BodyPrevRotator;&#10;};&#10;" />
+                    </map>
+                  </option>
+                  <option name="knowledgeBases">
+                    <list>
+                      <KnowledgeBase>
+                        <option name="description" value="UnrealEngine 4.5版本知识库" />
+                        <option name="id" value="preset14" />
+                        <option name="knowledgeBaseType" value="common" />
+                        <option name="name" value="UnrealEngine 4.5" />
+                      </KnowledgeBase>
+                    </list>
+                  </option>
+                  <option name="knowledgeReferences">
+                    <list>
+                      <KnowledgeReference>
+                        <option name="chunk" value="void Add(const T&amp; value) const {&#10;    accessor_-&gt;Add(data_, &amp;value);&#10;  }" />
+                        <option name="knowledgeBaseId" value="preset14" />
+                        <option name="metadata">
+                          <KnowledgeReferenceMetadata>
+                            <option name="endPos" value="273" />
+                            <option name="fileName" value="Engine/Source/ThirdParty/WebRTC/rev.24472/Include/Mac/third_party/protobuf/src/google/protobuf/reflection.h" />
+                            <option name="source" value="/Engine/Source/ThirdParty/WebRTC/rev.24472/Include/Mac/third_party/protobuf/src/google/protobuf/reflection.h" />
+                            <option name="sourceType" value="code" />
+                            <option name="startPos" value="271" />
+                          </KnowledgeReferenceMetadata>
+                        </option>
+                        <option name="score" value="0.60190797" />
+                      </KnowledgeReference>
+                      <KnowledgeReference>
+                        <option name="chunk" value="inline void FileDescriptorProto::add_dependency(const char* value, size_t size) {&#10;  dependency_.Add()-&gt;assign(reinterpret_cast&lt;const char*&gt;(value), size);&#10;  // @@protoc_insertion_point(field_add_pointer:google.protobuf.FileDescriptorProto.dependency)&#10;}" />
+                        <option name="knowledgeBaseId" value="preset14" />
+                        <option name="metadata">
+                          <KnowledgeReferenceMetadata>
+                            <option name="endPos" value="4333" />
+                            <option name="fileName" value="Engine/Source/ThirdParty/WebRTC/rev.24472/Include/Win32/VS2015/third_party/protobuf/src/google/protobuf/descriptor.pb.h" />
+                            <option name="source" value="/Engine/Source/ThirdParty/WebRTC/rev.24472/Include/Win32/VS2015/third_party/protobuf/src/google/protobuf/descriptor.pb.h" />
+                            <option name="sourceType" value="code" />
+                            <option name="startPos" value="4330" />
+                          </KnowledgeReferenceMetadata>
+                        </option>
+                        <option name="score" value="0.6016184" />
+                      </KnowledgeReference>
+                      <KnowledgeReference>
+                        <option name="chunk" value="void Add(const T&amp; value) const {&#10;    accessor_-&gt;Add(data_, &amp;value);&#10;  }" />
+                        <option name="knowledgeBaseId" value="preset14" />
+                        <option name="metadata">
+                          <KnowledgeReferenceMetadata>
+                            <option name="endPos" value="273" />
+                            <option name="fileName" value="Engine/Source/ThirdParty/WebRTC/rev.24472/Include/Linux/third_party/protobuf/src/google/protobuf/reflection.h" />
+                            <option name="source" value="/Engine/Source/ThirdParty/WebRTC/rev.24472/Include/Linux/third_party/protobuf/src/google/protobuf/reflection.h" />
+                            <option name="sourceType" value="code" />
+                            <option name="startPos" value="271" />
+                          </KnowledgeReferenceMetadata>
+                        </option>
+                        <option name="score" value="0.6008705" />
+                      </KnowledgeReference>
+                    </list>
+                  </option>
+                  <option name="messageId" value="0197c641e1ad7ee8b9424b9a123529f3" />
+                  <option name="question" value="添加注释，解释变量的作用" />
+                  <option name="rating" value="UNRATED" />
+                  <option name="referenceBeans">
+                    <list />
+                  </option>
+                  <option name="status" value="SUCCESS" />
+                  <option name="variables">
+                    <list>
+                      <KnowledgeVariable>
+                        <option name="selectedPlaceHolder">
+                          <Object />
+                        </option>
+                        <option name="selectedVariable">
+                          <Object />
+                        </option>
+                      </KnowledgeVariable>
+                    </list>
+                  </option>
+                  <knowledgeReferenceMaps>
+                    <map>
+                      <entry key="UnrealEngine 4.5">
+                        <value>
+                          <list>
+                            <KnowledgeReference>
+                              <option name="chunk" value="void Add(const T&amp; value) const {&#10;    accessor_-&gt;Add(data_, &amp;value);&#10;  }" />
+                              <option name="knowledgeBaseId" value="preset14" />
+                              <option name="metadata">
+                                <KnowledgeReferenceMetadata>
+                                  <option name="endPos" value="273" />
+                                  <option name="fileName" value="Engine/Source/ThirdParty/WebRTC/rev.24472/Include/Mac/third_party/protobuf/src/google/protobuf/reflection.h" />
+                                  <option name="source" value="/Engine/Source/ThirdParty/WebRTC/rev.24472/Include/Mac/third_party/protobuf/src/google/protobuf/reflection.h" />
+                                  <option name="sourceType" value="code" />
+                                  <option name="startPos" value="271" />
+                                </KnowledgeReferenceMetadata>
+                              </option>
+                              <option name="score" value="0.60190797" />
+                            </KnowledgeReference>
+                            <KnowledgeReference>
+                              <option name="chunk" value="inline void FileDescriptorProto::add_dependency(const char* value, size_t size) {&#10;  dependency_.Add()-&gt;assign(reinterpret_cast&lt;const char*&gt;(value), size);&#10;  // @@protoc_insertion_point(field_add_pointer:google.protobuf.FileDescriptorProto.dependency)&#10;}" />
+                              <option name="knowledgeBaseId" value="preset14" />
+                              <option name="metadata">
+                                <KnowledgeReferenceMetadata>
+                                  <option name="endPos" value="4333" />
+                                  <option name="fileName" value="Engine/Source/ThirdParty/WebRTC/rev.24472/Include/Win32/VS2015/third_party/protobuf/src/google/protobuf/descriptor.pb.h" />
+                                  <option name="source" value="/Engine/Source/ThirdParty/WebRTC/rev.24472/Include/Win32/VS2015/third_party/protobuf/src/google/protobuf/descriptor.pb.h" />
+                                  <option name="sourceType" value="code" />
+                                  <option name="startPos" value="4330" />
+                                </KnowledgeReferenceMetadata>
+                              </option>
+                              <option name="score" value="0.6016184" />
+                            </KnowledgeReference>
+                            <KnowledgeReference>
+                              <option name="chunk" value="void Add(const T&amp; value) const {&#10;    accessor_-&gt;Add(data_, &amp;value);&#10;  }" />
+                              <option name="knowledgeBaseId" value="preset14" />
+                              <option name="metadata">
+                                <KnowledgeReferenceMetadata>
+                                  <option name="endPos" value="273" />
+                                  <option name="fileName" value="Engine/Source/ThirdParty/WebRTC/rev.24472/Include/Linux/third_party/protobuf/src/google/protobuf/reflection.h" />
+                                  <option name="source" value="/Engine/Source/ThirdParty/WebRTC/rev.24472/Include/Linux/third_party/protobuf/src/google/protobuf/reflection.h" />
+                                  <option name="sourceType" value="code" />
+                                  <option name="startPos" value="271" />
+                                </KnowledgeReferenceMetadata>
+                              </option>
+                              <option name="score" value="0.6008705" />
+                            </KnowledgeReference>
+                          </list>
+                        </value>
+                      </entry>
+                    </map>
+                  </knowledgeReferenceMaps>
+                </Turn>
+              </list>
+            </option>
+            <option name="updateTime" value="1751377903556" />
+          </Conversation>
+        </option>
+      </WebConversation>
+    </option>
   </component>
 </project>

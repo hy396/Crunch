@@ -4,6 +4,12 @@
     <option name="conversations">
       <list>
         <Conversation>
+          <option name="createTime" value="1751441054961" />
+          <option name="id" value="0197ca059cf17a7895686f05d7a40595" />
+          <option name="title" value="新对话 2025年7月02日 15:24:14" />
+          <option name="updateTime" value="1751441054961" />
+        </Conversation>
+        <Conversation>
           <option name="createTime" value="1751345661227" />
           <option name="id" value="0197c45603e47ee8b9422f8113debb1d" />
           <option name="title" value="PS D:\ue_texiao\Crunch&gt; git remote set-url origin git@github.com:hy396/Crunch.git&#10;PS D:\ue_texiao\Crunch&gt; git remote -v&#10;origin  git@github.com:hy396/Crunch.git (fetch)&#10;origin  git@github.com:hy396/Crunch.git (push)&#10;PS D:\ue_texiao\Crunch&gt; git push -v origin master:master&#10;Pushing to github.com:hy396/Crunch.git&#10;Enter passphrase for key '/c/Users/幻雨/.ssh/id_ed25519':&#10;Enumerating objects: 2072, done.&#10;Counting objects: 100% (2072/2072), done.&#10;Delta compression using up to 20 threads&#10;Compressing objects: 100% (2037/2037), done.&#10;remote: fatal: pack exceeds maximum allowed size (2.00 GiB)&#10;fatal: sha1 file '&lt;stdout&gt;' write error: Broken pipe&#10;error: remote unpack failed: index-pack failed&#10;To github.com:hy396/Crunch.git&#10; ! [remote rejected] master -&gt; master (failed)&#10;error: failed to push some refs to 'github.com:hy396/Crunch.git'     &#10;PS D:\ue_texiao\Crunch&gt;&#10;" />
@@ -161,16 +167,7 @@
                 </option>
                 <option name="status" value="SUCCESS" />
                 <option name="variables">
-                  <list>
-                    <KnowledgeVariable>
-                      <option name="selectedPlaceHolder">
-                        <Object />
-                      </option>
-                      <option name="selectedVariable">
-                        <Object />
-                      </option>
-                    </KnowledgeVariable>
-                  </list>
+                  <list />
                 </option>
                 <knowledgeReferenceMaps>
                   <map>
@@ -329,16 +326,7 @@
                 </option>
                 <option name="status" value="SUCCESS" />
                 <option name="variables">
-                  <list>
-                    <KnowledgeVariable>
-                      <option name="selectedPlaceHolder">
-                        <Object />
-                      </option>
-                      <option name="selectedVariable">
-                        <Object />
-                      </option>
-                    </KnowledgeVariable>
-                  </list>
+                  <list />
                 </option>
                 <knowledgeReferenceMaps>
                   <map>

@@ -6445,6 +6445,215 @@
                   <option name="role" value="assistant" />
                   <option name="topic" value="" />
                 </UIChatMessage>
+                <UIChatMessage>
+                  <option name="command" value="" />
+                  <option name="content" value="添加注释" />
+                  <option name="cost" value="0" />
+                  <option name="createdAt" value="1751445629581" />
+                  <option name="knowledge">
+                    <list>
+                      <KnowledgeBase>
+                        <option name="description" value="UnrealEngine 4.5版本知识库" />
+                        <option name="id" value="preset14" />
+                        <option name="knowledgeBaseType" value="common" />
+                        <option name="name" value="UnrealEngine 4.5" />
+                      </KnowledgeBase>
+                    </list>
+                  </option>
+                  <option name="localReferences">
+                    <list>
+                      <LocalReferences>
+                        <option name="isRequestStage" value="true" />
+                        <option name="range">
+                          <RefRange />
+                        </option>
+                        <option name="uri" value="{&quot;path&quot;:&quot;file:///D:/ue_texiao/Crunch/Source/Crunch/Private/Animations/CAnimInstance.cpp&quot;}" />
+                      </LocalReferences>
+                    </list>
+                  </option>
+                  <option name="parser">
+                    <SimpleMarkdownStreamParser>
+                      <option name="content" value="添加注释" />
+                      <option name="nodes">
+                        <list>
+                          <MarkdownNode>
+                            <option name="children">
+                              <list />
+                            </option>
+                            <option name="content" value="添加注释" />
+                            <option name="contentId" value="859994279" />
+                            <option name="settled" value="false" />
+                            <option name="type" value="line" />
+                            <option name="xmlData">
+                              <XmlNode />
+                            </option>
+                          </MarkdownNode>
+                        </list>
+                      </option>
+                      <option name="parserState">
+                        <ParserState>
+                          <option name="column" value="3" />
+                          <option name="offset" value="4" />
+                          <option name="moveCursor" value="true" />
+                        </ParserState>
+                      </option>
+                    </SimpleMarkdownStreamParser>
+                  </option>
+                  <option name="role" value="user" />
+                  <option name="selectedRanges">
+                    <list />
+                  </option>
+                  <option name="uri" value="" />
+                  <option name="variables">
+                    <list />
+                  </option>
+                </UIChatMessage>
+                <UIChatMessage>
+                  <option name="actions">
+                    <list />
+                  </option>
+                  <option name="codebaseReferences">
+                    <list />
+                  </option>
+                  <option name="codebaseStatus" value="init" />
+                  <option name="command" value="" />
+                  <option name="content" value="```cpp&#10;// CAnimInstance.cpp&#10;&#10;// 获取拥有者角色的基础瞄准旋转&#10;FRotator ControlRot = OwnerCharacter-&gt;GetBaseAimRotation();&#10;&#10;// 计算当前帧的旋转变化量，并将其归一化，以便在多个帧之间平滑旋转&#10;LookRotatorOffset = UKismetMathLibrary::NormalizedDeltaRotator(ControlRot, BodyPrevRotator);&#10;```" />
+                  <option name="cost" value="8201" />
+                  <option name="createdAt" value="1751445638173" />
+                  <option name="followup">
+                    <list />
+                  </option>
+                  <option name="id" value="0197ca4b6a8d7cc18315ab8419d523d9" />
+                  <option name="knowledge">
+                    <list>
+                      <KnowledgeBase>
+                        <option name="id" value="preset14" />
+                        <option name="knowledgeBaseType" value="common" />
+                        <option name="name" value="UnrealEngine 4.5" />
+                      </KnowledgeBase>
+                    </list>
+                  </option>
+                  <option name="knowledgeReferences">
+                    <list>
+                      <KnowledgeReference>
+                        <option name="chunk" value="&#10;  // Override for AnnotationCollector::AddAnnotation." />
+                        <option name="knowledgeBaseId" value="preset14" />
+                        <option name="metadata">
+                          <KnowledgeReferenceMetadata>
+                            <option name="endPos" value="74" />
+                            <option name="fileName" value="Engine/Source/ThirdParty/WebRTC/rev.24472/Include/Linux/third_party/protobuf/src/google/protobuf/io/printer.h" />
+                            <option name="source" value="/Engine/Source/ThirdParty/WebRTC/rev.24472/Include/Linux/third_party/protobuf/src/google/protobuf/io/printer.h" />
+                            <option name="sourceType" value="code" />
+                            <option name="startPos" value="73" />
+                          </KnowledgeReferenceMetadata>
+                        </option>
+                        <option name="score" value="0.63854975" />
+                      </KnowledgeReference>
+                      <KnowledgeReference>
+                        <option name="chunk" value="&#10;  // Override for AnnotationCollector::AddAnnotation." />
+                        <option name="knowledgeBaseId" value="preset14" />
+                        <option name="metadata">
+                          <KnowledgeReferenceMetadata>
+                            <option name="endPos" value="74" />
+                            <option name="fileName" value="Engine/Source/ThirdParty/WebRTC/rev.24472/Include/Win64/VS2015/third_party/protobuf/src/google/protobuf/io/printer.h" />
+                            <option name="source" value="/Engine/Source/ThirdParty/WebRTC/rev.24472/Include/Win64/VS2015/third_party/protobuf/src/google/protobuf/io/printer.h" />
+                            <option name="sourceType" value="code" />
+                            <option name="startPos" value="73" />
+                          </KnowledgeReferenceMetadata>
+                        </option>
+                        <option name="score" value="0.63660514" />
+                      </KnowledgeReference>
+                      <KnowledgeReference>
+                        <option name="chunk" value="&#10;  // Override for AnnotationCollector::AddAnnotation." />
+                        <option name="knowledgeBaseId" value="preset14" />
+                        <option name="metadata">
+                          <KnowledgeReferenceMetadata>
+                            <option name="endPos" value="74" />
+                            <option name="fileName" value="Engine/Source/ThirdParty/WebRTC/rev.24472/Include/Mac/third_party/protobuf/src/google/protobuf/io/printer.h" />
+                            <option name="source" value="/Engine/Source/ThirdParty/WebRTC/rev.24472/Include/Mac/third_party/protobuf/src/google/protobuf/io/printer.h" />
+                            <option name="sourceType" value="code" />
+                            <option name="startPos" value="73" />
+                          </KnowledgeReferenceMetadata>
+                        </option>
+                        <option name="score" value="0.636598" />
+                      </KnowledgeReference>
+                    </list>
+                  </option>
+                  <option name="knowledgeStatus" value="success" />
+                  <option name="localReferences">
+                    <list>
+                      <LocalReferences>
+                        <option name="isRequestStage" value="true" />
+                        <option name="range">
+                          <RefRange />
+                        </option>
+                        <option name="uri" value="{&quot;path&quot;:&quot;file:///D:/ue_texiao/Crunch/Source/Crunch/Private/Animations/CAnimInstance.cpp&quot;}" />
+                      </LocalReferences>
+                    </list>
+                  </option>
+                  <option name="parser">
+                    <SimpleMarkdownStreamParser>
+                      <option name="columns">
+                        <list>
+                          <option value="5" />
+                          <option value="19" />
+                          <option value="-1" />
+                          <option value="16" />
+                          <option value="58" />
+                          <option value="-1" />
+                          <option value="33" />
+                          <option value="91" />
+                          <option value="2" />
+                        </list>
+                      </option>
+                      <option name="content" value="```cpp&#10;// CAnimInstance.cpp&#10;&#10;// 获取拥有者角色的基础瞄准旋转&#10;FRotator ControlRot = OwnerCharacter-&gt;GetBaseAimRotation();&#10;&#10;// 计算当前帧的旋转变化量，并将其归一化，以便在多个帧之间平滑旋转&#10;LookRotatorOffset = UKismetMathLibrary::NormalizedDeltaRotator(ControlRot, BodyPrevRotator);&#10;```&#10;" />
+                      <option name="nodes">
+                        <list>
+                          <MarkdownNode>
+                            <option name="children">
+                              <list />
+                            </option>
+                            <option name="content" value="// CAnimInstance.cpp&#10;&#10;// 获取拥有者角色的基础瞄准旋转&#10;FRotator ControlRot = OwnerCharacter-&gt;GetBaseAimRotation();&#10;&#10;// 计算当前帧的旋转变化量，并将其归一化，以便在多个帧之间平滑旋转&#10;LookRotatorOffset = UKismetMathLibrary::NormalizedDeltaRotator(ControlRot, BodyPrevRotator);&#10;" />
+                            <option name="contentId" value="-1870008253" />
+                            <option name="expectEnding" value="```" />
+                            <option name="indentSize" value="0" />
+                            <option name="language" value="cpp" />
+                            <option name="settled" value="true" />
+                            <option name="type" value="code-block" />
+                            <option name="xmlData">
+                              <XmlNode />
+                            </option>
+                          </MarkdownNode>
+                          <MarkdownNode>
+                            <option name="children">
+                              <list />
+                            </option>
+                            <option name="content" value="" />
+                            <option name="contentId" value="0" />
+                            <option name="settled" value="false" />
+                            <option name="type" value="undetermined" />
+                            <option name="xmlData">
+                              <XmlNode />
+                            </option>
+                          </MarkdownNode>
+                        </list>
+                      </option>
+                      <option name="parserState">
+                        <ParserState>
+                          <option name="line" value="9" />
+                          <option name="column" value="-1" />
+                          <option name="offset" value="240" />
+                          <option name="moveCursor" value="true" />
+                        </ParserState>
+                      </option>
+                    </SimpleMarkdownStreamParser>
+                  </option>
+                  <option name="references">
+                    <list />
+                  </option>
+                  <option name="role" value="assistant" />
+                  <option name="topic" value="" />
+                </UIChatMessage>
               </list>
             </option>
             <option name="messagesV3">
@@ -6502,6 +6711,25 @@
                 <ChatMessageV3>
                   <option name="role" value="assistant" />
                   <option name="content" value="```cpp&#10;// CAnimInstance.h&#10;&#10;// YawSpeed: 表示当前帧的偏航角速度&#10;// 用于计算角色在水平面上的旋转速度&#10;float YawSpeed;&#10;&#10;// SmoothedYawSpeed: 表示平滑后的偏航角速度&#10;// 用于在多个帧之间平滑偏航角速度，以减少抖动&#10;float SmoothedYawSpeed;&#10;&#10;// YawSpeedSmoothLerpSpeed: 表示平滑插值的速度&#10;// 控制偏航角速度从当前值平滑过渡到零的速度&#10;UPROPERTY(EditAnywhere, Category = &quot;Animation&quot;)&#10;float YawSpeedSmoothLerpSpeed = 1.f;&#10;&#10;// YawSpeedLerpToZeroSpeed: 表示当偏航角速度降到零时使用的插值速度&#10;// 用于控制偏航角速度从当前值平滑过渡到零的加速度&#10;UPROPERTY(EditAnywhere, Category = &quot;Animation&quot;)&#10;float YawSpeedLerpToZeroSpeed = 30.f;&#10;&#10;// BodyPrevRotator: 表示前一帧的角色旋转&#10;// 用于计算当前帧的旋转变化量&#10;FRotator BodyPrevRotator;&#10;```" />
+                  <option name="extra">
+                    <ChatMessageExtra />
+                  </option>
+                </ChatMessageV3>
+                <ChatMessageV3>
+                  <option name="role" value="user" />
+                  <option name="content" value="添加注释" />
+                  <option name="extra">
+                    <ChatMessageExtra>
+                      <option name="agent" value="default" />
+                      <option name="cmd" value="default" />
+                      <option name="code" value="&#9;&#9;UIlgzgli XlmgiloIlg = LdmviXszizxgvi-&gt;TvgYzhvZrnIlgzgrlm();&#10;&#9;&#9;OllpIlgzgliLuuhvg = FPrhnvgNzgsOryizib::MlinzoravwWvogzIlgzgli(XlmgiloIlg, YlwbKiveIlgzgli);&#10;" />
+                      <option name="path" value="D:\ue_texiao\Crunch\Source\Crunch\Private\Animations\CAnimInstance.cpp" />
+                    </ChatMessageExtra>
+                  </option>
+                </ChatMessageV3>
+                <ChatMessageV3>
+                  <option name="role" value="assistant" />
+                  <option name="content" value="```cpp&#10;// CAnimInstance.cpp&#10;&#10;// 获取拥有者角色的基础瞄准旋转&#10;FRotator ControlRot = OwnerCharacter-&gt;GetBaseAimRotation();&#10;&#10;// 计算当前帧的旋转变化量，并将其归一化，以便在多个帧之间平滑旋转&#10;LookRotatorOffset = UKismetMathLibrary::NormalizedDeltaRotator(ControlRot, BodyPrevRotator);&#10;```" />
                   <option name="extra">
                     <ChatMessageExtra />
                   </option>
@@ -6671,16 +6899,7 @@
                   </option>
                   <option name="status" value="SUCCESS" />
                   <option name="variables">
-                    <list>
-                      <KnowledgeVariable>
-                        <option name="selectedPlaceHolder">
-                          <Object />
-                        </option>
-                        <option name="selectedVariable">
-                          <Object />
-                        </option>
-                      </KnowledgeVariable>
-                    </list>
+                    <list />
                   </option>
                   <knowledgeReferenceMaps>
                     <map>
@@ -6839,16 +7058,7 @@
                   </option>
                   <option name="status" value="SUCCESS" />
                   <option name="variables">
-                    <list>
-                      <KnowledgeVariable>
-                        <option name="selectedPlaceHolder">
-                          <Object />
-                        </option>
-                        <option name="selectedVariable">
-                          <Object />
-                        </option>
-                      </KnowledgeVariable>
-                    </list>
+                    <list />
                   </option>
                   <knowledgeReferenceMaps>
                     <map>
@@ -6903,9 +7113,176 @@
                     </map>
                   </knowledgeReferenceMaps>
                 </Turn>
+                <Turn>
+                  <option name="agent" value="" />
+                  <option name="answer" value="```xkk&#10;// XZmrnRmhgzmxv.xkk&#10;&#10;// 获取拥有者角色的基础瞄准旋转&#10;UIlgzgli XlmgiloIlg = LdmviXszizxgvi-&gt;TvgYzhvZrnIlgzgrlm();&#10;&#10;// 计算当前帧的旋转变化量，并将其归一化，以便在多个帧之间平滑旋转&#10;OllpIlgzgliLuuhvg = FPrhnvgNzgsOryizib::MlinzoravwWvogzIlgzgli(XlmgiloIlg, YlwbKiveIlgzgli);&#10;```" />
+                  <option name="chatResource" value="user" />
+                  <option name="codeReferences">
+                    <list>
+                      <CodeReferencesBean>
+                        <option name="content" value="&#9;&#9;UIlgzgli XlmgiloIlg = LdmviXszizxgvi-&gt;TvgYzhvZrnIlgzgrlm();&#10;&#9;&#9;OllpIlgzgliLuuhvg = FPrhnvgNzgsOryizib::MlinzoravwWvogzIlgzgli(XlmgiloIlg, YlwbKiveIlgzgli);&#10;" />
+                        <option name="end_line" value="46" />
+                        <option name="filename" value="CAnimInstance.cpp" />
+                        <option name="language" value="C++" />
+                        <option name="range">
+                          <Range>
+                            <option name="end">
+                              <Position>
+                                <option name="character" value="100" />
+                                <option name="line" value="46" />
+                              </Position>
+                            </option>
+                            <option name="start">
+                              <Position>
+                                <option name="line" value="45" />
+                              </Position>
+                            </option>
+                          </Range>
+                        </option>
+                        <option name="start_line" value="45" />
+                        <option name="type" value="editor" />
+                        <option name="url" value="file:///D:/ue_texiao/Crunch/Source/Crunch/Private/Animations/CAnimInstance.cpp" />
+                      </CodeReferencesBean>
+                    </list>
+                  </option>
+                  <option name="command" value="" />
+                  <option name="conversationId" value="0197c45603e47ee8b9422f8113debb1d" />
+                  <option name="historyDocumentMap">
+                    <map>
+                      <entry key="file:///D:/ue_texiao/Crunch/Source/Crunch/Private/Animations/CAnimInstance.cpp" value="// 幻雨喜欢小猫咪&#10;&#10;&#10;#include &quot;Animations/CAnimInstance.h&quot;&#10;&#10;#include &quot;GameFramework/Character.h&quot;&#10;#include &quot;GameFramework/CharacterMovementComponent.h&quot;&#10;#include &quot;Kismet/KismetMathLibrary.h&quot;&#10;&#10;void UCAnimInstance::NativeInitializeAnimation()&#10;{&#10;&#9;// 获取Owner转换为角色&#10;&#9;OwnerCharacter = Cast&lt;ACharacter&gt;(TryGetPawnOwner());&#10;&#9;if (OwnerCharacter)&#10;&#9;{&#10;&#9;&#9;// 获取Owner的移动组件&#10;&#9;&#9;OwnerMovementComponent = OwnerCharacter-&gt;GetCharacterMovement();&#10;&#9;}&#10;}&#10;&#10;void UCAnimInstance::NativeUpdateAnimation(float DeltaSeconds)&#10;{&#10;&#9;if (OwnerCharacter)&#10;&#9;{&#10;&#9;&#9;FVector Velocity = OwnerCharacter-&gt;GetVelocity();&#10;&#9;&#9;Speed = Velocity.Length();&#10;&#10;&#9;&#9;// 获取当前身体旋转角度与上一帧的差值，用于计算旋转变化率&#10;&#9;&#9;FRotator BodyRotator = OwnerCharacter-&gt;GetActorRotation();&#10;&#9;&#9;FRotator BodyRotatorDelta = UKismetMathLibrary::NormalizedDeltaRotator(BodyRotator, BodyPrevRotator);&#10;&#9;&#9;BodyPrevRotator = BodyRotator;&#10;&#10;&#9;&#9;// 计算 yaw 轴旋转速度（每秒旋转角度）&#10;&#9;&#9;YawSpeed = BodyRotatorDelta.Yaw / DeltaSeconds;&#10;&#10;&#9;&#9;// 如果偏航角速度为0，则使用特定的速度进行平滑插值&#10;&#9;&#9;float YawLerpSpeed = YawSpeedSmoothLerpSpeed;&#10;&#9;&#9;if (YawSpeed == 0)&#10;&#9;&#9;{&#10;&#9;&#9;&#9;YawLerpSpeed = YawSpeedLerpToZeroSpeed;&#10;&#9;&#9;}&#10;&#10;&#9;&#9;// 使用线性插值（FInterpTo）对 yaw 速度进行平滑处理，提高动画过渡质量&#10;&#9;&#9;SmoothedYawSpeed = UKismetMathLibrary::FInterpTo(SmoothedYawSpeed, YawSpeed, DeltaSeconds, YawLerpSpeed);&#10;&#10;&#9;&#9;FRotator ControlRot = OwnerCharacter-&gt;GetBaseAimRotation();&#10;&#9;&#9;LookRotatorOffset = UKismetMathLibrary::NormalizedDeltaRotator(ControlRot, BodyPrevRotator);&#10;&#10;&#10;&#9;}&#10;&#10;&#9;if (OwnerMovementComponent)&#10;&#9;{&#10;&#9;&#9;bIsJumping = OwnerMovementComponent-&gt;IsFalling();&#10;&#9;}&#10;}&#10;&#10;void UCAnimInstance::NativeThreadSafeUpdateAnimation(float DeltaSeconds)&#10;{&#10;&#9;&#10;}&#10;" />
+                    </map>
+                  </option>
+                  <option name="knowledgeBases">
+                    <list>
+                      <KnowledgeBase>
+                        <option name="description" value="UnrealEngine 4.5版本知识库" />
+                        <option name="id" value="preset14" />
+                        <option name="knowledgeBaseType" value="common" />
+                        <option name="name" value="UnrealEngine 4.5" />
+                      </KnowledgeBase>
+                    </list>
+                  </option>
+                  <option name="knowledgeReferences">
+                    <list>
+                      <KnowledgeReference>
+                        <option name="chunk" value="&#10;  // Override for AnnotationCollector::AddAnnotation." />
+                        <option name="knowledgeBaseId" value="preset14" />
+                        <option name="metadata">
+                          <KnowledgeReferenceMetadata>
+                            <option name="endPos" value="74" />
+                            <option name="fileName" value="Engine/Source/ThirdParty/WebRTC/rev.24472/Include/Linux/third_party/protobuf/src/google/protobuf/io/printer.h" />
+                            <option name="source" value="/Engine/Source/ThirdParty/WebRTC/rev.24472/Include/Linux/third_party/protobuf/src/google/protobuf/io/printer.h" />
+                            <option name="sourceType" value="code" />
+                            <option name="startPos" value="73" />
+                          </KnowledgeReferenceMetadata>
+                        </option>
+                        <option name="score" value="0.63854975" />
+                      </KnowledgeReference>
+                      <KnowledgeReference>
+                        <option name="chunk" value="&#10;  // Override for AnnotationCollector::AddAnnotation." />
+                        <option name="knowledgeBaseId" value="preset14" />
+                        <option name="metadata">
+                          <KnowledgeReferenceMetadata>
+                            <option name="endPos" value="74" />
+                            <option name="fileName" value="Engine/Source/ThirdParty/WebRTC/rev.24472/Include/Win64/VS2015/third_party/protobuf/src/google/protobuf/io/printer.h" />
+                            <option name="source" value="/Engine/Source/ThirdParty/WebRTC/rev.24472/Include/Win64/VS2015/third_party/protobuf/src/google/protobuf/io/printer.h" />
+                            <option name="sourceType" value="code" />
+                            <option name="startPos" value="73" />
+                          </KnowledgeReferenceMetadata>
+                        </option>
+                        <option name="score" value="0.63660514" />
+                      </KnowledgeReference>
+                      <KnowledgeReference>
+                        <option name="chunk" value="&#10;  // Override for AnnotationCollector::AddAnnotation." />
+                        <option name="knowledgeBaseId" value="preset14" />
+                        <option name="metadata">
+                          <KnowledgeReferenceMetadata>
+                            <option name="endPos" value="74" />
+                            <option name="fileName" value="Engine/Source/ThirdParty/WebRTC/rev.24472/Include/Mac/third_party/protobuf/src/google/protobuf/io/printer.h" />
+                            <option name="source" value="/Engine/Source/ThirdParty/WebRTC/rev.24472/Include/Mac/third_party/protobuf/src/google/protobuf/io/printer.h" />
+                            <option name="sourceType" value="code" />
+                            <option name="startPos" value="73" />
+                          </KnowledgeReferenceMetadata>
+                        </option>
+                        <option name="score" value="0.636598" />
+                      </KnowledgeReference>
+                    </list>
+                  </option>
+                  <option name="messageId" value="0197ca4b6a8d7cc18315ab8419d523d9" />
+                  <option name="question" value="添加注释" />
+                  <option name="rating" value="UNRATED" />
+                  <option name="referenceBeans">
+                    <list />
+                  </option>
+                  <option name="status" value="SUCCESS" />
+                  <option name="variables">
+                    <list>
+                      <KnowledgeVariable>
+                        <option name="selectedPlaceHolder">
+                          <Object />
+                        </option>
+                        <option name="selectedVariable">
+                          <Object />
+                        </option>
+                      </KnowledgeVariable>
+                    </list>
+                  </option>
+                  <knowledgeReferenceMaps>
+                    <map>
+                      <entry key="UnrealEngine 4.5">
+                        <value>
+                          <list>
+                            <KnowledgeReference>
+                              <option name="chunk" value="&#10;  // Override for AnnotationCollector::AddAnnotation." />
+                              <option name="knowledgeBaseId" value="preset14" />
+                              <option name="metadata">
+                                <KnowledgeReferenceMetadata>
+                                  <option name="endPos" value="74" />
+                                  <option name="fileName" value="Engine/Source/ThirdParty/WebRTC/rev.24472/Include/Linux/third_party/protobuf/src/google/protobuf/io/printer.h" />
+                                  <option name="source" value="/Engine/Source/ThirdParty/WebRTC/rev.24472/Include/Linux/third_party/protobuf/src/google/protobuf/io/printer.h" />
+                                  <option name="sourceType" value="code" />
+                                  <option name="startPos" value="73" />
+                                </KnowledgeReferenceMetadata>
+                              </option>
+                              <option name="score" value="0.63854975" />
+                            </KnowledgeReference>
+                            <KnowledgeReference>
+                              <option name="chunk" value="&#10;  // Override for AnnotationCollector::AddAnnotation." />
+                              <option name="knowledgeBaseId" value="preset14" />
+                              <option name="metadata">
+                                <KnowledgeReferenceMetadata>
+                                  <option name="endPos" value="74" />
+                                  <option name="fileName" value="Engine/Source/ThirdParty/WebRTC/rev.24472/Include/Win64/VS2015/third_party/protobuf/src/google/protobuf/io/printer.h" />
+                                  <option name="source" value="/Engine/Source/ThirdParty/WebRTC/rev.24472/Include/Win64/VS2015/third_party/protobuf/src/google/protobuf/io/printer.h" />
+                                  <option name="sourceType" value="code" />
+                                  <option name="startPos" value="73" />
+                                </KnowledgeReferenceMetadata>
+                              </option>
+                              <option name="score" value="0.63660514" />
+                            </KnowledgeReference>
+                            <KnowledgeReference>
+                              <option name="chunk" value="&#10;  // Override for AnnotationCollector::AddAnnotation." />
+                              <option name="knowledgeBaseId" value="preset14" />
+                              <option name="metadata">
+                                <KnowledgeReferenceMetadata>
+                                  <option name="endPos" value="74" />
+                                  <option name="fileName" value="Engine/Source/ThirdParty/WebRTC/rev.24472/Include/Mac/third_party/protobuf/src/google/protobuf/io/printer.h" />
+                                  <option name="source" value="/Engine/Source/ThirdParty/WebRTC/rev.24472/Include/Mac/third_party/protobuf/src/google/protobuf/io/printer.h" />
+                                  <option name="sourceType" value="code" />
+                                  <option name="startPos" value="73" />
+                                </KnowledgeReferenceMetadata>
+                              </option>
+                              <option name="score" value="0.636598" />
+                            </KnowledgeReference>
+                          </list>
+                        </value>
+                      </entry>
+                    </map>
+                  </knowledgeReferenceMaps>
+                </Turn>
               </list>
             </option>
-            <option name="updateTime" value="1751377903556" />
+            <option name="updateTime" value="1751445636243" />
           </Conversation>
         </option>
       </WebConversation>

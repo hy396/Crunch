@@ -67,7 +67,6 @@ void UValueGauge::SetValue(const float NewValue, const float NewMaxValue)
 			FText::AsNumber(NewMaxValue, &FormatOps)     // 最大值
 		)
 	);
-	// QwQTest
 }
 
 void UValueGauge::ValueChanged(const FOnAttributeChangeData& ChangeData)

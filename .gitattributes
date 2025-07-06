@@ -1,3 +1,9 @@
-*.cpp text
-*.h text
-*.cs text
+*.cs text eol=lf
+*.cpp text eol=lf
+*.h text eol=lf
+*.c text eol=lf
+*.hpp text eol=lf
+*.cmake text eol=lf
+*.sh text eol=lf
+*.py text eol=lf
+

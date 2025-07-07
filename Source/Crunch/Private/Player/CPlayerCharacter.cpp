@@ -122,4 +122,38 @@ void ACPlayerCharacter::HandleAbilityInput(const FInputActionValue& InputActionV
 	}
 }
 
+void ACPlayerCharacter::SetInputEnabledFromPlayerController(bool bEnabled)
+{
+	// 获取玩家控制器
+	APlayerController* PlayerController = GetController<APlayerController>();
+	// 如果玩家控制器为空，则返回
+	if (!PlayerController)
+	{
+		return;
+	}
+
+	if (bEnabled)
+	{
+		// 启用玩家控制器输入
+		EnableInput(PlayerController);
+	}
+	else
+	{
+		// 禁用玩家控制器输入
+		DisableInput(PlayerController);
+	}
+}
+
+void ACPlayerCharacter::OnDead()
+{
+	// 死亡,禁用玩家控制器输入
+	SetInputEnabledFromPlayerController(false);
+}
+
+void ACPlayerCharacter::OnRespawn()
+{
+	// 复活,启用玩家控制器输入
+	SetInputEnabledFromPlayerController(true);
+}
+
 

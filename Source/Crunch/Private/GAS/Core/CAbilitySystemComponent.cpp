@@ -3,6 +3,14 @@
 
 #include "GAS/Core/CAbilitySystemComponent.h"
 
+#include "CAttributeSet.h"
+
+UCAbilitySystemComponent::UCAbilitySystemComponent()
+{
+	GetGameplayAttributeValueChangeDelegate(UCAttributeSet::GetHealthAttribute()).AddUObject(this, &UCAbilitySystemComponent::HealthUpdated);
+	GetGameplayAttributeValueChangeDelegate(UCAttributeSet::GetManaAttribute()).AddUObject(this, &UCAbilitySystemComponent::ManaUpdated);
+}
+
 void UCAbilitySystemComponent::ApplyInitialEffects()
 {
 	// 检查当前组件是否拥有拥有者，并且拥有者是否具有网络权限（权威性） 
@@ -36,4 +44,36 @@ void UCAbilitySystemComponent::GiveInitialAbilities()
 	// {
 	// 	GiveAbility(FGameplayAbilitySpec(AbilityClass, 0, static_cast<int32>(InputID), nullptr));
 	// }
+}
+
+void UCAbilitySystemComponent::ApplyFullStatEffect()
+{
+	AuthApplyGameplayEffect(FullStatEffect);
+}
+
+void UCAbilitySystemComponent::AuthApplyGameplayEffect(TSubclassOf<UGameplayEffect> GameplayEffect, int Level)
+{
+	if (GetOwner() && GetOwner()->HasAuthority())
+	{
+		FGameplayEffectSpecHandle EffectSpecHandle = MakeOutgoingSpec(GameplayEffect, Level, MakeEffectContext());
+		ApplyGameplayEffectSpecToSelf(*EffectSpecHandle.Data.Get());
+	}
+}
+
+void UCAbilitySystemComponent::HealthUpdated(const FOnAttributeChangeData& ChangeData)
+{
+	if (!GetOwner() || !GetOwner()->HasAuthority()) return;
+
+	if (ChangeData.NewValue <= 0.0f)
+	{
+		// 角色死亡
+		if (DeathEffect)
+		{
+			AuthApplyGameplayEffect(DeathEffect);
+		}
+	}
+}
+
+void UCAbilitySystemComponent::ManaUpdated(const FOnAttributeChangeData& ChangeData)
+{
 }

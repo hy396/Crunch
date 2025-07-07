@@ -77,6 +77,12 @@ private:
 	void HandleLookInput(const FInputActionValue& InputActionValue);
 	void HandleMoveInput(const FInputActionValue& InputActionValue);
 	void HandleAbilityInput(const FInputActionValue& InputActionValue, ECAbilityInputID InputID);
+	// 输入开关
+	void SetInputEnabledFromPlayerController(bool bEnabled);
 #pragma endregion
 
+#pragma region 死亡和复活 (Death and Respawn)
+	virtual void OnDead() override;
+	virtual void OnRespawn() override;
+#pragma endregion
 };

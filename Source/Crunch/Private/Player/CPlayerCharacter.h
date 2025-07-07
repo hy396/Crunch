@@ -77,7 +77,7 @@ private:
 	void HandleLookInput(const FInputActionValue& InputActionValue);
 	void HandleMoveInput(const FInputActionValue& InputActionValue);
 	void HandleAbilityInput(const FInputActionValue& InputActionValue, ECAbilityInputID InputID);
-	// 输入开关
+	// 玩家的输入开关
 	void SetInputEnabledFromPlayerController(bool bEnabled);
 #pragma endregion
 

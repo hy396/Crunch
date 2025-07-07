@@ -17,11 +17,12 @@ class UANS_AttackWindow : public UAnimNotifyState
 	GENERATED_BODY()
 public:
 	UANS_AttackWindow();
-	//bShouldFireInEditor
 	virtual void NotifyBegin(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, float TotalDuration, const FAnimNotifyEventReference& EventReference) override;
 	virtual void NotifyTick(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, float TotalDuration, const FAnimNotifyEventReference& EventReference) override;
 	virtual void NotifyEnd(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, const FAnimNotifyEventReference& EventReference) override;
 
+	//virtual void GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const override;
+	
 private:
 	// 触发的GameplayCue标签（如命中特效、音效等）
 	UPROPERTY(EditAnywhere, Category = "Gameplay Ability")
@@ -73,4 +74,13 @@ private:
 
 	// 阵容处会用到
 	mutable TWeakInterfacePtr<IGenericTeamAgentInterface> OwnerTeamInterface;
+
+	// 定时器代替帧检测,帧检测会丢帧
+	// FTimerHandle UpDataTimerHandle;
+	//
+	// UPROPERTY(EditDefaultsOnly, Category = "Death", meta = (DisplayName = "检测时间间隔"))
+	// float UpDataTime = 0.03f;
+	//
+	// void UpData(USkeletalMeshComponent* MeshComp, AActor* OwnerActor);
+
 };

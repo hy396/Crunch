@@ -10,6 +10,7 @@
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
 
+
 ACPlayerCharacter::ACPlayerCharacter()
 {
 	// 创建并设置摄像机弹簧臂组件
@@ -36,8 +37,14 @@ void ACPlayerCharacter::PawnClientRestart()
 	Super::PawnClientRestart();
 
 	// 检查当前角色是否拥有玩家控制器
-	if (const APlayerController* OwningPlayerController = GetController<APlayerController>())
+	if (APlayerController* OwningPlayerController = GetController<APlayerController>())
 	{
+		// TODO:暂时处理一下，要删的
+		// IGenericTeamAgentInterface* NewPlayerTeamInterfaceCharacter = Cast<IGenericTeamAgentInterface>(OwningPlayerController);
+		// SetGenericTeamId(NewPlayerTeamInterfaceCharacter->GetGenericTeamId());
+		// //UE_LOG(LogTemp, Warning, TEXT("角色：%s,Id:%u"), *GetName(), GetGenericTeamId().GetId());
+		// UE_LOG(LogTemp, Warning, TEXT("角色：%s,Id:%u"), *GetName(), GetGenericTeamId().GetId());
+
 		// 获取与玩家控制器关联的本地玩家对象
 		if (UEnhancedInputLocalPlayerSubsystem* InputSubsystem = OwningPlayerController->GetLocalPlayer()->GetSubsystem<UEnhancedInputLocalPlayerSubsystem>())
 		{

@@ -8,6 +8,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GAS/Core/TGameplayTags.h"
 #include "Kismet/GameplayStatics.h"
+#include "Net/UnrealNetwork.h"
 #include "UI/Gameplay/OverHeadStatsGauge.h"
 
 ACCharacter::ACCharacter()
@@ -44,6 +45,12 @@ void ACCharacter::ClientSideInit()
 bool ACCharacter::IsLocallyControlledByPlayer() const
 {
 	return GetController() && GetController()->IsLocalPlayerController();
+}
+
+void ACCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+	DOREPLIFETIME(ACCharacter, TeamID);
 }
 
 void ACCharacter::BeginPlay()
@@ -231,6 +238,21 @@ void ACCharacter::Respawn()
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 	// 停止所有蒙太奇
 	GetMesh()->GetAnimInstance()->StopAllMontages(0.f);
+
+	// 如果当前对象具有权限并且控制器存在
+	if (HasAuthority() && GetController())
+	{
+		// 获取控制器的起始位置对象指针
+		TWeakObjectPtr<AActor> StartSpot = GetController()->StartSpot;
+    
+		// 检查起始位置对象是否有效
+		if (StartSpot.IsValid())
+		{
+			// 将当前对象的位置和姿态设置为起始位置对象的位置和姿态
+			SetActorTransform(StartSpot->GetActorTransform());
+		}
+	}
+	
 	// 应用全属性
 	if (CAbilitySystemComponent)
 	{
@@ -244,5 +266,19 @@ void ACCharacter::OnDead()
 }
 
 void ACCharacter::OnRespawn()
+{
+}
+
+void ACCharacter::SetGenericTeamId(const FGenericTeamId& NewTeamID)
+{
+	TeamID = NewTeamID;
+}
+
+FGenericTeamId ACCharacter::GetGenericTeamId() const
+{
+	return TeamID;
+}
+
+void ACCharacter::OnRep_TeamID()
 {
 }

@@ -7,12 +7,13 @@
 #include "AbilitySystemInterface.h"
 #include "Components/WidgetComponent.h"
 #include "GameplayTagContainer.h"
+#include "GenericTeamAgentInterface.h"
 #include "GAS/Core/CAbilitySystemComponent.h"
 #include "GAS/Core/CAttributeSet.h"
 #include "CCharacter.generated.h"
 
 UCLASS()
-class ACCharacter : public ACharacter, public IAbilitySystemInterface
+class ACCharacter : public ACharacter, public IAbilitySystemInterface, public IGenericTeamAgentInterface
 {
 	GENERATED_BODY()
 
@@ -24,6 +25,9 @@ public:
 	void ClientSideInit();
 	// 判断该角色是否由本地玩家控制
 	bool IsLocallyControlledByPlayer() const;
+
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+
 
 protected:
 	virtual void BeginPlay() override;
@@ -117,5 +121,19 @@ private:
 
 	virtual void OnDead();
 	virtual void OnRespawn();
+#pragma endregion
+#pragma region 团队(Team)
+public:
+	// 设置团队ID
+	virtual void SetGenericTeamId(const FGenericTeamId& NewTeamID) override;
+
+	// 获取团队ID
+	virtual FGenericTeamId GetGenericTeamId() const override;
+private:
+	UPROPERTY(ReplicatedUsing = OnRep_TeamID)
+	FGenericTeamId TeamID;
+
+	UFUNCTION()
+	virtual void OnRep_TeamID();
 #pragma endregion
 };

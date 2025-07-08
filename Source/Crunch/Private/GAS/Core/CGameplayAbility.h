@@ -17,7 +17,7 @@ class UCGameplayAbility : public UGameplayAbility
 protected:
 	UAnimInstance* GetOwnerAnimInstance() const;
 	// 毫无用武之地
-	TArray<FHitResult> GetHitResultFromSweepLocationTargetData(const FGameplayAbilityTargetDataHandle& TargetDataHandle, float SphereSweepRadius = 30.f, ETeamAttitude::Type TargetTeam = ETeamAttitude::Hostile, bool bDrawDebug = false, bool bIgnoreSelf = true) const;
+	TArray<FHitResult> GetHitResultFromSweepLocationTargetData(const FGameplayAbilityTargetDataHandle& TargetDataHandle, float SphereSweepRadius = 30.f, ETeamAttitude::Type TargetTeam = ETeamAttitude::Hostile, bool bDrawDebug = true, bool bIgnoreSelf = true) const;
 
 	/**
 	* @brief 向命中结果中的 Actor 应用指定的 GameplayEffect

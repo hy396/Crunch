@@ -19,7 +19,6 @@ public:
 	virtual void Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, const FAnimNotifyEventReference& EventReference) override;
 
 private:
-	// 目标阵营过滤（如只攻击敌人）
 	UPROPERTY(EditAnywhere, Category = "Gameplay Ability")
 	TEnumAsByte<ETeamAttitude::Type> TargetTeam = ETeamAttitude::Hostile;
 

@@ -22,8 +22,8 @@ void UOverHeadStatsGauge::SetHealthBarColor(ETeamAttitude::Type TargetTeam)
 		switch (TargetTeam)
 		{
 			case ETeamAttitude::Friendly:
-				// 队友就不用管了，本来就绿绿的
-				// HealthBar->SetBarColor();
+				// 队友就不用管了，本来就绿绿的（本来我不想管的，后来AI不稳定）
+				HealthBar->SetBarColor(FriendlyColor);
 				break;
 			case ETeamAttitude::Hostile:
 				HealthBar->SetBarColor(HostileColor);

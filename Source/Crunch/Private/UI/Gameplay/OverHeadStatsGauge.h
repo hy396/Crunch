@@ -23,7 +23,9 @@ public:
 	// 设置血条颜色
 	void SetHealthBarColor(ETeamAttitude::Type TargetTeam);
 private:
-	// BarColor我方血条颜色
+	// 我方血条颜色
+	UPROPERTY(EditAnywhere, Category = "Visual")
+	FLinearColor FriendlyColor;
 	// 敌方血条颜色
 	UPROPERTY(EditAnywhere, Category = "Visual")
 	FLinearColor HostileColor;

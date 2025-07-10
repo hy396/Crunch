@@ -29,6 +29,8 @@ public:
 
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
+	// 头顶UI颜色
+	void SetOverHeadWidgetColor();
 
 protected:
 	virtual void BeginPlay() override;

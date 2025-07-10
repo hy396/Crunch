@@ -56,6 +56,29 @@ void ACCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifet
 	DOREPLIFETIME(ACCharacter, TeamID);
 }
 
+void ACCharacter::SetOverHeadWidgetColor()
+{
+	// 将头顶UI组件的用户控件对象转换为UOverHeadStatsGauge类型
+	UOverHeadStatsGauge* OverheadStatsGuage = Cast<UOverHeadStatsGauge>(OverHeadWidgetComponent->GetUserWidgetObject());
+	
+	// 确保在Owner变化时也刷新团队状态显示
+	if (OverheadStatsGuage)
+	{
+		APawn* LocalPlayerPawn = UGameplayStatics::GetPlayerPawn(this, 0);
+		if (LocalPlayerPawn && LocalPlayerPawn->GetClass()->ImplementsInterface(UGenericTeamAgentInterface::StaticClass()))
+		{
+			const IGenericTeamAgentInterface* LocalTeamInterface = Cast<IGenericTeamAgentInterface>(LocalPlayerPawn);
+			if (LocalTeamInterface)
+			{
+				// UE_LOG(LogTemp, Warning, TEXT("本地玩家 TeamID: %u"), LocalTeamInterface->GetGenericTeamId().GetId());
+				// UE_LOG(LogTemp, Warning, TEXT("%s的当前角色 TeamID: %u"), *GetName(),GetGenericTeamId().GetId());
+				// UE_LOG(LogTemp, Warning, TEXT("态度: %s"), *UEnum::GetValueAsString(GetTeamAttitudeTowards(*LocalPlayerPawn)));
+				OverheadStatsGuage->SetHealthBarColor(GetTeamAttitudeTowards(*LocalPlayerPawn));
+			}
+		}
+	}
+}
+
 void ACCharacter::BeginPlay()
 {
 	Super::BeginPlay();
@@ -140,21 +163,23 @@ void ACCharacter::ConfigureOverHeadStatusWidget()
 		//if (!HasAuthority())
 		//{
 			// 获取到本地玩家角色
-			APawn* LocalPlayerPawn = UGameplayStatics::GetPlayerPawn(this, 0);
-			if (LocalPlayerPawn && LocalPlayerPawn->GetClass()->ImplementsInterface(UGenericTeamAgentInterface::StaticClass()))
-			{
-				// 获取本地玩家角色的GenericTeamAgentInterface接口
-				const IGenericTeamAgentInterface* LocalTeamInterface = Cast<IGenericTeamAgentInterface>(LocalPlayerPawn);
-				if (LocalTeamInterface)
-				{
-					UE_LOG(LogTemp, Warning, TEXT("本地玩家 TeamID: %u"), LocalTeamInterface->GetGenericTeamId().GetId());
-					UE_LOG(LogTemp, Warning, TEXT("当前角色 TeamID: %u"), GetGenericTeamId().GetId());
-					UE_LOG(LogTemp, Warning, TEXT("态度: %s"), *UEnum::GetValueAsString(GetTeamAttitudeTowards(*LocalPlayerPawn)));
-
-					// 设置头顶UI组件的血条颜色
-					OverheadStatsGuage->SetHealthBarColor(GetTeamAttitudeTowards(*LocalPlayerPawn));
-				}
-			}
+			// APawn* LocalPlayerPawn = UGameplayStatics::GetPlayerPawn(this, 0);
+			// if (LocalPlayerPawn && LocalPlayerPawn->GetClass()->ImplementsInterface(UGenericTeamAgentInterface::StaticClass()))
+			// {
+			// 	// 获取本地玩家角色的GenericTeamAgentInterface接口
+			// 	const IGenericTeamAgentInterface* LocalTeamInterface = Cast<IGenericTeamAgentInterface>(LocalPlayerPawn);
+			// 	if (LocalTeamInterface)
+			// 	{
+			// 		UE_LOG(LogTemp, Warning, TEXT("本地玩家 TeamID: %u"), LocalTeamInterface->GetGenericTeamId().GetId());
+			// 		UE_LOG(LogTemp, Warning, TEXT("当前角色 TeamID: %u"), GetGenericTeamId().GetId());
+			// 		UE_LOG(LogTemp, Warning, TEXT("态度: %s"), *UEnum::GetValueAsString(GetTeamAttitudeTowards(*LocalPlayerPawn)));
+			//
+			// 		// 设置头顶UI组件的血条颜色
+			// 		OverheadStatsGuage->SetHealthBarColor(GetTeamAttitudeTowards(*LocalPlayerPawn));
+			// 	}
+			// }
+		// 设置头顶UI颜色
+			SetOverHeadWidgetColor();
 		//}
 
 		// 显示头顶UI组件
@@ -239,6 +264,13 @@ void ACCharacter::PlayDeathAnimation()
 void ACCharacter::StartDeathSequence()
 {
 	OnDead();
+
+	// 取消激活的技能
+	if (CAbilitySystemComponent)
+	{
+		CAbilitySystemComponent->CancelAllAbilities();
+	}
+	
 	// 播放死亡动画
 	PlayDeathAnimation();
 	// 关闭头顶血条
@@ -310,22 +342,7 @@ FGenericTeamId ACCharacter::GetGenericTeamId() const
 
 void ACCharacter::OnRep_TeamID()
 {
-	// 将头顶UI组件的用户控件对象转换为UOverHeadStatsGauge类型
-	UOverHeadStatsGauge* OverheadStatsGuage = Cast<UOverHeadStatsGauge>(OverHeadWidgetComponent->GetUserWidgetObject());
 
-	// 确保在Owner变化时也刷新团队状态显示
-	if (OverheadStatsGuage)
-	{
-		APawn* LocalPlayerPawn = UGameplayStatics::GetPlayerPawn(this, 0);
-		if (LocalPlayerPawn && LocalPlayerPawn->GetClass()->ImplementsInterface(UGenericTeamAgentInterface::StaticClass()))
-		{
-			const IGenericTeamAgentInterface* LocalTeamInterface = Cast<IGenericTeamAgentInterface>(LocalPlayerPawn);
-			if (LocalTeamInterface)
-			{
-				OverheadStatsGuage->SetHealthBarColor(GetTeamAttitudeTowards(*LocalPlayerPawn));
-			}
-		}
-	}
 }
 
 void ACCharacter::SetAIPerceptionStimuliSourceEnabled(bool bIsEnabled)

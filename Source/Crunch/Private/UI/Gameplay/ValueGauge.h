@@ -33,6 +33,9 @@ public:
 	 */	
 	void SetAndBoundToGameplayAttribute(UAbilitySystemComponent* AbilitySystemComponent, const FGameplayAttribute& Attribute, const FGameplayAttribute& MaxAttribute);
 	void SetValue(float NewValue, float NewMaxValue);
+	// 设置进度条颜色
+	void SetBarColor(FLinearColor BarColor);
+
 private:
 	// 回调用函数
 	void ValueChanged(const FOnAttributeChangeData& ChangeData);
@@ -41,9 +44,11 @@ private:
 	// 缓存属性
 	float CachedValue;
 	float CachedMaxValue;
+	
 	// 设置进度条的颜色
 	UPROPERTY(EditAnywhere, Category = "Visual")
 	FLinearColor BarColor;
+
 
 	/**
 	 * @brief 设置文本大小

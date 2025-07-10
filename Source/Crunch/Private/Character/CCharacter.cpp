@@ -9,6 +9,7 @@
 #include "GAS/Core/TGameplayTags.h"
 #include "Kismet/GameplayStatics.h"
 #include "Net/UnrealNetwork.h"
+#include "Perception/AISense_Sight.h"
 #include "UI/Gameplay/OverHeadStatsGauge.h"
 
 ACCharacter::ACCharacter()
@@ -26,6 +27,8 @@ ACCharacter::ACCharacter()
 
 	// 绑定GAS属性改变委托
 	BindGASChangeDelegates();
+
+	PerceptionStimuliSourceComponent = CreateDefaultSubobject<UAIPerceptionStimuliSourceComponent>("Perception Stimuli Source Component");
 }
 
 void ACCharacter::ServerSideInit()
@@ -59,6 +62,9 @@ void ACCharacter::BeginPlay()
 	ConfigureOverHeadStatusWidget();
 
 	MeshRelativeTransform = GetMesh()->GetRelativeTransform();
+
+	// 注册感知源
+	PerceptionStimuliSourceComponent->RegisterForSense(UAISense_Sight::StaticClass());
 	//UE_LOG(LogTemp, Warning, TEXT("ACCharacter::BeginPlay,%hhd"),GetIsReplicated());
 	//UE_LOG(LogTemp, Warning, TEXT("True是：,%hhd"),true);
 }
@@ -131,6 +137,26 @@ void ACCharacter::ConfigureOverHeadStatusWidget()
 	{
 		// 使用能力系统组件配置头顶统计量表
 		OverheadStatsGuage->ConfigureWithASC(GetAbilitySystemComponent());
+		//if (!HasAuthority())
+		//{
+			// 获取到本地玩家角色
+			APawn* LocalPlayerPawn = UGameplayStatics::GetPlayerPawn(this, 0);
+			if (LocalPlayerPawn && LocalPlayerPawn->GetClass()->ImplementsInterface(UGenericTeamAgentInterface::StaticClass()))
+			{
+				// 获取本地玩家角色的GenericTeamAgentInterface接口
+				const IGenericTeamAgentInterface* LocalTeamInterface = Cast<IGenericTeamAgentInterface>(LocalPlayerPawn);
+				if (LocalTeamInterface)
+				{
+					UE_LOG(LogTemp, Warning, TEXT("本地玩家 TeamID: %u"), LocalTeamInterface->GetGenericTeamId().GetId());
+					UE_LOG(LogTemp, Warning, TEXT("当前角色 TeamID: %u"), GetGenericTeamId().GetId());
+					UE_LOG(LogTemp, Warning, TEXT("态度: %s"), *UEnum::GetValueAsString(GetTeamAttitudeTowards(*LocalPlayerPawn)));
+
+					// 设置头顶UI组件的血条颜色
+					OverheadStatsGuage->SetHealthBarColor(GetTeamAttitudeTowards(*LocalPlayerPawn));
+				}
+			}
+		//}
+
 		// 显示头顶UI组件
 		OverHeadWidgetComponent->SetHiddenInGame(false);
 
@@ -221,13 +247,16 @@ void ACCharacter::StartDeathSequence()
 	GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_None);
 	// 禁用碰撞
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-
+	// 死掉后禁用感知
+	SetAIPerceptionStimuliSourceEnabled(false);
 	UE_LOG(LogTemp, Warning, TEXT("%s：狗带"),*GetName())
 }
 
 void ACCharacter::Respawn()
 {
 	OnRespawn();
+	// 启用感知
+	SetAIPerceptionStimuliSourceEnabled(true);
 	// 关闭布娃娃
 	SetRagdollEnabled(false);
 	// 开启血条
@@ -281,4 +310,37 @@ FGenericTeamId ACCharacter::GetGenericTeamId() const
 
 void ACCharacter::OnRep_TeamID()
 {
+	// 将头顶UI组件的用户控件对象转换为UOverHeadStatsGauge类型
+	UOverHeadStatsGauge* OverheadStatsGuage = Cast<UOverHeadStatsGauge>(OverHeadWidgetComponent->GetUserWidgetObject());
+
+	// 确保在Owner变化时也刷新团队状态显示
+	if (OverheadStatsGuage)
+	{
+		APawn* LocalPlayerPawn = UGameplayStatics::GetPlayerPawn(this, 0);
+		if (LocalPlayerPawn && LocalPlayerPawn->GetClass()->ImplementsInterface(UGenericTeamAgentInterface::StaticClass()))
+		{
+			const IGenericTeamAgentInterface* LocalTeamInterface = Cast<IGenericTeamAgentInterface>(LocalPlayerPawn);
+			if (LocalTeamInterface)
+			{
+				OverheadStatsGuage->SetHealthBarColor(GetTeamAttitudeTowards(*LocalPlayerPawn));
+			}
+		}
+	}
+}
+
+void ACCharacter::SetAIPerceptionStimuliSourceEnabled(bool bIsEnabled)
+{
+	if (!PerceptionStimuliSourceComponent)
+	{
+		return;
+	}
+
+	if (bIsEnabled)
+	{
+		PerceptionStimuliSourceComponent->RegisterWithPerceptionSystem();
+	}
+	else
+	{
+		PerceptionStimuliSourceComponent->UnregisterFromPerceptionSystem();
+	}
 }

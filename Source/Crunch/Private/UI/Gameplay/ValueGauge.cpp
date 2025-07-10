@@ -22,7 +22,7 @@ void UValueGauge::NativePreConstruct()
 }
 
 void UValueGauge::SetAndBoundToGameplayAttribute(UAbilitySystemComponent* AbilitySystemComponent,
-	const FGameplayAttribute& Attribute, const FGameplayAttribute& MaxAttribute)
+                                                 const FGameplayAttribute& Attribute, const FGameplayAttribute& MaxAttribute)
 {
 	if (AbilitySystemComponent)
 	{
@@ -39,6 +39,9 @@ void UValueGauge::SetAndBoundToGameplayAttribute(UAbilitySystemComponent* Abilit
 		// 注册属性变化回调，当属性值发生变化时更新数值指示器显示
 		AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(Attribute).AddUObject(this, &UValueGauge::ValueChanged);
 		AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(MaxAttribute).AddUObject(this, &UValueGauge::MaxValueChanged);
+
+		// 设置基础颜色
+		// SetBarColor(BarColor);
 	}
 }
 
@@ -67,6 +70,13 @@ void UValueGauge::SetValue(const float NewValue, const float NewMaxValue)
 			FText::AsNumber(NewMaxValue, &FormatOps)     // 最大值
 		)
 	);
+}
+
+void UValueGauge::SetBarColor(FLinearColor NewBarColor)
+{
+	// 设置进度条颜色
+	BarColor = NewBarColor;
+	ProgressBar->SetFillColorAndOpacity(NewBarColor);
 }
 
 void UValueGauge::ValueChanged(const FOnAttributeChangeData& ChangeData)

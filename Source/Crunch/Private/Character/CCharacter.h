@@ -10,6 +10,7 @@
 #include "GenericTeamAgentInterface.h"
 #include "GAS/Core/CAbilitySystemComponent.h"
 #include "GAS/Core/CAttributeSet.h"
+#include "Perception/AIPerceptionStimuliSourceComponent.h"
 #include "CCharacter.generated.h"
 
 UCLASS()
@@ -135,5 +136,13 @@ private:
 
 	UFUNCTION()
 	virtual void OnRep_TeamID();
+#pragma endregion
+#pragma region AI
+private:
+	// 启用/禁用 AI感知刺激源组件
+	void SetAIPerceptionStimuliSourceEnabled(bool bIsEnabled);
+	// AI感知刺激源组件
+	UPROPERTY()
+	TObjectPtr<UAIPerceptionStimuliSourceComponent> PerceptionStimuliSourceComponent;
 #pragma endregion
 };

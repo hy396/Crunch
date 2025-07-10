@@ -3,6 +3,7 @@
 
 #include "UI/Gameplay/OverHeadStatsGauge.h"
 
+#include "GenericTeamAgentInterface.h"
 #include "GAS/Core/CAttributeSet.h"
 
 void UOverHeadStatsGauge::ConfigureWithASC(UAbilitySystemComponent* AbilitySystemComponent)
@@ -11,5 +12,25 @@ void UOverHeadStatsGauge::ConfigureWithASC(UAbilitySystemComponent* AbilitySyste
 	{
 		HealthBar->SetAndBoundToGameplayAttribute(AbilitySystemComponent, UCAttributeSet::GetHealthAttribute(), UCAttributeSet::GetMaxHealthAttribute());
 		ManaBar->SetAndBoundToGameplayAttribute(AbilitySystemComponent, UCAttributeSet::GetManaAttribute(), UCAttributeSet::GetMaxManaAttribute());
+	}
+}
+
+void UOverHeadStatsGauge::SetHealthBarColor(ETeamAttitude::Type TargetTeam)
+{
+	if (HealthBar)
+	{
+		switch (TargetTeam)
+		{
+			case ETeamAttitude::Friendly:
+				// 队友就不用管了，本来就绿绿的
+				// HealthBar->SetBarColor();
+				break;
+			case ETeamAttitude::Hostile:
+				HealthBar->SetBarColor(HostileColor);
+				break;
+			default:
+				HealthBar->SetBarColor(FLinearColor::Yellow);
+				break;
+		}
 	}
 }

@@ -70,9 +70,6 @@ private:
 	// 当前攻击的武器, 我不想一直调用武器组件的接口
 	mutable TWeakObjectPtr<USkeletalMeshComponent> AttackMesh;
 
-	//mutable TWeakObjectPtr<IGenericTeamAgentInterface> OwnerTeamInterface;
-
-	// 阵容处会用到
 	mutable TWeakInterfacePtr<IGenericTeamAgentInterface> OwnerTeamInterface;
 
 	// 定时器代替帧检测,帧检测会丢帧

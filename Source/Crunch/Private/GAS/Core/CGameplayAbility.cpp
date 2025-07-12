@@ -4,6 +4,9 @@
 #include "GAS/Core/CGameplayAbility.h"
 
 #include "AbilitySystemBlueprintLibrary.h"
+#include "TGameplayTags.h"
+#include "GameFramework/Character.h"
+#include "GAS/Abilities/GAP_Launched.h"
 #include "Kismet/KismetSystemLibrary.h"
 
 UAnimInstance* UCGameplayAbility::GetOwnerAnimInstance() const
@@ -82,6 +85,7 @@ TArray<FHitResult> UCGameplayAbility::GetHitResultFromSweepLocationTargetData(
 void UCGameplayAbility::ApplyGameplayEffectToHitResultActor(const FHitResult& HitResult,
 	TSubclassOf<UGameplayEffect> GameplayEffect, int Level)
 {
+	// if (!GameplayEffect) return;
 	// 创建一个传出游戏效果规范句柄，包含指定的GameplayEffect和等级
 	FGameplayEffectSpecHandle EffectSpecHandle = MakeOutgoingGameplayEffectSpec(GameplayEffect, Level);
 
@@ -100,4 +104,43 @@ void UCGameplayAbility::ApplyGameplayEffectToHitResultActor(const FHitResult& Hi
 									GetCurrentActivationInfo(),
 									EffectSpecHandle,
 									UAbilitySystemBlueprintLibrary::AbilityTargetDataFromActor(HitResult.GetActor()));
+}
+
+void UCGameplayAbility::PushSelf(const FVector& PushVel)
+{
+	// 获取有效拥有者角色并执行击飞
+	ACharacter* OwningAvatarCharacter = GetOwningAvatarCharacter();
+	if (OwningAvatarCharacter)
+	{
+		OwningAvatarCharacter->LaunchCharacter(PushVel, true, true);
+	}
+}
+
+void UCGameplayAbility::PushTarget(AActor* Target, const FVector& PushVel)
+{
+	// 目标为空则返回
+	if (!Target) return;
+
+	FGameplayEventData EventData;
+
+	// 创建单目标命中数据对象
+	FGameplayAbilityTargetData_SingleTargetHit* HitData = new FGameplayAbilityTargetData_SingleTargetHit;
+	// 配置命中结果参数
+	FHitResult HitResult;
+	HitResult.ImpactNormal = PushVel; // 设置冲击方向为力的方向
+	HitData->HitResult = HitResult;
+	EventData.TargetData.Add(HitData);
+	// UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(Target, TGameplayTags::Ability_Passive_Launch_Activate, EventData);
+	// 用标签激活技能
+	UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(Target, UGAP_Launched::GetLaunchedAbilityActivationTag(), EventData);
+}
+
+ACharacter* UCGameplayAbility::GetOwningAvatarCharacter()
+{
+	if (!AvatarCharacter)
+	{
+		// 从Actor信息中获取并缓存角色指针
+		AvatarCharacter = Cast<ACharacter>(GetAvatarActorFromActorInfo());
+	}
+	return AvatarCharacter;
 }

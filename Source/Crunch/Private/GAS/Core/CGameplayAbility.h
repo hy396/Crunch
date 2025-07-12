@@ -30,4 +30,21 @@ protected:
 	* @param Level 效果等级，默认为 1，用于控制伤害/增益强度
 	*/
 	void ApplyGameplayEffectToHitResultActor(const FHitResult& HitResult, TSubclassOf<UGameplayEffect> GameplayEffect, int Level = 1);
+
+	UFUNCTION()
+	FORCEINLINE bool ShouldDrawDebug() const { return bShouldDrawDebug; }
+
+	// 推动自己（如击退/击飞）
+	void PushSelf(const FVector& PushVel);
+	void PushTarget(AActor* Target, const FVector& PushVel);
+
+	// 获取拥有者角色指针
+	ACharacter* GetOwningAvatarCharacter();
+private:
+	UPROPERTY(EditDefaultsOnly, Category = "Debug")
+	bool bShouldDrawDebug = false;
+
+	// 缓存的拥有者角色指针
+	UPROPERTY()
+	TObjectPtr<ACharacter> AvatarCharacter;
 };

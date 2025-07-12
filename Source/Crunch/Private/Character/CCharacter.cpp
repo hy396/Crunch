@@ -298,7 +298,7 @@ void ACCharacter::StartDeathSequence()
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	// 死掉后禁用感知
 	SetAIPerceptionStimuliSourceEnabled(false);
-	UE_LOG(LogTemp, Warning, TEXT("%s：狗带"),*GetName())
+	// UE_LOG(LogTemp, Warning, TEXT("%s：狗带"),*GetName())
 }
 
 void ACCharacter::Respawn()
@@ -336,7 +336,7 @@ void ACCharacter::Respawn()
 	{
 		CAbilitySystemComponent->ApplyFullStatEffect();
 	}
-	UE_LOG(LogTemp, Warning, TEXT("%s：复活"),*GetName())
+	// UE_LOG(LogTemp, Warning, TEXT("%s：复活"),*GetName())
 }
 
 void ACCharacter::OnDead()
@@ -371,10 +371,12 @@ void ACCharacter::SetAIPerceptionStimuliSourceEnabled(bool bIsEnabled)
 
 	if (bIsEnabled)
 	{
+		// 启用感知源
 		PerceptionStimuliSourceComponent->RegisterWithPerceptionSystem();
 	}
 	else
 	{
+		// 禁用感知源
 		PerceptionStimuliSourceComponent->UnregisterFromPerceptionSystem();
 	}
 }

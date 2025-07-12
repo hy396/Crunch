@@ -32,10 +32,16 @@ public:
 	 * @param MaxAttribute 最大值的游戏属性
 	 */	
 	void SetAndBoundToGameplayAttribute(UAbilitySystemComponent* AbilitySystemComponent, const FGameplayAttribute& Attribute, const FGameplayAttribute& MaxAttribute);
+
 	void SetValue(float NewValue, float NewMaxValue);
 	// 设置进度条颜色
 	void SetBarColor(FLinearColor BarColor);
-
+	// 我方血条颜色
+	// UPROPERTY(EditAnywhere, Category = "Visual")
+	// FLinearColor FriendlyColor;
+	// // 敌方血条颜色
+	// UPROPERTY(EditAnywhere, Category = "Visual")
+	// FLinearColor HostileColor;
 private:
 	// 回调用函数
 	void ValueChanged(const FOnAttributeChangeData& ChangeData);
@@ -48,15 +54,25 @@ private:
 	// 设置进度条的颜色
 	UPROPERTY(EditAnywhere, Category = "Visual")
 	FLinearColor BarColor;
-
-
 	/**
 	 * @brief 设置文本大小
 	 *
 	 * 可用于动态调整血量、能量等数值显示的字体大小。
 	 */
+	// UPROPERTY(EditAnywhere, Category = "Visual")
+	// float TextSize = 22.0f;
+
+	// 数值文本字体
 	UPROPERTY(EditAnywhere, Category = "Visual")
-	float TextSize = 22.0f;
+	FSlateFontInfo ValueTextFont;
+
+	// 是否显示数值文本
+	UPROPERTY(EditAnywhere, Category = "Visual")
+	bool bValueTextVisible = true;
+    
+	// 是否显示进度条
+	UPROPERTY(EditAnywhere, Category = "Visual")
+	bool bProgressBarVisible = true;
 	
 	UPROPERTY(VisibleAnywhere, meta = (BindWidget))
 	TObjectPtr<UProgressBar> ProgressBar;

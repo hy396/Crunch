@@ -163,23 +163,23 @@ void ACCharacter::ConfigureOverHeadStatusWidget()
 		//if (!HasAuthority())
 		//{
 			// 获取到本地玩家角色
-			// APawn* LocalPlayerPawn = UGameplayStatics::GetPlayerPawn(this, 0);
-			// if (LocalPlayerPawn && LocalPlayerPawn->GetClass()->ImplementsInterface(UGenericTeamAgentInterface::StaticClass()))
-			// {
-			// 	// 获取本地玩家角色的GenericTeamAgentInterface接口
-			// 	const IGenericTeamAgentInterface* LocalTeamInterface = Cast<IGenericTeamAgentInterface>(LocalPlayerPawn);
-			// 	if (LocalTeamInterface)
-			// 	{
-			// 		UE_LOG(LogTemp, Warning, TEXT("本地玩家 TeamID: %u"), LocalTeamInterface->GetGenericTeamId().GetId());
-			// 		UE_LOG(LogTemp, Warning, TEXT("当前角色 TeamID: %u"), GetGenericTeamId().GetId());
-			// 		UE_LOG(LogTemp, Warning, TEXT("态度: %s"), *UEnum::GetValueAsString(GetTeamAttitudeTowards(*LocalPlayerPawn)));
-			//
-			// 		// 设置头顶UI组件的血条颜色
-			// 		OverheadStatsGuage->SetHealthBarColor(GetTeamAttitudeTowards(*LocalPlayerPawn));
-			// 	}
-			// }
+			APawn* LocalPlayerPawn = UGameplayStatics::GetPlayerPawn(this, 0);
+			if (LocalPlayerPawn && LocalPlayerPawn->GetClass()->ImplementsInterface(UGenericTeamAgentInterface::StaticClass()))
+			{
+				// 获取本地玩家角色的GenericTeamAgentInterface接口
+				const IGenericTeamAgentInterface* LocalTeamInterface = Cast<IGenericTeamAgentInterface>(LocalPlayerPawn);
+				if (LocalTeamInterface)
+				{
+					// UE_LOG(LogTemp, Warning, TEXT("本地玩家 TeamID: %u"), LocalTeamInterface->GetGenericTeamId().GetId());
+					// UE_LOG(LogTemp, Warning, TEXT("当前角色 TeamID: %u"), GetGenericTeamId().GetId());
+					// UE_LOG(LogTemp, Warning, TEXT("态度: %s"), *UEnum::GetValueAsString(GetTeamAttitudeTowards(*LocalPlayerPawn)));
+
+					// 设置头顶UI组件的血条颜色
+					OverheadStatsGuage->SetHealthBarColor(GetTeamAttitudeTowards(*LocalPlayerPawn));
+				}
+			}
 		// 设置头顶UI颜色
-			SetOverHeadWidgetColor();
+		//	SetOverHeadWidgetColor();
 		//}
 
 		// 显示头顶UI组件
@@ -229,9 +229,26 @@ void ACCharacter::SetStatusGaugeEnabled(bool bIsEnabled)
 	}
 }
 
+bool ACCharacter::IsDead() const
+{
+	return GetAbilitySystemComponent()->HasMatchingGameplayTag(TGameplayTags::Stats_Dead);
+}
+
+void ACCharacter::RespawnImmediately()
+{
+	// 仅在服务器上执行：移除所有带有“死亡”标签的激活效果，实现立即复活
+	if (HasAuthority())
+	{
+		GetAbilitySystemComponent()->RemoveActiveEffectsWithGrantedTags(FGameplayTagContainer(TGameplayTags::Stats_Dead));
+	}
+}
+
 void ACCharacter::DeathMontageFinished()
 {
-	SetRagdollEnabled(true);
+	if (IsDead())
+	{
+		SetRagdollEnabled(true);
+	}
 }
 
 void ACCharacter::SetRagdollEnabled(bool bIsEnabled)

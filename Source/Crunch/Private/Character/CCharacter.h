@@ -95,6 +95,18 @@ private:
 	void SetStatusGaugeEnabled(bool bIsEnabled);
 #pragma endregion
 #pragma region 死亡和复活 (Death and Respawn)
+public:
+	/**
+	 * @brief 检查角色当前是否处于死亡状态
+	 * 
+	 * @return bool true表示角色已死亡，false表示存活
+	 */
+	bool IsDead() const;
+
+	/**
+	 * @brief 立即执行角色重生操作
+	 */
+	void RespawnImmediately();
 private:
 	// 相对于网格的变换
 	FTransform MeshRelativeTransform;

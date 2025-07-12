@@ -10,15 +10,11 @@ void UValueGauge::NativePreConstruct()
 	Super::NativePreConstruct();
 	// 设置进度条颜色
 	ProgressBar->SetFillColorAndOpacity(BarColor);
-	if (ValueText)
-	{
-		// 获取当前字体设置
-		FSlateFontInfo FontInfo = ValueText->GetFont();
-		// 更新字体大小
-		FontInfo.Size = TextSize;
-		// 应用新的字体设置到文本组件
-		ValueText->SetFont(FontInfo);
-	}
+	
+	ValueText->SetFont(ValueTextFont);
+
+	ValueText->SetVisibility(bValueTextVisible ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
+	ProgressBar->SetVisibility(bProgressBarVisible ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
 }
 
 void UValueGauge::SetAndBoundToGameplayAttribute(UAbilitySystemComponent* AbilitySystemComponent,

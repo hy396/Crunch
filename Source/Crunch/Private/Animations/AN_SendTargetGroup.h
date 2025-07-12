@@ -28,7 +28,7 @@ private:
 
 	// 是否绘制调试轨迹
 	UPROPERTY(EditAnywhere, Category = "Gameplay Ability")
-	bool bDrawDebug = true;
+	bool bDrawDebug = false;
 	
 	// 是否忽略自己
 	UPROPERTY(EditAnywhere, Category = "Gameplay Ability")

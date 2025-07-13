@@ -80,6 +80,11 @@ private:
 	// 玩家的输入开关
 	void SetInputEnabledFromPlayerController(bool bEnabled);
 #pragma endregion
+#pragma region 眩晕(Stun)
+private:
+	virtual void OnStun();
+	virtual void OnRecoverFromStun();
+#pragma endregion
 
 #pragma region 死亡和复活 (Death and Respawn)
 	virtual void OnDead() override;

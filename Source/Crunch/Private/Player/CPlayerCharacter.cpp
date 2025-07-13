@@ -3,12 +3,14 @@
 
 #include "Crunch/Private/Player/CPlayerCharacter.h"
 
+#include "AbilitySystemBlueprintLibrary.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
+#include "GAS/Core/TGameplayTags.h"
 
 
 ACPlayerCharacter::ACPlayerCharacter()
@@ -127,6 +129,16 @@ void ACPlayerCharacter::HandleAbilityInput(const FInputActionValue& InputActionV
 	{
 		GetAbilitySystemComponent()->AbilityLocalInputReleased(static_cast<int32>(InputID));
 	}
+
+	// 按下的是普攻键
+	if (InputID == ECAbilityInputID::BasicAttack)
+	{
+		FGameplayTag BasicAttackTag = bPressed ? TGameplayTags::Ability_BasicAttack_Pressed : TGameplayTags::Ability_BasicAttack_Released;
+		// 1. 本地直接广播（触发客户端即时反馈）
+		// 2. 服务器RPC广播（确保权威状态同步）
+		UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(this, BasicAttackTag, FGameplayEventData());
+		Server_SendGameplayEventToSelf(BasicAttackTag, FGameplayEventData());
+	}
 }
 
 void ACPlayerCharacter::SetInputEnabledFromPlayerController(bool bEnabled)
@@ -149,6 +161,18 @@ void ACPlayerCharacter::SetInputEnabledFromPlayerController(bool bEnabled)
 		// 禁用玩家控制器输入
 		DisableInput(PlayerController);
 	}
+}
+
+void ACPlayerCharacter::OnStun()
+{
+	SetInputEnabledFromPlayerController(false);
+}
+
+void ACPlayerCharacter::OnRecoverFromStun()
+{
+	if (IsDead()) return;
+	
+	SetInputEnabledFromPlayerController(true);
 }
 
 void ACPlayerCharacter::OnDead()

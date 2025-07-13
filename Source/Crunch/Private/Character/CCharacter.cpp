@@ -3,6 +3,7 @@
 
 #include "Crunch/Private/Character/CCharacter.h"
 
+#include "AbilitySystemBlueprintLibrary.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -118,11 +119,28 @@ UAbilitySystemComponent* ACCharacter::GetAbilitySystemComponent() const
 	return CAbilitySystemComponent;
 }
 
-	void ACCharacter::BindGASChangeDelegates()
+void ACCharacter::Server_SendGameplayEventToSelf_Implementation(const FGameplayTag& EventTag,
+	const FGameplayEventData& EventData)
+{
+	UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(this, EventTag, EventData);
+}
+
+/**
+ * @brief 验证在服务器端向自身发送游戏事件的操作是否有效
+ */
+bool ACCharacter::Server_SendGameplayEventToSelf_Validate(const FGameplayTag& EventTag,
+                                                          const FGameplayEventData& EventData)
+{
+	// 返回 true,表示操作有效
+	return true;
+}
+
+void ACCharacter::BindGASChangeDelegates()
 {
 	if (CAbilitySystemComponent)
 	{
 		CAbilitySystemComponent->RegisterGameplayTagEvent(TGameplayTags::Stats_Dead).AddUObject(this, &ACCharacter::DeathTagUpdated);
+		CAbilitySystemComponent->RegisterGameplayTagEvent(TGameplayTags::Stats_Stun).AddUObject(this, &ACCharacter::StunTagUpdated);
 	}
 }
 
@@ -136,6 +154,29 @@ void ACCharacter::DeathTagUpdated(const FGameplayTag Tag, int32 NewCount)
 	{
 		Respawn();
 	}
+}
+
+void ACCharacter::StunTagUpdated(const FGameplayTag Tag, int32 NewCount)
+{
+	if (IsDead()) return;
+
+	if (NewCount != 0)
+	{
+		OnStun();
+		PlayAnimMontage(StunMontage);
+	}else
+	{
+		OnRecoverFromStun();
+		StopAnimMontage(StunMontage);
+	}
+}
+
+void ACCharacter::OnStun()
+{
+}
+
+void ACCharacter::OnRecoverFromStun()
+{
 }
 
 void ACCharacter::ConfigureOverHeadStatusWidget()
@@ -293,7 +334,7 @@ void ACCharacter::StartDeathSequence()
 	// 关闭头顶血条
 	SetStatusGaugeEnabled(false);
 	// 禁用移动
-	GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_None);
+	// GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_None);
 	// 禁用碰撞
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	// 死掉后禁用感知
@@ -311,7 +352,7 @@ void ACCharacter::Respawn()
 	// 开启血条
 	SetStatusGaugeEnabled(true);
 	// 开启移动
-	GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_Walking);
+	// GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_Walking);
 	// 开启碰撞
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 	// 停止所有蒙太奇

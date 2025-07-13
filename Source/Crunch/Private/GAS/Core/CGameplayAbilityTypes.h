@@ -26,3 +26,19 @@ enum class ECAbilityInputID : uint8
 	Cancel							UMETA(DisplayName="取消")
 };
 
+// 伤害效果定义
+USTRUCT(BlueprintType)
+struct FGenericDamageEffectDef
+{
+	GENERATED_BODY()
+
+public:
+	FGenericDamageEffectDef();
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<UGameplayEffect> DamageEffect;
+
+	UPROPERTY(EditAnywhere)
+	FVector PushVelocity;
+};
+

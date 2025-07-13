@@ -14,7 +14,10 @@ UCLASS()
 class UCGameplayAbility : public UGameplayAbility
 {
 	GENERATED_BODY()
+public:
+	UCGameplayAbility();
 protected:
+	// 获取拥有者的动画实例
 	UAnimInstance* GetOwnerAnimInstance() const;
 	// 毫无用武之地
 	TArray<FHitResult> GetHitResultFromSweepLocationTargetData(const FGameplayAbilityTargetDataHandle& TargetDataHandle, float SphereSweepRadius = 30.f, ETeamAttitude::Type TargetTeam = ETeamAttitude::Hostile, bool bDrawDebug = true, bool bIgnoreSelf = true) const;

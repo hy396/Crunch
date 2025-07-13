@@ -44,11 +44,18 @@ public:
 #pragma region GAS组件相关
 public:
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
+
+	// 在服务器端向自身发送游戏事件
+	UFUNCTION(Server, Reliable, WithValidation)
+	void Server_SendGameplayEventToSelf(const FGameplayTag& EventTag, const FGameplayEventData& EventData);
 private:
 	// 绑定GAS属性改变委托
 	void BindGASChangeDelegates();
 	// 死亡标签的更新
 	void DeathTagUpdated(const FGameplayTag Tag, int32 NewCount);
+	// 眩晕标签的更新
+	void StunTagUpdated(const FGameplayTag Tag, int32 NewCount);
+	
 	UPROPERTY(VisibleDefaultsOnly, Category = "Gameplay Ability")
 	TObjectPtr<UCAbilitySystemComponent> CAbilitySystemComponent;
 	UPROPERTY()
@@ -93,6 +100,14 @@ private:
 	 * @param bIsEnabled 是否启用头顶UI
 	 */
 	void SetStatusGaugeEnabled(bool bIsEnabled);
+#pragma endregion
+#pragma region 眩晕(Stun)
+private:
+	UPROPERTY(EditDefaultsOnly, Category = "Stun")
+	UAnimMontage* StunMontage;
+
+	virtual void OnStun();
+	virtual void OnRecoverFromStun();
 #pragma endregion
 #pragma region 死亡和复活 (Death and Respawn)
 public:

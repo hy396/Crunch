@@ -9,6 +9,12 @@
 #include "GAS/Abilities/GAP_Launched.h"
 #include "Kismet/KismetSystemLibrary.h"
 
+UCGameplayAbility::UCGameplayAbility()
+{
+	// 眩晕状态无法激活技能
+	ActivationBlockedTags.AddTag(TGameplayTags::Stats_Stun);
+}
+
 UAnimInstance* UCGameplayAbility::GetOwnerAnimInstance() const
 {
 	USkeletalMeshComponent* OwnerSkeletalMeshComp = GetOwningComponentFromActorInfo();

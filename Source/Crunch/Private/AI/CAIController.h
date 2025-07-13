@@ -66,4 +66,10 @@ private:
 
 	// 监听Pawn死亡Tag变化，控制AI逻辑启停
 	void PawnDeadTagUpdated(const FGameplayTag Tag, int32 Count);
+	// 监听Pawn眩晕Tag变化，控制AI逻辑启停
+	void PawnStunTagUpdated(const FGameplayTag Tag, int32 Count);
+
+	// 标记AI当前是否处于死亡状态
+	bool bIsPawnDead = false;
+
 };

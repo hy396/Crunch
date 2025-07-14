@@ -28,7 +28,8 @@ public:
 	bool IsLocallyControlledByPlayer() const;
 
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
-
+	// 获取技能表
+	const TMap<ECAbilityInputID, TSubclassOf<UGameplayAbility>>& GetAbilities() const;
 	// 头顶UI颜色
 	void SetOverHeadWidgetColor();
 

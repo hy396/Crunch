@@ -23,6 +23,8 @@ public:
 	// 回满血、满蓝效果
 	void ApplyFullStatEffect();
 
+	const TMap<ECAbilityInputID, TSubclassOf<UGameplayAbility>>& GetAbilities() const;
+
 	// 添加GE
 	void AuthApplyGameplayEffect(TSubclassOf<UGameplayEffect> GameplayEffect, int Level = 1);
 private:

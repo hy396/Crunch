@@ -58,6 +58,8 @@ void ACPlayerController::SpawnGameplayWidget()
 		{
 			// 添加到视口中
 			GameplayWidget->AddToViewport();
+			// 将技能数据传递给UI
+			GameplayWidget->ConfigureAbilities(CPlayerCharacter->GetAbilities());
 		}
 	}
 }

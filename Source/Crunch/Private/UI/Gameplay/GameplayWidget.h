@@ -4,7 +4,9 @@
 
 #include "CoreMinimal.h"
 #include "ValueGauge.h"
+#include "Abilities/AbilityListView.h"
 #include "Blueprint/UserWidget.h"
+#include "GAS/Core/CGameplayAbilityTypes.h"
 #include "GameplayWidget.generated.h"
 
 /**
@@ -17,6 +19,8 @@ class UGameplayWidget : public UUserWidget
 public:
 	// 当Widget被创建并添加到视口时，此函数会被自动调用
 	virtual void NativeConstruct() override;
+
+	void ConfigureAbilities(const TMap<ECAbilityInputID, TSubclassOf<UGameplayAbility>>& Abilities);
 private:
 	// 生命进度条
 	UPROPERTY(meta = (BindWidget))
@@ -25,6 +29,10 @@ private:
 	// 法力进度条
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UValueGauge> ManaBar;
+
+	// 技能列表
+	UPROPERTY(meta=(BindWidget))
+	TObjectPtr<UAbilityListView> AbilityListView;
 
 	UPROPERTY()
 	TObjectPtr<UAbilitySystemComponent> OwnerAbilitySystemComponent;

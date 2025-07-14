@@ -57,6 +57,11 @@ void ACCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifet
 	DOREPLIFETIME(ACCharacter, TeamID);
 }
 
+const TMap<ECAbilityInputID, TSubclassOf<UGameplayAbility>>& ACCharacter::GetAbilities() const
+{
+	return CAbilitySystemComponent->GetAbilities();
+}
+
 void ACCharacter::SetOverHeadWidgetColor()
 {
 	// 将头顶UI组件的用户控件对象转换为UOverHeadStatsGauge类型

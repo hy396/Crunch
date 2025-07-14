@@ -6,6 +6,7 @@
 #include "AbilitySystemComponent.h"
 #include "GAS/Core/CAttributeSet.h"
 
+
 void UGameplayWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
@@ -16,4 +17,9 @@ void UGameplayWidget::NativeConstruct()
 		HealthBar->SetAndBoundToGameplayAttribute(OwnerAbilitySystemComponent, UCAttributeSet::GetHealthAttribute(), UCAttributeSet::GetMaxHealthAttribute());
 		ManaBar->SetAndBoundToGameplayAttribute(OwnerAbilitySystemComponent, UCAttributeSet::GetManaAttribute(), UCAttributeSet::GetMaxManaAttribute());
 	}
+}
+
+void UGameplayWidget::ConfigureAbilities(const TMap<ECAbilityInputID, TSubclassOf<UGameplayAbility>>& Abilities)
+{
+	AbilityListView->ConfigureAbilities(Abilities);
 }

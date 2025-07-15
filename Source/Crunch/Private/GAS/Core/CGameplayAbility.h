@@ -39,7 +39,13 @@ protected:
 
 	// 推动自己（如击退/击飞）
 	void PushSelf(const FVector& PushVel);
+	// 推动目标
 	void PushTarget(AActor* Target, const FVector& PushVel);
+	// 推动多个目标
+	void PushTargets(const TArray<AActor*>& Targets, const FVector& PushVel);
+	// 推动TargetData中的所有目标
+	void PushTargets(const FGameplayAbilityTargetDataHandle& TargetDataHandle, const FVector& PushVel);
+
 
 	// 获取拥有者角色指针
 	ACharacter* GetOwningAvatarCharacter();

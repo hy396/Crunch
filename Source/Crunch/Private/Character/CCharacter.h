@@ -56,7 +56,13 @@ private:
 	void DeathTagUpdated(const FGameplayTag Tag, int32 NewCount);
 	// 眩晕标签的更新
 	void StunTagUpdated(const FGameplayTag Tag, int32 NewCount);
-	
+	// 瞄准标签变化回调
+	void AimTagUpdated(const FGameplayTag Tag, int32 NewCount);
+
+	// 设置是否处于瞄准状态
+	void SetIsAiming(bool bIsAiming);
+	// 瞄准状态变化时回调
+	virtual void OnAimStateChanged(bool bIsAiming);
 	UPROPERTY(VisibleDefaultsOnly, Category = "Gameplay Ability")
 	TObjectPtr<UCAbilitySystemComponent> CAbilitySystemComponent;
 	UPROPERTY()

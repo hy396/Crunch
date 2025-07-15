@@ -10,6 +10,7 @@
 
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
+#include "Crunch/Crunch.h"
 #include "GAS/Core/TGameplayTags.h"
 
 
@@ -19,7 +20,7 @@ ACPlayerCharacter::ACPlayerCharacter()
 	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
 	CameraBoom->SetupAttachment(GetRootComponent()); // 将弹簧臂组件附加到角色的根组件
 	CameraBoom->bUsePawnControlRotation = true; // 使用Pawn控制旋转
-	//CameraBoom->ProbeChannel = ECC_SpringArm;
+	CameraBoom->ProbeChannel = ECC_SPRING_ARM;
 	CameraBoom->TargetArmLength = 800.0f; // 设置弹簧臂的长度为800
 	CameraBoom->SetRelativeRotation(FRotator(0.0f, 50.0f, 0.0f));// 设置弹簧臂的高度为50
 
@@ -74,21 +75,6 @@ void ACPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 			EnhancedInputComponent->BindAction(InputActionPair.Value, ETriggerEvent::Triggered, this, &ACPlayerCharacter::HandleAbilityInput, InputActionPair.Key);
 		}
 	}
-}
-
-FVector ACPlayerCharacter::GetLookRightDir() const
-{
-	return ViewCamera->GetRightVector();
-}
-
-FVector ACPlayerCharacter::GetLookFwdDir() const
-{
-	return ViewCamera->GetForwardVector();
-}
-
-FVector ACPlayerCharacter::GetMoveFwdDir() const
-{
-	return FVector::CrossProduct(GetLookRightDir(), FVector::UpVector);
 }
 
 void ACPlayerCharacter::HandleLookInput(const FInputActionValue& InputActionValue)
@@ -187,4 +173,61 @@ void ACPlayerCharacter::OnRespawn()
 	SetInputEnabledFromPlayerController(true);
 }
 
+FVector ACPlayerCharacter::GetLookRightDir() const
+{
+	return ViewCamera->GetRightVector();
+}
+
+FVector ACPlayerCharacter::GetLookFwdDir() const
+{
+	return ViewCamera->GetForwardVector();
+}
+
+FVector ACPlayerCharacter::GetMoveFwdDir() const
+{
+	return FVector::CrossProduct(GetLookRightDir(), FVector::UpVector);
+}
+
+void ACPlayerCharacter::OnAimStateChanged(bool bIsAiming)
+{
+	// 瞄准状态变化时，插值相机到瞄准或默认位置
+	LerpCameraToLocalOffsetLocation(bIsAiming ? CameraAimLocalOffset : FVector{0.f});
+}
+
+void ACPlayerCharacter::LerpCameraToLocalOffsetLocation(const FVector& Goal)
+{
+	GetWorldTimerManager().ClearTimer(CameraLerpTimerHandle);
+
+	// 下一帧执行，采取递归的方式
+	CameraLerpTimerHandle = GetWorldTimerManager().SetTimerForNextTick(
+		FTimerDelegate::CreateUObject(
+			this,
+			&ACPlayerCharacter::TickCameraLocalOffsetLerp,
+			Goal));
+}
+
+void ACPlayerCharacter::TickCameraLocalOffsetLerp(FVector Goal)
+{
+	// 获取相机的位置
+	FVector CurrentLocalOffset = ViewCamera->GetRelativeLocation();
+
+	// 如果相机位置与目标位置的距离小于1，则直接设置相机位置
+	if (FVector::Dist(CurrentLocalOffset, Goal) < 1.f)
+	{
+		ViewCamera->SetRelativeLocation(Goal);
+		return;
+	}
+	// 计算插值系数，保证插值平滑且不超过1
+	float LerpAlpha = FMath::Clamp(GetWorld()->GetDeltaSeconds() * CameraLerpSpeed, 0.f, 1.f);
+	// 执行线性插值计算新位置
+	FVector NewLocalOffset = FMath::Lerp(CurrentLocalOffset, Goal, LerpAlpha);
+	// 设置相机位置
+	ViewCamera->SetRelativeLocation(NewLocalOffset);
+	// 继续下一帧插值，直到到达目标位置
+	CameraLerpTimerHandle = GetWorldTimerManager().SetTimerForNextTick(
+		FTimerDelegate::CreateUObject(
+			this,
+			&ACPlayerCharacter::TickCameraLocalOffsetLerp,
+			Goal));
+}
 

@@ -15,7 +15,7 @@ enum class ECAbilityInputID : uint8
 {
 	None							UMETA(DisplayName="None"),
 	BasicAttack						UMETA(DisplayName="基础攻击"),
-	Aim								UMETA(DisplayName="Aim"),
+	Aim								UMETA(DisplayName="瞄准"),
 	AbilityOne						UMETA(DisplayName="一技能"),
 	AbilityTwo						UMETA(DisplayName="二技能"),
 	AbilityThree					UMETA(DisplayName="三技能"),

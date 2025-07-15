@@ -22,8 +22,11 @@ namespace TGameplayTags
 
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Ability_Uppercut_Launch, "Ability.Uppercut.Launch", "升龙拳攻击")
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Ability_Uppercut_Cooldown, "Ability.Uppercut.Cooldown", "升龙拳技能冷却")
+
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Ability_GroundBlast_Cooldown, "Ability.GroundBlast.Cooldown", "大地爆炸技能冷却")
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Ability_Passive_Launch_Activate, "Ability.Passive.Launch.Activate", "击飞被动技能激活")
 	
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Stats_Dead, "Stats.Dead", "死亡")
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Stats_Stun, "Stats.Stun", "眩晕")
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Stats_Aim, "Stats.Aim", "瞄准")
 }

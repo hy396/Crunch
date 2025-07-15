@@ -33,6 +33,8 @@
     <file url="file://$PROJECT_DIR$/Source/Crunch/Private/GAS/Core/CGameplayAbilityTypes.h" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/Crunch/Private/GAS/Core/TGameplayTags.cpp" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/Crunch/Private/GAS/Core/TGameplayTags.h" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Source/Crunch/Private/GAS/TA/TargetActor_GroundPick.cpp" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Source/Crunch/Private/GAS/TA/TargetActor_GroundPick.h" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/Crunch/Private/Player/CPlayerCharacter.cpp" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/Crunch/Private/Player/CPlayerCharacter.h" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/Crunch/Private/Player/CPlayerController.cpp" charset="UTF-8" />

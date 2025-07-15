@@ -17,6 +17,8 @@ class UCAbilitySystemStatics : public UBlueprintFunctionLibrary
 	GENERATED_BODY()
 public:
 	static FGameplayTag GetBasicAttackAbilityTag();
+	// 获取摄像机震动游戏事件标签
+	static FGameplayTag GetCameraShakeGameplayCueTag();
 
 	// 获取技能冷却
 	static float GetStaticCooldownDurationForAbility(const UGameplayAbility* Ability);

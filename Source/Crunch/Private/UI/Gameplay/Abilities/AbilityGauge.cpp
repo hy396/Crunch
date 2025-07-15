@@ -61,6 +61,8 @@ void UAbilityGauge::AbilityCommitted(UGameplayAbility* Ability)
 		// 返回当前激活的冷却剩余时间（秒）及该冷却的原始持续时间
 		Ability->GetCooldownTimeRemainingAndDuration(Ability->GetCurrentAbilitySpecHandle(), Ability->GetCurrentActorInfo(), CooldownTimeRemaining, CooldownDuration);
 
+		// 获取到的冷却为0，不启动定时器，退出（出现这样的结果可能是没有设置cd的GE，这样启动的定时器会变成负数）
+		if (CooldownDuration == 0.f) return;
 		// 启动UI技能冷却
 		StartCooldown(CooldownTimeRemaining, CooldownDuration);
 	}
@@ -105,4 +107,9 @@ void UAbilityGauge::UpdateCooldown()
 	FNumberFormattingOptions* FormattingOptions = CachedCooldownTimeRemaining > 1 ? &WholeNumberFormattingOptions : &TwoDigitNumberFormattingOptions;
 	Icon->GetDynamicMaterial()->SetScalarParameterValue(CooldownPercentParamName, 1.0f - CachedCooldownTimeRemaining / CachedCooldownDuration);
 	CooldownCounterText->SetText(FText::AsNumber(CachedCooldownTimeRemaining, FormattingOptions));
+
+	// if (CachedCooldownTimeRemaining <= 0.f)
+	// {
+	// 	CooldownFinished();
+	// }
 }

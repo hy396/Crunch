@@ -6,6 +6,7 @@
 #include "AbilitySystemBlueprintLibrary.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/SkeletalMeshComponent.h"
+#include "Crunch/Crunch.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GAS/Core/TGameplayTags.h"
 #include "Kismet/GameplayStatics.h"
@@ -18,7 +19,12 @@ ACCharacter::ACCharacter()
 	PrimaryActorTick.bCanEverTick = true;
 	// 禁用网格的碰撞功能
 	GetMesh()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	// 忽略弹簧臂的碰撞
+	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_SPRING_ARM, ECR_Ignore);
+	// 忽略目标的碰撞
+	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_TARGET, ECR_Ignore);
 
+	
 	CAbilitySystemComponent = CreateDefaultSubobject<UCAbilitySystemComponent>(TEXT("CAbilitySystemComponent"));
 	CAttributeSet = CreateDefaultSubobject<UCAttributeSet>(TEXT("CAttributeSet"));
 	//CAbilitySystemComponent->SetIsReplicated(true); //设置组件用于在网络上复制,经过我的测试本来就是true
@@ -146,6 +152,7 @@ void ACCharacter::BindGASChangeDelegates()
 	{
 		CAbilitySystemComponent->RegisterGameplayTagEvent(TGameplayTags::Stats_Dead).AddUObject(this, &ACCharacter::DeathTagUpdated);
 		CAbilitySystemComponent->RegisterGameplayTagEvent(TGameplayTags::Stats_Stun).AddUObject(this, &ACCharacter::StunTagUpdated);
+		CAbilitySystemComponent->RegisterGameplayTagEvent(TGameplayTags::Stats_Aim).AddUObject(this, &ACCharacter::AimTagUpdated);
 	}
 }
 
@@ -174,6 +181,26 @@ void ACCharacter::StunTagUpdated(const FGameplayTag Tag, int32 NewCount)
 		OnRecoverFromStun();
 		StopAnimMontage(StunMontage);
 	}
+}
+
+void ACCharacter::AimTagUpdated(const FGameplayTag Tag, int32 NewCount)
+{
+	SetIsAiming(NewCount != 0);
+}
+
+void ACCharacter::SetIsAiming(bool bIsAiming)
+{
+	// 设置角色是否使用控制器的Yaw轴旋转（用于瞄准）
+	bUseControllerRotationYaw = bIsAiming;
+    
+	// 设置角色移动组件是否根据移动方向自动调整旋转（非瞄准状态下启用）
+	GetCharacterMovement()->bOrientRotationToMovement = !bIsAiming;
+	OnAimStateChanged(bIsAiming);
+}
+
+void ACCharacter::OnAimStateChanged(bool bIsAiming)
+{
+	// 子类中重写
 }
 
 void ACCharacter::OnStun()

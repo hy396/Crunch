@@ -29,10 +29,15 @@ namespace TGameplayTags
 	// 升龙拳
 	CRUNCH_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Ability_Uppercut_Launch)
 	CRUNCH_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Ability_Uppercut_Cooldown)
+
+	// 大地爆炸cd
+	CRUNCH_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Ability_GroundBlast_Cooldown)
 	// 击飞被动
 	CRUNCH_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Ability_Passive_Launch_Activate)
 	// 死亡
 	CRUNCH_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Stats_Dead)
 	// 眩晕
 	CRUNCH_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Stats_Stun)
+	// 瞄准
+	CRUNCH_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Stats_Aim)
 }

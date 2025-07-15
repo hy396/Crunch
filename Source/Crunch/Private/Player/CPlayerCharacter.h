@@ -55,7 +55,13 @@ private:
 	 * @return FVector 前向移动方向向量
 	 */
 	FVector GetMoveFwdDir() const;
-	
+#pragma region Gameplay Ability
+private:
+	// 瞄准状态变化时回调
+	virtual void OnAimStateChanged(bool bIsAiming) override;
+	// UPROPERTY()
+	// class UCHeroAttributeSet* HeroAttributeSet;
+#pragma endregion
 #pragma region Input
 private:
 	UPROPERTY(EditDefaultsOnly, Category = "Input")
@@ -89,5 +95,25 @@ private:
 #pragma region 死亡和复活 (Death and Respawn)
 	virtual void OnDead() override;
 	virtual void OnRespawn() override;
+#pragma endregion
+
+#pragma region 摄像机视角
+private:
+	// 瞄准时相机的本地偏移量
+	UPROPERTY(EditDefaultsOnly, Category = view)
+	FVector CameraAimLocalOffset;
+
+	// 相机插值速度
+	UPROPERTY(EditDefaultsOnly, Category = view)
+	float CameraLerpSpeed = 20.f;
+    
+	// 相机插值定时器句柄
+	FTimerHandle CameraLerpTimerHandle;
+
+	// 插值相机到目标本地偏移位置
+	void LerpCameraToLocalOffsetLocation(const FVector& Goal);
+
+	// 相机插值Tick回调
+	void TickCameraLocalOffsetLerp(FVector Goal);
 #pragma endregion
 };

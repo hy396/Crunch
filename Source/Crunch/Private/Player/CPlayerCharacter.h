@@ -6,6 +6,7 @@
 #include "InputActionValue.h"
 #include "Crunch/Private/Character/CCharacter.h"
 #include "GAS/Core/CGameplayAbilityTypes.h"
+#include "GAS/Core/CHeroAttributeSet.h"
 #include "CPlayerCharacter.generated.h"
 
 class UInputAction;
@@ -59,8 +60,8 @@ private:
 private:
 	// 瞄准状态变化时回调
 	virtual void OnAimStateChanged(bool bIsAiming) override;
-	// UPROPERTY()
-	// class UCHeroAttributeSet* HeroAttributeSet;
+	UPROPERTY()
+	TObjectPtr<UCHeroAttributeSet> HeroAttributeSet;
 #pragma endregion
 #pragma region Input
 private:
@@ -88,8 +89,8 @@ private:
 #pragma endregion
 #pragma region 眩晕(Stun)
 private:
-	virtual void OnStun();
-	virtual void OnRecoverFromStun();
+	virtual void OnStun() override;
+	virtual void OnRecoverFromStun() override;
 #pragma endregion
 
 #pragma region 死亡和复活 (Death and Respawn)

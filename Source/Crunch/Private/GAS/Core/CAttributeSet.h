@@ -44,6 +44,25 @@ public:
 	FGameplayAttributeData MaxMana;
 	ATTRIBUTE_ACCESSORS(UCAttributeSet, MaxMana)
 
+	// 攻击力
+	UPROPERTY(ReplicatedUsing = OnRep_AttackDamage)
+	FGameplayAttributeData AttackDamage;
+	ATTRIBUTE_ACCESSORS(UCAttributeSet, AttackDamage)
+	// 护甲值
+	UPROPERTY(ReplicatedUsing = OnRep_Armor)
+	FGameplayAttributeData Armor;
+	ATTRIBUTE_ACCESSORS(UCAttributeSet, Armor)
+
+	// 移动速度
+	UPROPERTY(ReplicatedUsing = OnRep_MoveSpeed)
+	FGameplayAttributeData MoveSpeed;
+	ATTRIBUTE_ACCESSORS(UCAttributeSet, MoveSpeed)
+
+	// 移动加速度
+	UPROPERTY(ReplicatedUsing = OnRep_MoveAcceleration)
+	FGameplayAttributeData MoveAcceleration;
+	ATTRIBUTE_ACCESSORS(UCAttributeSet, MoveAcceleration)
+
 	UFUNCTION()
 	void OnRep_Health(const FGameplayAttributeData& OldHealth);
 	UFUNCTION()
@@ -52,4 +71,12 @@ public:
 	void OnRep_Mana(const FGameplayAttributeData& OldMana);
 	UFUNCTION()
 	void OnRep_MaxMana(const FGameplayAttributeData& OldMaxMana);
+	UFUNCTION()
+	void OnRep_AttackDamage(const FGameplayAttributeData& OldValue);
+	UFUNCTION()
+	void OnRep_Armor(const FGameplayAttributeData& OldValue);
+	UFUNCTION()
+	void OnRep_MoveSpeed(const FGameplayAttributeData& OldValue);
+	UFUNCTION()
+	void OnRep_MoveAcceleration(const FGameplayAttributeData& OldValue);
 };

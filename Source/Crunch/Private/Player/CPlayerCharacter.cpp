@@ -32,6 +32,8 @@ ACPlayerCharacter::ACPlayerCharacter()
 	bUseControllerRotationYaw = false; // 禁用控制器的Yaw旋转
 	GetCharacterMovement()->bOrientRotationToMovement = true; // 旋转角色以匹配移动方向
 	GetCharacterMovement()->RotationRate = FRotator(0.0f, 720.0f, 0.0f); // 设置角色的旋转速率
+
+	HeroAttributeSet = CreateDefaultSubobject<UCHeroAttributeSet>(TEXT("HeroAttributeSet"));
 }
 
 void ACPlayerCharacter::PawnClientRestart()

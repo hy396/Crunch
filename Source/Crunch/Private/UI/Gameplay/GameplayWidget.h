@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "StatsGauge.h"
 #include "ValueGauge.h"
 #include "Abilities/AbilityListView.h"
 #include "Blueprint/UserWidget.h"
@@ -33,6 +34,26 @@ private:
 	// 技能列表
 	UPROPERTY(meta=(BindWidget))
 	TObjectPtr<UAbilityListView> AbilityListView;
+
+	// 属性面板：攻击力显示控件
+	UPROPERTY(meta=(BindWidget))
+	TObjectPtr<UStatsGauge> AttackDamageGauge;
+
+	// 属性面板：护甲显示控件
+	UPROPERTY(meta=(BindWidget))
+	TObjectPtr<UStatsGauge> ArmorGauge;
+
+	// 属性面板：移动速度显示控件
+	UPROPERTY(meta=(BindWidget))
+	TObjectPtr<UStatsGauge> MoveSpeedGauge;
+
+	// 属性面板：智力显示控件
+	UPROPERTY(meta=(BindWidget))
+	TObjectPtr<UStatsGauge> IntelligenceGauge;
+
+	// 属性面板：力量显示控件
+	UPROPERTY(meta=(BindWidget))
+	TObjectPtr<UStatsGauge> StrengthGauge;
 
 	UPROPERTY()
 	TObjectPtr<UAbilitySystemComponent> OwnerAbilitySystemComponent;

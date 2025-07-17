@@ -4,6 +4,1035 @@
     <option name="conversations">
       <list>
         <Conversation>
+          <option name="createTime" value="1752747162518" />
+          <option name="id" value="019817df3b967669bc525416786dbadd" />
+          <option name="title" value="新对话 2025年7月17日 18:12:42" />
+          <option name="updateTime" value="1752747162518" />
+        </Conversation>
+        <Conversation>
+          <option name="createTime" value="1752747148433" />
+          <option name="id" value="019817df049172b6b567e76bb588ce1c" />
+          <option name="title" value="@workspace /comments /comments " />
+          <option name="turns">
+            <list>
+              <Turn>
+                <option name="agent" value="workspace" />
+                <option name="answer" value="以下是为选中代码添加的中文注释：&#10;&#10;```xkk&#10;    // 捕获伤害属性&#10;    WznztvXzkgfivWvu.ZggiryfgvGlXzkgfiv = FXZggiryfgvHvg::TvgZggzxpWznztvZggiryfgv();&#10;    // 属性来源指定为释放者&#10;    WznztvXzkgfivWvu.ZggiryfgvHlfixv = VTznvkozbVuuvxgZggiryfgvXzkgfivHlfixv::Hlfixv;&#10;&#10;    // 捕获目标的护甲属性&#10;    ZinliXzkgfivWvu.ZggiryfgvGlXzkgfiv = FXZggiryfgvHvg::TvgZinliZggiryfgv();&#10;    ZinliXzkgfivWvu.ZggiryfgvHlfixv = VTznvkozbVuuvxgZggiryfgvXzkgfivHlfixv::Gzitvg;&#10;&#10;    // 添加捕获属性&#10;    IvovezmgZggiryfgvhGlXzkgfiv.Zww(WznztvXzkgfivWvu);&#10;    IvovezmgZggiryfgvhGlXzkgfiv.Zww(ZinliXzkgfivWvu);&#10;```&#10;&#10;解释说明：&#10;- 第一行代码注释说明了这行代码的作用是捕获伤害属性。&#10;- 第二行代码注释说明了将属性来源指定为释放者。&#10;- 第三行代码注释说明了这行代码的作用是捕获目标的护甲属性。&#10;- 第四行代码注释说明了将属性来源指定为目标。&#10;- 第五行和第六行代码注释说明了将之前定义好的伤害和护甲捕获定义添加到相关属性捕获列表中。" />
+                <option name="chatResource" value="user" />
+                <option name="codeReferences">
+                  <list>
+                    <CodeReferencesBean>
+                      <option name="content" value="&#9;// 捕获伤害属性&#10;&#9;WznztvXzkgfivWvu.ZggiryfgvGlXzkgfiv = FXZggiryfgvHvg::TvgZggzxpWznztvZggiryfgv();&#10;&#9;// 属性来源指定为释放者&#10;&#9;WznztvXzkgfivWvu.ZggiryfgvHlfixv = VTznvkozbVuuvxgZggiryfgvXzkgfivHlfixv::Hlfixv;&#10;&#10;&#9;// 捕获目标的护甲属性&#10;&#9;ZinliXzkgfivWvu.ZggiryfgvGlXzkgfiv = FXZggiryfgvHvg::TvgZinliZggiryfgv();&#10;&#9;ZinliXzkgfivWvu.ZggiryfgvHlfixv = VTznvkozbVuuvxgZggiryfgvXzkgfivHlfixv::Gzitvg;&#10;&#10;&#9;// 添加捕获属性&#10;&#9;IvovezmgZggiryfgvhGlXzkgfiv.Zww(WznztvXzkgfivWvu);&#10;&#9;IvovezmgZggiryfgvhGlXzkgfiv.Zww(ZinliXzkgfivWvu);" />
+                      <option name="end_line" value="20" />
+                      <option name="filename" value="MMC_BaseAttackDamage.cpp" />
+                      <option name="language" value="C++" />
+                      <option name="range">
+                        <Range>
+                          <option name="end">
+                            <Position>
+                              <option name="character" value="53" />
+                              <option name="line" value="20" />
+                            </Position>
+                          </option>
+                          <option name="start">
+                            <Position>
+                              <option name="line" value="9" />
+                            </Position>
+                          </option>
+                        </Range>
+                      </option>
+                      <option name="start_line" value="9" />
+                      <option name="type" value="editor" />
+                      <option name="url" value="file:///D:/ue_texiao/Crunch/Source/Crunch/Private/GAS/MMC/MMC_BaseAttackDamage.cpp" />
+                    </CodeReferencesBean>
+                    <CodeReferencesBean>
+                      <option name="content" value="&#9;// 捕获伤害属性&#10;&#9;WznztvXzkgfivWvu.ZggiryfgvGlXzkgfiv = FXZggiryfgvHvg::TvgZggzxpWznztvZggiryfgv();&#10;&#9;// 属性来源指定为释放者&#10;&#9;WznztvXzkgfivWvu.ZggiryfgvHlfixv = VTznvkozbVuuvxgZggiryfgvXzkgfivHlfixv::Hlfixv;&#10;&#10;&#9;// 捕获目标的护甲属性&#10;&#9;ZinliXzkgfivWvu.ZggiryfgvGlXzkgfiv = FXZggiryfgvHvg::TvgZinliZggiryfgv();&#10;&#9;ZinliXzkgfivWvu.ZggiryfgvHlfixv = VTznvkozbVuuvxgZggiryfgvXzkgfivHlfixv::Gzitvg;&#10;&#10;&#9;// 添加捕获属性&#10;&#9;IvovezmgZggiryfgvhGlXzkgfiv.Zww(WznztvXzkgfivWvu);&#10;&#9;IvovezmgZggiryfgvhGlXzkgfiv.Zww(ZinliXzkgfivWvu);" />
+                      <option name="end_line" value="20" />
+                      <option name="filename" value="MMC_BaseAttackDamage.cpp" />
+                      <option name="language" value="C++" />
+                      <option name="range">
+                        <Range>
+                          <option name="end">
+                            <Position>
+                              <option name="character" value="53" />
+                              <option name="line" value="20" />
+                            </Position>
+                          </option>
+                          <option name="start">
+                            <Position>
+                              <option name="line" value="9" />
+                            </Position>
+                          </option>
+                        </Range>
+                      </option>
+                      <option name="start_line" value="9" />
+                      <option name="type" value="editor" />
+                      <option name="url" value="file:///D:/ue_texiao/Crunch/Source/Crunch/Private/GAS/MMC/MMC_BaseAttackDamage.cpp" />
+                    </CodeReferencesBean>
+                  </list>
+                </option>
+                <option name="codebaseContextVariableValues">
+                  <list>
+                    <CodebaseContextVariableValue>
+                      <option name="chunk" value="Plugins\Developer\RiderLink\Source\RD\thirdparty\spdlog\include\spdlog\fmt\bundled\os.h:  file() FMT_NOEXCEPT : fd_(-1) {}&#10; // Opens a file and constructs a file object representing this file.&#10; FMT_API file(cstring_view path, int oflag);&#10;public:&#10; file(const file&amp;) = delete;&#10; void operator=(const file&amp;) = delete;&#10; file(file&amp;&amp; other) FMT_NOEXCEPT : fd_(other.fd_) { other.fd_ = -1; }&#10; // Move assignment is not noexcept because close may throw.&#10; file&amp; operator=(file&amp;&amp; other) {&#10;   close();&#10;   fd_ = other.fd_;&#10;   other.fd_ = -1;&#10;   return *this;&#10; }&#10; // Destroys the object closing the file it represents if any.&#10; FMT_API ~file() FMT_NOEXCEPT;&#10; // Returns the file descriptor.&#10; int descriptor() const FMT_NOEXCEPT { return fd_; }&#10; // Closes the file.&#10; FMT_API void close();&#10; // Returns the file size. The size has signed type for consistency with&#10; // stat::st_size.&#10; FMT_API long long size() const;&#10; // Attempts to read count bytes from the file into the specified buffer." />
+                      <option name="filePath" value="$PROJECT_DIR$/Plugins/Developer/RiderLink/Source/RD/thirdparty/spdlog/include/spdlog/fmt/bundled/os.h" />
+                      <option name="range">
+                        <Range>
+                          <option name="endColumn" value="1" />
+                          <option name="endLine" value="338" />
+                          <option name="startColumn" value="1" />
+                          <option name="startLine" value="306" />
+                        </Range>
+                      </option>
+                      <option name="relativePath" value="Plugins\Developer\RiderLink\Source\RD\thirdparty\spdlog\include\spdlog\fmt\bundled\os.h" />
+                    </CodebaseContextVariableValue>
+                    <CodebaseContextVariableValue>
+                      <option name="chunk" value="Plugins\Developer\RiderLink\Source\RD\thirdparty\spdlog\include\spdlog\fmt\bundled\os.h:   FMT_API size_t read(void* buffer, size_t count);&#10;  // Attempts to write count bytes from the specified buffer to the file.&#10;  FMT_API size_t write(const void* buffer, size_t count);&#10;  // Duplicates a file descriptor with the dup function and returns&#10;  // the duplicate as a file object.&#10;  FMT_API static file dup(int fd);&#10;  // Makes fd be the copy of this file descriptor, closing fd first if&#10;  // necessary.&#10;  FMT_API void dup2(int fd);&#10;  // Makes fd be the copy of this file descriptor, closing fd first if&#10;  // necessary.&#10;  FMT_API void dup2(int fd, std::error_code&amp; ec) FMT_NOEXCEPT;&#10;  // Creates a pipe setting up read_end and write_end file objects for reading&#10;  // and writing respectively.&#10;  FMT_API static void pipe(file&amp; read_end, file&amp; write_end);&#10;  // Creates a buffered_file object associated with this file and detaches&#10;  // this file object from the file.&#10;  FMT_API buffered_file fdopen(const char* mode);&#10;};&#10;// Returns the memory page size.&#10;long getpagesize();" />
+                      <option name="filePath" value="$PROJECT_DIR$/Plugins/Developer/RiderLink/Source/RD/thirdparty/spdlog/include/spdlog/fmt/bundled/os.h" />
+                      <option name="range">
+                        <Range>
+                          <option name="endColumn" value="1" />
+                          <option name="endLine" value="366" />
+                          <option name="startColumn" value="1" />
+                          <option name="startLine" value="339" />
+                        </Range>
+                      </option>
+                      <option name="relativePath" value="Plugins\Developer\RiderLink\Source\RD\thirdparty\spdlog\include\spdlog\fmt\bundled\os.h" />
+                    </CodebaseContextVariableValue>
+                    <CodebaseContextVariableValue>
+                      <option name="chunk" value="Plugins\Developer\RiderLink\Source\RD\thirdparty\spdlog\include\spdlog\fmt\bundled\os.h: // std::system is not available on some platforms such as iOS (#2248).&#10;#ifdef __OSX__&#10;template &lt;typename S, typename... Args, typename Char = char_t&lt;S&gt;&gt;&#10;void say(const S&amp; format_str, Args&amp;&amp;... args) {&#10;  std::system(format(&quot;say \&quot;{}\&quot;&quot;, format(format_str, args...)).c_str());&#10;}&#10;#endif&#10;// A buffered file.&#10;class buffered_file {&#10; private:&#10;  FILE* file_;&#10;  friend class file;&#10;  explicit buffered_file(FILE* f) : file_(f) {}&#10; public:&#10;  buffered_file(const buffered_file&amp;) = delete;&#10;  void operator=(const buffered_file&amp;) = delete;&#10;  // Constructs a buffered_file object which doesn't represent any file.&#10;  buffered_file() FMT_NOEXCEPT : file_(nullptr) {}&#10;  // Destroys the object closing the file it represents if any.&#10;  FMT_API ~buffered_file() FMT_NOEXCEPT;&#10; public:&#10;  buffered_file(buffered_file&amp;&amp; other) FMT_NOEXCEPT : file_(other.file_) {&#10;    other.file_ = nullptr;&#10;  }&#10;  buffered_file&amp; operator=(buffered_file&amp;&amp; other) {&#10;    close();" />
+                      <option name="filePath" value="$PROJECT_DIR$/Plugins/Developer/RiderLink/Source/RD/thirdparty/spdlog/include/spdlog/fmt/bundled/os.h" />
+                      <option name="range">
+                        <Range>
+                          <option name="endColumn" value="1" />
+                          <option name="endLine" value="251" />
+                          <option name="startColumn" value="1" />
+                          <option name="startLine" value="218" />
+                        </Range>
+                      </option>
+                      <option name="relativePath" value="Plugins\Developer\RiderLink\Source\RD\thirdparty\spdlog\include\spdlog\fmt\bundled\os.h" />
+                    </CodebaseContextVariableValue>
+                    <CodebaseContextVariableValue>
+                      <option name="chunk" value="Plugins\VRM4U\ThirdParty\assimp\include\assimp\cfileio.h: DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY&#10;THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT&#10;(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE&#10;OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&#10;---------------------------------------------------------------------------&#10;*/&#10;/** @file cfileio.h&#10; *  @brief Defines generic C routines to access memory-mapped files&#10; */&#10;#pragma once&#10;#ifndef AI_FILEIO_H_INC&#10;#define AI_FILEIO_H_INC&#10;#ifdef __GNUC__&#10;#   pragma GCC system_header&#10;#endif&#10;#include &lt;assimp/types.h&gt;&#10;#ifdef __cplusplus&#10;extern &quot;C&quot; {&#10;#endif&#10;struct aiFileIO;&#10;struct aiFile;&#10;// aiFile callbacks&#10;typedef size_t          (*aiFileWriteProc) (C_STRUCT aiFile*,   const char*, size_t, size_t);&#10;typedef size_t          (*aiFileReadProc)  (C_STRUCT aiFile*,   char*, size_t,size_t);&#10;typedef size_t          (*aiFileTellProc)  (C_STRUCT aiFile*);&#10;typedef void            (*aiFileFlushProc) (C_STRUCT aiFile*);&#10;typedef C_ENUM aiReturn (*aiFileSeek)      (C_STRUCT aiFile*, size_t, C_ENUM aiOrigin);&#10;// aiFileIO callbacks" />
+                      <option name="filePath" value="$PROJECT_DIR$/Plugins/VRM4U/ThirdParty/assimp/include/assimp/cfileio.h" />
+                      <option name="range">
+                        <Range>
+                          <option name="endColumn" value="1" />
+                          <option name="endLine" value="69" />
+                          <option name="startColumn" value="1" />
+                          <option name="startLine" value="35" />
+                        </Range>
+                      </option>
+                      <option name="relativePath" value="Plugins\VRM4U\ThirdParty\assimp\include\assimp\cfileio.h" />
+                    </CodebaseContextVariableValue>
+                    <CodebaseContextVariableValue>
+                      <option name="chunk" value="Plugins\VRM4U\ThirdParty\assimp\include\assimp\XmlParser.h: template &lt;class TNodeType&gt;&#10;inline bool TXmlParser&lt;TNodeType&gt;::hasAttribute(XmlNode &amp;xmlNode, const char *name) {&#10;    pugi::xml_attribute attr = xmlNode.attribute(name);&#10;    return !attr.empty();&#10;}&#10;template &lt;class TNodeType&gt;&#10;inline bool TXmlParser&lt;TNodeType&gt;::getUIntAttribute(XmlNode &amp;xmlNode, const char *name, unsigned int &amp;val) {&#10;    pugi::xml_attribute attr = xmlNode.attribute(name);&#10;    if (attr.empty()) {&#10;        return false;&#10;    }&#10;    val = attr.as_uint();&#10;    return true;&#10;}&#10;template &lt;class TNodeType&gt;&#10;inline bool TXmlParser&lt;TNodeType&gt;::getIntAttribute(XmlNode &amp;xmlNode, const char *name, int &amp;val) {&#10;    pugi::xml_attribute attr = xmlNode.attribute(name);&#10;    if (attr.empty()) {&#10;        return false;&#10;    }&#10;    val = attr.as_int();&#10;    return true;&#10;}&#10;template &lt;class TNodeType&gt;&#10;inline bool TXmlParser&lt;TNodeType&gt;::getRealAttribute(XmlNode &amp;xmlNode, const char *name, ai_real &amp;val) {&#10;    pugi::xml_attribute attr = xmlNode.attribute(name);&#10;    if (attr.empty()) {&#10;        return false;&#10;    }&#10;#ifdef ASSIMP_DOUBLE_PRECISION" />
+                      <option name="filePath" value="$PROJECT_DIR$/Plugins/VRM4U/ThirdParty/assimp/include/assimp/XmlParser.h" />
+                      <option name="range">
+                        <Range>
+                          <option name="endColumn" value="1" />
+                          <option name="endLine" value="386" />
+                          <option name="startColumn" value="1" />
+                          <option name="startLine" value="352" />
+                        </Range>
+                      </option>
+                      <option name="relativePath" value="Plugins\VRM4U\ThirdParty\assimp\include\assimp\XmlParser.h" />
+                    </CodebaseContextVariableValue>
+                    <CodebaseContextVariableValue>
+                      <option name="chunk" value="Plugins\Developer\RiderLink\Source\RD\thirdparty\spdlog\include\spdlog\fmt\bundled\os.h:     file_ = other.file_;&#10;    other.file_ = nullptr;&#10;    return *this;&#10;  }&#10;  // Opens a file.&#10;  FMT_API buffered_file(cstring_view filename, cstring_view mode);&#10;  // Closes the file.&#10;  FMT_API void close();&#10;  // Returns the pointer to a FILE object representing this file.&#10;  FILE* get() const FMT_NOEXCEPT { return file_; }&#10;  // We place parentheses around fileno to workaround a bug in some versions&#10;  // of MinGW that define fileno as a macro.&#10;  FMT_API int(fileno)() const;&#10;  void vprint(string_view format_str, format_args args) {&#10;    fmt::vprint(file_, format_str, args);&#10;  }&#10;  template &lt;typename... Args&gt;&#10;  inline void print(string_view format_str, const Args&amp;... args) {&#10;    vprint(format_str, fmt::make_format_args(args...));&#10;  }&#10;};&#10;#if FMT_USE_FCNTL&#10;// A file. Closed file is represented by a file object with descriptor -1.&#10;// Methods that are not declared with FMT_NOEXCEPT may throw" />
+                      <option name="filePath" value="$PROJECT_DIR$/Plugins/Developer/RiderLink/Source/RD/thirdparty/spdlog/include/spdlog/fmt/bundled/os.h" />
+                      <option name="range">
+                        <Range>
+                          <option name="endColumn" value="1" />
+                          <option name="endLine" value="282" />
+                          <option name="startColumn" value="1" />
+                          <option name="startLine" value="252" />
+                        </Range>
+                      </option>
+                      <option name="relativePath" value="Plugins\Developer\RiderLink\Source\RD\thirdparty\spdlog\include\spdlog\fmt\bundled\os.h" />
+                    </CodebaseContextVariableValue>
+                    <CodebaseContextVariableValue>
+                      <option name="chunk" value="Intermediate\Build\BuildRulesProjects\CrunchModuleRules\obj\project.assets.json: &quot;lib/MonoAndroid10/_._&quot;,&#10;&quot;lib/MonoTouch10/_._&quot;,&#10;&quot;lib/net46/System.IO.FileSystem.dll&quot;,&#10;&quot;lib/xamarinios10/_._&quot;,&#10;&quot;lib/xamarinmac20/_._&quot;,&#10;&quot;lib/xamarintvos10/_._&quot;,&#10;&quot;lib/xamarinwatchos10/_._&quot;,&#10;&quot;ref/MonoAndroid10/_._&quot;,&#10;&quot;ref/MonoTouch10/_._&quot;,&#10;&quot;ref/net46/System.IO.FileSystem.dll&quot;,&#10;&quot;ref/netstandard1.3/System.IO.FileSystem.dll&quot;,&#10;&quot;ref/netstandard1.3/System.IO.FileSystem.xml&quot;,&#10;&quot;ref/netstandard1.3/de/System.IO.FileSystem.xml&quot;,&#10;&quot;ref/netstandard1.3/es/System.IO.FileSystem.xml&quot;,&#10;&quot;ref/netstandard1.3/fr/System.IO.FileSystem.xml&quot;,&#10;&quot;ref/netstandard1.3/it/System.IO.FileSystem.xml&quot;,&#10;&quot;ref/netstandard1.3/ja/System.IO.FileSystem.xml&quot;,&#10;&quot;ref/netstandard1.3/ko/System.IO.FileSystem.xml&quot;," />
+                      <option name="filePath" value="$PROJECT_DIR$/Intermediate/Build/BuildRulesProjects/CrunchModuleRules/obj/project.assets.json" />
+                      <option name="range">
+                        <Range>
+                          <option name="endColumn" value="1" />
+                          <option name="endLine" value="5913" />
+                          <option name="startColumn" value="1" />
+                          <option name="startLine" value="5896" />
+                        </Range>
+                      </option>
+                      <option name="relativePath" value="Intermediate\Build\BuildRulesProjects\CrunchModuleRules\obj\project.assets.json" />
+                    </CodebaseContextVariableValue>
+                    <CodebaseContextVariableValue>
+                      <option name="chunk" value="Plugins\Developer\RiderLink\Source\RD\thirdparty\spdlog\include\spdlog\fmt\bundled\core.h: constexpr FMT_INLINE value(unsigned val) : uint_value(val) {}&#10;constexpr FMT_INLINE value(long long val) : long_long_value(val) {}&#10;constexpr FMT_INLINE value(unsigned long long val) : ulong_long_value(val) {}&#10;FMT_INLINE value(int128_t val) : int128_value(val) {}&#10;FMT_INLINE value(uint128_t val) : uint128_value(val) {}&#10;constexpr FMT_INLINE value(float val) : float_value(val) {}&#10;constexpr FMT_INLINE value(double val) : double_value(val) {}&#10;FMT_INLINE value(long double val) : long_double_value(val) {}&#10;constexpr FMT_INLINE value(bool val) : bool_value(val) {}&#10;constexpr FMT_INLINE value(char_type val) : char_value(val) {}&#10;FMT_CONSTEXPR FMT_INLINE value(const char_type* val) {&#10;  string.data = val;&#10;  if (is_constant_evaluated()) string.size = {};&#10;}" />
+                      <option name="filePath" value="$PROJECT_DIR$/Plugins/Developer/RiderLink/Source/RD/thirdparty/spdlog/include/spdlog/fmt/bundled/core.h" />
+                      <option name="range">
+                        <Range>
+                          <option name="endColumn" value="1" />
+                          <option name="endLine" value="1251" />
+                          <option name="startColumn" value="1" />
+                          <option name="startLine" value="1238" />
+                        </Range>
+                      </option>
+                      <option name="relativePath" value="Plugins\Developer\RiderLink\Source\RD\thirdparty\spdlog\include\spdlog\fmt\bundled\core.h" />
+                    </CodebaseContextVariableValue>
+                    <CodebaseContextVariableValue>
+                      <option name="chunk" value="Saved\Config\WindowsEditor\EditorPerProjectUserSettings.ini: WBP_ValueGuage_C.Input=True&#10;WBP_ValueGuage_C.Interaction=True&#10;WBP_ValueGuage_C.Designer=True&#10;WBP_ValueGuage_C.Performance=True&#10;WBP_ValueGuage_C.Layout=True&#10;WBP_ValueGuage_C.Behavior=True&#10;WBP_ValueGuage_C.Render Transform=True&#10;WBP_ValueGuage_C.Localization=True&#10;WBP_ValueGuage_C.Accessibility=True&#10;WBP_ValueGuage_C.Rendering=True&#10;WBP_ValueGuage_C.Navigation=True&#10;CanvasPanel.Behavior=True&#10;CanvasPanel.Accessibility=True&#10;CanvasPanel.Render Transform=True&#10;CanvasPanel.Performance=True&#10;CanvasPanel.Rendering=True&#10;CanvasPanel.Navigation=True&#10;CanvasPanel.Localization=True&#10;TextBlock.Layout=True&#10;TextBlock.Content=True&#10;TextBlock.Appearance=True&#10;TextBlock.Accessibility=True&#10;TextBlock.Performance=True&#10;TextBlock.Wrapping=True&#10;TextBlock.Behavior=True&#10;TextBlock.Render Transform=True&#10;TextBlock.Rendering=True&#10;TextBlock.Navigation=True&#10;TextBlock.Localization=True&#10;ProgressBar.Layout=True&#10;ProgressBar.Style=True&#10;ProgressBar.Progress=True&#10;ProgressBar.Accessibility=True&#10;ProgressBar.Appearance=True&#10;ProgressBar.Behavior=True&#10;ProgressBar.Render Transform=True&#10;ProgressBar.Performance=True&#10;ProgressBar.Rendering=True&#10;ProgressBar.Navigation=True&#10;ProgressBar.Localization=True" />
+                      <option name="filePath" value="$PROJECT_DIR$/Saved/Config/WindowsEditor/EditorPerProjectUserSettings.ini" />
+                      <option name="range">
+                        <Range>
+                          <option name="endColumn" value="1" />
+                          <option name="endLine" value="3398" />
+                          <option name="startColumn" value="1" />
+                          <option name="startLine" value="3359" />
+                        </Range>
+                      </option>
+                      <option name="relativePath" value="Saved\Config\WindowsEditor\EditorPerProjectUserSettings.ini" />
+                    </CodebaseContextVariableValue>
+                    <CodebaseContextVariableValue>
+                      <option name="chunk" value="Plugins\VRM4U\ThirdParty\assimp\include\assimp\BaseImporter.h:  *  @param ext0 Extension to check for. Lowercase characters only, no dot!&#10; *  @param ext1 Optional second extension&#10; *  @param ext2 Optional third extension&#10; *  @note Case-insensitive&#10; */&#10;static bool SimpleExtensionCheck(&#10;        const std::string &amp;pFile,&#10;        const char *ext0,&#10;        const char *ext1 = nullptr,&#10;        const char *ext2 = nullptr);&#10;// -------------------------------------------------------------------&#10;/** @brief Check whether a file has one of the passed file extensions&#10; *  @param pFile Input file&#10; *  @param extensions Extensions to check for. Lowercase characters only, no dot!&#10; *  @note Case-insensitive&#10; */&#10;static bool HasExtension(&#10;        const std::string &amp;pFile,&#10;        const std::set&lt;std::string&gt; &amp;extensions);&#10;// -------------------------------------------------------------------&#10;/** @brief Extract file extension from a string&#10; *  @param pFile Input file&#10; *  @return Extension without trailing dot, all lowercase&#10; */&#10;static std::string GetExtension(&#10;        const std::string &amp;pFile);&#10;// -------------------------------------------------------------------&#10;/** @brief Check whether a file starts with one or more magic tokens&#10; *  @param pFile Input file" />
+                      <option name="filePath" value="$PROJECT_DIR$/Plugins/VRM4U/ThirdParty/assimp/include/assimp/BaseImporter.h" />
+                      <option name="range">
+                        <Range>
+                          <option name="endColumn" value="1" />
+                          <option name="endLine" value="302" />
+                          <option name="startColumn" value="1" />
+                          <option name="startLine" value="271" />
+                        </Range>
+                      </option>
+                      <option name="relativePath" value="Plugins\VRM4U\ThirdParty\assimp\include\assimp\BaseImporter.h" />
+                    </CodebaseContextVariableValue>
+                    <CodebaseContextVariableValue>
+                      <option name="chunk" value="Plugins\Developer\RiderLink\Source\RiderLink\Private\ProtocolFactory.cpp:     auto protocol = MakeUnique&lt;rd::Protocol&gt;(rd::Identities::SERVER, Scheduler, wire, SocketLifetime);&#10;    auto&amp; PlatformFile = FPlatformFileManager::Get().GetPlatformFile();&#10;    const FString PortFullDirectoryPath = GetPathToPortsFolder();&#10;    if (PlatformFile.CreateDirectoryTree(*PortFullDirectoryPath) &amp;&amp; !IsRunningCommandlet())&#10;    {&#10;        const FString ProjectFileName = ProjectName + TEXT(&quot;.uproject&quot;);&#10;        const FString TmpPortFile = TEXT(&quot;~&quot;) + ProjectFileName;&#10;        const FString TmpPortFileFullPath = FPaths::Combine(*PortFullDirectoryPath, *TmpPortFile);&#10;        FFileHelper::SaveStringToFile(FString::FromInt(wire-&gt;port), *TmpPortFileFullPath);&#10;        const FString PortFileFullPath = FPaths::Combine(*PortFullDirectoryPath, *ProjectFileName);&#10;        IFileManager::Get().Move(*PortFileFullPath, *TmpPortFileFullPath, true, true);&#10;    }&#10;    return protocol;&#10;}" />
+                      <option name="filePath" value="$PROJECT_DIR$/Plugins/Developer/RiderLink/Source/RiderLink/Private/ProtocolFactory.cpp" />
+                      <option name="range">
+                        <Range>
+                          <option name="endColumn" value="1" />
+                          <option name="endLine" value="125" />
+                          <option name="startColumn" value="1" />
+                          <option name="startLine" value="111" />
+                        </Range>
+                      </option>
+                      <option name="relativePath" value="Plugins\Developer\RiderLink\Source\RiderLink\Private\ProtocolFactory.cpp" />
+                    </CodebaseContextVariableValue>
+                    <CodebaseContextVariableValue>
+                      <option name="chunk" value="Intermediate\Build\BuildRulesProjects\CrunchModuleRules\obj\project.assets.json: &quot;lib/portable-net45+win8+wp8+wpa81/_._&quot;,&#10;&quot;lib/win8/_._&quot;,&#10;&quot;lib/wp80/_._&quot;,&#10;&quot;lib/wpa81/_._&quot;,&#10;&quot;lib/xamarinios10/_._&quot;,&#10;&quot;lib/xamarinmac20/_._&quot;,&#10;&quot;lib/xamarintvos10/_._&quot;,&#10;&quot;lib/xamarinwatchos10/_._&quot;,&#10;&quot;ref/MonoAndroid10/_._&quot;,&#10;&quot;ref/MonoTouch10/_._&quot;,&#10;&quot;ref/net45/_._&quot;,&#10;&quot;ref/net462/System.Runtime.Extensions.dll&quot;,&#10;&quot;ref/netcore50/System.Runtime.Extensions.dll&quot;,&#10;&quot;ref/netcore50/System.Runtime.Extensions.xml&quot;,&#10;&quot;ref/netcore50/de/System.Runtime.Extensions.xml&quot;,&#10;&quot;ref/netcore50/es/System.Runtime.Extensions.xml&quot;,&#10;&quot;ref/netcore50/fr/System.Runtime.Extensions.xml&quot;,&#10;&quot;ref/netcore50/it/System.Runtime.Extensions.xml&quot;,&#10;&quot;ref/netcore50/ja/System.Runtime.Extensions.xml&quot;,&#10;&quot;ref/netcore50/ko/System.Runtime.Extensions.xml&quot;," />
+                      <option name="filePath" value="$PROJECT_DIR$/Intermediate/Build/BuildRulesProjects/CrunchModuleRules/obj/project.assets.json" />
+                      <option name="range">
+                        <Range>
+                          <option name="endColumn" value="1" />
+                          <option name="endLine" value="7066" />
+                          <option name="startColumn" value="1" />
+                          <option name="startLine" value="7047" />
+                        </Range>
+                      </option>
+                      <option name="relativePath" value="Intermediate\Build\BuildRulesProjects\CrunchModuleRules\obj\project.assets.json" />
+                    </CodebaseContextVariableValue>
+                    <CodebaseContextVariableValue>
+                      <option name="chunk" value="Plugins\VRM4U\ThirdParty\assimp\include\assimp\LineSplitter.h:         tokens[i] = s;&#10;        for (; *s &amp;&amp; !IsSpace(*s); ++s);&#10;        SkipSpaces(&amp;s, mEnd);&#10;    }&#10;}&#10;AI_FORCE_INLINE const std::string* LineSplitter::operator -&gt; () const {&#10;    return &amp;mCur;&#10;}&#10;AI_FORCE_INLINE std::string LineSplitter::operator* () const {&#10;    return mCur;&#10;}&#10;AI_FORCE_INLINE const char* LineSplitter::getEnd() const {&#10;    return mEnd;&#10;}&#10;AI_FORCE_INLINE LineSplitter::operator bool() const {&#10;    return mStream.GetRemainingSize() &gt; 0;&#10;}&#10;AI_FORCE_INLINE LineSplitter::operator line_idx() const {&#10;    return mIdx;&#10;}&#10;AI_FORCE_INLINE LineSplitter::line_idx LineSplitter::get_index() const {&#10;    return mIdx;&#10;}&#10;AI_FORCE_INLINE StreamReaderLE &amp;LineSplitter::get_stream() {&#10;    return mStream;&#10;}&#10;AI_FORCE_INLINE bool LineSplitter::match_start(const char* check) {&#10;    const size_t len = ::strlen(check);&#10;    return len &lt;= mCur.length() &amp;&amp; std::equal(check, check + len, mCur.begin());&#10;}&#10;AI_FORCE_INLINE void LineSplitter::swallow_next_increment() {" />
+                      <option name="filePath" value="$PROJECT_DIR$/Plugins/VRM4U/ThirdParty/assimp/include/assimp/LineSplitter.h" />
+                      <option name="range">
+                        <Range>
+                          <option name="endColumn" value="1" />
+                          <option name="endLine" value="272" />
+                          <option name="startColumn" value="1" />
+                          <option name="startLine" value="231" />
+                        </Range>
+                      </option>
+                      <option name="relativePath" value="Plugins\VRM4U\ThirdParty\assimp\include\assimp\LineSplitter.h" />
+                    </CodebaseContextVariableValue>
+                    <CodebaseContextVariableValue>
+                      <option name="chunk" value="Saved\Crashes\UECC-Windows-1D634D1D4029413BB98C6F9C50C8A2AE_0000\Crunch.log: [2025.07.09-15.24.34:342][  0]LogPakFile: Initializing PakPlatformFile&#10;[2025.07.09-15.24.34:342][  0]LogPakFile: Display: Mounted Pak file 'D:/UE_5.4/FeaturePacks/TP_HandheldARBP.upack', mount point: 'root:/'&#10;[2025.07.09-15.24.34:343][  0]LogPakFile: Initializing PakPlatformFile&#10;[2025.07.09-15.24.34:343][  0]LogPakFile: Display: Mounted Pak file 'D:/UE_5.4/FeaturePacks/TP_ThirdPerson.upack', mount point: 'root:/'&#10;[2025.07.09-15.24.34:343][  0]LogPakFile: Initializing PakPlatformFile&#10;[2025.07.09-15.24.34:344][  0]LogPakFile: Display: Mounted Pak file 'D:/UE_5.4/FeaturePacks/TP_ThirdPersonBP.upack', mount point: 'root:/'&#10;[2025.07.09-15.24.34:344][  0]LogPakFile: Initializing PakPlatformFile" />
+                      <option name="filePath" value="$PROJECT_DIR$/Saved/Crashes/UECC-Windows-1D634D1D4029413BB98C6F9C50C8A2AE_0000/Crunch.log" />
+                      <option name="range">
+                        <Range>
+                          <option name="endColumn" value="1" />
+                          <option name="endLine" value="1051" />
+                          <option name="startColumn" value="1" />
+                          <option name="startLine" value="1045" />
+                        </Range>
+                      </option>
+                      <option name="relativePath" value="Saved\Crashes\UECC-Windows-1D634D1D4029413BB98C6F9C50C8A2AE_0000\Crunch.log" />
+                    </CodebaseContextVariableValue>
+                    <CodebaseContextVariableValue>
+                      <option name="chunk" value="Plugins\VRM4U\ThirdParty\assimp\include\assimp\cfileio.h: typedef C_STRUCT aiFile* (*aiFileOpenProc)  (C_STRUCT aiFileIO*, const char*, const char*);&#10;typedef void             (*aiFileCloseProc) (C_STRUCT aiFileIO*, C_STRUCT aiFile*);&#10;// Represents user-defined data&#10;typedef char* aiUserData;&#10;// ----------------------------------------------------------------------------------&#10;/** @brief C-API: File system callbacks&#10; *&#10; *  Provided are functions to open and close files. Supply a custom structure to&#10; *  the import function. If you don't, a default implementation is used. Use custom&#10; *  file systems to enable reading from other sources, such as ZIPs&#10; *  or memory locations. */&#10;struct aiFileIO&#10;{&#10;    /** Function used to open a new file&#10;     */&#10;    aiFileOpenProc OpenProc;&#10;    /** Function used to close an existing file&#10;     */&#10;    aiFileCloseProc CloseProc;&#10;    /** User-defined, opaque data */&#10;    aiUserData UserData;&#10;};&#10;// ----------------------------------------------------------------------------------&#10;/** @brief C-API: File callbacks&#10; *&#10; *  Actually, it's a data structure to wrap a set of fXXXX (e.g fopen)&#10; *  replacement functions.&#10; *&#10; *  The default implementation of the functions utilizes the fXXX functions from&#10; *  the CRT. However, you can supply a custom implementation to Assimp by&#10; *  delivering a custom aiFileIO. Use this to enable reading from other sources," />
+                      <option name="filePath" value="$PROJECT_DIR$/Plugins/VRM4U/ThirdParty/assimp/include/assimp/cfileio.h" />
+                      <option name="range">
+                        <Range>
+                          <option name="endColumn" value="1" />
+                          <option name="endLine" value="105" />
+                          <option name="startColumn" value="1" />
+                          <option name="startLine" value="70" />
+                        </Range>
+                      </option>
+                      <option name="relativePath" value="Plugins\VRM4U\ThirdParty\assimp\include\assimp\cfileio.h" />
+                    </CodebaseContextVariableValue>
+                    <CodebaseContextVariableValue>
+                      <option name="chunk" value="Intermediate\Build\BuildRulesProjects\CrunchModuleRules\obj\project.assets.json: &quot;ref/netcore50/System.IO.dll&quot;,&#10;&quot;ref/netcore50/System.IO.xml&quot;,&#10;&quot;ref/netcore50/de/System.IO.xml&quot;,&#10;&quot;ref/netcore50/es/System.IO.xml&quot;,&#10;&quot;ref/netcore50/fr/System.IO.xml&quot;,&#10;&quot;ref/netcore50/it/System.IO.xml&quot;,&#10;&quot;ref/netcore50/ja/System.IO.xml&quot;,&#10;&quot;ref/netcore50/ko/System.IO.xml&quot;,&#10;&quot;ref/netcore50/ru/System.IO.xml&quot;,&#10;&quot;ref/netcore50/zh-hans/System.IO.xml&quot;,&#10;&quot;ref/netcore50/zh-hant/System.IO.xml&quot;,&#10;&quot;ref/netstandard1.0/System.IO.dll&quot;,&#10;&quot;ref/netstandard1.0/System.IO.xml&quot;,&#10;&quot;ref/netstandard1.0/de/System.IO.xml&quot;,&#10;&quot;ref/netstandard1.0/es/System.IO.xml&quot;,&#10;&quot;ref/netstandard1.0/fr/System.IO.xml&quot;," />
+                      <option name="filePath" value="$PROJECT_DIR$/Intermediate/Build/BuildRulesProjects/CrunchModuleRules/obj/project.assets.json" />
+                      <option name="range">
+                        <Range>
+                          <option name="endColumn" value="1" />
+                          <option name="endLine" value="5736" />
+                          <option name="startColumn" value="1" />
+                          <option name="startLine" value="5721" />
+                        </Range>
+                      </option>
+                      <option name="relativePath" value="Intermediate\Build\BuildRulesProjects\CrunchModuleRules\obj\project.assets.json" />
+                    </CodebaseContextVariableValue>
+                    <CodebaseContextVariableValue>
+                      <option name="chunk" value="Intermediate\Build\BuildRulesProjects\CrunchModuleRules\obj\project.assets.json: &quot;ref/netstandard1.0/ru/System.Runtime.xml&quot;,&#10;&quot;ref/netstandard1.0/zh-hans/System.Runtime.xml&quot;,&#10;&quot;ref/netstandard1.0/zh-hant/System.Runtime.xml&quot;,&#10;&quot;ref/netstandard1.2/System.Runtime.dll&quot;,&#10;&quot;ref/netstandard1.2/System.Runtime.xml&quot;,&#10;&quot;ref/netstandard1.2/de/System.Runtime.xml&quot;,&#10;&quot;ref/netstandard1.2/es/System.Runtime.xml&quot;,&#10;&quot;ref/netstandard1.2/fr/System.Runtime.xml&quot;,&#10;&quot;ref/netstandard1.2/it/System.Runtime.xml&quot;,&#10;&quot;ref/netstandard1.2/ja/System.Runtime.xml&quot;,&#10;&quot;ref/netstandard1.2/ko/System.Runtime.xml&quot;,&#10;&quot;ref/netstandard1.2/ru/System.Runtime.xml&quot;,&#10;&quot;ref/netstandard1.2/zh-hans/System.Runtime.xml&quot;,&#10;&quot;ref/netstandard1.2/zh-hant/System.Runtime.xml&quot;," />
+                      <option name="filePath" value="$PROJECT_DIR$/Intermediate/Build/BuildRulesProjects/CrunchModuleRules/obj/project.assets.json" />
+                      <option name="range">
+                        <Range>
+                          <option name="endColumn" value="1" />
+                          <option name="endLine" value="6974" />
+                          <option name="startColumn" value="1" />
+                          <option name="startLine" value="6961" />
+                        </Range>
+                      </option>
+                      <option name="relativePath" value="Intermediate\Build\BuildRulesProjects\CrunchModuleRules\obj\project.assets.json" />
+                    </CodebaseContextVariableValue>
+                    <CodebaseContextVariableValue>
+                      <option name="chunk" value="Intermediate\Build\BuildRulesProjects\CrunchModuleRules\obj\project.assets.json: &quot;ref/netcore50/fr/System.Runtime.xml&quot;,&#10;&quot;ref/netcore50/it/System.Runtime.xml&quot;,&#10;&quot;ref/netcore50/ja/System.Runtime.xml&quot;,&#10;&quot;ref/netcore50/ko/System.Runtime.xml&quot;,&#10;&quot;ref/netcore50/ru/System.Runtime.xml&quot;,&#10;&quot;ref/netcore50/zh-hans/System.Runtime.xml&quot;,&#10;&quot;ref/netcore50/zh-hant/System.Runtime.xml&quot;,&#10;&quot;ref/netstandard1.0/System.Runtime.dll&quot;,&#10;&quot;ref/netstandard1.0/System.Runtime.xml&quot;,&#10;&quot;ref/netstandard1.0/de/System.Runtime.xml&quot;,&#10;&quot;ref/netstandard1.0/es/System.Runtime.xml&quot;,&#10;&quot;ref/netstandard1.0/fr/System.Runtime.xml&quot;,&#10;&quot;ref/netstandard1.0/it/System.Runtime.xml&quot;,&#10;&quot;ref/netstandard1.0/ja/System.Runtime.xml&quot;,&#10;&quot;ref/netstandard1.0/ko/System.Runtime.xml&quot;," />
+                      <option name="filePath" value="$PROJECT_DIR$/Intermediate/Build/BuildRulesProjects/CrunchModuleRules/obj/project.assets.json" />
+                      <option name="range">
+                        <Range>
+                          <option name="endColumn" value="1" />
+                          <option name="endLine" value="6960" />
+                          <option name="startColumn" value="1" />
+                          <option name="startLine" value="6946" />
+                        </Range>
+                      </option>
+                      <option name="relativePath" value="Intermediate\Build\BuildRulesProjects\CrunchModuleRules\obj\project.assets.json" />
+                    </CodebaseContextVariableValue>
+                    <CodebaseContextVariableValue>
+                      <option name="chunk" value="Intermediate\Build\BuildRulesProjects\CrunchModuleRules\obj\project.assets.json: &quot;lib/net45/_._&quot;,&#10;&quot;lib/netcore50/System.Runtime.Numerics.dll&quot;,&#10;&quot;lib/netstandard1.3/System.Runtime.Numerics.dll&quot;,&#10;&quot;lib/portable-net45+win8+wpa81/_._&quot;,&#10;&quot;lib/win8/_._&quot;,&#10;&quot;lib/wpa81/_._&quot;,&#10;&quot;lib/xamarinios10/_._&quot;,&#10;&quot;lib/xamarinmac20/_._&quot;,&#10;&quot;lib/xamarintvos10/_._&quot;,&#10;&quot;lib/xamarinwatchos10/_._&quot;,&#10;&quot;ref/MonoAndroid10/_._&quot;,&#10;&quot;ref/MonoTouch10/_._&quot;,&#10;&quot;ref/net45/_._&quot;,&#10;&quot;ref/netcore50/System.Runtime.Numerics.dll&quot;,&#10;&quot;ref/netcore50/System.Runtime.Numerics.xml&quot;,&#10;&quot;ref/netcore50/de/System.Runtime.Numerics.xml&quot;,&#10;&quot;ref/netcore50/es/System.Runtime.Numerics.xml&quot;,&#10;&quot;ref/netcore50/fr/System.Runtime.Numerics.xml&quot;,&#10;&quot;ref/netcore50/it/System.Runtime.Numerics.xml&quot;,&#10;&quot;ref/netcore50/ja/System.Runtime.Numerics.xml&quot;,&#10;&quot;ref/netcore50/ko/System.Runtime.Numerics.xml&quot;," />
+                      <option name="filePath" value="$PROJECT_DIR$/Intermediate/Build/BuildRulesProjects/CrunchModuleRules/obj/project.assets.json" />
+                      <option name="range">
+                        <Range>
+                          <option name="endColumn" value="1" />
+                          <option name="endLine" value="7312" />
+                          <option name="startColumn" value="1" />
+                          <option name="startLine" value="7292" />
+                        </Range>
+                      </option>
+                      <option name="relativePath" value="Intermediate\Build\BuildRulesProjects\CrunchModuleRules\obj\project.assets.json" />
+                    </CodebaseContextVariableValue>
+                    <CodebaseContextVariableValue>
+                      <option name="chunk" value=".idea\.idea.Crunch\.idea\encodings.xml: &lt;file url=&quot;file://$PROJECT_DIR$/Source/Crunch/Private/GAS/Core/CGameplayAbilityTypes.cpp&quot; charset=&quot;UTF-8&quot; /&gt;&#10;&lt;file url=&quot;file://$PROJECT_DIR$/Source/Crunch/Private/GAS/Core/CGameplayAbilityTypes.h&quot; charset=&quot;UTF-8&quot; /&gt;&#10;&lt;file url=&quot;file://$PROJECT_DIR$/Source/Crunch/Private/GAS/Core/TGameplayTags.cpp&quot; charset=&quot;UTF-8&quot; /&gt;&#10;&lt;file url=&quot;file://$PROJECT_DIR$/Source/Crunch/Private/GAS/Core/TGameplayTags.h&quot; charset=&quot;UTF-8&quot; /&gt;&#10;&lt;file url=&quot;file://$PROJECT_DIR$/Source/Crunch/Private/GAS/TA/TargetActor_GroundPick.cpp&quot; charset=&quot;UTF-8&quot; /&gt;&#10;&lt;file url=&quot;file://$PROJECT_DIR$/Source/Crunch/Private/GAS/TA/TargetActor_GroundPick.h&quot; charset=&quot;UTF-8&quot; /&gt;&#10;&lt;file url=&quot;file://$PROJECT_DIR$/Source/Crunch/Private/Player/CPlayerCharacter.cpp&quot; charset=&quot;UTF-8&quot; /&gt;" />
+                      <option name="filePath" value="$PROJECT_DIR$/.idea/.idea.Crunch/.idea/encodings.xml" />
+                      <option name="range">
+                        <Range>
+                          <option name="endColumn" value="1" />
+                          <option name="endLine" value="38" />
+                          <option name="startColumn" value="1" />
+                          <option name="startLine" value="32" />
+                        </Range>
+                      </option>
+                      <option name="relativePath" value=".idea\.idea.Crunch\.idea\encodings.xml" />
+                    </CodebaseContextVariableValue>
+                    <CodebaseContextVariableValue>
+                      <option name="chunk" value="Intermediate\Build\BuildRulesProjects\CrunchModuleRules\obj\project.assets.json:     &quot;ref/netstandard1.3/it/System.Xml.XDocument.xml&quot;,&#10;    &quot;ref/netstandard1.3/ja/System.Xml.XDocument.xml&quot;,&#10;    &quot;ref/netstandard1.3/ko/System.Xml.XDocument.xml&quot;,&#10;    &quot;ref/netstandard1.3/ru/System.Xml.XDocument.xml&quot;,&#10;    &quot;ref/netstandard1.3/zh-hans/System.Xml.XDocument.xml&quot;,&#10;    &quot;ref/netstandard1.3/zh-hant/System.Xml.XDocument.xml&quot;,&#10;    &quot;ref/portable-net45+win8+wp8+wpa81/_._&quot;,&#10;    &quot;ref/win8/_._&quot;,&#10;    &quot;ref/wp80/_._&quot;,&#10;    &quot;ref/wpa81/_._&quot;,&#10;    &quot;ref/xamarinios10/_._&quot;,&#10;    &quot;ref/xamarinmac20/_._&quot;,&#10;    &quot;ref/xamarintvos10/_._&quot;,&#10;    &quot;ref/xamarinwatchos10/_._&quot;,&#10;    &quot;system.xml.xdocument.4.3.0.nupkg.sha512&quot;,&#10;    &quot;system.xml.xdocument.nuspec&quot;&#10;  ]&#10;},&#10;&quot;EpicGames.Build/1.0.0&quot;: {&#10;  &quot;type&quot;: &quot;project&quot;," />
+                      <option name="filePath" value="$PROJECT_DIR$/Intermediate/Build/BuildRulesProjects/CrunchModuleRules/obj/project.assets.json" />
+                      <option name="range">
+                        <Range>
+                          <option name="endColumn" value="1" />
+                          <option name="endLine" value="8485" />
+                          <option name="startColumn" value="1" />
+                          <option name="startLine" value="8466" />
+                        </Range>
+                      </option>
+                      <option name="relativePath" value="Intermediate\Build\BuildRulesProjects\CrunchModuleRules\obj\project.assets.json" />
+                    </CodebaseContextVariableValue>
+                    <CodebaseContextVariableValue>
+                      <option name="chunk" value="Plugins\VRM4U\Source\VRM4U\Private\VrmBPFunctionLibrary.cpp: &#9;&#9;FilePath = dummy[0];&#10;&#9;}&#10;&#9;if (AssetFileName == &quot;&quot;) {&#10;&#9;&#9;AssetFileName = dummy[1];&#10;&#9;}&#10;&#9;FilePath += TEXT(&quot;/&quot;);&#10;&#9;while (FilePath.Find(TEXT(&quot;//&quot;)) &gt;= 0) {&#10;&#9;&#9;FilePath = FilePath.Replace(TEXT(&quot;//&quot;), TEXT(&quot;/&quot;));&#10;&#9;}&#10;&#9;while (AssetFileName.Find(TEXT(&quot;/&quot;)) &gt;= 0) {&#10;&#9;&#9;AssetFileName = AssetFileName.Replace(TEXT(&quot;/&quot;), TEXT(&quot;&quot;));&#10;&#9;}&#10;&#9;USkeletalMesh* sk = VRMGetSkinnedAsset(skc);&#10;&#9;USkeleton* k = VRMGetSkeleton( VRMGetSkinnedAsset(skc) );&#10;&#9;//FString NewPackageName = &quot;/Game/aaaa&quot;;&#10;&#9;FString NewPackageName = FilePath + AssetFileName;&#10;#if&#9;UE_VERSION_OLDER_THAN(4,26,0)&#10;&#9;UPackage* Package = CreatePackage(nullptr, *NewPackageName);&#10;#else&#10;&#9;UPackage* Package = CreatePackage(*NewPackageName);&#10;#endif&#10;&#9;UAnimSequence* ase;&#10;&#9;ase = NewObject&lt;UAnimSequence&gt;(Package, *(TEXT(&quot;A_&quot;) + AssetFileName), EObjectFlags::RF_Public | EObjectFlags::RF_Standalone);&#10;#if&#9;UE_VERSION_OLDER_THAN(5,0,0)&#10;&#9;ase-&gt;CleanAnimSequenceForImport();&#10;#else&#10;&#9;ase-&gt;GetController().ResetModel();&#10;#endif&#10;&#9;ase-&gt;SetSkeleton(k);&#10;&#9;float totalTime = 0.f;" />
+                      <option name="filePath" value="$PROJECT_DIR$/Plugins/VRM4U/Source/VRM4U/Private/VrmBPFunctionLibrary.cpp" />
+                      <option name="range">
+                        <Range>
+                          <option name="endColumn" value="1" />
+                          <option name="endLine" value="1631" />
+                          <option name="startColumn" value="1" />
+                          <option name="startLine" value="1594" />
+                        </Range>
+                      </option>
+                      <option name="relativePath" value="Plugins\VRM4U\Source\VRM4U\Private\VrmBPFunctionLibrary.cpp" />
+                    </CodebaseContextVariableValue>
+                    <CodebaseContextVariableValue>
+                      <option name="chunk" value="Intermediate\Build\BuildRulesProjects\CrunchModuleRules\obj\project.assets.json: &quot;lib/xamarintvos10/_._&quot;,&#10;&quot;lib/xamarinwatchos10/_._&quot;,&#10;&quot;ref/MonoAndroid10/_._&quot;,&#10;&quot;ref/MonoTouch10/_._&quot;,&#10;&quot;ref/net45/_._&quot;,&#10;&quot;ref/netcore50/System.ObjectModel.dll&quot;,&#10;&quot;ref/netcore50/System.ObjectModel.xml&quot;,&#10;&quot;ref/netcore50/de/System.ObjectModel.xml&quot;,&#10;&quot;ref/netcore50/es/System.ObjectModel.xml&quot;,&#10;&quot;ref/netcore50/fr/System.ObjectModel.xml&quot;,&#10;&quot;ref/netcore50/it/System.ObjectModel.xml&quot;,&#10;&quot;ref/netcore50/ja/System.ObjectModel.xml&quot;,&#10;&quot;ref/netcore50/ko/System.ObjectModel.xml&quot;,&#10;&quot;ref/netcore50/ru/System.ObjectModel.xml&quot;,&#10;&quot;ref/netcore50/zh-hans/System.ObjectModel.xml&quot;,&#10;&quot;ref/netcore50/zh-hant/System.ObjectModel.xml&quot;,&#10;&quot;ref/netstandard1.0/System.ObjectModel.dll&quot;,&#10;&quot;ref/netstandard1.0/System.ObjectModel.xml&quot;,&#10;&quot;ref/netstandard1.0/de/System.ObjectModel.xml&quot;," />
+                      <option name="filePath" value="$PROJECT_DIR$/Intermediate/Build/BuildRulesProjects/CrunchModuleRules/obj/project.assets.json" />
+                      <option name="range">
+                        <Range>
+                          <option name="endColumn" value="1" />
+                          <option name="endLine" value="6429" />
+                          <option name="startColumn" value="1" />
+                          <option name="startLine" value="6411" />
+                        </Range>
+                      </option>
+                      <option name="relativePath" value="Intermediate\Build\BuildRulesProjects\CrunchModuleRules\obj\project.assets.json" />
+                    </CodebaseContextVariableValue>
+                    <CodebaseContextVariableValue>
+                      <option name="chunk" value="Plugins\VRM4U\ThirdParty\assimp\include\assimp\RemoveComments.h: THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT&#10;(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE&#10;OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&#10;----------------------------------------------------------------------&#10;*/&#10;/** @file Declares a helper class, &quot;CommentRemover&quot;, which can be&#10; *  used to remove comments (single and multi line) from a text file.&#10; */&#10;#pragma once&#10;#ifndef AI_REMOVE_COMMENTS_H_INC&#10;#define AI_REMOVE_COMMENTS_H_INC&#10;#ifdef __GNUC__&#10;#   pragma GCC system_header&#10;#endif&#10;#include &lt;assimp/defs.h&gt;&#10;namespace Assimp    {&#10;// ---------------------------------------------------------------------------&#10;/** \brief Helper class to remove single and multi line comments from a file&#10; *&#10; *  Some mesh formats like MD5 have comments that are quite similar&#10; *  to those in C or C++ so this code has been moved to a separate&#10; *  module.&#10; */&#10;class ASSIMP_API CommentRemover {&#10;    // class cannot be instanced&#10;    CommentRemover() {}&#10;public:&#10;    //! Remove single-line comments. The end of a line is&#10;    //! expected to be either NL or CR or NLCR.&#10;    //! \param szComment The start sequence of the comment, e.g. &quot;//&quot;" />
+                      <option name="filePath" value="$PROJECT_DIR$/Plugins/VRM4U/ThirdParty/assimp/include/assimp/RemoveComments.h" />
+                      <option name="range">
+                        <Range>
+                          <option name="endColumn" value="1" />
+                          <option name="endLine" value="72" />
+                          <option name="startColumn" value="1" />
+                          <option name="startLine" value="35" />
+                        </Range>
+                      </option>
+                      <option name="relativePath" value="Plugins\VRM4U\ThirdParty\assimp\include\assimp\RemoveComments.h" />
+                    </CodebaseContextVariableValue>
+                    <CodebaseContextVariableValue>
+                      <option name="chunk" value="Intermediate\Build\BuildRulesProjects\CrunchModuleRules\obj\project.assets.json:     &quot;ref/netstandard1.3/fr/System.Xml.ReaderWriter.xml&quot;,&#10;    &quot;ref/netstandard1.3/it/System.Xml.ReaderWriter.xml&quot;,&#10;    &quot;ref/netstandard1.3/ja/System.Xml.ReaderWriter.xml&quot;,&#10;    &quot;ref/netstandard1.3/ko/System.Xml.ReaderWriter.xml&quot;,&#10;    &quot;ref/netstandard1.3/ru/System.Xml.ReaderWriter.xml&quot;,&#10;    &quot;ref/netstandard1.3/zh-hans/System.Xml.ReaderWriter.xml&quot;,&#10;    &quot;ref/netstandard1.3/zh-hant/System.Xml.ReaderWriter.xml&quot;,&#10;    &quot;ref/portable-net45+win8+wp8+wpa81/_._&quot;,&#10;    &quot;ref/win8/_._&quot;,&#10;    &quot;ref/wp80/_._&quot;,&#10;    &quot;ref/wpa81/_._&quot;,&#10;    &quot;ref/xamarinios10/_._&quot;,&#10;    &quot;ref/xamarinmac20/_._&quot;,&#10;    &quot;ref/xamarintvos10/_._&quot;,&#10;    &quot;ref/xamarinwatchos10/_._&quot;,&#10;    &quot;system.xml.readerwriter.4.3.0.nupkg.sha512&quot;,&#10;    &quot;system.xml.readerwriter.nuspec&quot;&#10;  ]&#10;}," />
+                      <option name="filePath" value="$PROJECT_DIR$/Intermediate/Build/BuildRulesProjects/CrunchModuleRules/obj/project.assets.json" />
+                      <option name="range">
+                        <Range>
+                          <option name="endColumn" value="1" />
+                          <option name="endLine" value="8413" />
+                          <option name="startColumn" value="1" />
+                          <option name="startLine" value="8395" />
+                        </Range>
+                      </option>
+                      <option name="relativePath" value="Intermediate\Build\BuildRulesProjects\CrunchModuleRules\obj\project.assets.json" />
+                    </CodebaseContextVariableValue>
+                    <CodebaseContextVariableValue>
+                      <option name="chunk" value=".idea\.idea.Crunch\.idea\encodings.xml: &lt;file url=&quot;file://$PROJECT_DIR$/Source/Crunch/Private/GAS/Core/CAbilitySystemComponent.h&quot; charset=&quot;UTF-8&quot; /&gt;&#10;&lt;file url=&quot;file://$PROJECT_DIR$/Source/Crunch/Private/GAS/Core/CAbilitySystemStatics.cpp&quot; charset=&quot;UTF-8&quot; /&gt;&#10;&lt;file url=&quot;file://$PROJECT_DIR$/Source/Crunch/Private/GAS/Core/CAbilitySystemStatics.h&quot; charset=&quot;UTF-8&quot; /&gt;&#10;&lt;file url=&quot;file://$PROJECT_DIR$/Source/Crunch/Private/GAS/Core/CAttributeSet.cpp&quot; charset=&quot;UTF-8&quot; /&gt;&#10;&lt;file url=&quot;file://$PROJECT_DIR$/Source/Crunch/Private/GAS/Core/CAttributeSet.h&quot; charset=&quot;UTF-8&quot; /&gt;&#10;&lt;file url=&quot;file://$PROJECT_DIR$/Source/Crunch/Private/GAS/Core/CGameplayAbility.cpp&quot; charset=&quot;UTF-8&quot; /&gt;&#10;&lt;file url=&quot;file://$PROJECT_DIR$/Source/Crunch/Private/GAS/Core/CGameplayAbility.h&quot; charset=&quot;UTF-8&quot; /&gt;" />
+                      <option name="filePath" value="$PROJECT_DIR$/.idea/.idea.Crunch/.idea/encodings.xml" />
+                      <option name="range">
+                        <Range>
+                          <option name="endColumn" value="1" />
+                          <option name="endLine" value="31" />
+                          <option name="startColumn" value="1" />
+                          <option name="startLine" value="25" />
+                        </Range>
+                      </option>
+                      <option name="relativePath" value=".idea\.idea.Crunch\.idea\encodings.xml" />
+                    </CodebaseContextVariableValue>
+                    <CodebaseContextVariableValue>
+                      <option name="chunk" value=".idea\.idea.Crunch\.idea\encodings.xml: &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&#10;&lt;project version=&quot;4&quot;&gt;&#10;  &lt;component name=&quot;Encoding&quot; defaultCharsetForPropertiesFiles=&quot;UTF-8&quot; addBOMForNewFiles=&quot;with BOM under Windows, with no BOM otherwise&quot;&gt;&#10;    &lt;file url=&quot;file://$PROJECT_DIR$/Source&quot; charset=&quot;UTF-8&quot; /&gt;&#10;    &lt;file url=&quot;file://$PROJECT_DIR$/Source/Crunch/Private&quot; charset=&quot;UTF-8&quot; /&gt;&#10;    &lt;file url=&quot;file://$PROJECT_DIR$/Source/Crunch/Private/AI/BTTask_SendInputToAbilitySystem.cpp&quot; charset=&quot;UTF-8&quot; /&gt;&#10;    &lt;file url=&quot;file://$PROJECT_DIR$/Source/Crunch/Private/AI/BTTask_SendInputToAbilitySystem.h&quot; charset=&quot;UTF-8&quot; /&gt;&#10;    &lt;file url=&quot;file://$PROJECT_DIR$/Source/Crunch/Private/AI/CAIController.cpp&quot; charset=&quot;UTF-8&quot; /&gt;&#10;    &lt;file url=&quot;file://$PROJECT_DIR$/Source/Crunch/Private/AI/CAIController.h&quot; charset=&quot;UTF-8&quot; /&gt;&#10;    &lt;file url=&quot;file://$PROJECT_DIR$/Source/Crunch/Private/AI/MinionBarrack.cpp&quot; charset=&quot;UTF-8&quot; /&gt;" />
+                      <option name="filePath" value="$PROJECT_DIR$/.idea/.idea.Crunch/.idea/encodings.xml" />
+                      <option name="range">
+                        <Range>
+                          <option name="endColumn" value="1" />
+                          <option name="endLine" value="10" />
+                          <option name="startColumn" value="1" />
+                          <option name="startLine" value="1" />
+                        </Range>
+                      </option>
+                      <option name="relativePath" value=".idea\.idea.Crunch\.idea\encodings.xml" />
+                    </CodebaseContextVariableValue>
+                    <CodebaseContextVariableValue>
+                      <option name="chunk" value="Intermediate\Build\BuildRulesProjects\CrunchModuleRules\obj\project.assets.json: &quot;ref/netstandard1.0/it/System.IO.xml&quot;,&#10;&quot;ref/netstandard1.0/ja/System.IO.xml&quot;,&#10;&quot;ref/netstandard1.0/ko/System.IO.xml&quot;,&#10;&quot;ref/netstandard1.0/ru/System.IO.xml&quot;,&#10;&quot;ref/netstandard1.0/zh-hans/System.IO.xml&quot;,&#10;&quot;ref/netstandard1.0/zh-hant/System.IO.xml&quot;,&#10;&quot;ref/netstandard1.3/System.IO.dll&quot;,&#10;&quot;ref/netstandard1.3/System.IO.xml&quot;,&#10;&quot;ref/netstandard1.3/de/System.IO.xml&quot;,&#10;&quot;ref/netstandard1.3/es/System.IO.xml&quot;,&#10;&quot;ref/netstandard1.3/fr/System.IO.xml&quot;,&#10;&quot;ref/netstandard1.3/it/System.IO.xml&quot;,&#10;&quot;ref/netstandard1.3/ja/System.IO.xml&quot;,&#10;&quot;ref/netstandard1.3/ko/System.IO.xml&quot;," />
+                      <option name="filePath" value="$PROJECT_DIR$/Intermediate/Build/BuildRulesProjects/CrunchModuleRules/obj/project.assets.json" />
+                      <option name="range">
+                        <Range>
+                          <option name="endColumn" value="1" />
+                          <option name="endLine" value="5750" />
+                          <option name="startColumn" value="1" />
+                          <option name="startLine" value="5737" />
+                        </Range>
+                      </option>
+                      <option name="relativePath" value="Intermediate\Build\BuildRulesProjects\CrunchModuleRules\obj\project.assets.json" />
+                    </CodebaseContextVariableValue>
+                    <CodebaseContextVariableValue>
+                      <option name="chunk" value="Intermediate\Build\BuildRulesProjects\CrunchModuleRules\obj\project.assets.json: &quot;ref/netcore50/zh-hans/System.Net.Http.xml&quot;,&#10;&quot;ref/netcore50/zh-hant/System.Net.Http.xml&quot;,&#10;&quot;ref/netstandard1.1/System.Net.Http.dll&quot;,&#10;&quot;ref/netstandard1.1/System.Net.Http.xml&quot;,&#10;&quot;ref/netstandard1.1/de/System.Net.Http.xml&quot;,&#10;&quot;ref/netstandard1.1/es/System.Net.Http.xml&quot;,&#10;&quot;ref/netstandard1.1/fr/System.Net.Http.xml&quot;,&#10;&quot;ref/netstandard1.1/it/System.Net.Http.xml&quot;,&#10;&quot;ref/netstandard1.1/ja/System.Net.Http.xml&quot;,&#10;&quot;ref/netstandard1.1/ko/System.Net.Http.xml&quot;,&#10;&quot;ref/netstandard1.1/ru/System.Net.Http.xml&quot;,&#10;&quot;ref/netstandard1.1/zh-hans/System.Net.Http.xml&quot;,&#10;&quot;ref/netstandard1.1/zh-hant/System.Net.Http.xml&quot;," />
+                      <option name="filePath" value="$PROJECT_DIR$/Intermediate/Build/BuildRulesProjects/CrunchModuleRules/obj/project.assets.json" />
+                      <option name="range">
+                        <Range>
+                          <option name="endColumn" value="1" />
+                          <option name="endLine" value="6248" />
+                          <option name="startColumn" value="1" />
+                          <option name="startLine" value="6236" />
+                        </Range>
+                      </option>
+                      <option name="relativePath" value="Intermediate\Build\BuildRulesProjects\CrunchModuleRules\obj\project.assets.json" />
+                    </CodebaseContextVariableValue>
+                    <CodebaseContextVariableValue>
+                      <option name="chunk" value="Intermediate\Build\BuildRulesProjects\CrunchModuleRules\obj\project.assets.json: &quot;ref/MonoTouch10/_._&quot;,&#10;&quot;ref/net45/_._&quot;,&#10;&quot;ref/net46/System.Xml.ReaderWriter.dll&quot;,&#10;&quot;ref/netcore50/System.Xml.ReaderWriter.dll&quot;,&#10;&quot;ref/netcore50/System.Xml.ReaderWriter.xml&quot;,&#10;&quot;ref/netcore50/de/System.Xml.ReaderWriter.xml&quot;,&#10;&quot;ref/netcore50/es/System.Xml.ReaderWriter.xml&quot;,&#10;&quot;ref/netcore50/fr/System.Xml.ReaderWriter.xml&quot;,&#10;&quot;ref/netcore50/it/System.Xml.ReaderWriter.xml&quot;,&#10;&quot;ref/netcore50/ja/System.Xml.ReaderWriter.xml&quot;,&#10;&quot;ref/netcore50/ko/System.Xml.ReaderWriter.xml&quot;,&#10;&quot;ref/netcore50/ru/System.Xml.ReaderWriter.xml&quot;,&#10;&quot;ref/netcore50/zh-hans/System.Xml.ReaderWriter.xml&quot;,&#10;&quot;ref/netcore50/zh-hant/System.Xml.ReaderWriter.xml&quot;,&#10;&quot;ref/netstandard1.0/System.Xml.ReaderWriter.dll&quot;,&#10;&quot;ref/netstandard1.0/System.Xml.ReaderWriter.xml&quot;," />
+                      <option name="filePath" value="$PROJECT_DIR$/Intermediate/Build/BuildRulesProjects/CrunchModuleRules/obj/project.assets.json" />
+                      <option name="range">
+                        <Range>
+                          <option name="endColumn" value="1" />
+                          <option name="endLine" value="8381" />
+                          <option name="startColumn" value="1" />
+                          <option name="startLine" value="8366" />
+                        </Range>
+                      </option>
+                      <option name="relativePath" value="Intermediate\Build\BuildRulesProjects\CrunchModuleRules\obj\project.assets.json" />
+                    </CodebaseContextVariableValue>
+                    <CodebaseContextVariableValue>
+                      <option name="chunk" value=".idea\.idea.Crunch\.idea\encodings.xml: &lt;file url=&quot;file://$PROJECT_DIR$/Source/Crunch/Private/Animations/CAnimInstance.cpp&quot; charset=&quot;UTF-8&quot; /&gt;&#10;&lt;file url=&quot;file://$PROJECT_DIR$/Source/Crunch/Private/Animations/CAnimInstance.h&quot; charset=&quot;UTF-8&quot; /&gt;&#10;&lt;file url=&quot;file://$PROJECT_DIR$/Source/Crunch/Private/Character/CCharacter.cpp&quot; charset=&quot;UTF-8&quot; /&gt;&#10;&lt;file url=&quot;file://$PROJECT_DIR$/Source/Crunch/Private/Character/CCharacter.h&quot; charset=&quot;UTF-8&quot; /&gt;&#10;&lt;file url=&quot;file://$PROJECT_DIR$/Source/Crunch/Private/GAS/Abilities/GA_Combo.cpp&quot; charset=&quot;UTF-8&quot; /&gt;&#10;&lt;file url=&quot;file://$PROJECT_DIR$/Source/Crunch/Private/GAS/Abilities/GA_Combo.h&quot; charset=&quot;UTF-8&quot; /&gt;&#10;&lt;file url=&quot;file://$PROJECT_DIR$/Source/Crunch/Private/GAS/Core/CAbilitySystemComponent.cpp&quot; charset=&quot;UTF-8&quot; /&gt;" />
+                      <option name="filePath" value="$PROJECT_DIR$/.idea/.idea.Crunch/.idea/encodings.xml" />
+                      <option name="range">
+                        <Range>
+                          <option name="endColumn" value="1" />
+                          <option name="endLine" value="24" />
+                          <option name="startColumn" value="1" />
+                          <option name="startLine" value="18" />
+                        </Range>
+                      </option>
+                      <option name="relativePath" value=".idea\.idea.Crunch\.idea\encodings.xml" />
+                    </CodebaseContextVariableValue>
+                    <CodebaseContextVariableValue>
+                      <option name="chunk" value=".idea\.idea.Crunch\.idea\workspace.xml: &lt;setting file=&quot;file://$PROJECT_DIR$/Source/Crunch/Private/Animations/AN_SendTargetGroup.h&quot; root0=&quot;FORCE_HIGHLIGHTING&quot; /&gt;&#10;&lt;setting file=&quot;file://$PROJECT_DIR$/Source/Crunch/Private/Character/CCharacter.cpp&quot; root0=&quot;FORCE_HIGHLIGHTING&quot; /&gt;&#10;&lt;setting file=&quot;file://$PROJECT_DIR$/Source/Crunch/Private/Character/CCharacter.h&quot; root0=&quot;FORCE_HIGHLIGHTING&quot; /&gt;&#10;&lt;setting file=&quot;file://$PROJECT_DIR$/Source/Crunch/Private/Framework/CGameMode.cpp&quot; root0=&quot;FORCE_HIGHLIGHTING&quot; /&gt;&#10;&lt;setting file=&quot;file://$PROJECT_DIR$/Source/Crunch/Private/Framework/CGameMode.h&quot; root0=&quot;FORCE_HIGHLIGHTING&quot; /&gt;&#10;&lt;setting file=&quot;file://$PROJECT_DIR$/Source/Crunch/Private/GAS/Abilities/GA_Combo.h&quot; root0=&quot;FORCE_HIGHLIGHTING&quot; /&gt;&#10;&lt;setting file=&quot;file://$PROJECT_DIR$/Source/Crunch/Private/GAS/Core/CAbilitySystemComponent.cpp&quot; root0=&quot;FORCE_HIGHLIGHTING&quot; /&gt;" />
+                      <option name="filePath" value="$PROJECT_DIR$/.idea/.idea.Crunch/.idea/workspace.xml" />
+                      <option name="range">
+                        <Range>
+                          <option name="endColumn" value="1" />
+                          <option name="endLine" value="128" />
+                          <option name="startColumn" value="1" />
+                          <option name="startLine" value="122" />
+                        </Range>
+                      </option>
+                      <option name="relativePath" value=".idea\.idea.Crunch\.idea\workspace.xml" />
+                    </CodebaseContextVariableValue>
+                  </list>
+                </option>
+                <option name="codebaseReferences">
+                  <list>
+                    <KnowledgeReference>
+                      <option name="chunk" value="Plugins\Developer\RiderLink\Source\RD\thirdparty\spdlog\include\spdlog\fmt\bundled\os.h:  file() FMT_NOEXCEPT : fd_(-1) {}&#10; // Opens a file and constructs a file object representing this file.&#10; FMT_API file(cstring_view path, int oflag);&#10;public:&#10; file(const file&amp;) = delete;&#10; void operator=(const file&amp;) = delete;&#10; file(file&amp;&amp; other) FMT_NOEXCEPT : fd_(other.fd_) { other.fd_ = -1; }&#10; // Move assignment is not noexcept because close may throw.&#10; file&amp; operator=(file&amp;&amp; other) {&#10;   close();&#10;   fd_ = other.fd_;&#10;   other.fd_ = -1;&#10;   return *this;&#10; }&#10; // Destroys the object closing the file it represents if any.&#10; FMT_API ~file() FMT_NOEXCEPT;&#10; // Returns the file descriptor.&#10; int descriptor() const FMT_NOEXCEPT { return fd_; }&#10; // Closes the file.&#10; FMT_API void close();&#10; // Returns the file size. The size has signed type for consistency with&#10; // stat::st_size.&#10; FMT_API long long size() const;&#10; // Attempts to read count bytes from the file into the specified buffer." />
+                      <option name="metadata">
+                        <KnowledgeReferenceMetadata>
+                          <option name="endPos" value="338" />
+                          <option name="fileName" value="Plugins\Developer\RiderLink\Source\RD\thirdparty\spdlog\include\spdlog\fmt\bundled\os.h" />
+                          <option name="source" value="$PROJECT_DIR$/Plugins/Developer/RiderLink/Source/RD/thirdparty/spdlog/include/spdlog/fmt/bundled/os.h" />
+                          <option name="sourceType" value="code" />
+                          <option name="startPos" value="306" />
+                        </KnowledgeReferenceMetadata>
+                      </option>
+                    </KnowledgeReference>
+                    <KnowledgeReference>
+                      <option name="chunk" value="Plugins\Developer\RiderLink\Source\RD\thirdparty\spdlog\include\spdlog\fmt\bundled\os.h:   FMT_API size_t read(void* buffer, size_t count);&#10;  // Attempts to write count bytes from the specified buffer to the file.&#10;  FMT_API size_t write(const void* buffer, size_t count);&#10;  // Duplicates a file descriptor with the dup function and returns&#10;  // the duplicate as a file object.&#10;  FMT_API static file dup(int fd);&#10;  // Makes fd be the copy of this file descriptor, closing fd first if&#10;  // necessary.&#10;  FMT_API void dup2(int fd);&#10;  // Makes fd be the copy of this file descriptor, closing fd first if&#10;  // necessary.&#10;  FMT_API void dup2(int fd, std::error_code&amp; ec) FMT_NOEXCEPT;&#10;  // Creates a pipe setting up read_end and write_end file objects for reading&#10;  // and writing respectively.&#10;  FMT_API static void pipe(file&amp; read_end, file&amp; write_end);&#10;  // Creates a buffered_file object associated with this file and detaches&#10;  // this file object from the file.&#10;  FMT_API buffered_file fdopen(const char* mode);&#10;};&#10;// Returns the memory page size.&#10;long getpagesize();" />
+                      <option name="metadata">
+                        <KnowledgeReferenceMetadata>
+                          <option name="endPos" value="366" />
+                          <option name="fileName" value="Plugins\Developer\RiderLink\Source\RD\thirdparty\spdlog\include\spdlog\fmt\bundled\os.h" />
+                          <option name="source" value="$PROJECT_DIR$/Plugins/Developer/RiderLink/Source/RD/thirdparty/spdlog/include/spdlog/fmt/bundled/os.h" />
+                          <option name="sourceType" value="code" />
+                          <option name="startPos" value="339" />
+                        </KnowledgeReferenceMetadata>
+                      </option>
+                    </KnowledgeReference>
+                    <KnowledgeReference>
+                      <option name="chunk" value="Plugins\Developer\RiderLink\Source\RD\thirdparty\spdlog\include\spdlog\fmt\bundled\os.h: // std::system is not available on some platforms such as iOS (#2248).&#10;#ifdef __OSX__&#10;template &lt;typename S, typename... Args, typename Char = char_t&lt;S&gt;&gt;&#10;void say(const S&amp; format_str, Args&amp;&amp;... args) {&#10;  std::system(format(&quot;say \&quot;{}\&quot;&quot;, format(format_str, args...)).c_str());&#10;}&#10;#endif&#10;// A buffered file.&#10;class buffered_file {&#10; private:&#10;  FILE* file_;&#10;  friend class file;&#10;  explicit buffered_file(FILE* f) : file_(f) {}&#10; public:&#10;  buffered_file(const buffered_file&amp;) = delete;&#10;  void operator=(const buffered_file&amp;) = delete;&#10;  // Constructs a buffered_file object which doesn't represent any file.&#10;  buffered_file() FMT_NOEXCEPT : file_(nullptr) {}&#10;  // Destroys the object closing the file it represents if any.&#10;  FMT_API ~buffered_file() FMT_NOEXCEPT;&#10; public:&#10;  buffered_file(buffered_file&amp;&amp; other) FMT_NOEXCEPT : file_(other.file_) {&#10;    other.file_ = nullptr;&#10;  }&#10;  buffered_file&amp; operator=(buffered_file&amp;&amp; other) {&#10;    close();" />
+                      <option name="metadata">
+                        <KnowledgeReferenceMetadata>
+                          <option name="endPos" value="251" />
+                          <option name="fileName" value="Plugins\Developer\RiderLink\Source\RD\thirdparty\spdlog\include\spdlog\fmt\bundled\os.h" />
+                          <option name="source" value="$PROJECT_DIR$/Plugins/Developer/RiderLink/Source/RD/thirdparty/spdlog/include/spdlog/fmt/bundled/os.h" />
+                          <option name="sourceType" value="code" />
+                          <option name="startPos" value="218" />
+                        </KnowledgeReferenceMetadata>
+                      </option>
+                    </KnowledgeReference>
+                    <KnowledgeReference>
+                      <option name="chunk" value="Plugins\VRM4U\ThirdParty\assimp\include\assimp\cfileio.h: DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY&#10;THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT&#10;(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE&#10;OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&#10;---------------------------------------------------------------------------&#10;*/&#10;/** @file cfileio.h&#10; *  @brief Defines generic C routines to access memory-mapped files&#10; */&#10;#pragma once&#10;#ifndef AI_FILEIO_H_INC&#10;#define AI_FILEIO_H_INC&#10;#ifdef __GNUC__&#10;#   pragma GCC system_header&#10;#endif&#10;#include &lt;assimp/types.h&gt;&#10;#ifdef __cplusplus&#10;extern &quot;C&quot; {&#10;#endif&#10;struct aiFileIO;&#10;struct aiFile;&#10;// aiFile callbacks&#10;typedef size_t          (*aiFileWriteProc) (C_STRUCT aiFile*,   const char*, size_t, size_t);&#10;typedef size_t          (*aiFileReadProc)  (C_STRUCT aiFile*,   char*, size_t,size_t);&#10;typedef size_t          (*aiFileTellProc)  (C_STRUCT aiFile*);&#10;typedef void            (*aiFileFlushProc) (C_STRUCT aiFile*);&#10;typedef C_ENUM aiReturn (*aiFileSeek)      (C_STRUCT aiFile*, size_t, C_ENUM aiOrigin);&#10;// aiFileIO callbacks" />
+                      <option name="metadata">
+                        <KnowledgeReferenceMetadata>
+                          <option name="endPos" value="69" />
+                          <option name="fileName" value="Plugins\VRM4U\ThirdParty\assimp\include\assimp\cfileio.h" />
+                          <option name="source" value="$PROJECT_DIR$/Plugins/VRM4U/ThirdParty/assimp/include/assimp/cfileio.h" />
+                          <option name="sourceType" value="code" />
+                          <option name="startPos" value="35" />
+                        </KnowledgeReferenceMetadata>
+                      </option>
+                    </KnowledgeReference>
+                    <KnowledgeReference>
+                      <option name="chunk" value="Plugins\VRM4U\ThirdParty\assimp\include\assimp\XmlParser.h: template &lt;class TNodeType&gt;&#10;inline bool TXmlParser&lt;TNodeType&gt;::hasAttribute(XmlNode &amp;xmlNode, const char *name) {&#10;    pugi::xml_attribute attr = xmlNode.attribute(name);&#10;    return !attr.empty();&#10;}&#10;template &lt;class TNodeType&gt;&#10;inline bool TXmlParser&lt;TNodeType&gt;::getUIntAttribute(XmlNode &amp;xmlNode, const char *name, unsigned int &amp;val) {&#10;    pugi::xml_attribute attr = xmlNode.attribute(name);&#10;    if (attr.empty()) {&#10;        return false;&#10;    }&#10;    val = attr.as_uint();&#10;    return true;&#10;}&#10;template &lt;class TNodeType&gt;&#10;inline bool TXmlParser&lt;TNodeType&gt;::getIntAttribute(XmlNode &amp;xmlNode, const char *name, int &amp;val) {&#10;    pugi::xml_attribute attr = xmlNode.attribute(name);&#10;    if (attr.empty()) {&#10;        return false;&#10;    }&#10;    val = attr.as_int();&#10;    return true;&#10;}&#10;template &lt;class TNodeType&gt;&#10;inline bool TXmlParser&lt;TNodeType&gt;::getRealAttribute(XmlNode &amp;xmlNode, const char *name, ai_real &amp;val) {&#10;    pugi::xml_attribute attr = xmlNode.attribute(name);&#10;    if (attr.empty()) {&#10;        return false;&#10;    }&#10;#ifdef ASSIMP_DOUBLE_PRECISION" />
+                      <option name="metadata">
+                        <KnowledgeReferenceMetadata>
+                          <option name="endPos" value="386" />
+                          <option name="fileName" value="Plugins\VRM4U\ThirdParty\assimp\include\assimp\XmlParser.h" />
+                          <option name="source" value="$PROJECT_DIR$/Plugins/VRM4U/ThirdParty/assimp/include/assimp/XmlParser.h" />
+                          <option name="sourceType" value="code" />
+                          <option name="startPos" value="352" />
+                        </KnowledgeReferenceMetadata>
+                      </option>
+                    </KnowledgeReference>
+                    <KnowledgeReference>
+                      <option name="chunk" value="Plugins\Developer\RiderLink\Source\RD\thirdparty\spdlog\include\spdlog\fmt\bundled\os.h:     file_ = other.file_;&#10;    other.file_ = nullptr;&#10;    return *this;&#10;  }&#10;  // Opens a file.&#10;  FMT_API buffered_file(cstring_view filename, cstring_view mode);&#10;  // Closes the file.&#10;  FMT_API void close();&#10;  // Returns the pointer to a FILE object representing this file.&#10;  FILE* get() const FMT_NOEXCEPT { return file_; }&#10;  // We place parentheses around fileno to workaround a bug in some versions&#10;  // of MinGW that define fileno as a macro.&#10;  FMT_API int(fileno)() const;&#10;  void vprint(string_view format_str, format_args args) {&#10;    fmt::vprint(file_, format_str, args);&#10;  }&#10;  template &lt;typename... Args&gt;&#10;  inline void print(string_view format_str, const Args&amp;... args) {&#10;    vprint(format_str, fmt::make_format_args(args...));&#10;  }&#10;};&#10;#if FMT_USE_FCNTL&#10;// A file. Closed file is represented by a file object with descriptor -1.&#10;// Methods that are not declared with FMT_NOEXCEPT may throw" />
+                      <option name="metadata">
+                        <KnowledgeReferenceMetadata>
+                          <option name="endPos" value="282" />
+                          <option name="fileName" value="Plugins\Developer\RiderLink\Source\RD\thirdparty\spdlog\include\spdlog\fmt\bundled\os.h" />
+                          <option name="source" value="$PROJECT_DIR$/Plugins/Developer/RiderLink/Source/RD/thirdparty/spdlog/include/spdlog/fmt/bundled/os.h" />
+                          <option name="sourceType" value="code" />
+                          <option name="startPos" value="252" />
+                        </KnowledgeReferenceMetadata>
+                      </option>
+                    </KnowledgeReference>
+                    <KnowledgeReference>
+                      <option name="chunk" value="Intermediate\Build\BuildRulesProjects\CrunchModuleRules\obj\project.assets.json: &quot;lib/MonoAndroid10/_._&quot;,&#10;&quot;lib/MonoTouch10/_._&quot;,&#10;&quot;lib/net46/System.IO.FileSystem.dll&quot;,&#10;&quot;lib/xamarinios10/_._&quot;,&#10;&quot;lib/xamarinmac20/_._&quot;,&#10;&quot;lib/xamarintvos10/_._&quot;,&#10;&quot;lib/xamarinwatchos10/_._&quot;,&#10;&quot;ref/MonoAndroid10/_._&quot;,&#10;&quot;ref/MonoTouch10/_._&quot;,&#10;&quot;ref/net46/System.IO.FileSystem.dll&quot;,&#10;&quot;ref/netstandard1.3/System.IO.FileSystem.dll&quot;,&#10;&quot;ref/netstandard1.3/System.IO.FileSystem.xml&quot;,&#10;&quot;ref/netstandard1.3/de/System.IO.FileSystem.xml&quot;,&#10;&quot;ref/netstandard1.3/es/System.IO.FileSystem.xml&quot;,&#10;&quot;ref/netstandard1.3/fr/System.IO.FileSystem.xml&quot;,&#10;&quot;ref/netstandard1.3/it/System.IO.FileSystem.xml&quot;,&#10;&quot;ref/netstandard1.3/ja/System.IO.FileSystem.xml&quot;,&#10;&quot;ref/netstandard1.3/ko/System.IO.FileSystem.xml&quot;," />
+                      <option name="metadata">
+                        <KnowledgeReferenceMetadata>
+                          <option name="endPos" value="5913" />
+                          <option name="fileName" value="Intermediate\Build\BuildRulesProjects\CrunchModuleRules\obj\project.assets.json" />
+                          <option name="source" value="$PROJECT_DIR$/Intermediate/Build/BuildRulesProjects/CrunchModuleRules/obj/project.assets.json" />
+                          <option name="sourceType" value="code" />
+                          <option name="startPos" value="5896" />
+                        </KnowledgeReferenceMetadata>
+                      </option>
+                    </KnowledgeReference>
+                    <KnowledgeReference>
+                      <option name="chunk" value="Plugins\Developer\RiderLink\Source\RD\thirdparty\spdlog\include\spdlog\fmt\bundled\core.h: constexpr FMT_INLINE value(unsigned val) : uint_value(val) {}&#10;constexpr FMT_INLINE value(long long val) : long_long_value(val) {}&#10;constexpr FMT_INLINE value(unsigned long long val) : ulong_long_value(val) {}&#10;FMT_INLINE value(int128_t val) : int128_value(val) {}&#10;FMT_INLINE value(uint128_t val) : uint128_value(val) {}&#10;constexpr FMT_INLINE value(float val) : float_value(val) {}&#10;constexpr FMT_INLINE value(double val) : double_value(val) {}&#10;FMT_INLINE value(long double val) : long_double_value(val) {}&#10;constexpr FMT_INLINE value(bool val) : bool_value(val) {}&#10;constexpr FMT_INLINE value(char_type val) : char_value(val) {}&#10;FMT_CONSTEXPR FMT_INLINE value(const char_type* val) {&#10;  string.data = val;&#10;  if (is_constant_evaluated()) string.size = {};&#10;}" />
+                      <option name="metadata">
+                        <KnowledgeReferenceMetadata>
+                          <option name="endPos" value="1251" />
+                          <option name="fileName" value="Plugins\Developer\RiderLink\Source\RD\thirdparty\spdlog\include\spdlog\fmt\bundled\core.h" />
+                          <option name="source" value="$PROJECT_DIR$/Plugins/Developer/RiderLink/Source/RD/thirdparty/spdlog/include/spdlog/fmt/bundled/core.h" />
+                          <option name="sourceType" value="code" />
+                          <option name="startPos" value="1238" />
+                        </KnowledgeReferenceMetadata>
+                      </option>
+                    </KnowledgeReference>
+                    <KnowledgeReference>
+                      <option name="chunk" value="Saved\Config\WindowsEditor\EditorPerProjectUserSettings.ini: WBP_ValueGuage_C.Input=True&#10;WBP_ValueGuage_C.Interaction=True&#10;WBP_ValueGuage_C.Designer=True&#10;WBP_ValueGuage_C.Performance=True&#10;WBP_ValueGuage_C.Layout=True&#10;WBP_ValueGuage_C.Behavior=True&#10;WBP_ValueGuage_C.Render Transform=True&#10;WBP_ValueGuage_C.Localization=True&#10;WBP_ValueGuage_C.Accessibility=True&#10;WBP_ValueGuage_C.Rendering=True&#10;WBP_ValueGuage_C.Navigation=True&#10;CanvasPanel.Behavior=True&#10;CanvasPanel.Accessibility=True&#10;CanvasPanel.Render Transform=True&#10;CanvasPanel.Performance=True&#10;CanvasPanel.Rendering=True&#10;CanvasPanel.Navigation=True&#10;CanvasPanel.Localization=True&#10;TextBlock.Layout=True&#10;TextBlock.Content=True&#10;TextBlock.Appearance=True&#10;TextBlock.Accessibility=True&#10;TextBlock.Performance=True&#10;TextBlock.Wrapping=True&#10;TextBlock.Behavior=True&#10;TextBlock.Render Transform=True&#10;TextBlock.Rendering=True&#10;TextBlock.Navigation=True&#10;TextBlock.Localization=True&#10;ProgressBar.Layout=True&#10;ProgressBar.Style=True&#10;ProgressBar.Progress=True&#10;ProgressBar.Accessibility=True&#10;ProgressBar.Appearance=True&#10;ProgressBar.Behavior=True&#10;ProgressBar.Render Transform=True&#10;ProgressBar.Performance=True&#10;ProgressBar.Rendering=True&#10;ProgressBar.Navigation=True&#10;ProgressBar.Localization=True" />
+                      <option name="metadata">
+                        <KnowledgeReferenceMetadata>
+                          <option name="endPos" value="3398" />
+                          <option name="fileName" value="Saved\Config\WindowsEditor\EditorPerProjectUserSettings.ini" />
+                          <option name="source" value="$PROJECT_DIR$/Saved/Config/WindowsEditor/EditorPerProjectUserSettings.ini" />
+                          <option name="sourceType" value="code" />
+                          <option name="startPos" value="3359" />
+                        </KnowledgeReferenceMetadata>
+                      </option>
+                    </KnowledgeReference>
+                    <KnowledgeReference>
+                      <option name="chunk" value="Plugins\VRM4U\ThirdParty\assimp\include\assimp\BaseImporter.h:  *  @param ext0 Extension to check for. Lowercase characters only, no dot!&#10; *  @param ext1 Optional second extension&#10; *  @param ext2 Optional third extension&#10; *  @note Case-insensitive&#10; */&#10;static bool SimpleExtensionCheck(&#10;        const std::string &amp;pFile,&#10;        const char *ext0,&#10;        const char *ext1 = nullptr,&#10;        const char *ext2 = nullptr);&#10;// -------------------------------------------------------------------&#10;/** @brief Check whether a file has one of the passed file extensions&#10; *  @param pFile Input file&#10; *  @param extensions Extensions to check for. Lowercase characters only, no dot!&#10; *  @note Case-insensitive&#10; */&#10;static bool HasExtension(&#10;        const std::string &amp;pFile,&#10;        const std::set&lt;std::string&gt; &amp;extensions);&#10;// -------------------------------------------------------------------&#10;/** @brief Extract file extension from a string&#10; *  @param pFile Input file&#10; *  @return Extension without trailing dot, all lowercase&#10; */&#10;static std::string GetExtension(&#10;        const std::string &amp;pFile);&#10;// -------------------------------------------------------------------&#10;/** @brief Check whether a file starts with one or more magic tokens&#10; *  @param pFile Input file" />
+                      <option name="metadata">
+                        <KnowledgeReferenceMetadata>
+                          <option name="endPos" value="302" />
+                          <option name="fileName" value="Plugins\VRM4U\ThirdParty\assimp\include\assimp\BaseImporter.h" />
+                          <option name="source" value="$PROJECT_DIR$/Plugins/VRM4U/ThirdParty/assimp/include/assimp/BaseImporter.h" />
+                          <option name="sourceType" value="code" />
+                          <option name="startPos" value="271" />
+                        </KnowledgeReferenceMetadata>
+                      </option>
+                    </KnowledgeReference>
+                    <KnowledgeReference>
+                      <option name="chunk" value="Plugins\Developer\RiderLink\Source\RiderLink\Private\ProtocolFactory.cpp:     auto protocol = MakeUnique&lt;rd::Protocol&gt;(rd::Identities::SERVER, Scheduler, wire, SocketLifetime);&#10;    auto&amp; PlatformFile = FPlatformFileManager::Get().GetPlatformFile();&#10;    const FString PortFullDirectoryPath = GetPathToPortsFolder();&#10;    if (PlatformFile.CreateDirectoryTree(*PortFullDirectoryPath) &amp;&amp; !IsRunningCommandlet())&#10;    {&#10;        const FString ProjectFileName = ProjectName + TEXT(&quot;.uproject&quot;);&#10;        const FString TmpPortFile = TEXT(&quot;~&quot;) + ProjectFileName;&#10;        const FString TmpPortFileFullPath = FPaths::Combine(*PortFullDirectoryPath, *TmpPortFile);&#10;        FFileHelper::SaveStringToFile(FString::FromInt(wire-&gt;port), *TmpPortFileFullPath);&#10;        const FString PortFileFullPath = FPaths::Combine(*PortFullDirectoryPath, *ProjectFileName);&#10;        IFileManager::Get().Move(*PortFileFullPath, *TmpPortFileFullPath, true, true);&#10;    }&#10;    return protocol;&#10;}" />
+                      <option name="metadata">
+                        <KnowledgeReferenceMetadata>
+                          <option name="endPos" value="125" />
+                          <option name="fileName" value="Plugins\Developer\RiderLink\Source\RiderLink\Private\ProtocolFactory.cpp" />
+                          <option name="source" value="$PROJECT_DIR$/Plugins/Developer/RiderLink/Source/RiderLink/Private/ProtocolFactory.cpp" />
+                          <option name="sourceType" value="code" />
+                          <option name="startPos" value="111" />
+                        </KnowledgeReferenceMetadata>
+                      </option>
+                    </KnowledgeReference>
+                    <KnowledgeReference>
+                      <option name="chunk" value="Intermediate\Build\BuildRulesProjects\CrunchModuleRules\obj\project.assets.json: &quot;lib/portable-net45+win8+wp8+wpa81/_._&quot;,&#10;&quot;lib/win8/_._&quot;,&#10;&quot;lib/wp80/_._&quot;,&#10;&quot;lib/wpa81/_._&quot;,&#10;&quot;lib/xamarinios10/_._&quot;,&#10;&quot;lib/xamarinmac20/_._&quot;,&#10;&quot;lib/xamarintvos10/_._&quot;,&#10;&quot;lib/xamarinwatchos10/_._&quot;,&#10;&quot;ref/MonoAndroid10/_._&quot;,&#10;&quot;ref/MonoTouch10/_._&quot;,&#10;&quot;ref/net45/_._&quot;,&#10;&quot;ref/net462/System.Runtime.Extensions.dll&quot;,&#10;&quot;ref/netcore50/System.Runtime.Extensions.dll&quot;,&#10;&quot;ref/netcore50/System.Runtime.Extensions.xml&quot;,&#10;&quot;ref/netcore50/de/System.Runtime.Extensions.xml&quot;,&#10;&quot;ref/netcore50/es/System.Runtime.Extensions.xml&quot;,&#10;&quot;ref/netcore50/fr/System.Runtime.Extensions.xml&quot;,&#10;&quot;ref/netcore50/it/System.Runtime.Extensions.xml&quot;,&#10;&quot;ref/netcore50/ja/System.Runtime.Extensions.xml&quot;,&#10;&quot;ref/netcore50/ko/System.Runtime.Extensions.xml&quot;," />
+                      <option name="metadata">
+                        <KnowledgeReferenceMetadata>
+                          <option name="endPos" value="7066" />
+                          <option name="fileName" value="Intermediate\Build\BuildRulesProjects\CrunchModuleRules\obj\project.assets.json" />
+                          <option name="source" value="$PROJECT_DIR$/Intermediate/Build/BuildRulesProjects/CrunchModuleRules/obj/project.assets.json" />
+                          <option name="sourceType" value="code" />
+                          <option name="startPos" value="7047" />
+                        </KnowledgeReferenceMetadata>
+                      </option>
+                    </KnowledgeReference>
+                    <KnowledgeReference>
+                      <option name="chunk" value="Plugins\VRM4U\ThirdParty\assimp\include\assimp\LineSplitter.h:         tokens[i] = s;&#10;        for (; *s &amp;&amp; !IsSpace(*s); ++s);&#10;        SkipSpaces(&amp;s, mEnd);&#10;    }&#10;}&#10;AI_FORCE_INLINE const std::string* LineSplitter::operator -&gt; () const {&#10;    return &amp;mCur;&#10;}&#10;AI_FORCE_INLINE std::string LineSplitter::operator* () const {&#10;    return mCur;&#10;}&#10;AI_FORCE_INLINE const char* LineSplitter::getEnd() const {&#10;    return mEnd;&#10;}&#10;AI_FORCE_INLINE LineSplitter::operator bool() const {&#10;    return mStream.GetRemainingSize() &gt; 0;&#10;}&#10;AI_FORCE_INLINE LineSplitter::operator line_idx() const {&#10;    return mIdx;&#10;}&#10;AI_FORCE_INLINE LineSplitter::line_idx LineSplitter::get_index() const {&#10;    return mIdx;&#10;}&#10;AI_FORCE_INLINE StreamReaderLE &amp;LineSplitter::get_stream() {&#10;    return mStream;&#10;}&#10;AI_FORCE_INLINE bool LineSplitter::match_start(const char* check) {&#10;    const size_t len = ::strlen(check);&#10;    return len &lt;= mCur.length() &amp;&amp; std::equal(check, check + len, mCur.begin());&#10;}&#10;AI_FORCE_INLINE void LineSplitter::swallow_next_increment() {" />
+                      <option name="metadata">
+                        <KnowledgeReferenceMetadata>
+                          <option name="endPos" value="272" />
+                          <option name="fileName" value="Plugins\VRM4U\ThirdParty\assimp\include\assimp\LineSplitter.h" />
+                          <option name="source" value="$PROJECT_DIR$/Plugins/VRM4U/ThirdParty/assimp/include/assimp/LineSplitter.h" />
+                          <option name="sourceType" value="code" />
+                          <option name="startPos" value="231" />
+                        </KnowledgeReferenceMetadata>
+                      </option>
+                    </KnowledgeReference>
+                    <KnowledgeReference>
+                      <option name="chunk" value="Saved\Crashes\UECC-Windows-1D634D1D4029413BB98C6F9C50C8A2AE_0000\Crunch.log: [2025.07.09-15.24.34:342][  0]LogPakFile: Initializing PakPlatformFile&#10;[2025.07.09-15.24.34:342][  0]LogPakFile: Display: Mounted Pak file 'D:/UE_5.4/FeaturePacks/TP_HandheldARBP.upack', mount point: 'root:/'&#10;[2025.07.09-15.24.34:343][  0]LogPakFile: Initializing PakPlatformFile&#10;[2025.07.09-15.24.34:343][  0]LogPakFile: Display: Mounted Pak file 'D:/UE_5.4/FeaturePacks/TP_ThirdPerson.upack', mount point: 'root:/'&#10;[2025.07.09-15.24.34:343][  0]LogPakFile: Initializing PakPlatformFile&#10;[2025.07.09-15.24.34:344][  0]LogPakFile: Display: Mounted Pak file 'D:/UE_5.4/FeaturePacks/TP_ThirdPersonBP.upack', mount point: 'root:/'&#10;[2025.07.09-15.24.34:344][  0]LogPakFile: Initializing PakPlatformFile" />
+                      <option name="metadata">
+                        <KnowledgeReferenceMetadata>
+                          <option name="endPos" value="1051" />
+                          <option name="fileName" value="Saved\Crashes\UECC-Windows-1D634D1D4029413BB98C6F9C50C8A2AE_0000\Crunch.log" />
+                          <option name="source" value="$PROJECT_DIR$/Saved/Crashes/UECC-Windows-1D634D1D4029413BB98C6F9C50C8A2AE_0000/Crunch.log" />
+                          <option name="sourceType" value="code" />
+                          <option name="startPos" value="1045" />
+                        </KnowledgeReferenceMetadata>
+                      </option>
+                    </KnowledgeReference>
+                    <KnowledgeReference>
+                      <option name="chunk" value="Plugins\VRM4U\ThirdParty\assimp\include\assimp\cfileio.h: typedef C_STRUCT aiFile* (*aiFileOpenProc)  (C_STRUCT aiFileIO*, const char*, const char*);&#10;typedef void             (*aiFileCloseProc) (C_STRUCT aiFileIO*, C_STRUCT aiFile*);&#10;// Represents user-defined data&#10;typedef char* aiUserData;&#10;// ----------------------------------------------------------------------------------&#10;/** @brief C-API: File system callbacks&#10; *&#10; *  Provided are functions to open and close files. Supply a custom structure to&#10; *  the import function. If you don't, a default implementation is used. Use custom&#10; *  file systems to enable reading from other sources, such as ZIPs&#10; *  or memory locations. */&#10;struct aiFileIO&#10;{&#10;    /** Function used to open a new file&#10;     */&#10;    aiFileOpenProc OpenProc;&#10;    /** Function used to close an existing file&#10;     */&#10;    aiFileCloseProc CloseProc;&#10;    /** User-defined, opaque data */&#10;    aiUserData UserData;&#10;};&#10;// ----------------------------------------------------------------------------------&#10;/** @brief C-API: File callbacks&#10; *&#10; *  Actually, it's a data structure to wrap a set of fXXXX (e.g fopen)&#10; *  replacement functions.&#10; *&#10; *  The default implementation of the functions utilizes the fXXX functions from&#10; *  the CRT. However, you can supply a custom implementation to Assimp by&#10; *  delivering a custom aiFileIO. Use this to enable reading from other sources," />
+                      <option name="metadata">
+                        <KnowledgeReferenceMetadata>
+                          <option name="endPos" value="105" />
+                          <option name="fileName" value="Plugins\VRM4U\ThirdParty\assimp\include\assimp\cfileio.h" />
+                          <option name="source" value="$PROJECT_DIR$/Plugins/VRM4U/ThirdParty/assimp/include/assimp/cfileio.h" />
+                          <option name="sourceType" value="code" />
+                          <option name="startPos" value="70" />
+                        </KnowledgeReferenceMetadata>
+                      </option>
+                    </KnowledgeReference>
+                    <KnowledgeReference>
+                      <option name="chunk" value="Intermediate\Build\BuildRulesProjects\CrunchModuleRules\obj\project.assets.json: &quot;ref/netcore50/System.IO.dll&quot;,&#10;&quot;ref/netcore50/System.IO.xml&quot;,&#10;&quot;ref/netcore50/de/System.IO.xml&quot;,&#10;&quot;ref/netcore50/es/System.IO.xml&quot;,&#10;&quot;ref/netcore50/fr/System.IO.xml&quot;,&#10;&quot;ref/netcore50/it/System.IO.xml&quot;,&#10;&quot;ref/netcore50/ja/System.IO.xml&quot;,&#10;&quot;ref/netcore50/ko/System.IO.xml&quot;,&#10;&quot;ref/netcore50/ru/System.IO.xml&quot;,&#10;&quot;ref/netcore50/zh-hans/System.IO.xml&quot;,&#10;&quot;ref/netcore50/zh-hant/System.IO.xml&quot;,&#10;&quot;ref/netstandard1.0/System.IO.dll&quot;,&#10;&quot;ref/netstandard1.0/System.IO.xml&quot;,&#10;&quot;ref/netstandard1.0/de/System.IO.xml&quot;,&#10;&quot;ref/netstandard1.0/es/System.IO.xml&quot;,&#10;&quot;ref/netstandard1.0/fr/System.IO.xml&quot;," />
+                      <option name="metadata">
+                        <KnowledgeReferenceMetadata>
+                          <option name="endPos" value="5736" />
+                          <option name="fileName" value="Intermediate\Build\BuildRulesProjects\CrunchModuleRules\obj\project.assets.json" />
+                          <option name="source" value="$PROJECT_DIR$/Intermediate/Build/BuildRulesProjects/CrunchModuleRules/obj/project.assets.json" />
+                          <option name="sourceType" value="code" />
+                          <option name="startPos" value="5721" />
+                        </KnowledgeReferenceMetadata>
+                      </option>
+                    </KnowledgeReference>
+                    <KnowledgeReference>
+                      <option name="chunk" value="Intermediate\Build\BuildRulesProjects\CrunchModuleRules\obj\project.assets.json: &quot;ref/netstandard1.0/ru/System.Runtime.xml&quot;,&#10;&quot;ref/netstandard1.0/zh-hans/System.Runtime.xml&quot;,&#10;&quot;ref/netstandard1.0/zh-hant/System.Runtime.xml&quot;,&#10;&quot;ref/netstandard1.2/System.Runtime.dll&quot;,&#10;&quot;ref/netstandard1.2/System.Runtime.xml&quot;,&#10;&quot;ref/netstandard1.2/de/System.Runtime.xml&quot;,&#10;&quot;ref/netstandard1.2/es/System.Runtime.xml&quot;,&#10;&quot;ref/netstandard1.2/fr/System.Runtime.xml&quot;,&#10;&quot;ref/netstandard1.2/it/System.Runtime.xml&quot;,&#10;&quot;ref/netstandard1.2/ja/System.Runtime.xml&quot;,&#10;&quot;ref/netstandard1.2/ko/System.Runtime.xml&quot;,&#10;&quot;ref/netstandard1.2/ru/System.Runtime.xml&quot;,&#10;&quot;ref/netstandard1.2/zh-hans/System.Runtime.xml&quot;,&#10;&quot;ref/netstandard1.2/zh-hant/System.Runtime.xml&quot;," />
+                      <option name="metadata">
+                        <KnowledgeReferenceMetadata>
+                          <option name="endPos" value="6974" />
+                          <option name="fileName" value="Intermediate\Build\BuildRulesProjects\CrunchModuleRules\obj\project.assets.json" />
+                          <option name="source" value="$PROJECT_DIR$/Intermediate/Build/BuildRulesProjects/CrunchModuleRules/obj/project.assets.json" />
+                          <option name="sourceType" value="code" />
+                          <option name="startPos" value="6961" />
+                        </KnowledgeReferenceMetadata>
+                      </option>
+                    </KnowledgeReference>
+                    <KnowledgeReference>
+                      <option name="chunk" value="Intermediate\Build\BuildRulesProjects\CrunchModuleRules\obj\project.assets.json: &quot;ref/netcore50/fr/System.Runtime.xml&quot;,&#10;&quot;ref/netcore50/it/System.Runtime.xml&quot;,&#10;&quot;ref/netcore50/ja/System.Runtime.xml&quot;,&#10;&quot;ref/netcore50/ko/System.Runtime.xml&quot;,&#10;&quot;ref/netcore50/ru/System.Runtime.xml&quot;,&#10;&quot;ref/netcore50/zh-hans/System.Runtime.xml&quot;,&#10;&quot;ref/netcore50/zh-hant/System.Runtime.xml&quot;,&#10;&quot;ref/netstandard1.0/System.Runtime.dll&quot;,&#10;&quot;ref/netstandard1.0/System.Runtime.xml&quot;,&#10;&quot;ref/netstandard1.0/de/System.Runtime.xml&quot;,&#10;&quot;ref/netstandard1.0/es/System.Runtime.xml&quot;,&#10;&quot;ref/netstandard1.0/fr/System.Runtime.xml&quot;,&#10;&quot;ref/netstandard1.0/it/System.Runtime.xml&quot;,&#10;&quot;ref/netstandard1.0/ja/System.Runtime.xml&quot;,&#10;&quot;ref/netstandard1.0/ko/System.Runtime.xml&quot;," />
+                      <option name="metadata">
+                        <KnowledgeReferenceMetadata>
+                          <option name="endPos" value="6960" />
+                          <option name="fileName" value="Intermediate\Build\BuildRulesProjects\CrunchModuleRules\obj\project.assets.json" />
+                          <option name="source" value="$PROJECT_DIR$/Intermediate/Build/BuildRulesProjects/CrunchModuleRules/obj/project.assets.json" />
+                          <option name="sourceType" value="code" />
+                          <option name="startPos" value="6946" />
+                        </KnowledgeReferenceMetadata>
+                      </option>
+                    </KnowledgeReference>
+                    <KnowledgeReference>
+                      <option name="chunk" value="Intermediate\Build\BuildRulesProjects\CrunchModuleRules\obj\project.assets.json: &quot;lib/net45/_._&quot;,&#10;&quot;lib/netcore50/System.Runtime.Numerics.dll&quot;,&#10;&quot;lib/netstandard1.3/System.Runtime.Numerics.dll&quot;,&#10;&quot;lib/portable-net45+win8+wpa81/_._&quot;,&#10;&quot;lib/win8/_._&quot;,&#10;&quot;lib/wpa81/_._&quot;,&#10;&quot;lib/xamarinios10/_._&quot;,&#10;&quot;lib/xamarinmac20/_._&quot;,&#10;&quot;lib/xamarintvos10/_._&quot;,&#10;&quot;lib/xamarinwatchos10/_._&quot;,&#10;&quot;ref/MonoAndroid10/_._&quot;,&#10;&quot;ref/MonoTouch10/_._&quot;,&#10;&quot;ref/net45/_._&quot;,&#10;&quot;ref/netcore50/System.Runtime.Numerics.dll&quot;,&#10;&quot;ref/netcore50/System.Runtime.Numerics.xml&quot;,&#10;&quot;ref/netcore50/de/System.Runtime.Numerics.xml&quot;,&#10;&quot;ref/netcore50/es/System.Runtime.Numerics.xml&quot;,&#10;&quot;ref/netcore50/fr/System.Runtime.Numerics.xml&quot;,&#10;&quot;ref/netcore50/it/System.Runtime.Numerics.xml&quot;,&#10;&quot;ref/netcore50/ja/System.Runtime.Numerics.xml&quot;,&#10;&quot;ref/netcore50/ko/System.Runtime.Numerics.xml&quot;," />
+                      <option name="metadata">
+                        <KnowledgeReferenceMetadata>
+                          <option name="endPos" value="7312" />
+                          <option name="fileName" value="Intermediate\Build\BuildRulesProjects\CrunchModuleRules\obj\project.assets.json" />
+                          <option name="source" value="$PROJECT_DIR$/Intermediate/Build/BuildRulesProjects/CrunchModuleRules/obj/project.assets.json" />
+                          <option name="sourceType" value="code" />
+                          <option name="startPos" value="7292" />
+                        </KnowledgeReferenceMetadata>
+                      </option>
+                    </KnowledgeReference>
+                    <KnowledgeReference>
+                      <option name="chunk" value=".idea\.idea.Crunch\.idea\encodings.xml: &lt;file url=&quot;file://$PROJECT_DIR$/Source/Crunch/Private/GAS/Core/CGameplayAbilityTypes.cpp&quot; charset=&quot;UTF-8&quot; /&gt;&#10;&lt;file url=&quot;file://$PROJECT_DIR$/Source/Crunch/Private/GAS/Core/CGameplayAbilityTypes.h&quot; charset=&quot;UTF-8&quot; /&gt;&#10;&lt;file url=&quot;file://$PROJECT_DIR$/Source/Crunch/Private/GAS/Core/TGameplayTags.cpp&quot; charset=&quot;UTF-8&quot; /&gt;&#10;&lt;file url=&quot;file://$PROJECT_DIR$/Source/Crunch/Private/GAS/Core/TGameplayTags.h&quot; charset=&quot;UTF-8&quot; /&gt;&#10;&lt;file url=&quot;file://$PROJECT_DIR$/Source/Crunch/Private/GAS/TA/TargetActor_GroundPick.cpp&quot; charset=&quot;UTF-8&quot; /&gt;&#10;&lt;file url=&quot;file://$PROJECT_DIR$/Source/Crunch/Private/GAS/TA/TargetActor_GroundPick.h&quot; charset=&quot;UTF-8&quot; /&gt;&#10;&lt;file url=&quot;file://$PROJECT_DIR$/Source/Crunch/Private/Player/CPlayerCharacter.cpp&quot; charset=&quot;UTF-8&quot; /&gt;" />
+                      <option name="metadata">
+                        <KnowledgeReferenceMetadata>
+                          <option name="endPos" value="38" />
+                          <option name="fileName" value=".idea\.idea.Crunch\.idea\encodings.xml" />
+                          <option name="source" value="$PROJECT_DIR$/.idea/.idea.Crunch/.idea/encodings.xml" />
+                          <option name="sourceType" value="code" />
+                          <option name="startPos" value="32" />
+                        </KnowledgeReferenceMetadata>
+                      </option>
+                    </KnowledgeReference>
+                    <KnowledgeReference>
+                      <option name="chunk" value="Intermediate\Build\BuildRulesProjects\CrunchModuleRules\obj\project.assets.json:     &quot;ref/netstandard1.3/it/System.Xml.XDocument.xml&quot;,&#10;    &quot;ref/netstandard1.3/ja/System.Xml.XDocument.xml&quot;,&#10;    &quot;ref/netstandard1.3/ko/System.Xml.XDocument.xml&quot;,&#10;    &quot;ref/netstandard1.3/ru/System.Xml.XDocument.xml&quot;,&#10;    &quot;ref/netstandard1.3/zh-hans/System.Xml.XDocument.xml&quot;,&#10;    &quot;ref/netstandard1.3/zh-hant/System.Xml.XDocument.xml&quot;,&#10;    &quot;ref/portable-net45+win8+wp8+wpa81/_._&quot;,&#10;    &quot;ref/win8/_._&quot;,&#10;    &quot;ref/wp80/_._&quot;,&#10;    &quot;ref/wpa81/_._&quot;,&#10;    &quot;ref/xamarinios10/_._&quot;,&#10;    &quot;ref/xamarinmac20/_._&quot;,&#10;    &quot;ref/xamarintvos10/_._&quot;,&#10;    &quot;ref/xamarinwatchos10/_._&quot;,&#10;    &quot;system.xml.xdocument.4.3.0.nupkg.sha512&quot;,&#10;    &quot;system.xml.xdocument.nuspec&quot;&#10;  ]&#10;},&#10;&quot;EpicGames.Build/1.0.0&quot;: {&#10;  &quot;type&quot;: &quot;project&quot;," />
+                      <option name="metadata">
+                        <KnowledgeReferenceMetadata>
+                          <option name="endPos" value="8485" />
+                          <option name="fileName" value="Intermediate\Build\BuildRulesProjects\CrunchModuleRules\obj\project.assets.json" />
+                          <option name="source" value="$PROJECT_DIR$/Intermediate/Build/BuildRulesProjects/CrunchModuleRules/obj/project.assets.json" />
+                          <option name="sourceType" value="code" />
+                          <option name="startPos" value="8466" />
+                        </KnowledgeReferenceMetadata>
+                      </option>
+                    </KnowledgeReference>
+                    <KnowledgeReference>
+                      <option name="chunk" value="Plugins\VRM4U\Source\VRM4U\Private\VrmBPFunctionLibrary.cpp: &#9;&#9;FilePath = dummy[0];&#10;&#9;}&#10;&#9;if (AssetFileName == &quot;&quot;) {&#10;&#9;&#9;AssetFileName = dummy[1];&#10;&#9;}&#10;&#9;FilePath += TEXT(&quot;/&quot;);&#10;&#9;while (FilePath.Find(TEXT(&quot;//&quot;)) &gt;= 0) {&#10;&#9;&#9;FilePath = FilePath.Replace(TEXT(&quot;//&quot;), TEXT(&quot;/&quot;));&#10;&#9;}&#10;&#9;while (AssetFileName.Find(TEXT(&quot;/&quot;)) &gt;= 0) {&#10;&#9;&#9;AssetFileName = AssetFileName.Replace(TEXT(&quot;/&quot;), TEXT(&quot;&quot;));&#10;&#9;}&#10;&#9;USkeletalMesh* sk = VRMGetSkinnedAsset(skc);&#10;&#9;USkeleton* k = VRMGetSkeleton( VRMGetSkinnedAsset(skc) );&#10;&#9;//FString NewPackageName = &quot;/Game/aaaa&quot;;&#10;&#9;FString NewPackageName = FilePath + AssetFileName;&#10;#if&#9;UE_VERSION_OLDER_THAN(4,26,0)&#10;&#9;UPackage* Package = CreatePackage(nullptr, *NewPackageName);&#10;#else&#10;&#9;UPackage* Package = CreatePackage(*NewPackageName);&#10;#endif&#10;&#9;UAnimSequence* ase;&#10;&#9;ase = NewObject&lt;UAnimSequence&gt;(Package, *(TEXT(&quot;A_&quot;) + AssetFileName), EObjectFlags::RF_Public | EObjectFlags::RF_Standalone);&#10;#if&#9;UE_VERSION_OLDER_THAN(5,0,0)&#10;&#9;ase-&gt;CleanAnimSequenceForImport();&#10;#else&#10;&#9;ase-&gt;GetController().ResetModel();&#10;#endif&#10;&#9;ase-&gt;SetSkeleton(k);&#10;&#9;float totalTime = 0.f;" />
+                      <option name="metadata">
+                        <KnowledgeReferenceMetadata>
+                          <option name="endPos" value="1631" />
+                          <option name="fileName" value="Plugins\VRM4U\Source\VRM4U\Private\VrmBPFunctionLibrary.cpp" />
+                          <option name="source" value="$PROJECT_DIR$/Plugins/VRM4U/Source/VRM4U/Private/VrmBPFunctionLibrary.cpp" />
+                          <option name="sourceType" value="code" />
+                          <option name="startPos" value="1594" />
+                        </KnowledgeReferenceMetadata>
+                      </option>
+                    </KnowledgeReference>
+                    <KnowledgeReference>
+                      <option name="chunk" value="Intermediate\Build\BuildRulesProjects\CrunchModuleRules\obj\project.assets.json: &quot;lib/xamarintvos10/_._&quot;,&#10;&quot;lib/xamarinwatchos10/_._&quot;,&#10;&quot;ref/MonoAndroid10/_._&quot;,&#10;&quot;ref/MonoTouch10/_._&quot;,&#10;&quot;ref/net45/_._&quot;,&#10;&quot;ref/netcore50/System.ObjectModel.dll&quot;,&#10;&quot;ref/netcore50/System.ObjectModel.xml&quot;,&#10;&quot;ref/netcore50/de/System.ObjectModel.xml&quot;,&#10;&quot;ref/netcore50/es/System.ObjectModel.xml&quot;,&#10;&quot;ref/netcore50/fr/System.ObjectModel.xml&quot;,&#10;&quot;ref/netcore50/it/System.ObjectModel.xml&quot;,&#10;&quot;ref/netcore50/ja/System.ObjectModel.xml&quot;,&#10;&quot;ref/netcore50/ko/System.ObjectModel.xml&quot;,&#10;&quot;ref/netcore50/ru/System.ObjectModel.xml&quot;,&#10;&quot;ref/netcore50/zh-hans/System.ObjectModel.xml&quot;,&#10;&quot;ref/netcore50/zh-hant/System.ObjectModel.xml&quot;,&#10;&quot;ref/netstandard1.0/System.ObjectModel.dll&quot;,&#10;&quot;ref/netstandard1.0/System.ObjectModel.xml&quot;,&#10;&quot;ref/netstandard1.0/de/System.ObjectModel.xml&quot;," />
+                      <option name="metadata">
+                        <KnowledgeReferenceMetadata>
+                          <option name="endPos" value="6429" />
+                          <option name="fileName" value="Intermediate\Build\BuildRulesProjects\CrunchModuleRules\obj\project.assets.json" />
+                          <option name="source" value="$PROJECT_DIR$/Intermediate/Build/BuildRulesProjects/CrunchModuleRules/obj/project.assets.json" />
+                          <option name="sourceType" value="code" />
+                          <option name="startPos" value="6411" />
+                        </KnowledgeReferenceMetadata>
+                      </option>
+                    </KnowledgeReference>
+                    <KnowledgeReference>
+                      <option name="chunk" value="Plugins\VRM4U\ThirdParty\assimp\include\assimp\RemoveComments.h: THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT&#10;(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE&#10;OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&#10;----------------------------------------------------------------------&#10;*/&#10;/** @file Declares a helper class, &quot;CommentRemover&quot;, which can be&#10; *  used to remove comments (single and multi line) from a text file.&#10; */&#10;#pragma once&#10;#ifndef AI_REMOVE_COMMENTS_H_INC&#10;#define AI_REMOVE_COMMENTS_H_INC&#10;#ifdef __GNUC__&#10;#   pragma GCC system_header&#10;#endif&#10;#include &lt;assimp/defs.h&gt;&#10;namespace Assimp    {&#10;// ---------------------------------------------------------------------------&#10;/** \brief Helper class to remove single and multi line comments from a file&#10; *&#10; *  Some mesh formats like MD5 have comments that are quite similar&#10; *  to those in C or C++ so this code has been moved to a separate&#10; *  module.&#10; */&#10;class ASSIMP_API CommentRemover {&#10;    // class cannot be instanced&#10;    CommentRemover() {}&#10;public:&#10;    //! Remove single-line comments. The end of a line is&#10;    //! expected to be either NL or CR or NLCR.&#10;    //! \param szComment The start sequence of the comment, e.g. &quot;//&quot;" />
+                      <option name="metadata">
+                        <KnowledgeReferenceMetadata>
+                          <option name="endPos" value="72" />
+                          <option name="fileName" value="Plugins\VRM4U\ThirdParty\assimp\include\assimp\RemoveComments.h" />
+                          <option name="source" value="$PROJECT_DIR$/Plugins/VRM4U/ThirdParty/assimp/include/assimp/RemoveComments.h" />
+                          <option name="sourceType" value="code" />
+                          <option name="startPos" value="35" />
+                        </KnowledgeReferenceMetadata>
+                      </option>
+                    </KnowledgeReference>
+                    <KnowledgeReference>
+                      <option name="chunk" value="Intermediate\Build\BuildRulesProjects\CrunchModuleRules\obj\project.assets.json:     &quot;ref/netstandard1.3/fr/System.Xml.ReaderWriter.xml&quot;,&#10;    &quot;ref/netstandard1.3/it/System.Xml.ReaderWriter.xml&quot;,&#10;    &quot;ref/netstandard1.3/ja/System.Xml.ReaderWriter.xml&quot;,&#10;    &quot;ref/netstandard1.3/ko/System.Xml.ReaderWriter.xml&quot;,&#10;    &quot;ref/netstandard1.3/ru/System.Xml.ReaderWriter.xml&quot;,&#10;    &quot;ref/netstandard1.3/zh-hans/System.Xml.ReaderWriter.xml&quot;,&#10;    &quot;ref/netstandard1.3/zh-hant/System.Xml.ReaderWriter.xml&quot;,&#10;    &quot;ref/portable-net45+win8+wp8+wpa81/_._&quot;,&#10;    &quot;ref/win8/_._&quot;,&#10;    &quot;ref/wp80/_._&quot;,&#10;    &quot;ref/wpa81/_._&quot;,&#10;    &quot;ref/xamarinios10/_._&quot;,&#10;    &quot;ref/xamarinmac20/_._&quot;,&#10;    &quot;ref/xamarintvos10/_._&quot;,&#10;    &quot;ref/xamarinwatchos10/_._&quot;,&#10;    &quot;system.xml.readerwriter.4.3.0.nupkg.sha512&quot;,&#10;    &quot;system.xml.readerwriter.nuspec&quot;&#10;  ]&#10;}," />
+                      <option name="metadata">
+                        <KnowledgeReferenceMetadata>
+                          <option name="endPos" value="8413" />
+                          <option name="fileName" value="Intermediate\Build\BuildRulesProjects\CrunchModuleRules\obj\project.assets.json" />
+                          <option name="source" value="$PROJECT_DIR$/Intermediate/Build/BuildRulesProjects/CrunchModuleRules/obj/project.assets.json" />
+                          <option name="sourceType" value="code" />
+                          <option name="startPos" value="8395" />
+                        </KnowledgeReferenceMetadata>
+                      </option>
+                    </KnowledgeReference>
+                    <KnowledgeReference>
+                      <option name="chunk" value=".idea\.idea.Crunch\.idea\encodings.xml: &lt;file url=&quot;file://$PROJECT_DIR$/Source/Crunch/Private/GAS/Core/CAbilitySystemComponent.h&quot; charset=&quot;UTF-8&quot; /&gt;&#10;&lt;file url=&quot;file://$PROJECT_DIR$/Source/Crunch/Private/GAS/Core/CAbilitySystemStatics.cpp&quot; charset=&quot;UTF-8&quot; /&gt;&#10;&lt;file url=&quot;file://$PROJECT_DIR$/Source/Crunch/Private/GAS/Core/CAbilitySystemStatics.h&quot; charset=&quot;UTF-8&quot; /&gt;&#10;&lt;file url=&quot;file://$PROJECT_DIR$/Source/Crunch/Private/GAS/Core/CAttributeSet.cpp&quot; charset=&quot;UTF-8&quot; /&gt;&#10;&lt;file url=&quot;file://$PROJECT_DIR$/Source/Crunch/Private/GAS/Core/CAttributeSet.h&quot; charset=&quot;UTF-8&quot; /&gt;&#10;&lt;file url=&quot;file://$PROJECT_DIR$/Source/Crunch/Private/GAS/Core/CGameplayAbility.cpp&quot; charset=&quot;UTF-8&quot; /&gt;&#10;&lt;file url=&quot;file://$PROJECT_DIR$/Source/Crunch/Private/GAS/Core/CGameplayAbility.h&quot; charset=&quot;UTF-8&quot; /&gt;" />
+                      <option name="metadata">
+                        <KnowledgeReferenceMetadata>
+                          <option name="endPos" value="31" />
+                          <option name="fileName" value=".idea\.idea.Crunch\.idea\encodings.xml" />
+                          <option name="source" value="$PROJECT_DIR$/.idea/.idea.Crunch/.idea/encodings.xml" />
+                          <option name="sourceType" value="code" />
+                          <option name="startPos" value="25" />
+                        </KnowledgeReferenceMetadata>
+                      </option>
+                    </KnowledgeReference>
+                    <KnowledgeReference>
+                      <option name="chunk" value=".idea\.idea.Crunch\.idea\encodings.xml: &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&#10;&lt;project version=&quot;4&quot;&gt;&#10;  &lt;component name=&quot;Encoding&quot; defaultCharsetForPropertiesFiles=&quot;UTF-8&quot; addBOMForNewFiles=&quot;with BOM under Windows, with no BOM otherwise&quot;&gt;&#10;    &lt;file url=&quot;file://$PROJECT_DIR$/Source&quot; charset=&quot;UTF-8&quot; /&gt;&#10;    &lt;file url=&quot;file://$PROJECT_DIR$/Source/Crunch/Private&quot; charset=&quot;UTF-8&quot; /&gt;&#10;    &lt;file url=&quot;file://$PROJECT_DIR$/Source/Crunch/Private/AI/BTTask_SendInputToAbilitySystem.cpp&quot; charset=&quot;UTF-8&quot; /&gt;&#10;    &lt;file url=&quot;file://$PROJECT_DIR$/Source/Crunch/Private/AI/BTTask_SendInputToAbilitySystem.h&quot; charset=&quot;UTF-8&quot; /&gt;&#10;    &lt;file url=&quot;file://$PROJECT_DIR$/Source/Crunch/Private/AI/CAIController.cpp&quot; charset=&quot;UTF-8&quot; /&gt;&#10;    &lt;file url=&quot;file://$PROJECT_DIR$/Source/Crunch/Private/AI/CAIController.h&quot; charset=&quot;UTF-8&quot; /&gt;&#10;    &lt;file url=&quot;file://$PROJECT_DIR$/Source/Crunch/Private/AI/MinionBarrack.cpp&quot; charset=&quot;UTF-8&quot; /&gt;" />
+                      <option name="metadata">
+                        <KnowledgeReferenceMetadata>
+                          <option name="endPos" value="10" />
+                          <option name="fileName" value=".idea\.idea.Crunch\.idea\encodings.xml" />
+                          <option name="source" value="$PROJECT_DIR$/.idea/.idea.Crunch/.idea/encodings.xml" />
+                          <option name="sourceType" value="code" />
+                          <option name="startPos" value="1" />
+                        </KnowledgeReferenceMetadata>
+                      </option>
+                    </KnowledgeReference>
+                    <KnowledgeReference>
+                      <option name="chunk" value="Intermediate\Build\BuildRulesProjects\CrunchModuleRules\obj\project.assets.json: &quot;ref/netstandard1.0/it/System.IO.xml&quot;,&#10;&quot;ref/netstandard1.0/ja/System.IO.xml&quot;,&#10;&quot;ref/netstandard1.0/ko/System.IO.xml&quot;,&#10;&quot;ref/netstandard1.0/ru/System.IO.xml&quot;,&#10;&quot;ref/netstandard1.0/zh-hans/System.IO.xml&quot;,&#10;&quot;ref/netstandard1.0/zh-hant/System.IO.xml&quot;,&#10;&quot;ref/netstandard1.3/System.IO.dll&quot;,&#10;&quot;ref/netstandard1.3/System.IO.xml&quot;,&#10;&quot;ref/netstandard1.3/de/System.IO.xml&quot;,&#10;&quot;ref/netstandard1.3/es/System.IO.xml&quot;,&#10;&quot;ref/netstandard1.3/fr/System.IO.xml&quot;,&#10;&quot;ref/netstandard1.3/it/System.IO.xml&quot;,&#10;&quot;ref/netstandard1.3/ja/System.IO.xml&quot;,&#10;&quot;ref/netstandard1.3/ko/System.IO.xml&quot;," />
+                      <option name="metadata">
+                        <KnowledgeReferenceMetadata>
+                          <option name="endPos" value="5750" />
+                          <option name="fileName" value="Intermediate\Build\BuildRulesProjects\CrunchModuleRules\obj\project.assets.json" />
+                          <option name="source" value="$PROJECT_DIR$/Intermediate/Build/BuildRulesProjects/CrunchModuleRules/obj/project.assets.json" />
+                          <option name="sourceType" value="code" />
+                          <option name="startPos" value="5737" />
+                        </KnowledgeReferenceMetadata>
+                      </option>
+                    </KnowledgeReference>
+                    <KnowledgeReference>
+                      <option name="chunk" value="Intermediate\Build\BuildRulesProjects\CrunchModuleRules\obj\project.assets.json: &quot;ref/netcore50/zh-hans/System.Net.Http.xml&quot;,&#10;&quot;ref/netcore50/zh-hant/System.Net.Http.xml&quot;,&#10;&quot;ref/netstandard1.1/System.Net.Http.dll&quot;,&#10;&quot;ref/netstandard1.1/System.Net.Http.xml&quot;,&#10;&quot;ref/netstandard1.1/de/System.Net.Http.xml&quot;,&#10;&quot;ref/netstandard1.1/es/System.Net.Http.xml&quot;,&#10;&quot;ref/netstandard1.1/fr/System.Net.Http.xml&quot;,&#10;&quot;ref/netstandard1.1/it/System.Net.Http.xml&quot;,&#10;&quot;ref/netstandard1.1/ja/System.Net.Http.xml&quot;,&#10;&quot;ref/netstandard1.1/ko/System.Net.Http.xml&quot;,&#10;&quot;ref/netstandard1.1/ru/System.Net.Http.xml&quot;,&#10;&quot;ref/netstandard1.1/zh-hans/System.Net.Http.xml&quot;,&#10;&quot;ref/netstandard1.1/zh-hant/System.Net.Http.xml&quot;," />
+                      <option name="metadata">
+                        <KnowledgeReferenceMetadata>
+                          <option name="endPos" value="6248" />
+                          <option name="fileName" value="Intermediate\Build\BuildRulesProjects\CrunchModuleRules\obj\project.assets.json" />
+                          <option name="source" value="$PROJECT_DIR$/Intermediate/Build/BuildRulesProjects/CrunchModuleRules/obj/project.assets.json" />
+                          <option name="sourceType" value="code" />
+                          <option name="startPos" value="6236" />
+                        </KnowledgeReferenceMetadata>
+                      </option>
+                    </KnowledgeReference>
+                    <KnowledgeReference>
+                      <option name="chunk" value="Intermediate\Build\BuildRulesProjects\CrunchModuleRules\obj\project.assets.json: &quot;ref/MonoTouch10/_._&quot;,&#10;&quot;ref/net45/_._&quot;,&#10;&quot;ref/net46/System.Xml.ReaderWriter.dll&quot;,&#10;&quot;ref/netcore50/System.Xml.ReaderWriter.dll&quot;,&#10;&quot;ref/netcore50/System.Xml.ReaderWriter.xml&quot;,&#10;&quot;ref/netcore50/de/System.Xml.ReaderWriter.xml&quot;,&#10;&quot;ref/netcore50/es/System.Xml.ReaderWriter.xml&quot;,&#10;&quot;ref/netcore50/fr/System.Xml.ReaderWriter.xml&quot;,&#10;&quot;ref/netcore50/it/System.Xml.ReaderWriter.xml&quot;,&#10;&quot;ref/netcore50/ja/System.Xml.ReaderWriter.xml&quot;,&#10;&quot;ref/netcore50/ko/System.Xml.ReaderWriter.xml&quot;,&#10;&quot;ref/netcore50/ru/System.Xml.ReaderWriter.xml&quot;,&#10;&quot;ref/netcore50/zh-hans/System.Xml.ReaderWriter.xml&quot;,&#10;&quot;ref/netcore50/zh-hant/System.Xml.ReaderWriter.xml&quot;,&#10;&quot;ref/netstandard1.0/System.Xml.ReaderWriter.dll&quot;,&#10;&quot;ref/netstandard1.0/System.Xml.ReaderWriter.xml&quot;," />
+                      <option name="metadata">
+                        <KnowledgeReferenceMetadata>
+                          <option name="endPos" value="8381" />
+                          <option name="fileName" value="Intermediate\Build\BuildRulesProjects\CrunchModuleRules\obj\project.assets.json" />
+                          <option name="source" value="$PROJECT_DIR$/Intermediate/Build/BuildRulesProjects/CrunchModuleRules/obj/project.assets.json" />
+                          <option name="sourceType" value="code" />
+                          <option name="startPos" value="8366" />
+                        </KnowledgeReferenceMetadata>
+                      </option>
+                    </KnowledgeReference>
+                    <KnowledgeReference>
+                      <option name="chunk" value=".idea\.idea.Crunch\.idea\encodings.xml: &lt;file url=&quot;file://$PROJECT_DIR$/Source/Crunch/Private/Animations/CAnimInstance.cpp&quot; charset=&quot;UTF-8&quot; /&gt;&#10;&lt;file url=&quot;file://$PROJECT_DIR$/Source/Crunch/Private/Animations/CAnimInstance.h&quot; charset=&quot;UTF-8&quot; /&gt;&#10;&lt;file url=&quot;file://$PROJECT_DIR$/Source/Crunch/Private/Character/CCharacter.cpp&quot; charset=&quot;UTF-8&quot; /&gt;&#10;&lt;file url=&quot;file://$PROJECT_DIR$/Source/Crunch/Private/Character/CCharacter.h&quot; charset=&quot;UTF-8&quot; /&gt;&#10;&lt;file url=&quot;file://$PROJECT_DIR$/Source/Crunch/Private/GAS/Abilities/GA_Combo.cpp&quot; charset=&quot;UTF-8&quot; /&gt;&#10;&lt;file url=&quot;file://$PROJECT_DIR$/Source/Crunch/Private/GAS/Abilities/GA_Combo.h&quot; charset=&quot;UTF-8&quot; /&gt;&#10;&lt;file url=&quot;file://$PROJECT_DIR$/Source/Crunch/Private/GAS/Core/CAbilitySystemComponent.cpp&quot; charset=&quot;UTF-8&quot; /&gt;" />
+                      <option name="metadata">
+                        <KnowledgeReferenceMetadata>
+                          <option name="endPos" value="24" />
+                          <option name="fileName" value=".idea\.idea.Crunch\.idea\encodings.xml" />
+                          <option name="source" value="$PROJECT_DIR$/.idea/.idea.Crunch/.idea/encodings.xml" />
+                          <option name="sourceType" value="code" />
+                          <option name="startPos" value="18" />
+                        </KnowledgeReferenceMetadata>
+                      </option>
+                    </KnowledgeReference>
+                    <KnowledgeReference>
+                      <option name="chunk" value=".idea\.idea.Crunch\.idea\workspace.xml: &lt;setting file=&quot;file://$PROJECT_DIR$/Source/Crunch/Private/Animations/AN_SendTargetGroup.h&quot; root0=&quot;FORCE_HIGHLIGHTING&quot; /&gt;&#10;&lt;setting file=&quot;file://$PROJECT_DIR$/Source/Crunch/Private/Character/CCharacter.cpp&quot; root0=&quot;FORCE_HIGHLIGHTING&quot; /&gt;&#10;&lt;setting file=&quot;file://$PROJECT_DIR$/Source/Crunch/Private/Character/CCharacter.h&quot; root0=&quot;FORCE_HIGHLIGHTING&quot; /&gt;&#10;&lt;setting file=&quot;file://$PROJECT_DIR$/Source/Crunch/Private/Framework/CGameMode.cpp&quot; root0=&quot;FORCE_HIGHLIGHTING&quot; /&gt;&#10;&lt;setting file=&quot;file://$PROJECT_DIR$/Source/Crunch/Private/Framework/CGameMode.h&quot; root0=&quot;FORCE_HIGHLIGHTING&quot; /&gt;&#10;&lt;setting file=&quot;file://$PROJECT_DIR$/Source/Crunch/Private/GAS/Abilities/GA_Combo.h&quot; root0=&quot;FORCE_HIGHLIGHTING&quot; /&gt;&#10;&lt;setting file=&quot;file://$PROJECT_DIR$/Source/Crunch/Private/GAS/Core/CAbilitySystemComponent.cpp&quot; root0=&quot;FORCE_HIGHLIGHTING&quot; /&gt;" />
+                      <option name="metadata">
+                        <KnowledgeReferenceMetadata>
+                          <option name="endPos" value="128" />
+                          <option name="fileName" value=".idea\.idea.Crunch\.idea\workspace.xml" />
+                          <option name="source" value="$PROJECT_DIR$/.idea/.idea.Crunch/.idea/workspace.xml" />
+                          <option name="sourceType" value="code" />
+                          <option name="startPos" value="122" />
+                        </KnowledgeReferenceMetadata>
+                      </option>
+                    </KnowledgeReference>
+                  </list>
+                </option>
+                <option name="command" value="comments" />
+                <option name="conversationId" value="019808287a2b788cae9ef24a9d3db105" />
+                <option name="historyDocumentMap">
+                  <map>
+                    <entry key="file:///D:/ue_texiao/Crunch/Source/Crunch/Private/GAS/MMC/MMC_BaseAttackDamage.cpp" value="// 幻雨喜欢小猫咪&#10;&#10;&#10;#include &quot;GAS/MMC/MMC_BaseAttackDamage.h&quot;&#10;&#10;#include &quot;GAS/Core/CAttributeSet.h&quot;&#10;&#10;UMMC_BaseAttackDamage::UMMC_BaseAttackDamage()&#10;{&#10;&#9;// 捕获伤害属性&#10;&#9;DamageCaptureDef.AttributeToCapture = UCAttributeSet::GetAttackDamageAttribute();&#10;&#9;// 属性来源指定为释放者&#10;&#9;DamageCaptureDef.AttributeSource = EGameplayEffectAttributeCaptureSource::Source;&#10;&#10;&#9;// 捕获目标的护甲属性&#10;&#9;ArmorCaptureDef.AttributeToCapture = UCAttributeSet::GetArmorAttribute();&#10;&#9;ArmorCaptureDef.AttributeSource = EGameplayEffectAttributeCaptureSource::Target;&#10;&#10;&#9;// 添加捕获属性&#10;&#9;RelevantAttributesToCapture.Add(DamageCaptureDef);&#10;&#9;RelevantAttributesToCapture.Add(ArmorCaptureDef);&#10;}&#10;&#10;float UMMC_BaseAttackDamage::CalculateBaseMagnitude_Implementation(const FGameplayEffectSpec&amp; Spec) const&#10;{&#10;&#9;return Super::CalculateBaseMagnitude_Implementation(Spec);&#10;}&#10;" />
+                  </map>
+                </option>
+                <option name="knowledgeBases">
+                  <list>
+                    <KnowledgeBase>
+                      <option name="description" value="UnrealEngine 4.5版本知识库" />
+                      <option name="id" value="preset14" />
+                      <option name="knowledgeBaseType" value="common" />
+                      <option name="name" value="UnrealEngine 4.5" />
+                    </KnowledgeBase>
+                  </list>
+                </option>
+                <option name="knowledgeReferences">
+                  <list>
+                    <KnowledgeReference>
+                      <option name="chunk" value="&#9;char *dirname;&#9;&#9;&#9;/* file dirname */&#10;&#9;char *basename;&#9;&#9;&#9;/* file basename */&#10;&#9;char *filename;&#9;&#9;&#9;/* Module file name */&#10;&#9;char *comment;&#9;&#9;&#9;/* Comments, if any */&#10;&#9;uint8 md5[16];&#9;&#9;&#9;/* MD5 message digest */&#10;&#9;int size;&#9;&#9;&#9;/* File size */&#10;&#9;double rrate;&#9;&#9;&#9;/* Replay rate */&#10;&#9;double time_factor;&#9;&#9;/* Time conversion constant */&#10;&#9;int c4rate;&#9;&#9;&#9;/* C4 replay rate */&#10;&#9;int volbase;&#9;&#9;&#9;/* Volume base */&#10;&#9;int gvolbase;&#9;&#9;&#9;/* Global volume base */&#10;&#9;int *vol_table;&#9;&#9;&#9;/* Volume translation table */&#10;&#9;int quirk;&#9;&#9;&#9;/* player quirks */&#10;#define READ_EVENT_MOD&#9;0&#10;#define READ_EVENT_FT2&#9;1&#10;#define READ_EVENT_ST3&#9;2&#10;#define READ_EVENT_IT&#9;3&#10;#define READ_EVENT_MED&#9;4&#10;&#9;int read_event_type;&#10;&#9;int smpctl;&#9;&#9;&#9;/* sample control flags */&#10;&#9;struct ord_data xxo_info[XMP_MAX_MOD_LENGTH];&#10;&#10;&#9;int num_sequences;&#10;&#9;struct xmp_sequence seq_data[MAX_SEQUENCES];&#10;&#10;&#9;char *instrument_path;&#10;&#10;&#9;void *extra;&#9;&#9;&#9;/* format-specific extra fields */&#10;&#10;&#9;const struct synth_info *synth;&#10;&#9;void *synth_chip;&#10;&#10;&#9;char **scan_cnt;&#9;&#9;/* scan counters */&#10;};&#10;&#10;&#10;struct player_data {&#10;&#9;int ord;&#10;&#9;int pos;&#10;&#9;int row;&#10;&#9;int frame;&#10;&#9;int speed;&#10;&#9;int bpm;&#10;&#9;int player_flags;&#10;&#9;int flags;&#10;&#9;double current_time;&#10;&#9;double frame_time;&#10;&#10;&#9;int loop_count;&#10;&#9;int sequence;&#10;&#9;unsigned char sequence_control[XMP_MAX_MOD_LENGTH];&#10;&#10;&#9;int smix_vol;&#9;&#9;&#9;/* SFX volume */&#10;&#9;int master_vol;&#9;&#9;&#9;/* Music volume */&#10;&#9;int gvol;&#10;&#10;&#9;struct flow_control {&#10;&#9;&#9;int pbreak;&#10;&#9;&#9;int jump;&#10;&#9;&#9;int delay;&#10;&#9;&#9;int skip_fetch;&#9;&#9;/* To emulate delay + break quirk */&#10;&#9;&#9;int jumpline;&#10;&#9;&#9;int loop_chn;&#10;&#9;&#10;&#9;&#9;struct pattern_loop {&#10;&#9;&#9;&#9;int start;&#10;&#9;&#9;&#9;int count;&#10;&#9;&#9;} *loop;&#10;&#9;&#10;&#9;&#9;int num_rows;&#10;&#9;&#9;int end_point;&#10;&#9;&#9;int rowdelay;&#9;&#9;/* For IT pattern row delay */&#10;&#9;&#9;int rowdelay_set;&#10;&#9;} flow;&#10;&#10;&#9;struct {&#10;&#9;&#9;int time;&#9;&#9;/* replay time in ms */&#10;&#9;&#9;int ord;&#10;&#9;&#9;int row;&#10;&#9;&#9;int num;&#10;&#9;} scan[MAX_SEQUENCES];&#10;&#10;&#9;struct channel_data *xc_data;&#10;&#10;&#9;int channel_vol[XMP_MAX_CHANNELS];&#10;&#9;char channel_mute[XMP_MAX_CHANNELS];&#10;&#10;&#9;struct virt_control {&#10;&#9;&#9;int num_tracks;&#9;&#9;/* Number of tracks */&#10;&#9;&#9;int virt_channels;&#9;/* Number of virtual channels */&#10;&#9;&#9;int virt_used;&#9;&#9;/* Number of voices currently in use */&#10;&#9;&#9;int maxvoc;&#9;&#9;/* Number of sound card voices */&#10;&#9;&#10;&#9;&#9;struct virt_channel {&#10;&#9;&#9;&#9;int count;&#10;&#9;&#9;&#9;int map;&#10;&#9;&#9;} *virt_channel;&#10;&#9;&#10;&#9;&#9;struct mixer_voice *voice_array;&#10;&#9;} virt;&#10;&#10;&#9;struct xmp_event inject_event[XMP_MAX_CHANNELS];&#10;&#10;&#9;struct {&#9;&#9;&#10;&#9;&#9;int consumed;&#10;&#9;&#9;int in_size;&#10;&#9;&#9;char *in_buffer;&#10;&#9;} buffer_data;&#10;};&#10;&#10;struct mixer_data {&#10;&#9;int freq;&#9;&#9;/* sampling rate */&#10;&#9;int format;&#9;&#9;/* sample format */&#10;&#9;int amplify;&#9;&#9;/* amplification multiplier */&#10;&#9;int mix;&#9;&#9;/* percentage of channel separation */&#10;&#9;int interp;&#9;&#9;/* interpolation type */&#10;&#9;int dsp;&#9;&#9;/* dsp effect flags */&#10;&#9;char* buffer;&#9;&#9;/* output buffer */&#10;&#9;int32* buf32;&#9;&#9;/* temporary buffer for 32 bit samples */&#10;&#9;int numvoc;&#9;&#9;/* default softmixer voices number */&#10;&#9;int ticksize;&#10;&#9;int dtright;&#9;&#9;/* anticlick control, right channel */&#10;&#9;int dtleft;&#9;&#9;/* anticlick control, left channel */&#10;&#9;int pbase;&#9;&#9;/* period base */&#10;};&#10;&#10;struct context_data {&#10;&#9;struct player_data p;&#10;&#9;struct mixer_data s;&#10;&#9;struct module_data m;&#10;&#9;struct smix_data smix;&#10;&#9;int state;&#10;};&#10;&#10;&#10;/* Prototypes */&#10;&#10;char&#9;*adjust_string&#9;&#9;(char *);&#10;int&#9;exclude_match&#9;&#9;(char *);&#10;int&#9;prepare_scan&#9;&#9;(struct context_data *);&#10;int&#9;scan_sequences&#9;&#9;(struct context_data *);&#10;int&#9;get_sequence&#9;&#9;(struct context_data *, int);&#10;&#10;int8&#9;read8s&#9;&#9;&#9;(FILE *);&#10;uint8&#9;read8&#9;&#9;&#9;(FILE *);&#10;uint16&#9;read16l&#9;&#9;&#9;(FILE *);&#10;uint16&#9;read16b&#9;&#9;&#9;(FILE *);&#10;uint32&#9;read24l&#9;&#9;&#9;(FILE *);&#10;uint32&#9;read24b&#9;&#9;&#9;(FILE *);&#10;uint32&#9;read32l&#9;&#9;&#9;(FILE *);&#10;uint32&#9;read32b&#9;&#9;&#9;(FILE *);&#10;void&#9;write8&#9;&#9;&#9;(FILE *, uint8);&#10;void&#9;write16l&#9;&#9;(FILE *, uint16);&#10;void&#9;write16b&#9;&#9;(FILE *, uint16);&#10;void&#9;write32l&#9;&#9;(FILE *, uint32);&#10;void&#9;write32b&#9;&#9;(FILE *, uint32);&#10;int&#9;move_data&#9;&#9;(FILE *, FILE *, int);&#10;&#10;uint16&#9;readmem16l&#9;&#9;(uint8 *);&#10;uint16&#9;readmem16b&#9;&#9;(uint8 *);&#10;uint32&#9;readmem24l&#9;&#9;(uint8 *);&#10;uint32&#9;readmem24b&#9;&#9;(uint8 *);&#10;uint32&#9;readmem32l&#9;&#9;(uint8 *);&#10;uint32&#9;readmem32b&#9;&#9;(uint8 *);&#10;&#10;int&#9;get_temp_dir&#9;&#9;(char *, int);&#10;#ifdef WIN32&#10;int&#9;mkstemp&#9;&#9;&#9;(char *);&#10;#endif&#10;&#10;struct xmp_instrument *get_instrument(struct context_data *, int);&#10;struct xmp_sample *get_sample(struct context_data *, int);&#10;&#10;#endif /* LIBXMP_COMMON_H */" />
+                      <option name="knowledgeBaseId" value="preset14" />
+                      <option name="metadata">
+                        <KnowledgeReferenceMetadata>
+                          <option name="endPos" value="394" />
+                          <option name="fileName" value="Engine/Source/ThirdParty/coremod/coremod-4.2.6/src/common.h" />
+                          <option name="source" value="/Engine/Source/ThirdParty/coremod/coremod-4.2.6/src/common.h" />
+                          <option name="sourceType" value="code" />
+                          <option name="startPos" value="221" />
+                        </KnowledgeReferenceMetadata>
+                      </option>
+                      <option name="score" value="0.67919266" />
+                    </KnowledgeReference>
+                    <KnowledgeReference>
+                      <option name="chunk" value="&#10;  /// Language supports '//' comments." />
+                      <option name="knowledgeBaseId" value="preset14" />
+                      <option name="metadata">
+                        <KnowledgeReferenceMetadata>
+                          <option name="endPos" value="58" />
+                          <option name="fileName" value="Engine/Source/ThirdParty/ShaderConductor/ShaderConductor/External/DirectXShaderCompiler/tools/clang/include/clang/Frontend/LangStandard.h" />
+                          <option name="source" value="/Engine/Source/ThirdParty/ShaderConductor/ShaderConductor/External/DirectXShaderCompiler/tools/clang/include/clang/Frontend/LangStandard.h" />
+                          <option name="sourceType" value="code" />
+                          <option name="startPos" value="57" />
+                        </KnowledgeReferenceMetadata>
+                      </option>
+                      <option name="score" value="0.6706411" />
+                    </KnowledgeReference>
+                    <KnowledgeReference>
+                      <option name="chunk" value="//===--- CommentCommandTraits.h - Comment command properties ----*- C++ -*-===//&#10;//&#10;//                     The LLVM Compiler Infrastructure&#10;//&#10;// This file is distributed under the University of Illinois Open Source&#10;// License. See LICENSE.TXT for details.&#10;//&#10;//===----------------------------------------------------------------------===//&#10;//&#10;//  This file defines the class that provides information about comment&#10;//  commands.&#10;//&#10;//===----------------------------------------------------------------------===//&#10;&#10;&#10;#ifndef LLVM_CLANG_AST_COMMENTCOMMANDTRAITS_H&#10;#define LLVM_CLANG_AST_COMMENTCOMMANDTRAITS_H&#10;&#10;#include &quot;clang/Basic/CommentOptions.h&quot;&#10;#include &quot;clang/Basic/LLVM.h&quot;&#10;#include &quot;llvm/ADT/SmallVector.h&quot;&#10;#include &quot;llvm/ADT/StringRef.h&quot;&#10;#include &quot;llvm/Support/Allocator.h&quot;&#10;#include &quot;llvm/Support/ErrorHandling.h&quot;&#10;&#10;namespace clang {&#10;namespace comments {&#10;&#10;/// \brief Information about a single command.&#10;///&#10;/// When reordering, adding or removing members please update the corresponding&#10;/// TableGen backend.&#10;struct CommandInfo {" />
+                      <option name="knowledgeBaseId" value="preset14" />
+                      <option name="metadata">
+                        <KnowledgeReferenceMetadata>
+                          <option name="endPos" value="33" />
+                          <option name="fileName" value="Engine/Source/ThirdParty/ShaderConductor/ShaderConductor/External/DirectXShaderCompiler/tools/clang/include/clang/AST/CommentCommandTraits.h" />
+                          <option name="source" value="/Engine/Source/ThirdParty/ShaderConductor/ShaderConductor/External/DirectXShaderCompiler/tools/clang/include/clang/AST/CommentCommandTraits.h" />
+                          <option name="sourceType" value="code" />
+                          <option name="startPos" value="1" />
+                        </KnowledgeReferenceMetadata>
+                      </option>
+                      <option name="score" value="0.66931236" />
+                    </KnowledgeReference>
+                  </list>
+                </option>
+                <option name="messageId" value="019817deef107bb3a6e2b76a4e29f43a" />
+                <option name="question" value="/xlnnvmgh " />
+                <option name="rating" value="UNRATED" />
+                <option name="referenceBeans">
+                  <list />
+                </option>
+                <option name="status" value="SUCCESS" />
+                <option name="variables">
+                  <list>
+                    <CodebaseVariable>
+                      <option name="selectedPlaceHolder">
+                        <Object />
+                      </option>
+                      <option name="selectedVariable">
+                        <Object />
+                      </option>
+                    </CodebaseVariable>
+                    <KnowledgeVariable>
+                      <option name="selectedPlaceHolder">
+                        <Object />
+                      </option>
+                      <option name="selectedVariable">
+                        <Object />
+                      </option>
+                    </KnowledgeVariable>
+                  </list>
+                </option>
+                <knowledgeReferenceMaps>
+                  <map>
+                    <entry key="UnrealEngine 4.5">
+                      <value>
+                        <list>
+                          <KnowledgeReference>
+                            <option name="chunk" value="&#9;char *dirname;&#9;&#9;&#9;/* file dirname */&#10;&#9;char *basename;&#9;&#9;&#9;/* file basename */&#10;&#9;char *filename;&#9;&#9;&#9;/* Module file name */&#10;&#9;char *comment;&#9;&#9;&#9;/* Comments, if any */&#10;&#9;uint8 md5[16];&#9;&#9;&#9;/* MD5 message digest */&#10;&#9;int size;&#9;&#9;&#9;/* File size */&#10;&#9;double rrate;&#9;&#9;&#9;/* Replay rate */&#10;&#9;double time_factor;&#9;&#9;/* Time conversion constant */&#10;&#9;int c4rate;&#9;&#9;&#9;/* C4 replay rate */&#10;&#9;int volbase;&#9;&#9;&#9;/* Volume base */&#10;&#9;int gvolbase;&#9;&#9;&#9;/* Global volume base */&#10;&#9;int *vol_table;&#9;&#9;&#9;/* Volume translation table */&#10;&#9;int quirk;&#9;&#9;&#9;/* player quirks */&#10;#define READ_EVENT_MOD&#9;0&#10;#define READ_EVENT_FT2&#9;1&#10;#define READ_EVENT_ST3&#9;2&#10;#define READ_EVENT_IT&#9;3&#10;#define READ_EVENT_MED&#9;4&#10;&#9;int read_event_type;&#10;&#9;int smpctl;&#9;&#9;&#9;/* sample control flags */&#10;&#9;struct ord_data xxo_info[XMP_MAX_MOD_LENGTH];&#10;&#10;&#9;int num_sequences;&#10;&#9;struct xmp_sequence seq_data[MAX_SEQUENCES];&#10;&#10;&#9;char *instrument_path;&#10;&#10;&#9;void *extra;&#9;&#9;&#9;/* format-specific extra fields */&#10;&#10;&#9;const struct synth_info *synth;&#10;&#9;void *synth_chip;&#10;&#10;&#9;char **scan_cnt;&#9;&#9;/* scan counters */&#10;};&#10;&#10;&#10;struct player_data {&#10;&#9;int ord;&#10;&#9;int pos;&#10;&#9;int row;&#10;&#9;int frame;&#10;&#9;int speed;&#10;&#9;int bpm;&#10;&#9;int player_flags;&#10;&#9;int flags;&#10;&#9;double current_time;&#10;&#9;double frame_time;&#10;&#10;&#9;int loop_count;&#10;&#9;int sequence;&#10;&#9;unsigned char sequence_control[XMP_MAX_MOD_LENGTH];&#10;&#10;&#9;int smix_vol;&#9;&#9;&#9;/* SFX volume */&#10;&#9;int master_vol;&#9;&#9;&#9;/* Music volume */&#10;&#9;int gvol;&#10;&#10;&#9;struct flow_control {&#10;&#9;&#9;int pbreak;&#10;&#9;&#9;int jump;&#10;&#9;&#9;int delay;&#10;&#9;&#9;int skip_fetch;&#9;&#9;/* To emulate delay + break quirk */&#10;&#9;&#9;int jumpline;&#10;&#9;&#9;int loop_chn;&#10;&#9;&#10;&#9;&#9;struct pattern_loop {&#10;&#9;&#9;&#9;int start;&#10;&#9;&#9;&#9;int count;&#10;&#9;&#9;} *loop;&#10;&#9;&#10;&#9;&#9;int num_rows;&#10;&#9;&#9;int end_point;&#10;&#9;&#9;int rowdelay;&#9;&#9;/* For IT pattern row delay */&#10;&#9;&#9;int rowdelay_set;&#10;&#9;} flow;&#10;&#10;&#9;struct {&#10;&#9;&#9;int time;&#9;&#9;/* replay time in ms */&#10;&#9;&#9;int ord;&#10;&#9;&#9;int row;&#10;&#9;&#9;int num;&#10;&#9;} scan[MAX_SEQUENCES];&#10;&#10;&#9;struct channel_data *xc_data;&#10;&#10;&#9;int channel_vol[XMP_MAX_CHANNELS];&#10;&#9;char channel_mute[XMP_MAX_CHANNELS];&#10;&#10;&#9;struct virt_control {&#10;&#9;&#9;int num_tracks;&#9;&#9;/* Number of tracks */&#10;&#9;&#9;int virt_channels;&#9;/* Number of virtual channels */&#10;&#9;&#9;int virt_used;&#9;&#9;/* Number of voices currently in use */&#10;&#9;&#9;int maxvoc;&#9;&#9;/* Number of sound card voices */&#10;&#9;&#10;&#9;&#9;struct virt_channel {&#10;&#9;&#9;&#9;int count;&#10;&#9;&#9;&#9;int map;&#10;&#9;&#9;} *virt_channel;&#10;&#9;&#10;&#9;&#9;struct mixer_voice *voice_array;&#10;&#9;} virt;&#10;&#10;&#9;struct xmp_event inject_event[XMP_MAX_CHANNELS];&#10;&#10;&#9;struct {&#9;&#9;&#10;&#9;&#9;int consumed;&#10;&#9;&#9;int in_size;&#10;&#9;&#9;char *in_buffer;&#10;&#9;} buffer_data;&#10;};&#10;&#10;struct mixer_data {&#10;&#9;int freq;&#9;&#9;/* sampling rate */&#10;&#9;int format;&#9;&#9;/* sample format */&#10;&#9;int amplify;&#9;&#9;/* amplification multiplier */&#10;&#9;int mix;&#9;&#9;/* percentage of channel separation */&#10;&#9;int interp;&#9;&#9;/* interpolation type */&#10;&#9;int dsp;&#9;&#9;/* dsp effect flags */&#10;&#9;char* buffer;&#9;&#9;/* output buffer */&#10;&#9;int32* buf32;&#9;&#9;/* temporary buffer for 32 bit samples */&#10;&#9;int numvoc;&#9;&#9;/* default softmixer voices number */&#10;&#9;int ticksize;&#10;&#9;int dtright;&#9;&#9;/* anticlick control, right channel */&#10;&#9;int dtleft;&#9;&#9;/* anticlick control, left channel */&#10;&#9;int pbase;&#9;&#9;/* period base */&#10;};&#10;&#10;struct context_data {&#10;&#9;struct player_data p;&#10;&#9;struct mixer_data s;&#10;&#9;struct module_data m;&#10;&#9;struct smix_data smix;&#10;&#9;int state;&#10;};&#10;&#10;&#10;/* Prototypes */&#10;&#10;char&#9;*adjust_string&#9;&#9;(char *);&#10;int&#9;exclude_match&#9;&#9;(char *);&#10;int&#9;prepare_scan&#9;&#9;(struct context_data *);&#10;int&#9;scan_sequences&#9;&#9;(struct context_data *);&#10;int&#9;get_sequence&#9;&#9;(struct context_data *, int);&#10;&#10;int8&#9;read8s&#9;&#9;&#9;(FILE *);&#10;uint8&#9;read8&#9;&#9;&#9;(FILE *);&#10;uint16&#9;read16l&#9;&#9;&#9;(FILE *);&#10;uint16&#9;read16b&#9;&#9;&#9;(FILE *);&#10;uint32&#9;read24l&#9;&#9;&#9;(FILE *);&#10;uint32&#9;read24b&#9;&#9;&#9;(FILE *);&#10;uint32&#9;read32l&#9;&#9;&#9;(FILE *);&#10;uint32&#9;read32b&#9;&#9;&#9;(FILE *);&#10;void&#9;write8&#9;&#9;&#9;(FILE *, uint8);&#10;void&#9;write16l&#9;&#9;(FILE *, uint16);&#10;void&#9;write16b&#9;&#9;(FILE *, uint16);&#10;void&#9;write32l&#9;&#9;(FILE *, uint32);&#10;void&#9;write32b&#9;&#9;(FILE *, uint32);&#10;int&#9;move_data&#9;&#9;(FILE *, FILE *, int);&#10;&#10;uint16&#9;readmem16l&#9;&#9;(uint8 *);&#10;uint16&#9;readmem16b&#9;&#9;(uint8 *);&#10;uint32&#9;readmem24l&#9;&#9;(uint8 *);&#10;uint32&#9;readmem24b&#9;&#9;(uint8 *);&#10;uint32&#9;readmem32l&#9;&#9;(uint8 *);&#10;uint32&#9;readmem32b&#9;&#9;(uint8 *);&#10;&#10;int&#9;get_temp_dir&#9;&#9;(char *, int);&#10;#ifdef WIN32&#10;int&#9;mkstemp&#9;&#9;&#9;(char *);&#10;#endif&#10;&#10;struct xmp_instrument *get_instrument(struct context_data *, int);&#10;struct xmp_sample *get_sample(struct context_data *, int);&#10;&#10;#endif /* LIBXMP_COMMON_H */" />
+                            <option name="knowledgeBaseId" value="preset14" />
+                            <option name="metadata">
+                              <KnowledgeReferenceMetadata>
+                                <option name="endPos" value="394" />
+                                <option name="fileName" value="Engine/Source/ThirdParty/coremod/coremod-4.2.6/src/common.h" />
+                                <option name="source" value="/Engine/Source/ThirdParty/coremod/coremod-4.2.6/src/common.h" />
+                                <option name="sourceType" value="code" />
+                                <option name="startPos" value="221" />
+                              </KnowledgeReferenceMetadata>
+                            </option>
+                            <option name="score" value="0.67919266" />
+                          </KnowledgeReference>
+                          <KnowledgeReference>
+                            <option name="chunk" value="&#10;  /// Language supports '//' comments." />
+                            <option name="knowledgeBaseId" value="preset14" />
+                            <option name="metadata">
+                              <KnowledgeReferenceMetadata>
+                                <option name="endPos" value="58" />
+                                <option name="fileName" value="Engine/Source/ThirdParty/ShaderConductor/ShaderConductor/External/DirectXShaderCompiler/tools/clang/include/clang/Frontend/LangStandard.h" />
+                                <option name="source" value="/Engine/Source/ThirdParty/ShaderConductor/ShaderConductor/External/DirectXShaderCompiler/tools/clang/include/clang/Frontend/LangStandard.h" />
+                                <option name="sourceType" value="code" />
+                                <option name="startPos" value="57" />
+                              </KnowledgeReferenceMetadata>
+                            </option>
+                            <option name="score" value="0.6706411" />
+                          </KnowledgeReference>
+                          <KnowledgeReference>
+                            <option name="chunk" value="//===--- CommentCommandTraits.h - Comment command properties ----*- C++ -*-===//&#10;//&#10;//                     The LLVM Compiler Infrastructure&#10;//&#10;// This file is distributed under the University of Illinois Open Source&#10;// License. See LICENSE.TXT for details.&#10;//&#10;//===----------------------------------------------------------------------===//&#10;//&#10;//  This file defines the class that provides information about comment&#10;//  commands.&#10;//&#10;//===----------------------------------------------------------------------===//&#10;&#10;&#10;#ifndef LLVM_CLANG_AST_COMMENTCOMMANDTRAITS_H&#10;#define LLVM_CLANG_AST_COMMENTCOMMANDTRAITS_H&#10;&#10;#include &quot;clang/Basic/CommentOptions.h&quot;&#10;#include &quot;clang/Basic/LLVM.h&quot;&#10;#include &quot;llvm/ADT/SmallVector.h&quot;&#10;#include &quot;llvm/ADT/StringRef.h&quot;&#10;#include &quot;llvm/Support/Allocator.h&quot;&#10;#include &quot;llvm/Support/ErrorHandling.h&quot;&#10;&#10;namespace clang {&#10;namespace comments {&#10;&#10;/// \brief Information about a single command.&#10;///&#10;/// When reordering, adding or removing members please update the corresponding&#10;/// TableGen backend.&#10;struct CommandInfo {" />
+                            <option name="knowledgeBaseId" value="preset14" />
+                            <option name="metadata">
+                              <KnowledgeReferenceMetadata>
+                                <option name="endPos" value="33" />
+                                <option name="fileName" value="Engine/Source/ThirdParty/ShaderConductor/ShaderConductor/External/DirectXShaderCompiler/tools/clang/include/clang/AST/CommentCommandTraits.h" />
+                                <option name="source" value="/Engine/Source/ThirdParty/ShaderConductor/ShaderConductor/External/DirectXShaderCompiler/tools/clang/include/clang/AST/CommentCommandTraits.h" />
+                                <option name="sourceType" value="code" />
+                                <option name="startPos" value="1" />
+                              </KnowledgeReferenceMetadata>
+                            </option>
+                            <option name="score" value="0.66931236" />
+                          </KnowledgeReference>
+                        </list>
+                      </value>
+                    </entry>
+                  </map>
+                </knowledgeReferenceMaps>
+              </Turn>
+            </list>
+          </option>
+          <option name="updateTime" value="1752747160428" />
+        </Conversation>
+        <Conversation>
+          <option name="createTime" value="1752741117304" />
+          <option name="id" value="01981782fd7872589adca8d0c9239a82" />
+          <option name="title" value="新对话 2025年7月17日 16:31:57" />
+          <option name="updateTime" value="1752741117304" />
+        </Conversation>
+        <Conversation>
           <option name="createTime" value="1752657201211" />
           <option name="id" value="01981282883b72418447312a365cab56" />
           <option name="title" value="新对话 2025年7月16日 17:13:21" />

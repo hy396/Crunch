@@ -27,6 +27,9 @@ public:
 	virtual void PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue) override;
 	// 仅在instant Gameplay Effect使Attribute的BaseValue改变时触发
 	virtual void PostGameplayEffectExecute(const FGameplayEffectModCallbackData & Data) override;
+
+
+	//virtual bool PreGameplayEffectExecute(FGameplayEffectModCallbackData& Data) override;
 	
 	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_Health)
 	FGameplayAttributeData Health;
@@ -44,14 +47,50 @@ public:
 	FGameplayAttributeData MaxMana;
 	ATTRIBUTE_ACCESSORS(UCAttributeSet, MaxMana)
 
-	// 攻击力
+	// 传值的基础伤害
+	UPROPERTY(ReplicatedUsing = OnRep_BaseDamage)
+	FGameplayAttributeData BaseDamage;
+	ATTRIBUTE_ACCESSORS(UCAttributeSet, BaseDamage)
+
+	// 攻击力系数
+	UPROPERTY(ReplicatedUsing = OnRep_AttackPowerCoefficient)
+	FGameplayAttributeData AttackPowerCoefficient;
+	ATTRIBUTE_ACCESSORS(UCAttributeSet, AttackPowerCoefficient)
+	
+	// 物理伤害
 	UPROPERTY(ReplicatedUsing = OnRep_AttackDamage)
 	FGameplayAttributeData AttackDamage;
 	ATTRIBUTE_ACCESSORS(UCAttributeSet, AttackDamage)
+
+	// 法术伤害
+	UPROPERTY(ReplicatedUsing = OnRep_MagicDamage)
+	FGameplayAttributeData MagicDamage;
+	ATTRIBUTE_ACCESSORS(UCAttributeSet, MagicDamage)
+
+	// 真实伤害
+	UPROPERTY(ReplicatedUsing = OnRep_TrueDamage)
+	FGameplayAttributeData TrueDamage;
+	ATTRIBUTE_ACCESSORS(UCAttributeSet, TrueDamage)
+
+	/** 攻击力（物理攻击强度） */
+	UPROPERTY(ReplicatedUsing = OnRep_AttackPower)
+	FGameplayAttributeData AttackPower;
+	ATTRIBUTE_ACCESSORS(UCAttributeSet, AttackPower)
+	
+	/** 法术强度（魔法攻击强度） */
+	UPROPERTY(ReplicatedUsing = OnRep_MagicPower)
+	FGameplayAttributeData MagicPower;
+	ATTRIBUTE_ACCESSORS(UCAttributeSet, MagicPower)
+	
 	// 护甲值
 	UPROPERTY(ReplicatedUsing = OnRep_Armor)
 	FGameplayAttributeData Armor;
 	ATTRIBUTE_ACCESSORS(UCAttributeSet, Armor)
+
+	/** 法术抗性（减少受到的魔法伤害） */
+	UPROPERTY(ReplicatedUsing = OnRep_MagicResistance)
+	FGameplayAttributeData MagicResistance;
+	ATTRIBUTE_ACCESSORS(UCAttributeSet, MagicResistance)
 
 	// 移动速度
 	UPROPERTY(ReplicatedUsing = OnRep_MoveSpeed)
@@ -72,11 +111,26 @@ public:
 	UFUNCTION()
 	void OnRep_MaxMana(const FGameplayAttributeData& OldMaxMana);
 	UFUNCTION()
-	void OnRep_AttackDamage(const FGameplayAttributeData& OldValue);
+	void OnRep_AttackDamage(const FGameplayAttributeData& OldAttackDamage);
 	UFUNCTION()
-	void OnRep_Armor(const FGameplayAttributeData& OldValue);
+	void OnRep_Armor(const FGameplayAttributeData& OldArmor);
 	UFUNCTION()
-	void OnRep_MoveSpeed(const FGameplayAttributeData& OldValue);
+	void OnRep_MoveSpeed(const FGameplayAttributeData& OldMoveSpeed);
 	UFUNCTION()
-	void OnRep_MoveAcceleration(const FGameplayAttributeData& OldValue);
+	void OnRep_MoveAcceleration(const FGameplayAttributeData& OldMoveAcceleration);
+	UFUNCTION()
+	void OnRep_AttackPower(const FGameplayAttributeData& OldAttackPower);
+	UFUNCTION()
+	void OnRep_MagicPower(const FGameplayAttributeData& OldMagicPower);
+	UFUNCTION()
+	void OnRep_MagicResistance(const FGameplayAttributeData& OldMagicResistance);
+	UFUNCTION()
+	 void OnRep_AttackPowerCoefficient(const FGameplayAttributeData& OldAttackPowerCoefficient);
+	UFUNCTION()
+	void OnRep_BaseDamage(const FGameplayAttributeData& OldBaseDamage);
+	UFUNCTION()
+	void OnRep_MagicDamage(const FGameplayAttributeData& OldMagicDamage);
+	UFUNCTION()
+	void OnRep_TrueDamage(const FGameplayAttributeData& OldTrueDamage);
+	
 };

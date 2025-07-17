@@ -37,23 +37,23 @@ private:
 
 	// 属性面板：攻击力显示控件
 	UPROPERTY(meta=(BindWidget))
-	TObjectPtr<UStatsGauge> AttackDamageGauge;
+	TObjectPtr<UStatsGauge> AttackPowerGauge;
 
+	// 属性面板：法术强度显示控件
+	UPROPERTY(meta=(BindWidget))
+	TObjectPtr<UStatsGauge> MagicPowerGauge;
+	
 	// 属性面板：护甲显示控件
 	UPROPERTY(meta=(BindWidget))
 	TObjectPtr<UStatsGauge> ArmorGauge;
+	
+	// 属性面板：力量显示控件
+	UPROPERTY(meta=(BindWidget))
+	TObjectPtr<UStatsGauge> MagicResistanceGauge;
 
 	// 属性面板：移动速度显示控件
 	UPROPERTY(meta=(BindWidget))
 	TObjectPtr<UStatsGauge> MoveSpeedGauge;
-
-	// 属性面板：智力显示控件
-	UPROPERTY(meta=(BindWidget))
-	TObjectPtr<UStatsGauge> IntelligenceGauge;
-
-	// 属性面板：力量显示控件
-	UPROPERTY(meta=(BindWidget))
-	TObjectPtr<UStatsGauge> StrengthGauge;
 
 	UPROPERTY()
 	TObjectPtr<UAbilitySystemComponent> OwnerAbilitySystemComponent;

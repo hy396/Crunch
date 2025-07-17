@@ -16,18 +16,22 @@ class UCAbilitySystemComponent : public UAbilitySystemComponent
 	GENERATED_BODY()
 public:
 	UCAbilitySystemComponent();
-	// 初始效果
-	void ApplyInitialEffects();
-	// 技能初始化
-	void GiveInitialAbilities();
+
+	// 初始化基础属性
+	void InitializeBaseAttributes();
+	// 服务器初始化
+	void ServerSideInit();
 	// 回满血、满蓝效果
 	void ApplyFullStatEffect();
 
 	const TMap<ECAbilityInputID, TSubclassOf<UGameplayAbility>>& GetAbilities() const;
-
+private:
+	// 初始效果
+	void ApplyInitialEffects();
+	// 技能初始化
+	void GiveInitialAbilities();
 	// 添加GE
 	void AuthApplyGameplayEffect(TSubclassOf<UGameplayEffect> GameplayEffect, int Level = 1);
-private:
 	void HealthUpdated(const FOnAttributeChangeData& ChangeData);
 	void ManaUpdated(const FOnAttributeChangeData& ChangeData);
 
@@ -48,4 +52,8 @@ private:
 	// 技能
 	UPROPERTY(EditDefaultsOnly, Category = "Gameplay Ability")
 	TMap<ECAbilityInputID, TSubclassOf<UGameplayAbility>> Abilities;
+
+	// 基础属性数据表
+	UPROPERTY(EditDefaultsOnly, Category = "Base Stats")
+	TObjectPtr<UDataTable> BaseStatDataTable;
 };

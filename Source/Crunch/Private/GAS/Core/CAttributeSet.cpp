@@ -14,8 +14,17 @@ void UCAttributeSet::GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>&
 	DOREPLIFETIME_CONDITION_NOTIFY(UCAttributeSet, Mana, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UCAttributeSet, MaxMana, COND_None, REPNOTIFY_Always);
 
+	DOREPLIFETIME_CONDITION_NOTIFY(UCAttributeSet, BaseDamage, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UCAttributeSet, AttackPowerCoefficient, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UCAttributeSet, AttackDamage, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UCAttributeSet, MagicDamage, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UCAttributeSet, TrueDamage, COND_None, REPNOTIFY_Always);
+
+	DOREPLIFETIME_CONDITION_NOTIFY(UCAttributeSet, AttackPower, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UCAttributeSet, MagicPower, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UCAttributeSet, Armor, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UCAttributeSet, MagicResistance, COND_None, REPNOTIFY_Always);
+
 	DOREPLIFETIME_CONDITION_NOTIFY(UCAttributeSet, MoveSpeed, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UCAttributeSet, MoveAcceleration, COND_None, REPNOTIFY_Always);
 }
@@ -86,3 +95,38 @@ void UCAttributeSet::OnRep_MoveAcceleration(const FGameplayAttributeData& OldVal
 {
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UCAttributeSet, MoveAcceleration, OldValue);
 }
+
+void UCAttributeSet::OnRep_AttackPower(const FGameplayAttributeData& OldValue)
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UCAttributeSet, AttackPower, OldValue);
+}
+
+void UCAttributeSet::OnRep_MagicPower(const FGameplayAttributeData& OldValue)
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UCAttributeSet, MagicPower, OldValue);
+}
+
+void UCAttributeSet::OnRep_MagicResistance(const FGameplayAttributeData& OldValue)
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UCAttributeSet, MagicResistance, OldValue);
+}
+
+void UCAttributeSet::OnRep_AttackPowerCoefficient(const FGameplayAttributeData& OldAttackPowerCoefficient)
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UCAttributeSet, AttackPowerCoefficient, OldAttackPowerCoefficient);
+}
+
+void UCAttributeSet::OnRep_BaseDamage(const FGameplayAttributeData& OldBaseDamage)
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UCAttributeSet, BaseDamage, OldBaseDamage);
+}
+
+void UCAttributeSet::OnRep_MagicDamage(const FGameplayAttributeData& OldMagicDamage)
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UCAttributeSet, MagicDamage, OldMagicDamage);
+}
+
+void UCAttributeSet::OnRep_TrueDamage(const FGameplayAttributeData& OldTrueDamage)
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UCAttributeSet, TrueDamage, OldTrueDamage);
+}	

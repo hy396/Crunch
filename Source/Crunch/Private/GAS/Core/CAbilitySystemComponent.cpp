@@ -4,6 +4,7 @@
 #include "GAS/Core/CAbilitySystemComponent.h"
 
 #include "CAttributeSet.h"
+#include "CHeroAttributeSet.h"
 
 UCAbilitySystemComponent::UCAbilitySystemComponent()
 {
@@ -12,6 +13,81 @@ UCAbilitySystemComponent::UCAbilitySystemComponent()
 
 	GenericConfirmInputID = static_cast<int32>(ECAbilityInputID::Confirm);
 	GenericCancelInputID = static_cast<int32>(ECAbilityInputID::Cancel);
+}
+
+void UCAbilitySystemComponent::InitializeBaseAttributes()
+{
+	if (!BaseStatDataTable || !GetOwner())
+	{
+		return;
+	}
+
+	// const FHeroBaseStats* BaseStats = nullptr;
+	//
+	// for (const TPair<FName, uint8*>& DataPair : BaseStatDataTable->GetRowMap())
+	// {
+	// 	BaseStats = BaseStatDataTable->FindRow<FHeroBaseStats>(DataPair.Key, "");
+	// 	if (BaseStats && BaseStats->Class == GetOwner()->GetClass())
+	// 	{
+	// 		break; // 找到后退出循环
+	// 	}
+	// }
+	//
+	// if (BaseStats)
+	// {
+	// 	// 设置基础战斗属性
+	// 	SetNumericAttributeBase(UCAttributeSet::GetMaxHealthAttribute(), BaseStats->BaseMaxHealth);			// 最大生命值
+	// 	SetNumericAttributeBase(UCAttributeSet::GetMaxManaAttribute(), BaseStats->BaseMaxMana);				// 最大魔法值
+	// 	SetNumericAttributeBase(UCAttributeSet::GetAttackDamageAttribute(), BaseStats->BaseAttackDamage);	// 攻击伤害
+	// 	SetNumericAttributeBase(UCAttributeSet::GetArmorAttribute(), BaseStats->BaseArmor);					// 护甲值
+	// 	SetNumericAttributeBase(UCAttributeSet::GetMoveSpeedAttribute(), BaseStats->BaseMoveSpeed);			// 移动速度
+	//
+	// 	// 设置角色成长属性
+	// 	SetNumericAttributeBase(UCHeroAttributeSet::GetStrengthAttribute(), BaseStats->Strength);								// 力量
+	// 	SetNumericAttributeBase(UCHeroAttributeSet::GetStrengthGrowthRateAttribute(), BaseStats->StrengthGrowthRate);			// 力量成长率
+	// 	SetNumericAttributeBase(UCHeroAttributeSet::GetIntelligenceAttribute(), BaseStats->Intelligence);						// 智力
+	// 	SetNumericAttributeBase(UCHeroAttributeSet::GetIntelligenceGrowthRateAttribute(), BaseStats->IntelligenceGrowthRate);	// 智力成长率
+	// }
+
+	const FTHeroBaseStats* BaseStats = nullptr;
+
+	for (const TPair<FName, uint8*>& DataPair : BaseStatDataTable->GetRowMap())
+	{
+		BaseStats = BaseStatDataTable->FindRow<FTHeroBaseStats>(DataPair.Key, "");
+		if (BaseStats && BaseStats->Class == GetOwner()->GetClass())
+		{
+			break; // 找到后退出循环
+		}
+	}
+	
+	if (BaseStats)
+	{
+		// 设置基础战斗属性
+		SetNumericAttributeBase(UCAttributeSet::GetMaxHealthAttribute(), BaseStats->BaseMaxHealth);				// 最大生命值
+		SetNumericAttributeBase(UCAttributeSet::GetMaxManaAttribute(), BaseStats->BaseMaxMana);					// 最大魔法值
+		SetNumericAttributeBase(UCAttributeSet::GetAttackPowerAttribute(), BaseStats->AttackPower);				// 攻击力
+		SetNumericAttributeBase(UCAttributeSet::GetMagicPowerAttribute(), BaseStats->MagicPower);				// 法术强度
+		SetNumericAttributeBase(UCAttributeSet::GetArmorAttribute(), BaseStats->BaseArmor);						// 护甲值
+		SetNumericAttributeBase(UCAttributeSet::GetMagicResistanceAttribute(), BaseStats->BaseMagicResistance);	// 法术抗性
+		SetNumericAttributeBase(UCAttributeSet::GetMoveSpeedAttribute(), BaseStats->BaseMoveSpeed);				// 移动速度
+
+		SetNumericAttributeBase(UCHeroAttributeSet::GetHealthRegenAttribute(), BaseStats->HealthRegen);			// 生命回复
+		SetNumericAttributeBase(UCHeroAttributeSet::GetManaRegenAttribute(), BaseStats->ManaRegen);				// 法术回复
+		// 设置角色成长属性
+		SetNumericAttributeBase(UCHeroAttributeSet::GetAttackPowerGrowthRateAttribute(), BaseStats->AttackPowerGrowthRate);	// 攻击成长率
+		SetNumericAttributeBase(UCHeroAttributeSet::GetMagicPowerGrowthRateAttribute(), BaseStats->MagicPowerGrowthRate);	// 法术成长率
+		SetNumericAttributeBase(UCHeroAttributeSet::GetHealthRegenGrowthRateAttribute(), BaseStats->AttackPowerGrowthRate);	// 生命回复成长
+		SetNumericAttributeBase(UCHeroAttributeSet::GetManaRegenGrowthRateAttribute(), BaseStats->MagicPowerGrowthRate);	// 法力回复成长
+		
+	}
+	
+}
+
+void UCAbilitySystemComponent::ServerSideInit()
+{
+	InitializeBaseAttributes();
+	ApplyInitialEffects();
+	GiveInitialAbilities();
 }
 
 void UCAbilitySystemComponent::ApplyInitialEffects()

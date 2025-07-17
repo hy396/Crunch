@@ -22,3 +22,21 @@ FHeroBaseStats::FHeroBaseStats()
 	BaseMoveSpeed{0.f}
 {
 }
+
+FTHeroBaseStats::FTHeroBaseStats()
+	:Class {nullptr},
+	AttackPower{0.f},
+	MagicPower{0.f},
+	AttackPowerGrowthRate{0.f},
+	MagicPowerGrowthRate{0.f},
+	BaseMaxHealth{0.f},
+	HealthRegen{0.f},
+	HealthRegenGrowthRate{0.f},
+	BaseMaxMana{0.f},
+	ManaRegen{0.f},
+	ManaRegenGrowthRate{0.f},
+	BaseArmor{0.f},
+	BaseMagicResistance{0.f},
+	BaseMoveSpeed{0.f}
+{
+}

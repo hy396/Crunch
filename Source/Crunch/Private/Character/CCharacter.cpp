@@ -42,8 +42,7 @@ void ACCharacter::ServerSideInit()
 {
 	// 设置当前角色作为Owner和Avatar，用于后续的能力和效果应用
 	CAbilitySystemComponent->InitAbilityActorInfo(this, this);
-	CAbilitySystemComponent->ApplyInitialEffects();
-	CAbilitySystemComponent->GiveInitialAbilities();
+	CAbilitySystemComponent->ServerSideInit();
 }
 
 void ACCharacter::ClientSideInit()
@@ -153,6 +152,8 @@ void ACCharacter::BindGASChangeDelegates()
 		CAbilitySystemComponent->RegisterGameplayTagEvent(TGameplayTags::Stats_Dead).AddUObject(this, &ACCharacter::DeathTagUpdated);
 		CAbilitySystemComponent->RegisterGameplayTagEvent(TGameplayTags::Stats_Stun).AddUObject(this, &ACCharacter::StunTagUpdated);
 		CAbilitySystemComponent->RegisterGameplayTagEvent(TGameplayTags::Stats_Aim).AddUObject(this, &ACCharacter::AimTagUpdated);
+
+		CAbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(CAttributeSet->GetMoveSpeedAttribute()).AddUObject(this, &ACCharacter::MoveSpeedUpdatad);
 	}
 }
 
@@ -202,7 +203,10 @@ void ACCharacter::OnAimStateChanged(bool bIsAiming)
 {
 	// 子类中重写
 }
-
+void ACCharacter::MoveSpeedUpdatad(const FOnAttributeChangeData& Data)
+{
+	GetCharacterMovement()->MaxWalkSpeed = Data.NewValue;
+}
 void ACCharacter::OnStun()
 {
 }

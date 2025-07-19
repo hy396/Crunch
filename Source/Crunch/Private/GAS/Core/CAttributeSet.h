@@ -13,6 +13,44 @@
 	GAMEPLAYATTRIBUTE_VALUE_GETTER(PropertyName) \
 	GAMEPLAYATTRIBUTE_VALUE_SETTER(PropertyName) \
 	GAMEPLAYATTRIBUTE_VALUE_INITTER(PropertyName)
+
+
+USTRUCT()
+struct FEffectProperties
+{
+	GENERATED_BODY()
+
+	FEffectProperties(){}
+
+	UPROPERTY()
+	FGameplayEffectContextHandle EffectContextHandle;
+	
+	UPROPERTY()
+	UAbilitySystemComponent* SourceASC = nullptr;
+
+	UPROPERTY()
+	AActor* SourceAvatarActor = nullptr;
+
+	UPROPERTY()
+	AController* SourceController = nullptr;
+
+	UPROPERTY()
+	ACharacter* SourceCharacter = nullptr;
+
+	UPROPERTY()
+	UAbilitySystemComponent* TargetASC = nullptr;
+
+	UPROPERTY()
+	AActor* TargetAvatarActor = nullptr;
+
+	UPROPERTY()
+	AController* TargetController = nullptr;
+
+	UPROPERTY()
+	ACharacter* TargetCharacter = nullptr;
+	
+};
+
 /**
  * 
  */
@@ -132,5 +170,12 @@ public:
 	void OnRep_MagicDamage(const FGameplayAttributeData& OldMagicDamage);
 	UFUNCTION()
 	void OnRep_TrueDamage(const FGameplayAttributeData& OldTrueDamage);
-	
+
+private:
+	// 设置效果属性
+	void SetEffectProperties(const FGameplayEffectModCallbackData& Data, FEffectProperties& Props) const;
+	//显示伤害数字
+	static void ShowFloatingText(const FEffectProperties& Props, const float Damage, bool IsCriticalHit);
+	UFUNCTION(Client, Reliable)
+	void Client_ShowFloatingText(const FEffectProperties& Props, const float Damage, bool IsCriticalHit);
 };

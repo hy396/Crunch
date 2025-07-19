@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "CGameplayAbilityTypes.h"
 #include "GenericTeamAgentInterface.h"
 #include "Abilities/GameplayAbility.h"
 #include "CGameplayAbility.generated.h"
@@ -34,6 +35,11 @@ protected:
 	*/
 	void ApplyGameplayEffectToHitResultActor(const FHitResult& HitResult, TSubclassOf<UGameplayEffect> GameplayEffect, int Level = 1);
 
+	void ApplyDamage(AActor* TargetActor,const FGenericDamageEffectDef& Damage, int Level = 1);
+
+
+	// 设置伤害
+	void MakeDamage(const FGenericDamageEffectDef& Damage, int Level = 1);
 	UFUNCTION()
 	FORCEINLINE bool ShouldDrawDebug() const { return bShouldDrawDebug; }
 

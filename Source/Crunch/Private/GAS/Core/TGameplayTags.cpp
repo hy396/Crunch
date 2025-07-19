@@ -29,4 +29,8 @@ namespace TGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Stats_Dead, "Stats.Dead", "死亡")
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Stats_Stun, "Stats.Stun", "眩晕")
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Stats_Aim, "Stats.Aim", "瞄准")
+
+
+	// 属性
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(AttributeSet_BaseDamage, "AttributeSet.BaseDamage", "基础伤害")
 }

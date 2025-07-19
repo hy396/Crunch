@@ -35,9 +35,19 @@ struct FGenericDamageEffectDef
 public:
 	FGenericDamageEffectDef();
 
+	// 伤害类型
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<UGameplayEffect> DamageEffect;
 
+	// 基础伤害大小
+	UPROPERTY(EditAnywhere)
+	float BaseDamage;
+
+	// 属性的百分比伤害加成
+	UPROPERTY(EditAnywhere)
+	TMap<FGameplayAttribute, float> DamageTypes;
+
+	// 力的大小
 	UPROPERTY(EditAnywhere)
 	FVector PushVelocity;
 };

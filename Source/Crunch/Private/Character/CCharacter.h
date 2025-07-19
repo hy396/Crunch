@@ -10,11 +10,13 @@
 #include "GenericTeamAgentInterface.h"
 #include "GAS/Core/CAbilitySystemComponent.h"
 #include "GAS/Core/CAttributeSet.h"
+#include "Interaction/CombatInterface.h"
 #include "Perception/AIPerceptionStimuliSourceComponent.h"
+#include "Player/NumberPopComponent_NiagaraText.h"
 #include "CCharacter.generated.h"
 
 UCLASS()
-class ACCharacter : public ACharacter, public IAbilitySystemInterface, public IGenericTeamAgentInterface
+class ACCharacter : public ACharacter, public IAbilitySystemInterface, public IGenericTeamAgentInterface, public ICombatInterface
 {
 	GENERATED_BODY()
 
@@ -32,7 +34,13 @@ public:
 	const TMap<ECAbilityInputID, TSubclassOf<UGameplayAbility>>& GetAbilities() const;
 	// 头顶UI颜色
 	void SetOverHeadWidgetColor();
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components")
+	TObjectPtr<UNumberPopComponent_NiagaraText> NumberPopComponent;
 
+	// 添加Niagara文字
+	// virtual void AddNiagaraText_Implementation();
+	virtual void AddNiagaraText_Implementation(const FNumberPopRequest& NewRequest) override;
 protected:
 	virtual void BeginPlay() override;
 	// 只在服务器执行
@@ -65,7 +73,10 @@ private:
 	virtual void OnAimStateChanged(bool bIsAiming);
 
 	// 移动速度改变回调
-	void MoveSpeedUpdatad(const FOnAttributeChangeData& Data);
+	void MoveSpeedUpdated(const FOnAttributeChangeData& Data);
+
+	// 伤害传入
+	void AttackDamageUpdated(const FOnAttributeChangeData& Data);
 	UPROPERTY(VisibleDefaultsOnly, Category = "Gameplay Ability")
 	TObjectPtr<UCAbilitySystemComponent> CAbilitySystemComponent;
 	UPROPERTY()

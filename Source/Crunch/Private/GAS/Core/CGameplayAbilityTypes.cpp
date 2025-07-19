@@ -5,6 +5,8 @@
 
 FGenericDamageEffectDef::FGenericDamageEffectDef()
 	:DamageEffect{nullptr},
+	BaseDamage{0.f},
+	DamageTypes{},
 	PushVelocity{0.f}
 {
 }

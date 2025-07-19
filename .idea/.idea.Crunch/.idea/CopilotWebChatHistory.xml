@@ -5243,6 +5243,726 @@
         </WebConversation>
       </list>
     </option>
-    <option name="currentConversation" />
+    <option name="currentConversation">
+      <WebConversation>
+        <option name="session">
+          <ChatSession>
+            <option name="messages">
+              <list>
+                <UIChatMessage>
+                  <option name="command" value="" />
+                  <option name="content" value="LogNiagara: Warning: OverrideParameter(None) System(None) DataInterface(NiagaraDataInterfaceArrayFloat4) was not found&#10;LogNiagara: Warning: OverrideParameter(None) System(None) DataInterface(NiagaraDataInterfaceArrayFloat4) was not found" />
+                  <option name="cost" value="0" />
+                  <option name="createdAt" value="1752928069092" />
+                  <option name="localReferences">
+                    <list>
+                      <LocalReferences>
+                        <option name="isRequestStage" value="true" />
+                        <option name="range">
+                          <RefRange />
+                        </option>
+                        <option name="uri" value="{&quot;path&quot;:&quot;file:///D:/ue_texiao/Crunch/Source/Crunch/Private/GAS/Core/CAttributeSet.cpp&quot;}" />
+                      </LocalReferences>
+                    </list>
+                  </option>
+                  <option name="parser">
+                    <SimpleMarkdownStreamParser>
+                      <option name="columns">
+                        <list>
+                          <option value="117" />
+                        </list>
+                      </option>
+                      <option name="content" value="LogNiagara: Warning: OverrideParameter(None) System(None) DataInterface(NiagaraDataInterfaceArrayFloat4) was not found&#10;LogNiagara: Warning: OverrideParameter(None) System(None) DataInterface(NiagaraDataInterfaceArrayFloat4) was not found" />
+                      <option name="nodes">
+                        <list>
+                          <MarkdownNode>
+                            <option name="children">
+                              <list />
+                            </option>
+                            <option name="content" value="LogNiagara: Warning: OverrideParameter(None) System(None) DataInterface(NiagaraDataInterfaceArrayFloat4) was not found" />
+                            <option name="contentId" value="-216668852" />
+                            <option name="settled" value="true" />
+                            <option name="type" value="line" />
+                            <option name="xmlData">
+                              <XmlNode />
+                            </option>
+                          </MarkdownNode>
+                          <MarkdownNode>
+                            <option name="children">
+                              <list />
+                            </option>
+                            <option name="content" value="LogNiagara: Warning: OverrideParameter(None) System(None) DataInterface(NiagaraDataInterfaceArrayFloat4) was not found" />
+                            <option name="contentId" value="-216668852" />
+                            <option name="settled" value="false" />
+                            <option name="type" value="line" />
+                            <option name="xmlData">
+                              <XmlNode />
+                            </option>
+                          </MarkdownNode>
+                        </list>
+                      </option>
+                      <option name="parserState">
+                        <ParserState>
+                          <option name="line" value="1" />
+                          <option name="column" value="117" />
+                          <option name="offset" value="237" />
+                          <option name="moveCursor" value="true" />
+                        </ParserState>
+                      </option>
+                    </SimpleMarkdownStreamParser>
+                  </option>
+                  <option name="role" value="user" />
+                  <option name="selectedRanges">
+                    <list />
+                  </option>
+                  <option name="uri" value="" />
+                  <option name="variables">
+                    <list />
+                  </option>
+                </UIChatMessage>
+                <UIChatMessage>
+                  <option name="actions">
+                    <list />
+                  </option>
+                  <option name="codebaseReferences">
+                    <list />
+                  </option>
+                  <option name="codebaseStatus" value="init" />
+                  <option name="command" value="" />
+                  <option name="content" value="根据提供的代码和日志信息，问题出在尝试添加一个名为 `NiagaraDataInterfaceArrayFloat4` 的数据接口时失败了。具体来说，日志中的 `OverrideParameter(None) System(None) DataInterface(NiagaraDataInterfaceArrayFloat4) was not found` 提示表明系统无法找到指定的数据接口。&#10;&#10;### 可能的原因和解决方法&#10;&#10;1. **参数未正确设置**：&#10;   - 确保在添加 `NiagaraDataInterfaceArrayFloat4` 参数之前，已经正确设置了所有必要的参数和依赖项。&#10;&#10;2. **模块或系统未正确配置**：&#10;   - 检查相关的模块和系统配置，确保它们支持所需的数据接口。&#10;&#10;3. **数据源问题**：&#10;   - 确认数据源是否正确连接并且能够提供所需的数据。&#10;&#10;### 示例代码调整&#10;&#10;可以参考以下步骤来确保参数正确设置：&#10;&#10;```C++&#10;if (AActor* Target = Data.Target.AbilityActorInfo-&gt;AvatarActor.Get())&#10;{&#10;    if (Target-&gt;Implements&lt;UCombatInterface&gt;())&#10;    {&#10;        FNumberPopRequest NumberPopRequest;&#10;        // 设置特效的位置&#10;        NumberPopRequest.WorldLocation = Target-&gt;GetActorLocation();&#10;        NumberPopRequest.WorldLocation.Z += 200.f;&#10;        NumberPopRequest.NumberToDisplay = NewDamage;&#10;        NumberPopRequest.bIsCriticalDamage = bCriticalHit;&#10;&#10;        // 确保所有必要的参数都已设置&#10;        NumberPopRequest.NiagaraDataInterface = /* 确保这里设置了正确的数据接口 */;&#10;&#10;        ICombatInterface::Execute_AddNiagaraText(Target, NumberPopRequest);&#10;    }&#10;}&#10;```&#10;&#10;&#10;### 进一步的调试步骤&#10;&#10;1. **检查日志信息**：&#10;   - 仔细检查所有相关的日志信息，以确定是否有其他未解决的配置问题。&#10;&#10;2. **逐步调试**：&#10;   - 逐步调试代码，确保每一步都按预期执行，特别是在设置数据接口的部分。&#10;&#10;3. **参考文档和社区资源**：&#10;   - 参考 Unreal Engine 的官方文档和社区资源，了解更多关于 Niagara 数据接口的使用方法和常见问题。&#10;&#10;希望这些信息能帮助你解决问题。如果还有其他疑问，请随时提问！" />
+                  <option name="cost" value="11219" />
+                  <option name="createdAt" value="1752928080360" />
+                  <option name="followup">
+                    <list />
+                  </option>
+                  <option name="id" value="019822a7a5e47ff994f410ce7ba8ce16" />
+                  <option name="knowledgeReferences">
+                    <list />
+                  </option>
+                  <option name="localReferences">
+                    <list>
+                      <LocalReferences>
+                        <option name="isRequestStage" value="true" />
+                        <option name="range">
+                          <RefRange />
+                        </option>
+                        <option name="uri" value="{&quot;path&quot;:&quot;file:///D:/ue_texiao/Crunch/Source/Crunch/Private/GAS/Core/CAttributeSet.cpp&quot;}" />
+                      </LocalReferences>
+                    </list>
+                  </option>
+                  <option name="parser">
+                    <SimpleMarkdownStreamParser>
+                      <option name="columns">
+                        <list>
+                          <option value="197" />
+                          <option value="-1" />
+                          <option value="13" />
+                          <option value="-1" />
+                          <option value="14" />
+                          <option value="68" />
+                          <option value="-1" />
+                          <option value="17" />
+                          <option value="31" />
+                          <option value="-1" />
+                          <option value="12" />
+                          <option value="27" />
+                          <option value="-1" />
+                          <option value="9" />
+                          <option value="-1" />
+                          <option value="17" />
+                          <option value="-1" />
+                          <option value="5" />
+                          <option value="68" />
+                          <option value="0" />
+                          <option value="46" />
+                          <option value="4" />
+                          <option value="42" />
+                          <option value="17" />
+                          <option value="67" />
+                          <option value="49" />
+                          <option value="52" />
+                          <option value="57" />
+                          <option value="-1" />
+                          <option value="23" />
+                          <option value="68" />
+                          <option value="-1" />
+                          <option value="74" />
+                          <option value="4" />
+                          <option value="0" />
+                          <option value="2" />
+                          <option value="-1" />
+                          <option value="-1" />
+                          <option value="11" />
+                          <option value="-1" />
+                          <option value="13" />
+                          <option value="35" />
+                          <option value="-1" />
+                          <option value="11" />
+                          <option value="37" />
+                          <option value="-1" />
+                          <option value="16" />
+                          <option value="62" />
+                          <option value="-1" />
+                          <option value="29" />
+                        </list>
+                      </option>
+                      <option name="content" value="根据提供的代码和日志信息，问题出在尝试添加一个名为 `NiagaraDataInterfaceArrayFloat4` 的数据接口时失败了。具体来说，日志中的 `OverrideParameter(None) System(None) DataInterface(NiagaraDataInterfaceArrayFloat4) was not found` 提示表明系统无法找到指定的数据接口。&#10;&#10;### 可能的原因和解决方法&#10;&#10;1. **参数未正确设置**：&#10;   - 确保在添加 `NiagaraDataInterfaceArrayFloat4` 参数之前，已经正确设置了所有必要的参数和依赖项。&#10;&#10;2. **模块或系统未正确配置**：&#10;   - 检查相关的模块和系统配置，确保它们支持所需的数据接口。&#10;&#10;3. **数据源问题**：&#10;   - 确认数据源是否正确连接并且能够提供所需的数据。&#10;&#10;### 示例代码调整&#10;&#10;可以参考以下步骤来确保参数正确设置：&#10;&#10;```C++&#10;if (AActor* Target = Data.Target.AbilityActorInfo-&gt;AvatarActor.Get())&#10;{&#10;    if (Target-&gt;Implements&lt;UCombatInterface&gt;())&#10;    {&#10;        FNumberPopRequest NumberPopRequest;&#10;        // 设置特效的位置&#10;        NumberPopRequest.WorldLocation = Target-&gt;GetActorLocation();&#10;        NumberPopRequest.WorldLocation.Z += 200.f;&#10;        NumberPopRequest.NumberToDisplay = NewDamage;&#10;        NumberPopRequest.bIsCriticalDamage = bCriticalHit;&#10;&#10;        // 确保所有必要的参数都已设置&#10;        NumberPopRequest.NiagaraDataInterface = /* 确保这里设置了正确的数据接口 */;&#10;&#10;        ICombatInterface::Execute_AddNiagaraText(Target, NumberPopRequest);&#10;    }&#10;}&#10;```&#10;&#10;&#10;### 进一步的调试步骤&#10;&#10;1. **检查日志信息**：&#10;   - 仔细检查所有相关的日志信息，以确定是否有其他未解决的配置问题。&#10;&#10;2. **逐步调试**：&#10;   - 逐步调试代码，确保每一步都按预期执行，特别是在设置数据接口的部分。&#10;&#10;3. **参考文档和社区资源**：&#10;   - 参考 Unreal Engine 的官方文档和社区资源，了解更多关于 Niagara 数据接口的使用方法和常见问题。&#10;&#10;希望这些信息能帮助你解决问题。如果还有其他疑问，请随时提问！&#10;" />
+                      <option name="nodes">
+                        <list>
+                          <MarkdownNode>
+                            <option name="children">
+                              <list />
+                            </option>
+                            <option name="content" value="根据提供的代码和日志信息，问题出在尝试添加一个名为 `NiagaraDataInterfaceArrayFloat4` 的数据接口时失败了。具体来说，日志中的 `OverrideParameter(None) System(None) DataInterface(NiagaraDataInterfaceArrayFloat4) was not found` 提示表明系统无法找到指定的数据接口。" />
+                            <option name="contentId" value="-1593872948" />
+                            <option name="settled" value="true" />
+                            <option name="type" value="line" />
+                            <option name="xmlData">
+                              <XmlNode />
+                            </option>
+                          </MarkdownNode>
+                          <MarkdownNode>
+                            <option name="children">
+                              <list />
+                            </option>
+                            <option name="content" value="" />
+                            <option name="contentId" value="0" />
+                            <option name="settled" value="true" />
+                            <option name="type" value="line" />
+                            <option name="xmlData">
+                              <XmlNode />
+                            </option>
+                          </MarkdownNode>
+                          <MarkdownNode>
+                            <option name="children">
+                              <list />
+                            </option>
+                            <option name="content" value=" 可能的原因和解决方法" />
+                            <option name="contentId" value="1028693121" />
+                            <option name="level" value="3" />
+                            <option name="settled" value="true" />
+                            <option name="type" value="heading" />
+                            <option name="xmlData">
+                              <XmlNode />
+                            </option>
+                          </MarkdownNode>
+                          <MarkdownNode>
+                            <option name="children">
+                              <list />
+                            </option>
+                            <option name="content" value="" />
+                            <option name="contentId" value="0" />
+                            <option name="settled" value="true" />
+                            <option name="type" value="line" />
+                            <option name="xmlData">
+                              <XmlNode />
+                            </option>
+                          </MarkdownNode>
+                          <MarkdownNode>
+                            <option name="children">
+                              <list />
+                            </option>
+                            <option name="content" value="1. **参数未正确设置**：" />
+                            <option name="contentId" value="-685205050" />
+                            <option name="settled" value="true" />
+                            <option name="type" value="line" />
+                            <option name="xmlData">
+                              <XmlNode />
+                            </option>
+                          </MarkdownNode>
+                          <MarkdownNode>
+                            <option name="children">
+                              <list />
+                            </option>
+                            <option name="content" value="确保在添加 `NiagaraDataInterfaceArrayFloat4` 参数之前，已经正确设置了所有必要的参数和依赖项。" />
+                            <option name="contentId" value="409980518" />
+                            <option name="indentSize" value="3" />
+                            <option name="settled" value="true" />
+                            <option name="startSymbol" value="-" />
+                            <option name="type" value="list-item" />
+                            <option name="xmlData">
+                              <XmlNode />
+                            </option>
+                          </MarkdownNode>
+                          <MarkdownNode>
+                            <option name="children">
+                              <list />
+                            </option>
+                            <option name="content" value="" />
+                            <option name="contentId" value="0" />
+                            <option name="settled" value="true" />
+                            <option name="type" value="line" />
+                            <option name="xmlData">
+                              <XmlNode />
+                            </option>
+                          </MarkdownNode>
+                          <MarkdownNode>
+                            <option name="children">
+                              <list />
+                            </option>
+                            <option name="content" value="2. **模块或系统未正确配置**：" />
+                            <option name="contentId" value="829625124" />
+                            <option name="settled" value="true" />
+                            <option name="type" value="line" />
+                            <option name="xmlData">
+                              <XmlNode />
+                            </option>
+                          </MarkdownNode>
+                          <MarkdownNode>
+                            <option name="children">
+                              <list />
+                            </option>
+                            <option name="content" value="检查相关的模块和系统配置，确保它们支持所需的数据接口。" />
+                            <option name="contentId" value="-553820767" />
+                            <option name="indentSize" value="3" />
+                            <option name="settled" value="true" />
+                            <option name="startSymbol" value="-" />
+                            <option name="type" value="list-item" />
+                            <option name="xmlData">
+                              <XmlNode />
+                            </option>
+                          </MarkdownNode>
+                          <MarkdownNode>
+                            <option name="children">
+                              <list />
+                            </option>
+                            <option name="content" value="" />
+                            <option name="contentId" value="0" />
+                            <option name="settled" value="true" />
+                            <option name="type" value="line" />
+                            <option name="xmlData">
+                              <XmlNode />
+                            </option>
+                          </MarkdownNode>
+                          <MarkdownNode>
+                            <option name="children">
+                              <list />
+                            </option>
+                            <option name="content" value="3. **数据源问题**：" />
+                            <option name="contentId" value="669487683" />
+                            <option name="settled" value="true" />
+                            <option name="type" value="line" />
+                            <option name="xmlData">
+                              <XmlNode />
+                            </option>
+                          </MarkdownNode>
+                          <MarkdownNode>
+                            <option name="children">
+                              <list />
+                            </option>
+                            <option name="content" value="确认数据源是否正确连接并且能够提供所需的数据。" />
+                            <option name="contentId" value="1101582160" />
+                            <option name="indentSize" value="3" />
+                            <option name="settled" value="true" />
+                            <option name="startSymbol" value="-" />
+                            <option name="type" value="list-item" />
+                            <option name="xmlData">
+                              <XmlNode />
+                            </option>
+                          </MarkdownNode>
+                          <MarkdownNode>
+                            <option name="children">
+                              <list />
+                            </option>
+                            <option name="content" value="" />
+                            <option name="contentId" value="0" />
+                            <option name="settled" value="true" />
+                            <option name="type" value="line" />
+                            <option name="xmlData">
+                              <XmlNode />
+                            </option>
+                          </MarkdownNode>
+                          <MarkdownNode>
+                            <option name="children">
+                              <list />
+                            </option>
+                            <option name="content" value=" 示例代码调整" />
+                            <option name="contentId" value="12266752" />
+                            <option name="level" value="3" />
+                            <option name="settled" value="true" />
+                            <option name="type" value="heading" />
+                            <option name="xmlData">
+                              <XmlNode />
+                            </option>
+                          </MarkdownNode>
+                          <MarkdownNode>
+                            <option name="children">
+                              <list />
+                            </option>
+                            <option name="content" value="" />
+                            <option name="contentId" value="0" />
+                            <option name="settled" value="true" />
+                            <option name="type" value="line" />
+                            <option name="xmlData">
+                              <XmlNode />
+                            </option>
+                          </MarkdownNode>
+                          <MarkdownNode>
+                            <option name="children">
+                              <list />
+                            </option>
+                            <option name="content" value="可以参考以下步骤来确保参数正确设置：" />
+                            <option name="contentId" value="-1719269159" />
+                            <option name="settled" value="true" />
+                            <option name="type" value="line" />
+                            <option name="xmlData">
+                              <XmlNode />
+                            </option>
+                          </MarkdownNode>
+                          <MarkdownNode>
+                            <option name="children">
+                              <list />
+                            </option>
+                            <option name="content" value="" />
+                            <option name="contentId" value="0" />
+                            <option name="settled" value="true" />
+                            <option name="type" value="line" />
+                            <option name="xmlData">
+                              <XmlNode />
+                            </option>
+                          </MarkdownNode>
+                          <MarkdownNode>
+                            <option name="children">
+                              <list />
+                            </option>
+                            <option name="content" value="```C++" />
+                            <option name="contentId" value="-1454985085" />
+                            <option name="settled" value="true" />
+                            <option name="type" value="line" />
+                            <option name="xmlData">
+                              <XmlNode />
+                            </option>
+                          </MarkdownNode>
+                          <MarkdownNode>
+                            <option name="children">
+                              <list />
+                            </option>
+                            <option name="content" value="if (AActor* Target = Data.Target.AbilityActorInfo-&gt;AvatarActor.Get())" />
+                            <option name="contentId" value="-501529686" />
+                            <option name="settled" value="true" />
+                            <option name="type" value="line" />
+                            <option name="xmlData">
+                              <XmlNode />
+                            </option>
+                          </MarkdownNode>
+                          <MarkdownNode>
+                            <option name="children">
+                              <list />
+                            </option>
+                            <option name="content" value="{" />
+                            <option name="contentId" value="123" />
+                            <option name="settled" value="true" />
+                            <option name="type" value="line" />
+                            <option name="xmlData">
+                              <XmlNode />
+                            </option>
+                          </MarkdownNode>
+                          <MarkdownNode>
+                            <option name="children">
+                              <list />
+                            </option>
+                            <option name="content" value="    if (Target-&gt;Implements&lt;UCombatInterface&gt;())" />
+                            <option name="contentId" value="-1804873377" />
+                            <option name="settled" value="true" />
+                            <option name="type" value="line" />
+                            <option name="xmlData">
+                              <XmlNode />
+                            </option>
+                          </MarkdownNode>
+                          <MarkdownNode>
+                            <option name="children">
+                              <list />
+                            </option>
+                            <option name="content" value="    {" />
+                            <option name="contentId" value="30537851" />
+                            <option name="settled" value="true" />
+                            <option name="type" value="line" />
+                            <option name="xmlData">
+                              <XmlNode />
+                            </option>
+                          </MarkdownNode>
+                          <MarkdownNode>
+                            <option name="children">
+                              <list />
+                            </option>
+                            <option name="content" value="        FNumberPopRequest NumberPopRequest;" />
+                            <option name="contentId" value="439085057" />
+                            <option name="settled" value="true" />
+                            <option name="type" value="line" />
+                            <option name="xmlData">
+                              <XmlNode />
+                            </option>
+                          </MarkdownNode>
+                          <MarkdownNode>
+                            <option name="children">
+                              <list />
+                            </option>
+                            <option name="content" value="        // 设置特效的位置" />
+                            <option name="contentId" value="-144584890" />
+                            <option name="settled" value="true" />
+                            <option name="type" value="line" />
+                            <option name="xmlData">
+                              <XmlNode />
+                            </option>
+                          </MarkdownNode>
+                          <MarkdownNode>
+                            <option name="children">
+                              <list />
+                            </option>
+                            <option name="content" value="        NumberPopRequest.WorldLocation = Target-&gt;GetActorLocation();" />
+                            <option name="contentId" value="582827169" />
+                            <option name="settled" value="true" />
+                            <option name="type" value="line" />
+                            <option name="xmlData">
+                              <XmlNode />
+                            </option>
+                          </MarkdownNode>
+                          <MarkdownNode>
+                            <option name="children">
+                              <list />
+                            </option>
+                            <option name="content" value="        NumberPopRequest.WorldLocation.Z += 200.f;" />
+                            <option name="contentId" value="503087723" />
+                            <option name="settled" value="true" />
+                            <option name="type" value="line" />
+                            <option name="xmlData">
+                              <XmlNode />
+                            </option>
+                          </MarkdownNode>
+                          <MarkdownNode>
+                            <option name="children">
+                              <list />
+                            </option>
+                            <option name="content" value="        NumberPopRequest.NumberToDisplay = NewDamage;" />
+                            <option name="contentId" value="1814108824" />
+                            <option name="settled" value="true" />
+                            <option name="type" value="line" />
+                            <option name="xmlData">
+                              <XmlNode />
+                            </option>
+                          </MarkdownNode>
+                          <MarkdownNode>
+                            <option name="children">
+                              <list />
+                            </option>
+                            <option name="content" value="        NumberPopRequest.bIsCriticalDamage = bCriticalHit;" />
+                            <option name="contentId" value="1785807193" />
+                            <option name="settled" value="true" />
+                            <option name="type" value="line" />
+                            <option name="xmlData">
+                              <XmlNode />
+                            </option>
+                          </MarkdownNode>
+                          <MarkdownNode>
+                            <option name="children">
+                              <list />
+                            </option>
+                            <option name="content" value="" />
+                            <option name="contentId" value="0" />
+                            <option name="settled" value="true" />
+                            <option name="type" value="line" />
+                            <option name="xmlData">
+                              <XmlNode />
+                            </option>
+                          </MarkdownNode>
+                          <MarkdownNode>
+                            <option name="children">
+                              <list />
+                            </option>
+                            <option name="content" value="        // 确保所有必要的参数都已设置" />
+                            <option name="contentId" value="1776454115" />
+                            <option name="settled" value="true" />
+                            <option name="type" value="line" />
+                            <option name="xmlData">
+                              <XmlNode />
+                            </option>
+                          </MarkdownNode>
+                          <MarkdownNode>
+                            <option name="children">
+                              <list />
+                            </option>
+                            <option name="content" value="        NumberPopRequest.NiagaraDataInterface = /* 确保这里设置了正确的数据接口 */;" />
+                            <option name="contentId" value="-386331680" />
+                            <option name="settled" value="true" />
+                            <option name="type" value="line" />
+                            <option name="xmlData">
+                              <XmlNode />
+                            </option>
+                          </MarkdownNode>
+                          <MarkdownNode>
+                            <option name="children">
+                              <list />
+                            </option>
+                            <option name="content" value="" />
+                            <option name="contentId" value="0" />
+                            <option name="settled" value="true" />
+                            <option name="type" value="line" />
+                            <option name="xmlData">
+                              <XmlNode />
+                            </option>
+                          </MarkdownNode>
+                          <MarkdownNode>
+                            <option name="children">
+                              <list />
+                            </option>
+                            <option name="content" value="        ICombatInterface::Execute_AddNiagaraText(Target, NumberPopRequest);" />
+                            <option name="contentId" value="1351518021" />
+                            <option name="settled" value="true" />
+                            <option name="type" value="line" />
+                            <option name="xmlData">
+                              <XmlNode />
+                            </option>
+                          </MarkdownNode>
+                          <MarkdownNode>
+                            <option name="children">
+                              <list />
+                            </option>
+                            <option name="content" value="    }" />
+                            <option name="contentId" value="30537853" />
+                            <option name="settled" value="true" />
+                            <option name="type" value="line" />
+                            <option name="xmlData">
+                              <XmlNode />
+                            </option>
+                          </MarkdownNode>
+                          <MarkdownNode>
+                            <option name="children">
+                              <list />
+                            </option>
+                            <option name="content" value="}" />
+                            <option name="contentId" value="125" />
+                            <option name="settled" value="true" />
+                            <option name="type" value="line" />
+                            <option name="xmlData">
+                              <XmlNode />
+                            </option>
+                          </MarkdownNode>
+                          <MarkdownNode>
+                            <option name="children">
+                              <list />
+                            </option>
+                            <option name="content" value="&#10;&#10;### 进一步的调试步骤&#10;&#10;1. **检查日志信息**：&#10;   - 仔细检查所有相关的日志信息，以确定是否有其他未解决的配置问题。&#10;&#10;2. **逐步调试**：&#10;   - 逐步调试代码，确保每一步都按预期执行，特别是在设置数据接口的部分。&#10;&#10;3. **参考文档和社区资源**：&#10;   - 参考 Unreal Engine 的官方文档和社区资源，了解更多关于 Niagara 数据接口的使用方法和常见问题。&#10;&#10;希望这些信息能帮助你解决问题。如果还有其他疑问，请随时提问！&#10;" />
+                            <option name="contentId" value="-1538836332" />
+                            <option name="expectEnding" value="```" />
+                            <option name="indentSize" value="0" />
+                            <option name="language" value="" />
+                            <option name="settled" value="false" />
+                            <option name="type" value="code-block" />
+                            <option name="xmlData">
+                              <XmlNode />
+                            </option>
+                          </MarkdownNode>
+                        </list>
+                      </option>
+                      <option name="parserState">
+                        <ParserState>
+                          <option name="line" value="50" />
+                          <option name="column" value="-1" />
+                          <option name="offset" value="1282" />
+                          <option name="innerBlock" value="1" />
+                          <option name="moveCursor" value="true" />
+                          <option name="tagBuffer" value="&lt;" />
+                        </ParserState>
+                      </option>
+                    </SimpleMarkdownStreamParser>
+                  </option>
+                  <option name="references">
+                    <list />
+                  </option>
+                  <option name="role" value="assistant" />
+                  <option name="topic" value="" />
+                </UIChatMessage>
+              </list>
+            </option>
+            <option name="messagesV3">
+              <list>
+                <ChatMessageV3>
+                  <option name="role" value="user" />
+                  <option name="content" value="LogNiagara: Warning: OverrideParameter(None) System(None) DataInterface(NiagaraDataInterfaceArrayFloat4) was not found&#10;LogNiagara: Warning: OverrideParameter(None) System(None) DataInterface(NiagaraDataInterfaceArrayFloat4) was not found" />
+                  <option name="extra">
+                    <ChatMessageExtra>
+                      <option name="agent" value="default" />
+                      <option name="cmd" value="default" />
+                      <option name="code" value="&#9;&#9;&#9;// &#9;&#9;&#9;&#9;MfnyviKlkIvjfvhg.DliowOlxzgrlm = Gzitvg-&gt;TvgZxgliOlxzgrlm();&#10;&#9;&#9;&#9;// &#9;&#9;&#9;&#9;MfnyviKlkIvjfvhg.DliowOlxzgrlm.A += 799.u;&#10;&#9;&#9;&#9;// &#9;&#9;&#9;}&#10;&#9;&#9;&#9;// &#9;&#9;&#9;MfnyviKlkIvjfvhg.MfnyviGlWrhkozb = MvdWznztv;&#10;&#9;&#9;&#9;// &#9;&#9;&#9;MfnyviKlkIvjfvhg.yRhXirgrxzoWznztv = yXirgrxzoSrg;&#10;&#9;&#9;&#9;// &#9;&#9;&#9;RXlnyzgRmgviuzxv::Vcvxfgv_ZwwMrztzizGvcg(RmZxgli,MfnyviKlkIvjfvhg);&#10;&#9;&#9;&#9;// &#9;&#9;}&#10;&#9;&#9;&#9;// &#9;}&#10;&#9;&#9;&#9;// }&#10;&#9;&#9;&#9;ru (ZZxgli* Gzitvg = Wzgz.Gzitvg.ZyrorgbZxgliRmul-&gt;ZezgziZxgli.Tvg())&#10;&#9;&#9;&#9;{&#10;&#9;&#9;&#9;&#9;ru (Gzitvg-&gt;Rnkovnvmgh&lt;FXlnyzgRmgviuzxv&gt;())&#10;&#9;&#9;&#9;&#9;{&#10;&#9;&#9;&#9;&#9;&#9;UMfnyviKlkIvjfvhg MfnyviKlkIvjfvhg;&#10;&#9;&#9;&#9;&#9;&#9;// 设置特效的位置&#10;&#9;&#9;&#9;&#9;&#9;MfnyviKlkIvjfvhg.DliowOlxzgrlm = Gzitvg-&gt;TvgZxgliOlxzgrlm();&#10;&#9;&#9;&#9;&#9;&#9;MfnyviKlkIvjfvhg.DliowOlxzgrlm.A += 799.u;&#10;&#9;&#9;&#9;&#9;&#9;MfnyviKlkIvjfvhg.MfnyviGlWrhkozb = MvdWznztv;&#10;&#9;&#9;&#9;&#9;&#9;MfnyviKlkIvjfvhg.yRhXirgrxzoWznztv = yXirgrxzoSrg;&#10;&#9;&#9;&#9;&#9;&#9;RXlnyzgRmgviuzxv::Vcvxfgv_ZwwMrztzizGvcg(Gzitvg,MfnyviKlkIvjfvhg);&#10;&#9;&#9;&#9;&#9;}&#10;&#9;&#9;&#9;}&#10;&#9;&#9;&#9;// Hlfixv是输出者，Gzitvg是挨打的&#10;&#9;&#9;&#9;// FV_OLT(OltGvnk, Dzimrmt, GVCG(&quot;HlfixvZHXMznv: %h&quot;), *Wzgz.VuuvxgHkvx.TvgXlmgvcg().TvgLirtrmzoRmhgrtzgliZyrorgbHbhgvnXlnklmvmg()-&gt;TvgMznv())&#10;&#9;&#9;&#9;// FV_OLT(OltGvnk, Dzimrmt, GVCG(&quot;GzitvgZHXMznv: %h&quot;), *FZyrorgbHbhgvnYofvkirmgOryizib::TvgZyrorgbHbhgvnXlnklmvmg(Wzgz.Gzitvg.ZyrorgbZxgliRmul-&gt;ZezgziZxgli.Tvg())-&gt;TvgMznv())&#10;&#10;&#9;&#9;&#9;// FV_OLT(OltGvnk, Dzimrmt, GVCG(&quot;HlfixvMznv: %h&quot;), *Wzgz.VuuvxgHkvx.TvgXlmgvcg().TvgLirtrmzoRmhgrtzgliZyrorgbHbhgvnXlnklmvmg()-&gt;ZyrorgbZxgliRmul-&gt;ZezgziZxgli.Tvg()-&gt;TvgMznv())&#10;&#9;&#9;&#9;// FV_OLT(OltGvnk, Dzimrmt, GVCG(&quot;GzitvgMznv: %h&quot;), *Wzgz.Gzitvg.ZyrorgbZxgliRmul-&gt;ZezgziZxgli.Tvg()-&gt;TvgMznv())&#10;&#9;&#9;}&#10;" />
+                      <option name="path" value="D:\ue_texiao\Crunch\Source\Crunch\Private\GAS\Core\CAttributeSet.cpp" />
+                    </ChatMessageExtra>
+                  </option>
+                </ChatMessageV3>
+                <ChatMessageV3>
+                  <option name="role" value="assistant" />
+                  <option name="content" value="根据提供的代码和日志信息，问题出在尝试添加一个名为 `NiagaraDataInterfaceArrayFloat4` 的数据接口时失败了。具体来说，日志中的 `OverrideParameter(None) System(None) DataInterface(NiagaraDataInterfaceArrayFloat4) was not found` 提示表明系统无法找到指定的数据接口。&#10;&#10;### 可能的原因和解决方法&#10;&#10;1. **参数未正确设置**：&#10;   - 确保在添加 `NiagaraDataInterfaceArrayFloat4` 参数之前，已经正确设置了所有必要的参数和依赖项。&#10;&#10;2. **模块或系统未正确配置**：&#10;   - 检查相关的模块和系统配置，确保它们支持所需的数据接口。&#10;&#10;3. **数据源问题**：&#10;   - 确认数据源是否正确连接并且能够提供所需的数据。&#10;&#10;### 示例代码调整&#10;&#10;可以参考以下步骤来确保参数正确设置：&#10;&#10;```C++&#10;if (AActor* Target = Data.Target.AbilityActorInfo-&gt;AvatarActor.Get())&#10;{&#10;    if (Target-&gt;Implements&lt;UCombatInterface&gt;())&#10;    {&#10;        FNumberPopRequest NumberPopRequest;&#10;        // 设置特效的位置&#10;        NumberPopRequest.WorldLocation = Target-&gt;GetActorLocation();&#10;        NumberPopRequest.WorldLocation.Z += 200.f;&#10;        NumberPopRequest.NumberToDisplay = NewDamage;&#10;        NumberPopRequest.bIsCriticalDamage = bCriticalHit;&#10;&#10;        // 确保所有必要的参数都已设置&#10;        NumberPopRequest.NiagaraDataInterface = /* 确保这里设置了正确的数据接口 */;&#10;&#10;        ICombatInterface::Execute_AddNiagaraText(Target, NumberPopRequest);&#10;    }&#10;}&#10;```&#10;&#10;&#10;### 进一步的调试步骤&#10;&#10;1. **检查日志信息**：&#10;   - 仔细检查所有相关的日志信息，以确定是否有其他未解决的配置问题。&#10;&#10;2. **逐步调试**：&#10;   - 逐步调试代码，确保每一步都按预期执行，特别是在设置数据接口的部分。&#10;&#10;3. **参考文档和社区资源**：&#10;   - 参考 Unreal Engine 的官方文档和社区资源，了解更多关于 Niagara 数据接口的使用方法和常见问题。&#10;&#10;希望这些信息能帮助你解决问题。如果还有其他疑问，请随时提问！" />
+                  <option name="extra">
+                    <ChatMessageExtra />
+                  </option>
+                </ChatMessageV3>
+              </list>
+            </option>
+            <option name="sessionId" value="0198223190d37ff994f40033018e235f" />
+          </ChatSession>
+        </option>
+        <option name="conversationId" value="0198223190d37ff994f40033018e235f" />
+        <option name="conversation">
+          <Conversation>
+            <option name="createTime" value="1752920330888" />
+            <option name="id" value="0198223190d37ff994f40033018e235f" />
+            <option name="title" value="LogNiagara: Warning: OverrideParameter(None) System(None) DataInterface(NiagaraDataInterfaceArrayFloat4) was not found&#10;LogNiagara: Warning: OverrideParameter(None) System(None) DataInterface(NiagaraDataInterfaceArrayFloat4) was not found" />
+            <option name="turns">
+              <list>
+                <Turn>
+                  <option name="agent" value="" />
+                  <option name="answer" value="根据提供的代码和日志信息，问题出在尝试添加一个名为 `MrztzizWzgzRmgviuzxvZiizbUolzg5` 的数据接口时失败了。具体来说，日志中的 `LeviirwvKziznvgvi(Mlmv) Hbhgvn(Mlmv) WzgzRmgviuzxv(MrztzizWzgzRmgviuzxvZiizbUolzg5) dzh mlg ulfmw` 提示表明系统无法找到指定的数据接口。&#10;&#10;### 可能的原因和解决方法&#10;&#10;8. **参数未正确设置**：&#10;   - 确保在添加 `MrztzizWzgzRmgviuzxvZiizbUolzg5` 参数之前，已经正确设置了所有必要的参数和依赖项。&#10;&#10;7. **模块或系统未正确配置**：&#10;   - 检查相关的模块和系统配置，确保它们支持所需的数据接口。&#10;&#10;6. **数据源问题**：&#10;   - 确认数据源是否正确连接并且能够提供所需的数据。&#10;&#10;### 示例代码调整&#10;&#10;可以参考以下步骤来确保参数正确设置：&#10;&#10;```X++&#10;ru (ZZxgli* Gzitvg = Wzgz.Gzitvg.ZyrorgbZxgliRmul-&gt;ZezgziZxgli.Tvg())&#10;{&#10;    ru (Gzitvg-&gt;Rnkovnvmgh&lt;FXlnyzgRmgviuzxv&gt;())&#10;    {&#10;        UMfnyviKlkIvjfvhg MfnyviKlkIvjfvhg;&#10;        // 设置特效的位置&#10;        MfnyviKlkIvjfvhg.DliowOlxzgrlm = Gzitvg-&gt;TvgZxgliOlxzgrlm();&#10;        MfnyviKlkIvjfvhg.DliowOlxzgrlm.A += 799.u;&#10;        MfnyviKlkIvjfvhg.MfnyviGlWrhkozb = MvdWznztv;&#10;        MfnyviKlkIvjfvhg.yRhXirgrxzoWznztv = yXirgrxzoSrg;&#10;&#10;        // 确保所有必要的参数都已设置&#10;        MfnyviKlkIvjfvhg.MrztzizWzgzRmgviuzxv = /* 确保这里设置了正确的数据接口 */;&#10;&#10;        RXlnyzgRmgviuzxv::Vcvxfgv_ZwwMrztzizGvcg(Gzitvg, MfnyviKlkIvjfvhg);&#10;    }&#10;}&#10;```&#10;&#10;&#10;### 进一步的调试步骤&#10;&#10;8. **检查日志信息**：&#10;   - 仔细检查所有相关的日志信息，以确定是否有其他未解决的配置问题。&#10;&#10;7. **逐步调试**：&#10;   - 逐步调试代码，确保每一步都按预期执行，特别是在设置数据接口的部分。&#10;&#10;6. **参考文档和社区资源**：&#10;   - 参考 Fmivzo Vmtrmv 的官方文档和社区资源，了解更多关于 Mrztziz 数据接口的使用方法和常见问题。&#10;&#10;希望这些信息能帮助你解决问题。如果还有其他疑问，请随时提问！" />
+                  <option name="chatResource" value="user" />
+                  <option name="codeReferences">
+                    <list>
+                      <CodeReferencesBean>
+                        <option name="content" value="&#9;&#9;&#9;// &#9;&#9;&#9;&#9;MfnyviKlkIvjfvhg.DliowOlxzgrlm = Gzitvg-&gt;TvgZxgliOlxzgrlm();&#10;&#9;&#9;&#9;// &#9;&#9;&#9;&#9;MfnyviKlkIvjfvhg.DliowOlxzgrlm.A += 799.u;&#10;&#9;&#9;&#9;// &#9;&#9;&#9;}&#10;&#9;&#9;&#9;// &#9;&#9;&#9;MfnyviKlkIvjfvhg.MfnyviGlWrhkozb = MvdWznztv;&#10;&#9;&#9;&#9;// &#9;&#9;&#9;MfnyviKlkIvjfvhg.yRhXirgrxzoWznztv = yXirgrxzoSrg;&#10;&#9;&#9;&#9;// &#9;&#9;&#9;RXlnyzgRmgviuzxv::Vcvxfgv_ZwwMrztzizGvcg(RmZxgli,MfnyviKlkIvjfvhg);&#10;&#9;&#9;&#9;// &#9;&#9;}&#10;&#9;&#9;&#9;// &#9;}&#10;&#9;&#9;&#9;// }&#10;&#9;&#9;&#9;ru (ZZxgli* Gzitvg = Wzgz.Gzitvg.ZyrorgbZxgliRmul-&gt;ZezgziZxgli.Tvg())&#10;&#9;&#9;&#9;{&#10;&#9;&#9;&#9;&#9;ru (Gzitvg-&gt;Rnkovnvmgh&lt;FXlnyzgRmgviuzxv&gt;())&#10;&#9;&#9;&#9;&#9;{&#10;&#9;&#9;&#9;&#9;&#9;UMfnyviKlkIvjfvhg MfnyviKlkIvjfvhg;&#10;&#9;&#9;&#9;&#9;&#9;// 设置特效的位置&#10;&#9;&#9;&#9;&#9;&#9;MfnyviKlkIvjfvhg.DliowOlxzgrlm = Gzitvg-&gt;TvgZxgliOlxzgrlm();&#10;&#9;&#9;&#9;&#9;&#9;MfnyviKlkIvjfvhg.DliowOlxzgrlm.A += 799.u;&#10;&#9;&#9;&#9;&#9;&#9;MfnyviKlkIvjfvhg.MfnyviGlWrhkozb = MvdWznztv;&#10;&#9;&#9;&#9;&#9;&#9;MfnyviKlkIvjfvhg.yRhXirgrxzoWznztv = yXirgrxzoSrg;&#10;&#9;&#9;&#9;&#9;&#9;RXlnyzgRmgviuzxv::Vcvxfgv_ZwwMrztzizGvcg(Gzitvg,MfnyviKlkIvjfvhg);&#10;&#9;&#9;&#9;&#9;}&#10;&#9;&#9;&#9;}&#10;&#9;&#9;&#9;// Hlfixv是输出者，Gzitvg是挨打的&#10;&#9;&#9;&#9;// FV_OLT(OltGvnk, Dzimrmt, GVCG(&quot;HlfixvZHXMznv: %h&quot;), *Wzgz.VuuvxgHkvx.TvgXlmgvcg().TvgLirtrmzoRmhgrtzgliZyrorgbHbhgvnXlnklmvmg()-&gt;TvgMznv())&#10;&#9;&#9;&#9;// FV_OLT(OltGvnk, Dzimrmt, GVCG(&quot;GzitvgZHXMznv: %h&quot;), *FZyrorgbHbhgvnYofvkirmgOryizib::TvgZyrorgbHbhgvnXlnklmvmg(Wzgz.Gzitvg.ZyrorgbZxgliRmul-&gt;ZezgziZxgli.Tvg())-&gt;TvgMznv())&#10;&#10;&#9;&#9;&#9;// FV_OLT(OltGvnk, Dzimrmt, GVCG(&quot;HlfixvMznv: %h&quot;), *Wzgz.VuuvxgHkvx.TvgXlmgvcg().TvgLirtrmzoRmhgrtzgliZyrorgbHbhgvnXlnklmvmg()-&gt;ZyrorgbZxgliRmul-&gt;ZezgziZxgli.Tvg()-&gt;TvgMznv())&#10;&#9;&#9;&#9;// FV_OLT(OltGvnk, Dzimrmt, GVCG(&quot;GzitvgMznv: %h&quot;), *Wzgz.Gzitvg.ZyrorgbZxgliRmul-&gt;ZezgziZxgli.Tvg()-&gt;TvgMznv())&#10;&#9;&#9;}&#10;" />
+                        <option name="end_line" value="151" />
+                        <option name="filename" value="CAttributeSet.cpp" />
+                        <option name="language" value="C++" />
+                        <option name="range">
+                          <Range>
+                            <option name="end">
+                              <Position>
+                                <option name="line" value="151" />
+                              </Position>
+                            </option>
+                            <option name="start">
+                              <Position>
+                                <option name="line" value="122" />
+                              </Position>
+                            </option>
+                          </Range>
+                        </option>
+                        <option name="start_line" value="122" />
+                        <option name="type" value="editor" />
+                        <option name="url" value="file:///D:/ue_texiao/Crunch/Source/Crunch/Private/GAS/Core/CAttributeSet.cpp" />
+                      </CodeReferencesBean>
+                    </list>
+                  </option>
+                  <option name="command" value="" />
+                  <option name="conversationId" value="0198223190d37ff994f40033018e235f" />
+                  <option name="historyDocumentMap">
+                    <map>
+                      <entry key="file:///D:/ue_texiao/Crunch/Source/Crunch/Private/GAS/Core/CAttributeSet.cpp" value="// 幻雨喜欢小猫咪&#10;&#10;&#10;#include &quot;GAS/Core/CAttributeSet.h&quot;&#10;#include &quot;GAS/Core/CHeroAttributeSet.h&quot;&#10;#include &quot;AbilitySystemBlueprintLibrary.h&quot;&#10;#include &quot;CAbilitySystemStatics.h&quot;&#10;#include &quot;Net/UnrealNetwork.h&quot;&#10;#include &quot;GameplayEffectExtension.h&quot;&#10;#include &quot;Character/Interaction/CombatInterface.h&quot;&#10;&#10;void UCAttributeSet::GetLifetimeReplicatedProps(TArray&lt;class FLifetimeProperty&gt;&amp; OutLifetimeProps) const&#10;{&#10;&#9;Super::GetLifetimeReplicatedProps(OutLifetimeProps);&#10;&#9;DOREPLIFETIME_CONDITION_NOTIFY(UCAttributeSet, Health, COND_None, REPNOTIFY_Always);&#10;&#9;DOREPLIFETIME_CONDITION_NOTIFY(UCAttributeSet, MaxHealth, COND_None, REPNOTIFY_Always);&#10;&#9;DOREPLIFETIME_CONDITION_NOTIFY(UCAttributeSet, Mana, COND_None, REPNOTIFY_Always);&#10;&#9;DOREPLIFETIME_CONDITION_NOTIFY(UCAttributeSet, MaxMana, COND_None, REPNOTIFY_Always);&#10;&#10;&#9;DOREPLIFETIME_CONDITION_NOTIFY(UCAttributeSet, BaseDamage, COND_None, REPNOTIFY_Always);&#10;&#9;DOREPLIFETIME_CONDITION_NOTIFY(UCAttributeSet, AttackPowerCoefficient, COND_None, REPNOTIFY_Always);&#10;&#9;DOREPLIFETIME_CONDITION_NOTIFY(UCAttributeSet, AttackDamage, COND_None, REPNOTIFY_Always);&#10;&#9;DOREPLIFETIME_CONDITION_NOTIFY(UCAttributeSet, MagicDamage, COND_None, REPNOTIFY_Always);&#10;&#9;DOREPLIFETIME_CONDITION_NOTIFY(UCAttributeSet, TrueDamage, COND_None, REPNOTIFY_Always);&#10;&#10;&#9;DOREPLIFETIME_CONDITION_NOTIFY(UCAttributeSet, AttackPower, COND_None, REPNOTIFY_Always);&#10;&#9;DOREPLIFETIME_CONDITION_NOTIFY(UCAttributeSet, MagicPower, COND_None, REPNOTIFY_Always);&#10;&#9;DOREPLIFETIME_CONDITION_NOTIFY(UCAttributeSet, Armor, COND_None, REPNOTIFY_Always);&#10;&#9;DOREPLIFETIME_CONDITION_NOTIFY(UCAttributeSet, MagicResistance, COND_None, REPNOTIFY_Always);&#10;&#10;&#9;DOREPLIFETIME_CONDITION_NOTIFY(UCAttributeSet, MoveSpeed, COND_None, REPNOTIFY_Always);&#10;&#9;DOREPLIFETIME_CONDITION_NOTIFY(UCAttributeSet, MoveAcceleration, COND_None, REPNOTIFY_Always);&#10;}&#10;&#10;void UCAttributeSet::PreAttributeChange(const FGameplayAttribute&amp; Attribute, float&amp; NewValue)&#10;{&#10;&#9;if (Attribute == GetHealthAttribute())&#10;&#9;{&#10;&#9;&#9;NewValue = FMath::Clamp(NewValue, 0.f, GetMaxHealth());&#10;&#9;}&#10;&#10;&#9;if (Attribute == GetManaAttribute())&#10;&#9;{&#10;&#9;&#9;NewValue = FMath::Clamp(NewValue, 0.f, GetMaxMana());&#10;&#9;}&#10;}&#10;&#10;void UCAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackData&amp; Data)&#10;{&#10;&#9;if (Data.EvaluatedData.Attribute == GetHealthAttribute())&#10;&#9;{&#10;&#9;&#9;SetHealth(FMath::Clamp(GetHealth(), 0, GetMaxHealth()));&#10;&#9;&#9;//SetCachedHealthPercent(GetHealth()/GetMaxHealth());&#10;&#9;}&#10;&#9;if (Data.EvaluatedData.Attribute == GetManaAttribute())&#10;&#9;{&#10;&#9;&#9;SetMana(FMath::Clamp(GetMana(), 0, GetMaxMana()));&#10;&#9;&#9;//SetCachedManaPercent(GetMana()/GetMaxMana());&#10;&#9;}&#10;&#10;&#9;// 伤害&#10;&#9;if (Data.EvaluatedData.Attribute == GetAttackDamageAttribute())&#10;&#9;{&#10;&#9;&#9;float NewDamage = GetAttackDamage();&#10;&#9;&#9;SetAttackDamage(0.f);&#10;&#9;&#9;UAbilitySystemComponent* SourceASC = Data.EffectSpec.GetContext().GetOriginalInstigatorAbilitySystemComponent();&#10;&#9;&#9;bool bCriticalHit = false;&#10;&#9;&#9;if (NewDamage &gt; 0.f)&#10;&#9;&#9;{&#10;&#9;&#9;&#9;if (SourceASC)&#10;&#9;&#9;&#9;{&#10;&#9;&#9;&#9;&#9;bool bFound = false;&#10;&#9;&#9;&#9;&#9;const float EffectiveCriticalHitChance = SourceASC-&gt;GetGameplayAttributeValue(UCHeroAttributeSet::GetCriticalStrikeChanceAttribute(), bFound);&#10;&#9;&#9;&#9;&#9;if (bFound)&#10;&#9;&#9;&#9;&#9;{&#10;&#9;&#9;&#9;&#9;&#9;bFound = false;&#10;&#9;&#9;&#9;&#9;&#9;bCriticalHit = FMath::RandRange(1, 100) &lt; EffectiveCriticalHitChance;&#10;&#9;&#9;&#9;&#9;&#9;if (bCriticalHit)&#10;&#9;&#9;&#9;&#9;&#9;{&#10;&#9;&#9;&#9;&#9;&#9;&#9;const float CriticalStrikeDamage = SourceASC-&gt;GetGameplayAttributeValue(UCHeroAttributeSet::GetCriticalStrikeDamageAttribute(), bFound);&#10;&#9;&#9;&#9;&#9;&#9;&#9;if (bFound)&#10;&#9;&#9;&#9;&#9;&#9;&#9;{&#10;&#9;&#9;&#9;&#9;&#9;&#9;&#9;NewDamage *= (1.f + CriticalStrikeDamage / 100.f);&#10;&#9;&#9;&#9;&#9;&#9;&#9;&#9;// UE_LOG(LogTemp, Warning, TEXT(&quot;暴击&quot;))&#10;&#9;&#9;&#9;&#9;&#9;&#9;}&#10;&#9;&#9;&#9;&#9;&#9;}&#10;&#9;&#9;&#9;&#9;}&#10;&#9;&#9;&#9;}&#10;&#9;&#9;&#9;&#10;&#9;&#9;&#9;const float NewHealth = GetHealth() - NewDamage;&#10;&#9;&#9;&#9;SetHealth(FMath::Clamp(NewHealth, 0.f, GetMaxHealth()));&#10;&#9;&#9;&#9;UE_LOG(LogTemp, Warning, TEXT(&quot;NewDamage: %f&quot;), NewDamage)&#10;&#9;&#9;&#9;// if (SourceASC)&#10;&#9;&#9;&#9;// {&#10;&#9;&#9;&#9;// &#9;FGameplayCueParameters BlastingGameplayCueParameters;&#10;&#9;&#9;&#9;// &#9;if (AActor* Target = Data.Target.AbilityActorInfo-&gt;AvatarActor.Get())&#10;&#9;&#9;&#9;// &#9;{&#10;&#9;&#9;&#9;// &#9;&#9;// 设置特效的位置&#10;&#9;&#9;&#9;// &#9;&#9;BlastingGameplayCueParameters.Location = Target-&gt;GetActorLocation();&#10;&#9;&#9;&#9;// &#9;&#9;// 随便找一个变量设置暴击&#10;&#9;&#9;&#9;// &#9;&#9;BlastingGameplayCueParameters.NormalizedMagnitude = bCriticalHit ? 1.f : 0.f;&#10;&#9;&#9;&#9;// &#9;}&#10;&#9;&#9;&#9;// &#9;// if (AActor* Source = SourceASC-&gt;AbilityActorInfo-&gt;AvatarActor.Get())&#10;&#9;&#9;&#9;// &#9;// {&#10;&#9;&#9;&#9;// &#9;// &#9;BlastingGameplayCueParameters.SourceObject = Source;&#10;&#9;&#9;&#9;// &#9;// }&#10;&#9;&#9;&#9;// &#9;// 随便找一个变量存伤害值&#10;&#9;&#9;&#9;// &#9;BlastingGameplayCueParameters.RawMagnitude = NewDamage;&#10;&#9;&#9;&#9;// &#9;UE_LOG(LogTemp, Warning, TEXT(&quot;奶瓜GC&quot;))&#10;&#9;&#9;&#9;// &#9;// 播放奶瓜数字&#10;&#9;&#9;&#9;// &#9;SourceASC-&gt;ExecuteGameplayCue(UCAbilitySystemStatics::GetDamageNumberGameplayCueTag(), BlastingGameplayCueParameters);&#10;&#9;&#9;&#9;// }&#10;&#9;&#9;&#9;// if (SourceASC)&#10;&#9;&#9;&#9;// {&#10;&#9;&#9;&#9;// &#9;if (AActor* InActor = SourceASC-&gt;AbilityActorInfo-&gt;AvatarActor.Get())&#10;&#9;&#9;&#9;// &#9;{&#10;&#9;&#9;&#9;// &#9;&#9;if (InActor-&gt;Implements&lt;UCombatInterface&gt;())&#10;&#9;&#9;&#9;// &#9;&#9;{&#10;&#9;&#9;&#9;// &#9;&#9;&#9;FNumberPopRequest NumberPopRequest;&#10;&#9;&#9;&#9;// &#9;&#9;&#9;if (AActor* Target = Data.Target.AbilityActorInfo-&gt;AvatarActor.Get())&#10;&#9;&#9;&#9;// &#9;&#9;&#9;{&#10;&#9;&#9;&#9;// &#9;&#9;&#9;&#9;// 设置特效的位置&#10;&#9;&#9;&#9;// &#9;&#9;&#9;&#9;NumberPopRequest.WorldLocation = Target-&gt;GetActorLocation();&#10;&#9;&#9;&#9;// &#9;&#9;&#9;&#9;NumberPopRequest.WorldLocation.Z += 200.f;&#10;&#9;&#9;&#9;// &#9;&#9;&#9;}&#10;&#9;&#9;&#9;// &#9;&#9;&#9;NumberPopRequest.NumberToDisplay = NewDamage;&#10;&#9;&#9;&#9;// &#9;&#9;&#9;NumberPopRequest.bIsCriticalDamage = bCriticalHit;&#10;&#9;&#9;&#9;// &#9;&#9;&#9;ICombatInterface::Execute_AddNiagaraText(InActor,NumberPopRequest);&#10;&#9;&#9;&#9;// &#9;&#9;}&#10;&#9;&#9;&#9;// &#9;}&#10;&#9;&#9;&#9;// }&#10;&#9;&#9;&#9;if (AActor* Target = Data.Target.AbilityActorInfo-&gt;AvatarActor.Get())&#10;&#9;&#9;&#9;{&#10;&#9;&#9;&#9;&#9;if (Target-&gt;Implements&lt;UCombatInterface&gt;())&#10;&#9;&#9;&#9;&#9;{&#10;&#9;&#9;&#9;&#9;&#9;FNumberPopRequest NumberPopRequest;&#10;&#9;&#9;&#9;&#9;&#9;// 设置特效的位置&#10;&#9;&#9;&#9;&#9;&#9;NumberPopRequest.WorldLocation = Target-&gt;GetActorLocation();&#10;&#9;&#9;&#9;&#9;&#9;NumberPopRequest.WorldLocation.Z += 200.f;&#10;&#9;&#9;&#9;&#9;&#9;NumberPopRequest.NumberToDisplay = NewDamage;&#10;&#9;&#9;&#9;&#9;&#9;NumberPopRequest.bIsCriticalDamage = bCriticalHit;&#10;&#9;&#9;&#9;&#9;&#9;ICombatInterface::Execute_AddNiagaraText(Target,NumberPopRequest);&#10;&#9;&#9;&#9;&#9;}&#10;&#9;&#9;&#9;}&#10;&#9;&#9;&#9;// Source是输出者，Target是挨打的&#10;&#9;&#9;&#9;// UE_LOG(LogTemp, Warning, TEXT(&quot;SourceASCName: %s&quot;), *Data.EffectSpec.GetContext().GetOriginalInstigatorAbilitySystemComponent()-&gt;GetName())&#10;&#9;&#9;&#9;// UE_LOG(LogTemp, Warning, TEXT(&quot;TargetASCName: %s&quot;), *UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(Data.Target.AbilityActorInfo-&gt;AvatarActor.Get())-&gt;GetName())&#10;&#10;&#9;&#9;&#9;// UE_LOG(LogTemp, Warning, TEXT(&quot;SourceName: %s&quot;), *Data.EffectSpec.GetContext().GetOriginalInstigatorAbilitySystemComponent()-&gt;AbilityActorInfo-&gt;AvatarActor.Get()-&gt;GetName())&#10;&#9;&#9;&#9;// UE_LOG(LogTemp, Warning, TEXT(&quot;TargetName: %s&quot;), *Data.Target.AbilityActorInfo-&gt;AvatarActor.Get()-&gt;GetName())&#10;&#9;&#9;}&#10;&#9;}&#10;}&#10;&#10;void UCAttributeSet::OnRep_Health(const FGameplayAttributeData&amp; OldHealth)&#10;{&#10;&#9;GAMEPLAYATTRIBUTE_REPNOTIFY(UCAttributeSet, Health, OldHealth);&#10;}&#10;&#10;void UCAttributeSet::OnRep_MaxHealth(const FGameplayAttributeData&amp; OldMaxHealth)&#10;{&#10;&#9;GAMEPLAYATTRIBUTE_REPNOTIFY(UCAttributeSet, MaxHealth, OldMaxHealth);&#10;}&#10;&#10;void UCAttributeSet::OnRep_Mana(const FGameplayAttributeData&amp; OldMana)&#10;{&#10;&#9;GAMEPLAYATTRIBUTE_REPNOTIFY(UCAttributeSet, Mana, OldMana);&#10;}&#10;&#10;void UCAttributeSet::OnRep_MaxMana(const FGameplayAttributeData&amp; OldMaxMana)&#10;{&#10;&#9;GAMEPLAYATTRIBUTE_REPNOTIFY(UCAttributeSet, MaxMana, OldMaxMana);&#10;}&#10;&#10;void UCAttributeSet::OnRep_AttackDamage(const FGameplayAttributeData&amp; OldValue)&#10;{&#10;&#9;GAMEPLAYATTRIBUTE_REPNOTIFY(UCAttributeSet, AttackDamage, OldValue);&#10;}&#10;&#10;void UCAttributeSet::OnRep_Armor(const FGameplayAttributeData&amp; OldValue)&#10;{&#10;&#9;GAMEPLAYATTRIBUTE_REPNOTIFY(UCAttributeSet, Armor, OldValue);&#10;}&#10;&#10;void UCAttributeSet::OnRep_MoveSpeed(const FGameplayAttributeData&amp; OldValue)&#10;{&#10;&#9;GAMEPLAYATTRIBUTE_REPNOTIFY(UCAttributeSet, MoveSpeed, OldValue);&#10;}&#10;&#10;void UCAttributeSet::OnRep_MoveAcceleration(const FGameplayAttributeData&amp; OldValue)&#10;{&#10;&#9;GAMEPLAYATTRIBUTE_REPNOTIFY(UCAttributeSet, MoveAcceleration, OldValue);&#10;}&#10;&#10;void UCAttributeSet::OnRep_AttackPower(const FGameplayAttributeData&amp; OldValue)&#10;{&#10;&#9;GAMEPLAYATTRIBUTE_REPNOTIFY(UCAttributeSet, AttackPower, OldValue);&#10;}&#10;&#10;void UCAttributeSet::OnRep_MagicPower(const FGameplayAttributeData&amp; OldValue)&#10;{&#10;&#9;GAMEPLAYATTRIBUTE_REPNOTIFY(UCAttributeSet, MagicPower, OldValue);&#10;}&#10;&#10;void UCAttributeSet::OnRep_MagicResistance(const FGameplayAttributeData&amp; OldValue)&#10;{&#10;&#9;GAMEPLAYATTRIBUTE_REPNOTIFY(UCAttributeSet, MagicResistance, OldValue);&#10;}&#10;&#10;void UCAttributeSet::OnRep_AttackPowerCoefficient(const FGameplayAttributeData&amp; OldAttackPowerCoefficient)&#10;{&#10;&#9;GAMEPLAYATTRIBUTE_REPNOTIFY(UCAttributeSet, AttackPowerCoefficient, OldAttackPowerCoefficient);&#10;}&#10;&#10;void UCAttributeSet::OnRep_BaseDamage(const FGameplayAttributeData&amp; OldBaseDamage)&#10;{&#10;&#9;GAMEPLAYATTRIBUTE_REPNOTIFY(UCAttributeSet, BaseDamage, OldBaseDamage);&#10;}&#10;&#10;void UCAttributeSet::OnRep_MagicDamage(const FGameplayAttributeData&amp; OldMagicDamage)&#10;{&#10;&#9;GAMEPLAYATTRIBUTE_REPNOTIFY(UCAttributeSet, MagicDamage, OldMagicDamage);&#10;}&#10;&#10;void UCAttributeSet::OnRep_TrueDamage(const FGameplayAttributeData&amp; OldTrueDamage)&#10;{&#10;&#9;GAMEPLAYATTRIBUTE_REPNOTIFY(UCAttributeSet, TrueDamage, OldTrueDamage);&#10;}&#9;" />
+                    </map>
+                  </option>
+                  <option name="messageId" value="019822a7a5e47ff994f410ce7ba8ce16" />
+                  <option name="question" value="OltMrztziz: Dzimrmt: LeviirwvKziznvgvi(Mlmv) Hbhgvn(Mlmv) WzgzRmgviuzxv(MrztzizWzgzRmgviuzxvZiizbUolzg5) dzh mlg ulfmw&#10;OltMrztziz: Dzimrmt: LeviirwvKziznvgvi(Mlmv) Hbhgvn(Mlmv) WzgzRmgviuzxv(MrztzizWzgzRmgviuzxvZiizbUolzg5) dzh mlg ulfmw" />
+                  <option name="rating" value="UNRATED" />
+                  <option name="referenceBeans">
+                    <list />
+                  </option>
+                  <option name="status" value="SUCCESS" />
+                  <option name="variables">
+                    <list />
+                  </option>
+                </Turn>
+              </list>
+            </option>
+            <option name="updateTime" value="1752928078300" />
+          </Conversation>
+        </option>
+      </WebConversation>
+    </option>
   </component>
 </project>

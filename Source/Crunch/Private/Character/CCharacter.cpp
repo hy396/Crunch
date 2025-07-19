@@ -36,6 +36,10 @@ ACCharacter::ACCharacter()
 	BindGASChangeDelegates();
 
 	PerceptionStimuliSourceComponent = CreateDefaultSubobject<UAIPerceptionStimuliSourceComponent>("Perception Stimuli Source Component");
+
+	// 创建数字弹出组件
+	NumberPopComponent = CreateDefaultSubobject<UNumberPopComponent_NiagaraText>(TEXT("NumberPopComponent"));
+
 }
 
 void ACCharacter::ServerSideInit()
@@ -88,6 +92,12 @@ void ACCharacter::SetOverHeadWidgetColor()
 			}
 		}
 	}
+}
+
+void ACCharacter::AddNiagaraText_Implementation(const FNumberPopRequest& NewRequest)
+{
+	// 添加特效文字
+	NumberPopComponent->AddNumberPop(NewRequest);
 }
 
 void ACCharacter::BeginPlay()
@@ -153,7 +163,11 @@ void ACCharacter::BindGASChangeDelegates()
 		CAbilitySystemComponent->RegisterGameplayTagEvent(TGameplayTags::Stats_Stun).AddUObject(this, &ACCharacter::StunTagUpdated);
 		CAbilitySystemComponent->RegisterGameplayTagEvent(TGameplayTags::Stats_Aim).AddUObject(this, &ACCharacter::AimTagUpdated);
 
-		CAbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(CAttributeSet->GetMoveSpeedAttribute()).AddUObject(this, &ACCharacter::MoveSpeedUpdatad);
+		CAbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(CAttributeSet->GetMoveSpeedAttribute()).AddUObject(this, &ACCharacter::MoveSpeedUpdated);
+
+		// 伤害绑定
+		// CAbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(CAttributeSet->GetAttackDamageAttribute()).AddUObject(this, &ACCharacter::AttackDamageUpdated);
+
 	}
 }
 
@@ -203,10 +217,23 @@ void ACCharacter::OnAimStateChanged(bool bIsAiming)
 {
 	// 子类中重写
 }
-void ACCharacter::MoveSpeedUpdatad(const FOnAttributeChangeData& Data)
+void ACCharacter::MoveSpeedUpdated(const FOnAttributeChangeData& Data)
 {
 	GetCharacterMovement()->MaxWalkSpeed = Data.NewValue;
 }
+
+void ACCharacter::AttackDamageUpdated(const FOnAttributeChangeData& Data)
+{
+	float Damage = Data.NewValue;
+	CAttributeSet->SetAttackDamage(0.f);
+	if (Damage > 0.f)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("%s扣血：%f"),*GetName(), Damage);
+		float Health = FMath::Max(CAttributeSet->GetHealth() - Damage,0.f);
+		CAttributeSet->SetHealth(Health);
+	}
+}
+
 void ACCharacter::OnStun()
 {
 }

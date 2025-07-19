@@ -20,6 +20,8 @@ public:
 	// 获取摄像机震动游戏事件标签
 	static FGameplayTag GetCameraShakeGameplayCueTag();
 
+	static FGameplayTag GetDamageNumberGameplayCueTag();
+
 	// 获取技能冷却
 	static float GetStaticCooldownDurationForAbility(const UGameplayAbility* Ability);
 	// 获取技能消耗

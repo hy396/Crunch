@@ -4,6 +4,8 @@
 #include "GAS/Core/CGameplayAbility.h"
 
 #include "AbilitySystemBlueprintLibrary.h"
+#include "AbilitySystemComponent.h"
+#include "CAttributeSet.h"
 #include "TGameplayTags.h"
 #include "GameFramework/Character.h"
 #include "GAS/Abilities/GAP_Launched.h"
@@ -110,6 +112,80 @@ void UCGameplayAbility::ApplyGameplayEffectToHitResultActor(const FHitResult& Hi
 									GetCurrentActivationInfo(),
 									EffectSpecHandle,
 									UAbilitySystemBlueprintLibrary::AbilityTargetDataFromActor(HitResult.GetActor()));
+}
+
+void UCGameplayAbility::ApplyDamage(AActor* TargetActor,const FGenericDamageEffectDef& Damage, int Level)
+{
+	// 创建一个游戏效果上下文句柄，包含当前能力规范句柄和当前Actor信息
+	// FGameplayEffectContextHandle EffectContext = MakeEffectContext(GetCurrentAbilitySpecHandle(), GetCurrentActorInfo());
+	// EffectContext.AddSourceObject(GetAbilitySystemComponentFromActorInfo()->GetAvatarActor());
+	//
+	// // 创建一个传出游戏效果规范句柄，包含指定的GameplayEffect和等级
+	// FGameplayEffectSpecHandle EffectSpecHandle = MakeOutgoingGameplayEffectSpec(Damage.DamageEffect, Level);
+	//
+	// float NewDamage = Damage.BaseDamage;
+	// //通过标签设置GE使用的配置
+	// for(auto& Pair : Damage.DamageTypes)
+	// {
+	// 	bool bFound ;
+	// 	float AttributeValue = GetAbilitySystemComponentFromActorInfo()->GetGameplayAttributeValue(Pair.Key, bFound);
+	// 	if (bFound)
+	// 	{
+	// 		NewDamage += AttributeValue * Pair.Value / 100.f;
+	// 	}
+	// }
+	// // 将上下文设置到效果规范数据中
+	// EffectSpecHandle.Data->SetContext(EffectContext);
+	const UAbilitySystemComponent* ASC = GetAbilitySystemComponentFromActorInfo();
+	AActor* AvatarActor				   = GetAvatarActorFromActorInfo();
+	// 创建效果上下文， 设置能力 、源对象 和 施加者
+	FGameplayEffectContextHandle ContextHandle = ASC->MakeEffectContext();
+	ContextHandle.SetAbility(this);
+	ContextHandle.AddSourceObject(AvatarActor);
+	ContextHandle.AddInstigator(AvatarActor, AvatarActor);
+	float NewDamage = Damage.BaseDamage;
+	//通过标签设置GE使用的配置
+	for(auto& Pair : Damage.DamageTypes)
+	{
+		bool bFound ;
+		float AttributeValue = GetAbilitySystemComponentFromActorInfo()->GetGameplayAttributeValue(Pair.Key, bFound);
+		if (bFound)
+		{
+			NewDamage += AttributeValue * Pair.Value / 100.f;
+		}
+	}
+	GetAbilitySystemComponentFromActorInfo()->SetNumericAttributeBase(UCAttributeSet::GetBaseDamageAttribute(), NewDamage);
+	// 创建效果Spec句柄，指定效果类、能力等级和上下文
+	FGameplayEffectSpecHandle EffectSpecHandle = ASC->MakeOutgoingSpec(Damage.DamageEffect, Level, ContextHandle);
+	// UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(EffectSpecHandle, TGameplayTags::AttributeSet_BaseDamage, NewDamage);
+	// UAbilitySystemBlueprintLibrary::AssignSetByCallerMagnitude(EffectSpecHandle, "CAttributeSet.BaseDamage", NewDamage);
+	// if (EffectSpecHandle.IsValid())
+	// {
+	// 	// 设置由调用者指定的基础伤害数值
+	// 	EffectSpecHandle.Data->SetSetByCallerMagnitude(TGameplayTags::AttributeSet_BaseDamage, NewDamage);
+	// }
+	// 在目标上应用游戏效果规范
+	ApplyGameplayEffectSpecToTarget(GetCurrentAbilitySpecHandle(),
+									GetCurrentActorInfo(),
+									GetCurrentActivationInfo(),
+									EffectSpecHandle,
+									UAbilitySystemBlueprintLibrary::AbilityTargetDataFromActor(TargetActor));
+}
+
+void UCGameplayAbility::MakeDamage(const FGenericDamageEffectDef& Damage, int Level)
+{
+	float NewDamage = Damage.BaseDamage;
+	//通过标签设置GE使用的配置
+	for(auto& Pair : Damage.DamageTypes)
+	{
+		bool bFound ;
+		float AttributeValue = GetAbilitySystemComponentFromActorInfo()->GetGameplayAttributeValue(Pair.Key, bFound);
+		if (bFound)
+		{
+			NewDamage += AttributeValue * Pair.Value / 100.f;
+		}
+	}
+	GetAbilitySystemComponentFromActorInfo()->SetNumericAttributeBase(UCAttributeSet::GetBaseDamageAttribute(), NewDamage);
 }
 
 void UCGameplayAbility::PushSelf(const FVector& PushVel)

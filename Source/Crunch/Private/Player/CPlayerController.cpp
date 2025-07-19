@@ -8,6 +8,13 @@
 #include "Net/UnrealNetwork.h"
 #include "UI/Gameplay/GameplayWidget.h"
 
+ACPlayerController::ACPlayerController()
+{
+	bReplicates = true;
+	// 创建数字弹出组件
+	NumberPopComponent = CreateDefaultSubobject<UNumberPopComponent_NiagaraText>(TEXT("NumberPopComponent"));
+}
+
 void ACPlayerController::OnPossess(APawn* NewPawn)
 {
 	Super::OnPossess(NewPawn);
@@ -45,6 +52,25 @@ void ACPlayerController::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& O
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 	DOREPLIFETIME(ACPlayerController, TeamID);
+}
+
+void ACPlayerController::ShowDamageNumber_Implementation(float DamageAmount, ACharacter* TargetCharacter,
+	bool bCriticalHit)
+{
+	// 确保传入的目标没被销毁并且设置了组件类
+	if (IsValid(TargetCharacter))// && IsLocalController())
+	{
+		FNumberPopRequest NumberPopRequest;
+		NumberPopRequest.WorldLocation = TargetCharacter->GetActorLocation();
+		NumberPopRequest.WorldLocation.Z += 200.f;
+		NumberPopRequest.bIsCriticalDamage = bCriticalHit;
+		NumberPopRequest.NumberToDisplay = DamageAmount;
+		NumberPopComponent->AddNumberPop(NumberPopRequest);
+		// if (TargetCharacter->Implements<UCombatInterface>())
+		// {
+		// 	ICombatInterface::Execute_AddNiagaraText(TargetCharacter,NumberPopRequest);
+		// }
+	}
 }
 
 void ACPlayerController::SpawnGameplayWidget()

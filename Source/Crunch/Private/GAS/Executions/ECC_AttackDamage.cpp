@@ -86,8 +86,8 @@ void UECC_AttackDamage::Execute_Implementation(const FGameplayEffectCustomExecut
 	);
 
 	// 获取攻击计算系数
-	float AttackPowerCoefficient = 0.0f;
-	ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(DamageStatics().AttackPowerCoefficientDef, EvaluateParameters, AttackPowerCoefficient);
+	// float AttackPowerCoefficient = 0.0f;
+	// ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(DamageStatics().AttackPowerCoefficientDef, EvaluateParameters, AttackPowerCoefficient);
 
 	// 获取攻击力
 	float AttackPower = 0.0f;
@@ -115,7 +115,7 @@ void UECC_AttackDamage::Execute_Implementation(const FGameplayEffectCustomExecut
 
 	// 1. 计算基础伤害
 	// 公式: 基础伤害 + 攻击力 × 攻击力系数
-	float PhysicalDamage = BaseDamage + AttackPower * (AttackPowerCoefficient / 100.0f);
+	//float PhysicalDamage = BaseDamage + AttackPower * (AttackPowerCoefficient / 100.0f);
 	
 	// 2. 处理固定护甲穿透
 	TargetArmor = FMath::Max(0.0f, TargetArmor - ArmorPenetration);
@@ -125,23 +125,23 @@ void UECC_AttackDamage::Execute_Implementation(const FGameplayEffectCustomExecut
 	
 	// 4. 计算护甲减免（计算出来的是免伤率）
 	float ArmorReduction = TargetArmor / (TargetArmor + 100.0f);
-	PhysicalDamage *= (1.0f - FMath::Min(ArmorReduction + DamageReduction/100.0f, 1.0f));
+	BaseDamage *= (1.0f - FMath::Min(ArmorReduction / 100.0f + DamageReduction/100.0f, 1.0f));
 
 	// 5. 应用伤害加深（百分比提升）
-	PhysicalDamage *= (1.0f + DamageAmp / 100.0f);
+	BaseDamage *= (1.0f + DamageAmp / 100.0f);
 	//DamageReduction 敌方的伤害减免
 	// 6. 应用固定伤害减免
 	// float FinalDamage = FMath::Max(0.0f, PhysicalDamage - DamageReduction);
 
 	// 7. 输出到AttackDamage属性
-	if (PhysicalDamage > 0.0f)
+	if (BaseDamage > 0.0f)
 	{
 		// 添加输出修饰符
 		OutExecutionOutput.AddOutputModifier(
 			FGameplayModifierEvaluatedData(
 			UCAttributeSet::GetAttackDamageAttribute(), //获取到伤害属性
 			EGameplayModOp::Additive, //加法
-			PhysicalDamage	//伤害
+			BaseDamage	//伤害
 			));
 	}
 }

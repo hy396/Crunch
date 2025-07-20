@@ -38,7 +38,7 @@ ACCharacter::ACCharacter()
 	PerceptionStimuliSourceComponent = CreateDefaultSubobject<UAIPerceptionStimuliSourceComponent>("Perception Stimuli Source Component");
 
 	// 创建数字弹出组件
-	NumberPopComponent = CreateDefaultSubobject<UNumberPopComponent_NiagaraText>(TEXT("NumberPopComponent"));
+	// NumberPopComponent = CreateDefaultSubobject<UNumberPopComponent_NiagaraText>(TEXT("NumberPopComponent"));
 
 }
 
@@ -94,11 +94,11 @@ void ACCharacter::SetOverHeadWidgetColor()
 	}
 }
 
-void ACCharacter::AddNiagaraText_Implementation(const FNumberPopRequest& NewRequest)
-{
-	// 添加特效文字
-	NumberPopComponent->AddNumberPop(NewRequest);
-}
+// void ACCharacter::AddNiagaraText_Implementation(const FNumberPopRequest& NewRequest)
+// {
+// 	// 添加特效文字
+// 	NumberPopComponent->AddNumberPop(NewRequest);
+// }
 
 void ACCharacter::BeginPlay()
 {

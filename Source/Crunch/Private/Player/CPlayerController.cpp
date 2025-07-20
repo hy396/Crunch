@@ -54,24 +54,74 @@ void ACPlayerController::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& O
 	DOREPLIFETIME(ACPlayerController, TeamID);
 }
 
+// void ACPlayerController::ShowDamageNumber_Implementation(float DamageAmount, AActor* TargetActor, bool bCriticalHit)
+// {
+// 	if (!IsValid(TargetActor) || !NumberPopComponentClass || !IsLocalController())
+// 		return;
+//
+// 	UNumberPopComponent_NiagaraText* DamageText = nullptr;
+//     
+// 	// 查找可复用组件
+// 	for (UNumberPopComponent_NiagaraText* Pop : ActiveNumberPops)
+// 	{
+// 		if (Pop && Pop->GetOwner() == TargetActor)
+// 		{
+// 			DamageText = Pop;
+// 			break;
+// 		}
+// 	}
+//
+// 	// 创建新组件或复用现有组件
+// 	if (!DamageText)
+// 	{
+// 		DamageText = NewObject<UNumberPopComponent_NiagaraText>(TargetActor, NumberPopComponentClass);
+// 		if (!DamageText)
+// 		{
+// #if !(UE_BUILD_SHIPPING || UE_BUILD_TEST)
+// 			UE_LOG(LogTemp, Error, TEXT("Niagara组件创建失败，内存不足或配置错误"));
+// #endif
+// 			return;
+// 		}
+// 		DamageText->RegisterComponent();
+// 		ActiveNumberPops.Add(DamageText);
+// 		TargetActor->OnDestroyed.AddDynamic(this, &ACPlayerController::HandleTargetActorDestroyed);
+// 	}
+// 	else if (!DamageText->IsRegistered())
+// 	{
+// 		DamageText->RegisterComponent();
+// 	}
+//
+// 	// 设置显示参数
+// 	FNumberPopRequest NumberPopRequest;
+// 	NumberPopRequest.WorldLocation = TargetActor->GetActorLocation();
+// 	NumberPopRequest.WorldLocation.Z += 200.f;
+// 	NumberPopRequest.bIsCriticalDamage = bCriticalHit;
+// 	NumberPopRequest.NumberToDisplay = DamageAmount;
+//     
+// 	DamageText->AddNumberPop(NumberPopRequest);
+// 	// 确保传入的目标没被销毁并且设置了组件类
+// 	// if (IsValid(TargetActor) && NumberPopComponentClass && IsLocalController())
+// 	// {
+// 	// 	FNumberPopRequest NumberPopRequest;
+// 	// 	NumberPopRequest.WorldLocation = TargetActor->GetActorLocation();
+// 	// 	NumberPopRequest.WorldLocation.Z += 200.f;
+// 	// 	NumberPopRequest.bIsCriticalDamage = bCriticalHit;
+// 	// 	NumberPopRequest.NumberToDisplay = DamageAmount;
+// 	// 	// NumberPopComponent->AddNumberPop(NumberPopRequest);
+// 	// 	UNumberPopComponent_NiagaraText* DamageText = NewObject<UNumberPopComponent_NiagaraText>(TargetActor, NumberPopComponentClass);
+// 	// 	DamageText->RegisterComponent(); //动态创建的组件需要调用注册
+// 	// 	DamageText->AddNumberPop(NumberPopRequest);
+// 	// }
+// }
 void ACPlayerController::ShowDamageNumber_Implementation(float DamageAmount, AActor* TargetActor, bool bCriticalHit)
 {
 	if (!IsValid(TargetActor) || !NumberPopComponentClass || !IsLocalController())
 		return;
 
-	UNumberPopComponent_NiagaraText* DamageText = nullptr;
-    
-	// 查找可复用组件
-	for (UNumberPopComponent_NiagaraText* Pop : ActiveNumberPops)
-	{
-		if (Pop && Pop->GetOwner() == TargetActor)
-		{
-			DamageText = Pop;
-			break;
-		}
-	}
+	// 获取目标Actor上的现有组件
+	UNumberPopComponent_NiagaraText* DamageText = TargetActor->GetComponentByClass<UNumberPopComponent_NiagaraText>();
 
-	// 创建新组件或复用现有组件
+	// 不存在则创建并附加
 	if (!DamageText)
 	{
 		DamageText = NewObject<UNumberPopComponent_NiagaraText>(TargetActor, NumberPopComponentClass);
@@ -82,36 +132,17 @@ void ACPlayerController::ShowDamageNumber_Implementation(float DamageAmount, AAc
 #endif
 			return;
 		}
-		DamageText->RegisterComponent();
-		ActiveNumberPops.Add(DamageText);
-		TargetActor->OnDestroyed.AddDynamic(this, &ACPlayerController::HandleTargetActorDestroyed);
-	}
-	else if (!DamageText->IsRegistered())
-	{
-		DamageText->RegisterComponent();
+        
+		DamageText->RegisterComponent(); // 注册组件
 	}
 
 	// 设置显示参数
 	FNumberPopRequest NumberPopRequest;
-	NumberPopRequest.WorldLocation = TargetActor->GetActorLocation();
-	NumberPopRequest.WorldLocation.Z += 200.f;
+	NumberPopRequest.WorldLocation = TargetActor->GetActorLocation() + FVector(0, 0, 200);
 	NumberPopRequest.bIsCriticalDamage = bCriticalHit;
 	NumberPopRequest.NumberToDisplay = DamageAmount;
     
 	DamageText->AddNumberPop(NumberPopRequest);
-	// 确保传入的目标没被销毁并且设置了组件类
-	// if (IsValid(TargetActor) && NumberPopComponentClass && IsLocalController())
-	// {
-	// 	FNumberPopRequest NumberPopRequest;
-	// 	NumberPopRequest.WorldLocation = TargetActor->GetActorLocation();
-	// 	NumberPopRequest.WorldLocation.Z += 200.f;
-	// 	NumberPopRequest.bIsCriticalDamage = bCriticalHit;
-	// 	NumberPopRequest.NumberToDisplay = DamageAmount;
-	// 	// NumberPopComponent->AddNumberPop(NumberPopRequest);
-	// 	UNumberPopComponent_NiagaraText* DamageText = NewObject<UNumberPopComponent_NiagaraText>(TargetActor, NumberPopComponentClass);
-	// 	DamageText->RegisterComponent(); //动态创建的组件需要调用注册
-	// 	DamageText->AddNumberPop(NumberPopRequest);
-	// }
 }
 
 void ACPlayerController::HandleTargetActorDestroyed(AActor* DestroyedActor)

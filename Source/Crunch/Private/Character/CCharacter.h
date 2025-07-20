@@ -16,7 +16,7 @@
 #include "CCharacter.generated.h"
 
 UCLASS()
-class ACCharacter : public ACharacter, public IAbilitySystemInterface, public IGenericTeamAgentInterface, public ICombatInterface
+class ACCharacter : public ACharacter, public IAbilitySystemInterface, public IGenericTeamAgentInterface	//, public ICombatInterface
 {
 	GENERATED_BODY()
 
@@ -35,11 +35,11 @@ public:
 	// 头顶UI颜色
 	void SetOverHeadWidgetColor();
 	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components")
-	TObjectPtr<UNumberPopComponent_NiagaraText> NumberPopComponent;
+	// UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components")
+	// TObjectPtr<UNumberPopComponent_NiagaraText> NumberPopComponent;
 
 	// 添加Niagara文字
-	virtual void AddNiagaraText_Implementation(const FNumberPopRequest& NewRequest) override;
+	// virtual void AddNiagaraText_Implementation(const FNumberPopRequest& NewRequest) override;
 protected:
 	virtual void BeginPlay() override;
 	// 只在服务器执行

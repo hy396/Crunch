@@ -5,6 +5,7 @@
 
 #include "CAttributeSet.h"
 #include "CHeroAttributeSet.h"
+#include "TGameplayTags.h"
 
 UCAbilitySystemComponent::UCAbilitySystemComponent()
 {
@@ -148,16 +149,78 @@ void UCAbilitySystemComponent::HealthUpdated(const FOnAttributeChangeData& Chang
 {
 	if (!GetOwner() || !GetOwner()->HasAuthority()) return;
 
+	// 获取当前最大生命值
+	bool bFound = false;
+	float MaxHealth = GetGameplayAttributeValue(UCAttributeSet::GetMaxHealthAttribute(), bFound);
+    
+	// 如果生命值达到最大值，添加生命值已满标签
+	if (bFound && ChangeData.NewValue >= MaxHealth)
+	{
+		if (!HasMatchingGameplayTag(TGameplayTags::Stats_Health_Full))
+		{
+			// 仅本地会添加标签
+			AddLooseGameplayTag(TGameplayTags::Stats_Health_Full);
+		}
+	}
+	else
+	{
+		// 移除生命值已满标签
+		RemoveLooseGameplayTag(TGameplayTags::Stats_Health_Full);
+	}
 	if (ChangeData.NewValue <= 0.0f)
 	{
-		// 角色死亡
-		if (DeathEffect)
+		if (!HasMatchingGameplayTag(TGameplayTags::Stats_Health_Empty))
 		{
-			AuthApplyGameplayEffect(DeathEffect);
+			// 本地添加生命值清零标签
+			AddLooseGameplayTag(TGameplayTags::Stats_Health_Empty);
+			// 角色死亡
+			if (DeathEffect)
+			{
+				AuthApplyGameplayEffect(DeathEffect);
+			}
 		}
+	}else
+	{
+		RemoveLooseGameplayTag(TGameplayTags::Stats_Health_Empty);
 	}
 }
 
 void UCAbilitySystemComponent::ManaUpdated(const FOnAttributeChangeData& ChangeData)
 {
+	// 仅在拥有者存在且为服务器时执行
+	if (!GetOwner() || !GetOwner()->HasAuthority()) return;
+
+	// 获取当前最大魔法值
+	bool bFound = false;
+	float MaxMana = GetGameplayAttributeValue(UCAttributeSet::GetMaxManaAttribute(), bFound);
+    
+	// 如果魔法值达到最大值，添加魔法值已满标签
+	if (bFound && ChangeData.NewValue >= MaxMana)
+	{
+		if (!HasMatchingGameplayTag(TGameplayTags::Stats_Mana_Full))
+		{
+			// 仅本地生效的标签
+			AddLooseGameplayTag(TGameplayTags::Stats_Mana_Full);
+		}
+	}
+	else
+	{
+		// 移除魔法值已满标签
+		RemoveLooseGameplayTag(TGameplayTags::Stats_Mana_Full);
+	}
+
+	// 处理魔法值为零的情况
+	if (ChangeData.NewValue <= 0)
+	{
+		if (!HasMatchingGameplayTag(TGameplayTags::Stats_Mana_Empty))
+		{
+			// 添加魔法值清零标签
+			AddLooseGameplayTag(TGameplayTags::Stats_Mana_Empty);
+		}
+	}
+	else
+	{
+		// 移除魔法值清零标签
+		RemoveLooseGameplayTag(TGameplayTags::Stats_Mana_Empty);
+	}
 }

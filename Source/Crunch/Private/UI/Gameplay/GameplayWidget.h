@@ -47,7 +47,7 @@ private:
 	UPROPERTY(meta=(BindWidget))
 	TObjectPtr<UStatsGauge> ArmorGauge;
 	
-	// 属性面板：力量显示控件
+	// 属性面板：法术抗性显示控件
 	UPROPERTY(meta=(BindWidget))
 	TObjectPtr<UStatsGauge> MagicResistanceGauge;
 

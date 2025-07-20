@@ -33,19 +33,18 @@ public:
 	 */	
 	void SetAndBoundToGameplayAttribute(UAbilitySystemComponent* AbilitySystemComponent, const FGameplayAttribute& Attribute, const FGameplayAttribute& MaxAttribute);
 
+	// 设置每秒回复值
+	void SetRegenValueTextToGameplayAttribute(UAbilitySystemComponent* AbilitySystemComponent,const FGameplayAttribute& Attribute);
+	void SetRegenValue(float NewRegenValue);
 	void SetValue(float NewValue, float NewMaxValue);
 	// 设置进度条颜色
 	void SetBarColor(FLinearColor BarColor);
-	// 我方血条颜色
-	// UPROPERTY(EditAnywhere, Category = "Visual")
-	// FLinearColor FriendlyColor;
-	// // 敌方血条颜色
-	// UPROPERTY(EditAnywhere, Category = "Visual")
-	// FLinearColor HostileColor;
 private:
 	// 回调用函数
 	void ValueChanged(const FOnAttributeChangeData& ChangeData);
 	void MaxValueChanged(const FOnAttributeChangeData& ChangeData);
+
+	void RegenValueChanged(const FOnAttributeChangeData& ChangeData);
 
 	// 缓存属性
 	float CachedValue;
@@ -73,10 +72,19 @@ private:
 	// 是否显示进度条
 	UPROPERTY(EditAnywhere, Category = "Visual")
 	bool bProgressBarVisible = true;
+
+	// 每秒回复的数值显示，默认为false，小兵不配这个
+	UPROPERTY(EditAnywhere, Category = "Visual")
+	bool bRegenValueTextVisible = false;
 	
 	UPROPERTY(VisibleAnywhere, meta = (BindWidget))
 	TObjectPtr<UProgressBar> ProgressBar;
 
+	// 中间的文本
 	UPROPERTY(VisibleAnywhere, meta = (BindWidget))
 	TObjectPtr<UTextBlock> ValueText;
+
+	// 放置右边显示每秒回复的数值
+	UPROPERTY(VisibleAnywhere, meta = (BindWidget))
+	TObjectPtr<UTextBlock> RegenValueText;
 };

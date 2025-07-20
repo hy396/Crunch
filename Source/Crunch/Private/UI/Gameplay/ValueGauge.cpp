@@ -12,9 +12,11 @@ void UValueGauge::NativePreConstruct()
 	ProgressBar->SetFillColorAndOpacity(BarColor);
 	
 	ValueText->SetFont(ValueTextFont);
-
+	RegenValueText->SetFont(ValueTextFont);
+	
 	ValueText->SetVisibility(bValueTextVisible ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
 	ProgressBar->SetVisibility(bProgressBarVisible ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
+	RegenValueText->SetVisibility(bRegenValueTextVisible ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
 }
 
 void UValueGauge::SetAndBoundToGameplayAttribute(UAbilitySystemComponent* AbilitySystemComponent,
@@ -35,9 +37,6 @@ void UValueGauge::SetAndBoundToGameplayAttribute(UAbilitySystemComponent* Abilit
 		// 注册属性变化回调，当属性值发生变化时更新数值指示器显示
 		AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(Attribute).AddUObject(this, &UValueGauge::ValueChanged);
 		AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(MaxAttribute).AddUObject(this, &UValueGauge::MaxValueChanged);
-
-		// 设置基础颜色
-		// SetBarColor(BarColor);
 	}
 }
 
@@ -83,4 +82,40 @@ void UValueGauge::ValueChanged(const FOnAttributeChangeData& ChangeData)
 void UValueGauge::MaxValueChanged(const FOnAttributeChangeData& ChangeData)
 {
 	SetValue(CachedValue, ChangeData.NewValue);
+}
+
+void UValueGauge::SetRegenValueTextToGameplayAttribute(UAbilitySystemComponent* AbilitySystemComponent,
+	const FGameplayAttribute& Attribute)
+{
+	if (AbilitySystemComponent)
+	{
+		// 从能力系统组件中获取当前属性值和最大值属性值
+		bool bFound;
+		float Value = AbilitySystemComponent->GetGameplayAttributeValue(Attribute, bFound);
+		// 如果成功找到对应的属性值，则更新数值指示器的显示
+		if (bFound)
+		{
+			SetRegenValue(Value);
+		}
+		// 注册属性变化回调，当属性值发生变化时更新数值指示器显示
+		AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(Attribute).AddUObject(this, &UValueGauge::RegenValueChanged);
+	}
+}
+
+void UValueGauge::SetRegenValue(float NewRegenValue)
+{
+	// 设置数字格式选项，最大小数位数为0
+	const FNumberFormattingOptions FormatOps = FNumberFormattingOptions().SetMaximumFractionalDigits(2);
+	// 更新文本显示
+	RegenValueText->SetText(
+		FText::Format(
+			FTextFormat::FromString("{0}/s"),			 // 格式字符串
+			FText::AsNumber(NewRegenValue, &FormatOps)      // 当前值
+		)
+	);
+}
+
+void UValueGauge::RegenValueChanged(const FOnAttributeChangeData& ChangeData)
+{
+	SetRegenValue(ChangeData.NewValue);
 }

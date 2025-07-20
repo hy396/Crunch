@@ -31,9 +31,14 @@ public:
 
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
+	// 销毁
+	virtual void BeginDestroy() override;
 	// 在每个客户端显示伤害数值
+//	UFUNCTION(Client, Reliable)
+//	void ShowDamageNumber(float DamageAmount, ACharacter* TargetCharacter, bool bCriticalHit);
+
 	UFUNCTION(Client, Reliable)
-	void ShowDamageNumber(float DamageAmount, ACharacter* TargetCharacter, bool bCriticalHit);
+	void ShowDamageNumber(float DamageAmount, AActor* TargetActor, bool bCriticalHit);
 
 private:
 	void SpawnGameplayWidget();
@@ -42,8 +47,14 @@ private:
 	TObjectPtr<ACPlayerCharacter> CPlayerCharacter;
 
 	UPROPERTY(EditAnywhere, Category = "Components")
-	TObjectPtr<UNumberPopComponent_NiagaraText> NumberPopComponent;
+	TSubclassOf<UNumberPopComponent_NiagaraText> NumberPopComponentClass;
+	// 对象池管理
+	UPROPERTY()
+	TArray<TObjectPtr<UNumberPopComponent_NiagaraText>> ActiveNumberPops;
+	UFUNCTION()
+	void HandleTargetActorDestroyed(AActor* DestroyedActor);
 
+	
 	UPROPERTY(EditDefaultsOnly, Category = "UI")
 	TSubclassOf<UGameplayWidget> GameplayWidgetClass;
 

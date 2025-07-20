@@ -93,7 +93,7 @@ void UGA_GroundBlast::TargetConfirmed(const FGameplayAbilityTargetDataHandle& Ta
 
 	// 播放冲击特效和摄像机震动
 	GetAbilitySystemComponentFromActorInfo()->ExecuteGameplayCue(BlastGameplayCueTag, BlastingGameplayCueParameters);
-	// GetAbilitySystemComponentFromActorInfo()->ExecuteGameplayCue(UCAbilitySystemStatics::GetCameraShakeGameplayCueTag(), BlastingGameplayCueParameters);
+	GetAbilitySystemComponentFromActorInfo()->ExecuteGameplayCue(UCAbilitySystemStatics::GetCameraShakeGameplayCueTag(), BlastingGameplayCueParameters);
 
 	// 播放释放动画
 	UAnimInstance* OwnerAnimInst = GetOwnerAnimInstance();

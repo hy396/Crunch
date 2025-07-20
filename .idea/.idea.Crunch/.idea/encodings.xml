@@ -19,6 +19,8 @@
     <file url="file://$PROJECT_DIR$/Source/Crunch/Private/Animations/CAnimInstance.h" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/Crunch/Private/Character/CCharacter.cpp" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/Crunch/Private/Character/CCharacter.h" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Source/Crunch/Private/Character/Interaction/CombatInterface.cpp" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Source/Crunch/Private/Character/Interaction/CombatInterface.h" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/Crunch/Private/GAS/Abilities/GA_Combo.cpp" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/Crunch/Private/GAS/Abilities/GA_Combo.h" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/Crunch/Private/GAS/Core/CAbilitySystemComponent.cpp" charset="UTF-8" />
@@ -43,6 +45,8 @@
     <file url="file://$PROJECT_DIR$/Source/Crunch/Private/Player/CPlayerCharacter.h" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/Crunch/Private/Player/CPlayerController.cpp" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/Crunch/Private/Player/CPlayerController.h" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Source/Crunch/Private/Player/NumberPopComponent_NiagaraText.cpp" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Source/Crunch/Private/Player/NumberPopComponent_NiagaraText.h" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/Crunch/Private/UI/Gameplay/GameplayWidget.cpp" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/Crunch/Private/UI/Gameplay/GameplayWidget.h" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/Crunch/Private/UI/Gameplay/OverHeadStatsGauge.cpp" charset="UTF-8" />

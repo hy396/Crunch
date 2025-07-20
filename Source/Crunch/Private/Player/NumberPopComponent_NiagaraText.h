@@ -45,7 +45,6 @@ class UNumberPopComponent_NiagaraText : public UControllerComponent
 public:
 
 	UNumberPopComponent_NiagaraText(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
-
 	/** 
 	 * 添加一个数字弹出到列表中以进行可视化展示
 	 * @param NewRequest 新的数字弹出请求数据

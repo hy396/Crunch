@@ -174,8 +174,10 @@ public:
 private:
 	// 设置效果属性
 	void SetEffectProperties(const FGameplayEffectModCallbackData& Data, FEffectProperties& Props) const;
+	// TODO: 未来如果学不会奶瓜将改回Aura的WBP
 	//显示伤害数字
-	static void ShowFloatingText(const FEffectProperties& Props, const float Damage, bool IsCriticalHit);
-	UFUNCTION(Client, Reliable)
-	void Client_ShowFloatingText(const FEffectProperties& Props, const float Damage, bool IsCriticalHit);
+	// static void ShowFloatingText(const FEffectProperties& Props, const float Damage, bool IsCriticalHit);
+	static void ShowFloatingText(AActor* TargetActor, float Damage, bool IsCriticalHit);
+//	UFUNCTION(Client, Reliable)
+//	void Client_ShowFloatingText(const FEffectProperties& Props, const float Damage, bool IsCriticalHit);
 };

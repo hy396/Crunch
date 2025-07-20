@@ -222,17 +222,17 @@ void ACCharacter::MoveSpeedUpdated(const FOnAttributeChangeData& Data)
 	GetCharacterMovement()->MaxWalkSpeed = Data.NewValue;
 }
 
-void ACCharacter::AttackDamageUpdated(const FOnAttributeChangeData& Data)
-{
-	float Damage = Data.NewValue;
-	CAttributeSet->SetAttackDamage(0.f);
-	if (Damage > 0.f)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("%s扣血：%f"),*GetName(), Damage);
-		float Health = FMath::Max(CAttributeSet->GetHealth() - Damage,0.f);
-		CAttributeSet->SetHealth(Health);
-	}
-}
+// void ACCharacter::AttackDamageUpdated(const FOnAttributeChangeData& Data)
+// {
+// 	float Damage = Data.NewValue;
+// 	CAttributeSet->SetAttackDamage(0.f);
+// 	if (Damage > 0.f)
+// 	{
+// 		UE_LOG(LogTemp, Warning, TEXT("%s扣血：%f"),*GetName(), Damage);
+// 		float Health = FMath::Max(CAttributeSet->GetHealth() - Damage,0.f);
+// 		CAttributeSet->SetHealth(Health);
+// 	}
+// }
 
 void ACCharacter::OnStun()
 {

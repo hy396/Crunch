@@ -64,24 +64,25 @@ void UCAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackD
 	
 	if (Data.EvaluatedData.Attribute == GetAttackDamageAttribute())
 	{
-		FEffectProperties Props;
-		SetEffectProperties(Data, Props);
+		// FEffectProperties Props;
+		// SetEffectProperties(Data, Props);
 		float NewDamage = GetAttackDamage();
 		SetAttackDamage(0.f);
 		bool bCriticalHit = false;
+		UAbilitySystemComponent* SourceASC = Data.EffectSpec.GetContext().GetOriginalInstigatorAbilitySystemComponent();
 		if (NewDamage > 0.f)
 		{
-			if (Props.SourceASC)
+			if (SourceASC)
 			{
 				bool bFound = false;
-				const float EffectiveCriticalHitChance = Props.SourceASC->GetGameplayAttributeValue(UCHeroAttributeSet::GetCriticalStrikeChanceAttribute(), bFound);
+				const float EffectiveCriticalHitChance = SourceASC->GetGameplayAttributeValue(UCHeroAttributeSet::GetCriticalStrikeChanceAttribute(), bFound);
 				if (bFound)
 				{
 					bFound = false;
 					bCriticalHit = FMath::RandRange(1, 100) < EffectiveCriticalHitChance;
 					if (bCriticalHit)
 					{
-						const float CriticalStrikeDamage = Props.SourceASC->GetGameplayAttributeValue(UCHeroAttributeSet::GetCriticalStrikeDamageAttribute(), bFound);
+						const float CriticalStrikeDamage = SourceASC->GetGameplayAttributeValue(UCHeroAttributeSet::GetCriticalStrikeDamageAttribute(), bFound);
 						if (bFound)
 						{
 							NewDamage *= (1.f + CriticalStrikeDamage / 100.f);
@@ -93,10 +94,14 @@ void UCAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackD
 			
 			const float NewHealth = GetHealth() - NewDamage;
 			SetHealth(FMath::Clamp(NewHealth, 0.f, GetMaxHealth()));
-			UE_LOG(LogTemp, Warning, TEXT("NewDamage: %f"), NewDamage)
-			
+			UE_LOG(LogTemp, Log, TEXT("NewDamage: %f"), NewDamage)
+
+			// TODO: 显示伤害数字目前的所有失败方案
 			// 显示伤害数字（Aura的方法）失败
-			// ShowFloatingText(Props,NewDamage, bCriticalHit);
+			if (AActor* TargetActor = Data.Target.AbilityActorInfo->AvatarActor.Get())
+			{
+				ShowFloatingText(TargetActor,NewDamage, bCriticalHit);
+			}
 			// Client_ShowFloatingText_Implementation(Props,NewDamage, bCriticalHit);
 			
 			// GC 的方法，失败
@@ -126,13 +131,18 @@ void UCAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackD
 			// {
 			// 	if (Props.SourceCharacter->Implements<UCombatInterface>())
 			// 	{
-			// 		FNumberPopRequest NumberPopRequest;
-			// 		// 设置特效的位置
-			// 		NumberPopRequest.WorldLocation = Target->GetActorLocation();
-			// 		NumberPopRequest.WorldLocation.Z += 200.f;
-			// 		NumberPopRequest.NumberToDisplay = NewDamage;
-			// 		NumberPopRequest.bIsCriticalDamage = bCriticalHit;
-			// 		ICombatInterface::Execute_AddNiagaraText(Target,NumberPopRequest);
+			// 		// 确保 Target 是有效的 Actor 并且实现了接口
+			// 		if (Target->GetLocalRole() == ROLE_Authority) // 仅在服务器端调用
+			// 		{
+			// 			FNumberPopRequest NumberPopRequest;
+			// 			NumberPopRequest.WorldLocation = Target->GetActorLocation();
+			// 			NumberPopRequest.WorldLocation.Z += 200.f; // 调整位置
+			// 			NumberPopRequest.NumberToDisplay = NewDamage;
+			// 			NumberPopRequest.bIsCriticalDamage = bCriticalHit;
+			//
+			// 			// 直接调用接口函数（服务器端）
+			// 			ICombatInterface::Execute_AddNiagaraText(Target, NumberPopRequest);
+			// 		}
 			// 	}
 			// }
 			
@@ -253,13 +263,13 @@ void UCAttributeSet::SetEffectProperties(const FGameplayEffectModCallbackData& D
 	}
 }
 
-void UCAttributeSet::ShowFloatingText(const FEffectProperties& Props, const float Damage, bool IsCriticalHit)
+void UCAttributeSet::ShowFloatingText(AActor* TargetActor, const float Damage, bool IsCriticalHit)
 {
 	for (int32 i = 0; ;++i)
 	{
-		if (ACPlayerController* PC = Cast<ACPlayerController>(UGameplayStatics::GetPlayerController(Props.TargetCharacter,i)))
+		if (ACPlayerController* PC = Cast<ACPlayerController>(UGameplayStatics::GetPlayerController(TargetActor,i)))
 		{
-			PC->ShowDamageNumber(Damage, Props.TargetCharacter, IsCriticalHit); //调用显示伤害数字
+			PC->ShowDamageNumber(Damage, TargetActor, IsCriticalHit); //调用显示伤害数字
 		}else
 		{
 			break;
@@ -267,30 +277,44 @@ void UCAttributeSet::ShowFloatingText(const FEffectProperties& Props, const floa
 	}
 }
 
-void UCAttributeSet::Client_ShowFloatingText_Implementation(const FEffectProperties& Props, const float Damage,
-	bool IsCriticalHit)
-{
-	for (int32 i = 0; ;++i)
-	{
-		if (ACPlayerController* PC = Cast<ACPlayerController>(UGameplayStatics::GetPlayerController(Props.TargetCharacter,i)))
-		{
-			// PC->ShowDamageNumber(Damage, Props.TargetCharacter, IsCriticalHit); //调用显示伤害数字
-			if (PC->IsLocalController())
-			{
-				if (Props.TargetCharacter->Implements<UCombatInterface>())
-				{
-					FNumberPopRequest NumberPopRequest;
-					NumberPopRequest.WorldLocation = Props.TargetCharacter->GetActorLocation();
-					NumberPopRequest.WorldLocation.Z += 200.f;
-					NumberPopRequest.bIsCriticalDamage = IsCriticalHit;
-					NumberPopRequest.NumberToDisplay = Damage;
-					// NumberPopComponent->AddNumberPop(NumberPopRequest);
-					ICombatInterface::Execute_AddNiagaraText(Props.TargetCharacter,NumberPopRequest);
-				}
-			}
-		}else
-		{
-			break;
-		}
-	}
-}	
+// void UCAttributeSet::ShowFloatingText(const FEffectProperties& Props, const float Damage, bool IsCriticalHit)
+// {
+// 	for (int32 i = 0; ;++i)
+// 	{
+// 		if (ACPlayerController* PC = Cast<ACPlayerController>(UGameplayStatics::GetPlayerController(Props.TargetCharacter,i)))
+// 		{
+// 			PC->ShowDamageNumber(Damage, Props.TargetCharacter, IsCriticalHit); //调用显示伤害数字
+// 		}else
+// 		{
+// 			break;
+// 		}
+// 	}
+// }
+
+// void UCAttributeSet::Client_ShowFloatingText_Implementation(const FEffectProperties& Props, const float Damage,
+// 	bool IsCriticalHit)
+// {
+// 	for (int32 i = 0; ;++i)
+// 	{
+// 		if (ACPlayerController* PC = Cast<ACPlayerController>(UGameplayStatics::GetPlayerController(Props.TargetCharacter,i)))
+// 		{
+// 			// PC->ShowDamageNumber(Damage, Props.TargetCharacter, IsCriticalHit); //调用显示伤害数字
+// 			if (PC->IsLocalController())
+// 			{
+// 				if (Props.TargetCharacter->Implements<UCombatInterface>())
+// 				{
+// 					FNumberPopRequest NumberPopRequest;
+// 					NumberPopRequest.WorldLocation = Props.TargetCharacter->GetActorLocation();
+// 					NumberPopRequest.WorldLocation.Z += 200.f;
+// 					NumberPopRequest.bIsCriticalDamage = IsCriticalHit;
+// 					NumberPopRequest.NumberToDisplay = Damage;
+// 					// NumberPopComponent->AddNumberPop(NumberPopRequest);
+// 					ICombatInterface::Execute_AddNiagaraText(Props.TargetCharacter,NumberPopRequest);
+// 				}
+// 			}
+// 		}else
+// 		{
+// 			break;
+// 		}
+// 	}
+// }	

@@ -39,7 +39,6 @@ public:
 	TObjectPtr<UNumberPopComponent_NiagaraText> NumberPopComponent;
 
 	// 添加Niagara文字
-	// virtual void AddNiagaraText_Implementation();
 	virtual void AddNiagaraText_Implementation(const FNumberPopRequest& NewRequest) override;
 protected:
 	virtual void BeginPlay() override;
@@ -76,7 +75,7 @@ private:
 	void MoveSpeedUpdated(const FOnAttributeChangeData& Data);
 
 	// 伤害传入
-	void AttackDamageUpdated(const FOnAttributeChangeData& Data);
+	// void AttackDamageUpdated(const FOnAttributeChangeData& Data);
 	UPROPERTY(VisibleDefaultsOnly, Category = "Gameplay Ability")
 	TObjectPtr<UCAbilitySystemComponent> CAbilitySystemComponent;
 	UPROPERTY()

@@ -8,7 +8,8 @@
 UNumberPopComponent_NiagaraText::UNumberPopComponent_NiagaraText(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {
-	
+	SetIsReplicatedByDefault(true);
+	// bReplicates = true;
 }
 
 void UNumberPopComponent_NiagaraText::AddNumberPop(const FNumberPopRequest& NewRequest)
@@ -32,14 +33,22 @@ void UNumberPopComponent_NiagaraText::AddNumberPop(const FNumberPopRequest& NewR
 			NiagaraComp->bAutoActivate = false;				// 不自动激活
 		}
 		NiagaraComp->SetupAttachment(nullptr);      // 不附加到任何物体
+
+		// 新加的 Begin
+		//NiagaraComp->SetForceLocalPlayerEffect(false);	 // 允许所有客户端显示
+		//NiagaraComp->SetRenderingEnabled(true);			// 确保渲染启用
+		//NiagaraComp->SetAutoDestroy(false);            // ✅ 禁用自动销毁
+		// 新加的 End
+		
 		check(NiagaraComp);
 		NiagaraComp->RegisterComponent();					// 注册组件以便更新和渲染
+		// NiagaraComp->SetReplicate(true);
 	}
 
 	NiagaraComp->Activate(false);                     // 手动激活 Niagara 粒子效果
 	NiagaraComp->SetWorldLocation(NewRequest.WorldLocation); // 设置弹出位置
 	
-	UE_LOG(LogTemp, Warning, TEXT("DamageHit location : %s"), *(NewRequest.WorldLocation.ToString()));
+	UE_LOG(LogTemp, Log, TEXT("DamageHit location : %s"), *(NewRequest.WorldLocation.ToString()));
 	//Add Damage information to the current Niagara list - Damage informations are packed inside a FVector4 where XYZ = Position, W = Damage
 	// 获取 Niagara 数组中的 FVector4 列表（XYZ 表示位置，W 表示伤害值）
 	TArray<FVector4> DamageList = UNiagaraDataInterfaceArrayFunctionLibrary::GetNiagaraArrayVector4(NiagaraComp, NiagaraArrayName);

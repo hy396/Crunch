@@ -144,7 +144,6 @@ void UCGameplayAbility::ApplyDamage(AActor* TargetActor,const FGenericDamageEffe
 	ContextHandle.AddSourceObject(AvatarActor);
 	ContextHandle.AddInstigator(AvatarActor, AvatarActor);
 	float NewDamage = Damage.BaseDamage;
-	//通过标签设置GE使用的配置
 	for(auto& Pair : Damage.DamageTypes)
 	{
 		bool bFound ;

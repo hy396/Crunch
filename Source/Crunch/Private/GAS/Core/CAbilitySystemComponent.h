@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "AbilitySystemComponent.h"
 #include "CGameplayAbilityTypes.h"
+#include "GAS/Data/PDA_AbilitySystemGenerics.h"
 #include "CAbilitySystemComponent.generated.h"
 
 /**
@@ -25,6 +26,9 @@ public:
 	void ApplyFullStatEffect();
 
 	const TMap<ECAbilityInputID, TSubclassOf<UGameplayAbility>>& GetAbilities() const;
+	// 是否达到最大等级
+	bool IsAtMaxLevel() const;
+
 private:
 	// 初始效果
 	void ApplyInitialEffects();
@@ -34,16 +38,17 @@ private:
 	void AuthApplyGameplayEffect(TSubclassOf<UGameplayEffect> GameplayEffect, int Level = 1);
 	void HealthUpdated(const FOnAttributeChangeData& ChangeData);
 	void ManaUpdated(const FOnAttributeChangeData& ChangeData);
+	void ExperienceUpdated(const FOnAttributeChangeData& ChangeData);
 
-	// 满血、满蓝效果
-	UPROPERTY(EditDefaultsOnly, Category = "Gameplay Effects")
-	TSubclassOf<UGameplayEffect> FullStatEffect;
-	// 死亡效果
-	UPROPERTY(EditDefaultsOnly, Category = "Gameplay Effects")
-	TSubclassOf<UGameplayEffect> DeathEffect;
-	
-	UPROPERTY(EditDefaultsOnly, Category = "Gameplay Effects")
-	TArray<TSubclassOf<UGameplayEffect>> InitialEffects;
+	// // 满血、满蓝效果
+	// UPROPERTY(EditDefaultsOnly, Category = "Gameplay Effects")
+	// TSubclassOf<UGameplayEffect> FullStatEffect;
+	// // 死亡效果
+	// UPROPERTY(EditDefaultsOnly, Category = "Gameplay Effects")
+	// TSubclassOf<UGameplayEffect> DeathEffect;
+	//
+	// UPROPERTY(EditDefaultsOnly, Category = "Gameplay Effects")
+	// TArray<TSubclassOf<UGameplayEffect>> InitialEffects;
 	
 	// 基础技能
 	UPROPERTY(EditDefaultsOnly, Category = "Gameplay Ability")
@@ -53,7 +58,15 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "Gameplay Ability")
 	TMap<ECAbilityInputID, TSubclassOf<UGameplayAbility>> Abilities;
 
-	// 基础属性数据表
-	UPROPERTY(EditDefaultsOnly, Category = "Base Stats")
-	TObjectPtr<UDataTable> BaseStatDataTable;
+	// // 被动技能
+	// UPROPERTY(EditDefaultsOnly, Category = "Gameplay Ability")
+	// TArray<TSubclassOf<UGameplayAbility>> PassiveAbilities;
+	//
+	// // 基础属性数据表
+	// UPROPERTY(EditDefaultsOnly, Category = "Base Stats")
+	// TObjectPtr<UDataTable> BaseStatDataTable;
+
+	// 能力系统通用配置
+	UPROPERTY(EditDefaultsOnly, Category = "Gameplay Ability")
+	TObjectPtr<UPDA_AbilitySystemGenerics> AbilitySystemGenerics;
 };

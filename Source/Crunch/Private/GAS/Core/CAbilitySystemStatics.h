@@ -21,6 +21,8 @@ public:
 	static FGameplayTag GetCameraShakeGameplayCueTag();
 
 	static FGameplayTag GetDamageNumberGameplayCueTag();
+	// 判断是否为英雄
+	static bool IsHero(const AActor* ActorToCheck);
 
 	// 获取技能冷却
 	static float GetStaticCooldownDurationForAbility(const UGameplayAbility* Ability);

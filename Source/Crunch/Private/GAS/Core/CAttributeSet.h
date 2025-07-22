@@ -66,7 +66,10 @@ public:
 	// 仅在instant Gameplay Effect使Attribute的BaseValue改变时触发
 	virtual void PostGameplayEffectExecute(const FGameplayEffectModCallbackData & Data) override;
 
-
+	// 根据缓存的生命百分比和新最大生命值重新计算生命值
+	void RescaleHealth();
+	// 根据缓存的法力百分比和最大法力值重新计算法力值
+	void RescaleMana();
 	//virtual bool PreGameplayEffectExecute(FGameplayEffectModCallbackData& Data) override;
 	
 	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_Health)
@@ -140,6 +143,16 @@ public:
 	FGameplayAttributeData MoveAcceleration;
 	ATTRIBUTE_ACCESSORS(UCAttributeSet, MoveAcceleration)
 
+	// 缓存的生命百分比
+	UPROPERTY()
+	FGameplayAttributeData CachedHealthPercent;
+	ATTRIBUTE_ACCESSORS(UCAttributeSet, CachedHealthPercent)
+
+	// 缓存的法力百分比
+	UPROPERTY()
+	FGameplayAttributeData CachedManaPercent;
+	ATTRIBUTE_ACCESSORS(UCAttributeSet, CachedManaPercent)
+	
 	UFUNCTION()
 	void OnRep_Health(const FGameplayAttributeData& OldHealth);
 	UFUNCTION()
@@ -178,6 +191,9 @@ private:
 	//显示伤害数字
 	// static void ShowFloatingText(const FEffectProperties& Props, const float Damage, bool IsCriticalHit);
 	static void ShowFloatingText(AActor* TargetActor, float Damage, bool IsCriticalHit);
+
+	// 用于激活角色死亡被动的函数
+	void OnDeadAbility(const FGameplayEffectModCallbackData& Data);
 //	UFUNCTION(Client, Reliable)
 //	void Client_ShowFloatingText(const FEffectProperties& Props, const float Damage, bool IsCriticalHit);
 };

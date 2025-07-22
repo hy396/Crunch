@@ -3,6 +3,8 @@
 
 #include "GAS/Core/CAbilitySystemStatics.h"
 
+#include "AbilitySystemComponent.h"
+#include "AbilitySystemInterface.h"
 #include "TGameplayTags.h"
 
 FGameplayTag UCAbilitySystemStatics::GetBasicAttackAbilityTag()
@@ -23,6 +25,20 @@ FGameplayTag UCAbilitySystemStatics::GetCameraShakeGameplayCueTag()
 FGameplayTag UCAbilitySystemStatics::GetDamageNumberGameplayCueTag()
 {
 	return FGameplayTag::RequestGameplayTag("GameplayCue.Damage.Number");
+}
+
+bool UCAbilitySystemStatics::IsHero(const AActor* ActorToCheck)
+{
+	const IAbilitySystemInterface* ActorISA = Cast<IAbilitySystemInterface>(ActorToCheck);
+	if (ActorISA)
+	{
+		UAbilitySystemComponent* ActorASC = ActorISA->GetAbilitySystemComponent();
+		if (ActorASC)
+		{
+			return ActorASC->HasMatchingGameplayTag(TGameplayTags::Role_Hero);
+		}
+	}
+	return false;
 }
 
 float UCAbilitySystemStatics::GetStaticCooldownDurationForAbility(const UGameplayAbility* Ability)

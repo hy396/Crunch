@@ -34,6 +34,11 @@ namespace TGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Stats_Health_Empty, "Stats.Health.Empty", "生命值空")
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Stats_Mana_Empty, "Stats.Mana.Empty", "法术值空")
 
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Role_Hero, "Role.Hero", "英雄角色")
+
 	// 属性
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(AttributeSet_BaseDamage, "AttributeSet.BaseDamage", "基础伤害")
+
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(AttributeSet_Experience, "AttributeSet.Experience", "经验值")
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(AttributeSet_Gold, "AttributeSet.Gold", "金币")
 }

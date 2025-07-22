@@ -22,6 +22,9 @@ void UCHeroAttributeSet::GetLifetimeReplicatedProps(TArray<class FLifetimeProper
 
 	// DOREPLIFETIME_CONDITION_NOTIFY(UCHeroAttributeSet, AttackPowerGrowthRate, COND_None, REPNOTIFY_Always)
 	// DOREPLIFETIME_CONDITION_NOTIFY(UCHeroAttributeSet, MagicPowerGrowthRate, COND_None, REPNOTIFY_Always)
+	// DOREPLIFETIME_CONDITION_NOTIFY(UCHeroAttributeSet, MaxHealthGrowthRate, COND_None, REPNOTIFY_Always);
+	// DOREPLIFETIME_CONDITION_NOTIFY(UCHeroAttributeSet, MaxManaGrowthRate, COND_None, REPNOTIFY_Always);
+	
 	DOREPLIFETIME_CONDITION_NOTIFY(UCHeroAttributeSet, HealthRegen, COND_None, REPNOTIFY_Always)
 	DOREPLIFETIME_CONDITION_NOTIFY(UCHeroAttributeSet, ManaRegen, COND_None, REPNOTIFY_Always)
 	DOREPLIFETIME_CONDITION_NOTIFY(UCHeroAttributeSet, ArmorPenetration, COND_None, REPNOTIFY_Always)

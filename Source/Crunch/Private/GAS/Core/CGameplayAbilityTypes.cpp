@@ -32,13 +32,17 @@ FTHeroBaseStats::FTHeroBaseStats()
 	AttackPowerGrowthRate{0.f},
 	MagicPowerGrowthRate{0.f},
 	BaseMaxHealth{0.f},
+	MaxHealthGrowthRate{0.f},
 	HealthRegen{0.f},
 	HealthRegenGrowthRate{0.f},
 	BaseMaxMana{0.f},
+	MaxManaGrowthRate{0.f},
 	ManaRegen{0.f},
 	ManaRegenGrowthRate{0.f},
 	BaseArmor{0.f},
+	ArmorGrowthRate{0.f},
 	BaseMagicResistance{0.f},
+	MagicResistanceGrowthRate{0.f},
 	BaseMoveSpeed{0.f}
 {
 }

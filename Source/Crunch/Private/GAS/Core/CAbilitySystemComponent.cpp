@@ -3,53 +3,29 @@
 
 #include "GAS/Core/CAbilitySystemComponent.h"
 
+#include "AbilitySystemBlueprintLibrary.h"
 #include "CAttributeSet.h"
 #include "CHeroAttributeSet.h"
+#include "GameplayEffectExtension.h"
 #include "TGameplayTags.h"
 
 UCAbilitySystemComponent::UCAbilitySystemComponent()
 {
 	GetGameplayAttributeValueChangeDelegate(UCAttributeSet::GetHealthAttribute()).AddUObject(this, &UCAbilitySystemComponent::HealthUpdated);
 	GetGameplayAttributeValueChangeDelegate(UCAttributeSet::GetManaAttribute()).AddUObject(this, &UCAbilitySystemComponent::ManaUpdated);
-
+	GetGameplayAttributeValueChangeDelegate(UCHeroAttributeSet::GetExperienceAttribute()).AddUObject(this, &UCAbilitySystemComponent::ExperienceUpdated);
 	GenericConfirmInputID = static_cast<int32>(ECAbilityInputID::Confirm);
 	GenericCancelInputID = static_cast<int32>(ECAbilityInputID::Cancel);
 }
 
 void UCAbilitySystemComponent::InitializeBaseAttributes()
 {
-	if (!BaseStatDataTable || !GetOwner())
+	if (!AbilitySystemGenerics || !AbilitySystemGenerics->GetBaseStatDataTable() || !GetOwner())
 	{
 		return;
 	}
-
-	// const FHeroBaseStats* BaseStats = nullptr;
-	//
-	// for (const TPair<FName, uint8*>& DataPair : BaseStatDataTable->GetRowMap())
-	// {
-	// 	BaseStats = BaseStatDataTable->FindRow<FHeroBaseStats>(DataPair.Key, "");
-	// 	if (BaseStats && BaseStats->Class == GetOwner()->GetClass())
-	// 	{
-	// 		break; // 找到后退出循环
-	// 	}
-	// }
-	//
-	// if (BaseStats)
-	// {
-	// 	// 设置基础战斗属性
-	// 	SetNumericAttributeBase(UCAttributeSet::GetMaxHealthAttribute(), BaseStats->BaseMaxHealth);			// 最大生命值
-	// 	SetNumericAttributeBase(UCAttributeSet::GetMaxManaAttribute(), BaseStats->BaseMaxMana);				// 最大魔法值
-	// 	SetNumericAttributeBase(UCAttributeSet::GetAttackDamageAttribute(), BaseStats->BaseAttackDamage);	// 攻击伤害
-	// 	SetNumericAttributeBase(UCAttributeSet::GetArmorAttribute(), BaseStats->BaseArmor);					// 护甲值
-	// 	SetNumericAttributeBase(UCAttributeSet::GetMoveSpeedAttribute(), BaseStats->BaseMoveSpeed);			// 移动速度
-	//
-	// 	// 设置角色成长属性
-	// 	SetNumericAttributeBase(UCHeroAttributeSet::GetStrengthAttribute(), BaseStats->Strength);								// 力量
-	// 	SetNumericAttributeBase(UCHeroAttributeSet::GetStrengthGrowthRateAttribute(), BaseStats->StrengthGrowthRate);			// 力量成长率
-	// 	SetNumericAttributeBase(UCHeroAttributeSet::GetIntelligenceAttribute(), BaseStats->Intelligence);						// 智力
-	// 	SetNumericAttributeBase(UCHeroAttributeSet::GetIntelligenceGrowthRateAttribute(), BaseStats->IntelligenceGrowthRate);	// 智力成长率
-	// }
-
+	// 获取基础属性数据表和角色对应的配置数据
+	const UDataTable* BaseStatDataTable = AbilitySystemGenerics->GetBaseStatDataTable();
 	const FTHeroBaseStats* BaseStats = nullptr;
 
 	for (const TPair<FName, uint8*>& DataPair : BaseStatDataTable->GetRowMap())
@@ -74,14 +50,33 @@ void UCAbilitySystemComponent::InitializeBaseAttributes()
 
 		SetNumericAttributeBase(UCHeroAttributeSet::GetHealthRegenAttribute(), BaseStats->HealthRegen);			// 生命回复
 		SetNumericAttributeBase(UCHeroAttributeSet::GetManaRegenAttribute(), BaseStats->ManaRegen);				// 法术回复
+
 		// 设置角色成长属性
-		SetNumericAttributeBase(UCHeroAttributeSet::GetAttackPowerGrowthRateAttribute(), BaseStats->AttackPowerGrowthRate);	// 攻击成长率
-		SetNumericAttributeBase(UCHeroAttributeSet::GetMagicPowerGrowthRateAttribute(), BaseStats->MagicPowerGrowthRate);	// 法术成长率
-		SetNumericAttributeBase(UCHeroAttributeSet::GetHealthRegenGrowthRateAttribute(), BaseStats->AttackPowerGrowthRate);	// 生命回复成长
-		SetNumericAttributeBase(UCHeroAttributeSet::GetManaRegenGrowthRateAttribute(), BaseStats->MagicPowerGrowthRate);	// 法力回复成长
-		
+		SetNumericAttributeBase(UCHeroAttributeSet::GetMaxHealthGrowthRateAttribute(), BaseStats->MaxHealthGrowthRate);				// 生命成长
+		SetNumericAttributeBase(UCHeroAttributeSet::GetMaxManaGrowthRateAttribute(), BaseStats->MaxManaGrowthRate);					// 法力成长
+		SetNumericAttributeBase(UCHeroAttributeSet::GetAttackPowerGrowthRateAttribute(), BaseStats->AttackPowerGrowthRate);			// 攻击成长率
+		SetNumericAttributeBase(UCHeroAttributeSet::GetMagicPowerGrowthRateAttribute(), BaseStats->MagicPowerGrowthRate);			// 法术成长率
+		SetNumericAttributeBase(UCHeroAttributeSet::GetHealthRegenGrowthRateAttribute(), BaseStats->AttackPowerGrowthRate);			// 生命回复成长
+		SetNumericAttributeBase(UCHeroAttributeSet::GetManaRegenGrowthRateAttribute(), BaseStats->MagicPowerGrowthRate);			// 法力回复成长
+		SetNumericAttributeBase(UCHeroAttributeSet::GetArmorGrowthRateAttribute(), BaseStats->ArmorGrowthRate);						// 护甲成长
+		SetNumericAttributeBase(UCHeroAttributeSet::GetMagicResistanceGrowthRateAttribute(), BaseStats->MagicResistanceGrowthRate);	// 法术抗性成长
 	}
-	
+
+	// 处理经验系统配置
+	const FRealCurve* ExperienceCurve = AbilitySystemGenerics->GetExperienceCurve();
+	if (ExperienceCurve)
+	{
+		int MaxLevel = ExperienceCurve->GetNumKeys(); // 经验曲线中的最大等级
+		SetNumericAttributeBase(UCHeroAttributeSet::GetMaxLevelAttribute(), MaxLevel); // 设置角色最大等级限制
+
+		float MaxExp = ExperienceCurve->GetKeyValue(ExperienceCurve->GetLastKeyHandle()); // 最高等级所需经验
+		SetNumericAttributeBase(UCHeroAttributeSet::GetMaxLevelExperienceAttribute(), MaxExp); // 设置最高等级经验阈值
+
+		// 输出调试信息
+		UE_LOG(LogTemp, Warning, TEXT("最大等级为: %d, 最大经验值为: %f"), MaxLevel, MaxExp);
+	}
+	// 触发经验属性更新（用于初始化等级相关状态）
+	ExperienceUpdated(FOnAttributeChangeData());
 }
 
 void UCAbilitySystemComponent::ServerSideInit()
@@ -95,7 +90,11 @@ void UCAbilitySystemComponent::ApplyInitialEffects()
 {
 	// 检查当前组件是否拥有拥有者，并且拥有者是否具有网络权限（权威性） 
 	if (!GetOwner() || !GetOwner()->HasAuthority()) return;
-	for (const TSubclassOf<UGameplayEffect>& EffectClass : InitialEffects)
+
+	if (!AbilitySystemGenerics)
+		return;
+	
+	for (const TSubclassOf<UGameplayEffect>& EffectClass : AbilitySystemGenerics->GetInitialEffects())
 	{
 		// 创建游戏效果规格句柄，用于描述要应用的效果及其上下文
 		FGameplayEffectSpecHandle EffectSpecHandle = MakeOutgoingSpec(EffectClass, 1, MakeEffectContext());
@@ -119,7 +118,14 @@ void UCAbilitySystemComponent::GiveInitialAbilities()
 	{
 		GiveAbility(FGameplayAbilitySpec(AbilityPair.Value, 0, static_cast<int32>(AbilityPair.Key), nullptr));
 	}
+	
+	if (!AbilitySystemGenerics)
+		return;
 
+	for (const TSubclassOf<UGameplayAbility>& PassiveAbility : AbilitySystemGenerics->GetPassiveAbilities())
+	{
+		GiveAbility(FGameplayAbilitySpec(PassiveAbility, 1, -1, nullptr));
+	}
 	// for (const auto& [InputID, AbilityClass] : Abilities)
 	// {
 	// 	GiveAbility(FGameplayAbilitySpec(AbilityClass, 0, static_cast<int32>(InputID), nullptr));
@@ -128,12 +134,22 @@ void UCAbilitySystemComponent::GiveInitialAbilities()
 
 void UCAbilitySystemComponent::ApplyFullStatEffect()
 {
-	AuthApplyGameplayEffect(FullStatEffect);
+	if (!AbilitySystemGenerics || !AbilitySystemGenerics->GetFullStatEffect())
+		return;
+	AuthApplyGameplayEffect(AbilitySystemGenerics->GetFullStatEffect());
 }
 
 const TMap<ECAbilityInputID, TSubclassOf<UGameplayAbility>>& UCAbilitySystemComponent::GetAbilities() const
 {
 	return Abilities;
+}
+
+bool UCAbilitySystemComponent::IsAtMaxLevel() const
+{
+	bool bFound;
+	float CurrentLevel = GetGameplayAttributeValue(UCHeroAttributeSet::GetLevelAttribute(), bFound);
+	float MaxLevel = GetGameplayAttributeValue(UCHeroAttributeSet::GetMaxLevelAttribute(), bFound);
+	return CurrentLevel >= MaxLevel;
 }
 
 void UCAbilitySystemComponent::AuthApplyGameplayEffect(TSubclassOf<UGameplayEffect> GameplayEffect, int Level)
@@ -174,10 +190,22 @@ void UCAbilitySystemComponent::HealthUpdated(const FOnAttributeChangeData& Chang
 			// 本地添加生命值清零标签
 			AddLooseGameplayTag(TGameplayTags::Stats_Health_Empty);
 			// 角色死亡
-			if (DeathEffect)
-			{
-				AuthApplyGameplayEffect(DeathEffect);
-			}
+			if(AbilitySystemGenerics && AbilitySystemGenerics->GetDeathEffect())
+				AuthApplyGameplayEffect(AbilitySystemGenerics->GetDeathEffect());
+
+			// TODO:这里是由GE直接扣血的时候触发这种的死亡，我使用的是GCC触发的方式是在属性这边发送事件
+			// // 创建需要传给死亡被动技能的事件数据
+			// FGameplayEventData DeadAbilityEventData;
+			// if (ChangeData.GEModData)
+			// {
+			// 	DeadAbilityEventData.ContextHandle = ChangeData.GEModData->EffectSpec.GetContext();
+			// }else
+			// {
+			// 	UE_LOG(LogTemp, Error, TEXT("ChangeData.GEModData is null"))
+			// }
+			// UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(GetOwner(), 
+			// 	TGameplayTags::Stats_Dead, 
+			// 	DeadAbilityEventData);
 		}
 	}else
 	{
@@ -223,4 +251,63 @@ void UCAbilitySystemComponent::ManaUpdated(const FOnAttributeChangeData& ChangeD
 		// 移除魔法值清零标签
 		RemoveLooseGameplayTag(TGameplayTags::Stats_Mana_Empty);
 	}
+}
+
+void UCAbilitySystemComponent::ExperienceUpdated(const FOnAttributeChangeData& ChangeData)
+{
+	// 仅在拥有者存在且为服务器时执行
+	if (!GetOwner() || !GetOwner()->HasAuthority()) return;
+
+	// 满级返回
+	if (IsAtMaxLevel()) return;
+
+	// 检查能力系统通用配置是否有效
+	if (!AbilitySystemGenerics)
+		return;
+
+	// 获取当前经验值
+	float CurrentExp = ChangeData.NewValue;
+	
+	// 从配置中获取经验曲线数据（等级->所需经验的映射）
+	const FRealCurve* ExperienceCurve = AbilitySystemGenerics->GetExperienceCurve();
+	if (!ExperienceCurve)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("无法找到经验数据!"));
+		return;
+	}
+
+	float PrevLevelExp = 0.f;	// 当前等级的最低经验值
+	float NextLevelExp = 0.f;	// 下一级所需最低经验值
+	float NewLevel = 1.f;		// 新的等级
+
+	for (auto Iter = ExperienceCurve->GetKeyHandleIterator(); Iter; ++Iter)
+	{
+		// 获取当前等级（NewLevel）对应的升级经验阈值
+		float ExperienceToReachLevel = ExperienceCurve->GetKeyValue(*Iter);
+
+		if (CurrentExp < ExperienceToReachLevel)
+		{
+			// 找到第一个大于当前经验的等级阈值
+			NextLevelExp = ExperienceToReachLevel;
+			break;
+		}
+		// 记录当前等级的最低经验值
+		PrevLevelExp = ExperienceToReachLevel;
+		NewLevel = Iter.GetIndex() + 1;	// 等级加一
+	}
+	// 获取当前等级以及可用的升级点数
+	float CurrentLevel = GetNumericAttributeBase(UCHeroAttributeSet::GetLevelAttribute());
+	float CurrentUpgradePoint = GetNumericAttribute(UCHeroAttributeSet::GetUpgradePointAttribute());
+
+	UE_LOG(LogTemp, Warning, TEXT("Level:%f"),CurrentLevel);
+	// 计算等级提升数
+	float LevelUpgraded = NewLevel - CurrentLevel;
+	// 累加升级点数(当前点数+升级的级数)
+	float NewUpgradePoint = CurrentUpgradePoint + LevelUpgraded;
+
+	// 更新角色的属性值
+	SetNumericAttributeBase(UCHeroAttributeSet::GetLevelAttribute(), NewLevel);					  // 设置新等级
+	SetNumericAttributeBase(UCHeroAttributeSet::GetPrevLevelExperienceAttribute(), PrevLevelExp); // 设置当前等级经验基准
+	SetNumericAttributeBase(UCHeroAttributeSet::GetNextLevelExperienceAttribute(), NextLevelExp); // 设置下等级经验基准
+	SetNumericAttributeBase(UCHeroAttributeSet::GetUpgradePointAttribute(), NewUpgradePoint);     // 更新可分配升级点数
 }

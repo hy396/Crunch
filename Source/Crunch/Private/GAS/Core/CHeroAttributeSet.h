@@ -28,8 +28,8 @@ public:
     ATTRIBUTE_ACCESSORS(UCHeroAttributeSet, Intelligence)             // 智力
     ATTRIBUTE_ACCESSORS(UCHeroAttributeSet, Strength)                 // 力量
     ATTRIBUTE_ACCESSORS(UCHeroAttributeSet, Experience)               // 当前经验
-    ATTRIBUTE_ACCESSORS(UCHeroAttributeSet, PrevLevelExperience)      // 上一级所需经验
-    ATTRIBUTE_ACCESSORS(UCHeroAttributeSet, NextLevelExperience)      // 下一级所需经验
+    ATTRIBUTE_ACCESSORS(UCHeroAttributeSet, PrevLevelExperience)      // 当前等级经验阈值
+    ATTRIBUTE_ACCESSORS(UCHeroAttributeSet, NextLevelExperience)      // 下一级经验阈值
     ATTRIBUTE_ACCESSORS(UCHeroAttributeSet, Level)                    // 当前等级
     ATTRIBUTE_ACCESSORS(UCHeroAttributeSet, UpgradePoint)             // 可用升级点
     ATTRIBUTE_ACCESSORS(UCHeroAttributeSet, MaxLevel)                 // 最大等级
@@ -39,8 +39,13 @@ public:
     ATTRIBUTE_ACCESSORS(UCHeroAttributeSet, IntelligenceGrowthRate)   // 智力成长率
 
     // 英雄的属性配置
-    ATTRIBUTE_ACCESSORS(UCHeroAttributeSet, AttackPowerGrowthRate)  // 攻击力成长率（每等级增加的攻击力数值）
-    ATTRIBUTE_ACCESSORS(UCHeroAttributeSet, MagicPowerGrowthRate)   // 法术强度成长率
+    ATTRIBUTE_ACCESSORS(UCHeroAttributeSet, AttackPowerGrowthRate)      // 攻击力成长率（每等级增加的攻击力数值）
+    ATTRIBUTE_ACCESSORS(UCHeroAttributeSet, MagicPowerGrowthRate)       // 法术强度成长率
+    ATTRIBUTE_ACCESSORS(UCHeroAttributeSet, ArmorGrowthRate)            // 护甲成长
+    ATTRIBUTE_ACCESSORS(UCHeroAttributeSet, MagicResistanceGrowthRate)  // 法术抗性成长
+   
+    ATTRIBUTE_ACCESSORS(UCHeroAttributeSet, MaxHealthGrowthRate)    // 生命成长
+    ATTRIBUTE_ACCESSORS(UCHeroAttributeSet, MaxManaGrowthRate)      // 法力成长
     
     ATTRIBUTE_ACCESSORS(UCHeroAttributeSet, HealthRegen)            // 生命回复速率
     ATTRIBUTE_ACCESSORS(UCHeroAttributeSet, HealthRegenGrowthRate)  // 生命回复速率成长率
@@ -92,23 +97,32 @@ public:
     /** 攻击力成长率（每等级增加的攻击力数值） */
     UPROPERTY()
     FGameplayAttributeData AttackPowerGrowthRate;
-
     /** 法术强度成长率（每等级增加的法术强度数值） */
     UPROPERTY()
     FGameplayAttributeData MagicPowerGrowthRate;
+    // 护甲成长
+    UPROPERTY()
+    FGameplayAttributeData ArmorGrowthRate;
+    // 法术抗性成长
+    UPROPERTY()
+    FGameplayAttributeData MagicResistanceGrowthRate;
+    
+    /** 生命成长率（每等级增加的生命数值） */
+    UPROPERTY()
+    FGameplayAttributeData MaxHealthGrowthRate;
+    /** 法力成长率（每等级增加的法力数值） */
+    UPROPERTY()
+    FGameplayAttributeData MaxManaGrowthRate;
 
     /** 生命回复速率（每秒回复的生命值） */
     UPROPERTY(ReplicatedUsing = OnRep_HealthRegen)
     FGameplayAttributeData HealthRegen;
-
     /** 生命回复速率成长率（每等级增加的生命回复速率） */
     UPROPERTY()
     FGameplayAttributeData HealthRegenGrowthRate;
-
     /** 法力回复速率（每秒回复的法力值） */
     UPROPERTY(ReplicatedUsing = OnRep_ManaRegen)
     FGameplayAttributeData ManaRegen;
-
     /** 法力回复速率成长率（每等级增加的法力回复速率） */
     UPROPERTY()
     FGameplayAttributeData ManaRegenGrowthRate;
@@ -161,11 +175,11 @@ public:
     UPROPERTY(ReplicatedUsing = OnRep_DamageReduction)
     FGameplayAttributeData DamageReduction;
 
-    // 上一级所需经验
+    // 当前等级经验阈值
     UPROPERTY(ReplicatedUsing = OnRep_PrevLevelExperience)
     FGameplayAttributeData PrevLevelExperience;
 
-    // 下一级所需经验
+    // 下一级经验阈值
     UPROPERTY(ReplicatedUsing = OnRep_NextLevelExperience)
     FGameplayAttributeData NextLevelExperience;
 

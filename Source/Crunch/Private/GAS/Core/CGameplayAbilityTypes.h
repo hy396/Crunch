@@ -132,7 +132,11 @@ public:
 	// 基础最大生命
 	UPROPERTY(EditAnywhere, meta=(DisplayName="基础最大生命"))
 	float BaseMaxHealth;
-
+	
+	// 生命成长率（每等级增加的生命数值）
+	UPROPERTY(EditAnywhere, meta=(DisplayName="最大生命成长"))
+	float MaxHealthGrowthRate;
+	
 	// 生命回复
 	UPROPERTY(EditAnywhere, meta=(DisplayName="生命回复"))
 	float HealthRegen;
@@ -144,6 +148,10 @@ public:
 	// 基础最大法力
 	UPROPERTY(EditAnywhere, meta=(DisplayName="基础最大法力"))
 	float BaseMaxMana;
+
+	// 法力成长率（每等级增加的法力数值）
+	UPROPERTY(EditAnywhere, meta=(DisplayName="最大法力成长"))
+	float MaxManaGrowthRate;
 	
 	// 法术回复
 	UPROPERTY(EditAnywhere, meta=(DisplayName="法术回复"))
@@ -157,10 +165,18 @@ public:
 	UPROPERTY(EditAnywhere, meta=(DisplayName="基础护甲"))
 	float BaseArmor;
 
+	// 护甲成长
+	UPROPERTY(EditAnywhere, meta=(DisplayName="护甲成长"))
+	float ArmorGrowthRate;
+
 	// 基础法术抗性
 	UPROPERTY(EditAnywhere, meta=(DisplayName="基础法术抗性"))
 	float BaseMagicResistance;
 
+	// 法术抗性成长
+	UPROPERTY(EditAnywhere, meta=(DisplayName="法术抗性成长"))
+	float MagicResistanceGrowthRate;
+	
 	// 基础移动速度
 	UPROPERTY(EditAnywhere, meta=(DisplayName="基础移动速度"))
 	float BaseMoveSpeed;

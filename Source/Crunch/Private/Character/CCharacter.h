@@ -73,7 +73,10 @@ private:
 
 	// 移动速度改变回调
 	void MoveSpeedUpdated(const FOnAttributeChangeData& Data);
-
+	// 最大生命值改变回调
+	void MaxHealthUpdated(const FOnAttributeChangeData& Data);
+	// 最大法力值改变回调
+	void MaxManaUpdated(const FOnAttributeChangeData& Data);
 	// 伤害传入
 	// void AttackDamageUpdated(const FOnAttributeChangeData& Data);
 	UPROPERTY(VisibleDefaultsOnly, Category = "Gameplay Ability")

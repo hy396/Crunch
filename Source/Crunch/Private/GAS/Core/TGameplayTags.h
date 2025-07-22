@@ -34,6 +34,7 @@ namespace TGameplayTags
 	CRUNCH_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Ability_GroundBlast_Cooldown)
 	// 击飞被动
 	CRUNCH_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Ability_Passive_Launch_Activate)
+	// 状态 
 	// 死亡
 	CRUNCH_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Stats_Dead)
 	// 眩晕
@@ -45,6 +46,12 @@ namespace TGameplayTags
 	CRUNCH_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Stats_Mana_Full)
 	CRUNCH_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Stats_Mana_Empty)
 
+	CRUNCH_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Role_Hero)
+
 	// 属性
 	CRUNCH_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(AttributeSet_BaseDamage)
+	// 经验
+	CRUNCH_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(AttributeSet_Experience)
+	// 金币
+	CRUNCH_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(AttributeSet_Gold)
 }

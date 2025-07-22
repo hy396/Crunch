@@ -8,6 +8,7 @@
 #include "Net/UnrealNetwork.h"
 #include "GameplayEffectExtension.h"
 // #include "Character/Interaction/CombatInterface.h"
+#include "TGameplayTags.h"
 #include "Kismet/GameplayStatics.h"
 #include "Player/CPlayerController.h"
 
@@ -52,16 +53,22 @@ void UCAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackD
 	if (Data.EvaluatedData.Attribute == GetHealthAttribute())
 	{
 		SetHealth(FMath::Clamp(GetHealth(), 0, GetMaxHealth()));
-		//SetCachedHealthPercent(GetHealth()/GetMaxHealth());
+		SetCachedHealthPercent(GetHealth()/GetMaxHealth());
 	}
 	if (Data.EvaluatedData.Attribute == GetManaAttribute())
 	{
 		SetMana(FMath::Clamp(GetMana(), 0, GetMaxMana()));
-		//SetCachedManaPercent(GetMana()/GetMaxMana());
+		SetCachedManaPercent(GetMana()/GetMaxMana());
 	}
-
+	// if (Data.EvaluatedData.Attribute == GetMaxHealthAttribute())
+	// {
+	// 	RescaleHealth();
+	// }
+	// if (Data.EvaluatedData.Attribute == GetMaxManaAttribute())
+	// {
+	// 	RescaleMana();
+	// }
 	// 伤害
-	
 	if (Data.EvaluatedData.Attribute == GetAttackDamageAttribute())
 	{
 		// FEffectProperties Props;
@@ -95,9 +102,14 @@ void UCAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackD
 			const float NewHealth = GetHealth() - NewDamage;
 			SetHealth(FMath::Clamp(NewHealth, 0.f, GetMaxHealth()));
 			UE_LOG(LogTemp, Log, TEXT("NewDamage: %f"), NewDamage)
-
-			// TODO: 显示伤害数字目前的所有失败方案
-			// 显示伤害数字（Aura的方法）失败
+			
+			// 如果生命小于等于0触发死亡
+			if (NewHealth <= 0.f)
+			{
+				// 触发死亡被动
+				OnDeadAbility(Data);
+			}
+			// 显示伤害数字（Aura的方法）（2025/07/20：现在成功了）
 			if (AActor* TargetActor = Data.Target.AbilityActorInfo->AvatarActor.Get())
 			{
 				ShowFloatingText(TargetActor,NewDamage, bCriticalHit);
@@ -125,27 +137,6 @@ void UCAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackD
 			// 	// 播放奶瓜数字
 			// 	Props.SourceASC->ExecuteGameplayCue(UCAbilitySystemStatics::GetDamageNumberGameplayCueTag(), BlastingGameplayCueParameters);
 			// }
-
-			// 接口的方法，失败
-			// if (AActor* Target = Data.Target.AbilityActorInfo->AvatarActor.Get())
-			// {
-			// 	if (Props.SourceCharacter->Implements<UCombatInterface>())
-			// 	{
-			// 		// 确保 Target 是有效的 Actor 并且实现了接口
-			// 		if (Target->GetLocalRole() == ROLE_Authority) // 仅在服务器端调用
-			// 		{
-			// 			FNumberPopRequest NumberPopRequest;
-			// 			NumberPopRequest.WorldLocation = Target->GetActorLocation();
-			// 			NumberPopRequest.WorldLocation.Z += 200.f; // 调整位置
-			// 			NumberPopRequest.NumberToDisplay = NewDamage;
-			// 			NumberPopRequest.bIsCriticalDamage = bCriticalHit;
-			//
-			// 			// 直接调用接口函数（服务器端）
-			// 			ICombatInterface::Execute_AddNiagaraText(Target, NumberPopRequest);
-			// 		}
-			// 	}
-			// }
-			
 			// Source是输出者，Target是挨打的
 			// UE_LOG(LogTemp, Warning, TEXT("SourceASCName: %s"), *Data.EffectSpec.GetContext().GetOriginalInstigatorAbilitySystemComponent()->GetName())
 			// UE_LOG(LogTemp, Warning, TEXT("TargetASCName: %s"), *UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(Data.Target.AbilityActorInfo->AvatarActor.Get())->GetName())
@@ -153,6 +144,28 @@ void UCAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackD
 			// UE_LOG(LogTemp, Warning, TEXT("SourceName: %s"), *Data.EffectSpec.GetContext().GetOriginalInstigatorAbilitySystemComponent()->AbilityActorInfo->AvatarActor.Get()->GetName())
 			// UE_LOG(LogTemp, Warning, TEXT("TargetName: %s"), *Data.Target.AbilityActorInfo->AvatarActor.Get()->GetName())
 		}
+	}
+}
+
+void UCAttributeSet::RescaleHealth()
+{
+	if (!GetOwningActor()->HasAuthority())
+		return;
+
+	if (GetCachedHealthPercent() != 0 && GetHealth() != 0)
+	{
+		SetHealth(GetMaxHealth() * GetCachedHealthPercent());
+	}
+}
+
+void UCAttributeSet::RescaleMana()
+{
+	if (!GetOwningActor()->HasAuthority())
+		return;
+
+	if (GetCachedManaPercent() != 0 && GetMana() != 0)
+	{
+		SetMana(GetMaxMana() * GetCachedManaPercent());
 	}
 }
 
@@ -277,44 +290,17 @@ void UCAttributeSet::ShowFloatingText(AActor* TargetActor, const float Damage, b
 	}
 }
 
-// void UCAttributeSet::ShowFloatingText(const FEffectProperties& Props, const float Damage, bool IsCriticalHit)
-// {
-// 	for (int32 i = 0; ;++i)
-// 	{
-// 		if (ACPlayerController* PC = Cast<ACPlayerController>(UGameplayStatics::GetPlayerController(Props.TargetCharacter,i)))
-// 		{
-// 			PC->ShowDamageNumber(Damage, Props.TargetCharacter, IsCriticalHit); //调用显示伤害数字
-// 		}else
-// 		{
-// 			break;
-// 		}
-// 	}
-// }
-
-// void UCAttributeSet::Client_ShowFloatingText_Implementation(const FEffectProperties& Props, const float Damage,
-// 	bool IsCriticalHit)
-// {
-// 	for (int32 i = 0; ;++i)
-// 	{
-// 		if (ACPlayerController* PC = Cast<ACPlayerController>(UGameplayStatics::GetPlayerController(Props.TargetCharacter,i)))
-// 		{
-// 			// PC->ShowDamageNumber(Damage, Props.TargetCharacter, IsCriticalHit); //调用显示伤害数字
-// 			if (PC->IsLocalController())
-// 			{
-// 				if (Props.TargetCharacter->Implements<UCombatInterface>())
-// 				{
-// 					FNumberPopRequest NumberPopRequest;
-// 					NumberPopRequest.WorldLocation = Props.TargetCharacter->GetActorLocation();
-// 					NumberPopRequest.WorldLocation.Z += 200.f;
-// 					NumberPopRequest.bIsCriticalDamage = IsCriticalHit;
-// 					NumberPopRequest.NumberToDisplay = Damage;
-// 					// NumberPopComponent->AddNumberPop(NumberPopRequest);
-// 					ICombatInterface::Execute_AddNiagaraText(Props.TargetCharacter,NumberPopRequest);
-// 				}
-// 			}
-// 		}else
-// 		{
-// 			break;
-// 		}
-// 	}
-// }	
+void UCAttributeSet::OnDeadAbility(const FGameplayEffectModCallbackData& Data)
+{
+	FGameplayEventData DeadAbilityEventData;
+	if (AActor* TargetActor = Data.EffectSpec.GetContext().GetOriginalInstigatorAbilitySystemComponent()->AbilityActorInfo->AvatarActor.Get())
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Dead：%s"), *GetOwningActor()->GetName())
+		DeadAbilityEventData.Target = TargetActor;
+		DeadAbilityEventData.ContextHandle = Data.EffectSpec.GetContext();
+	}
+	
+	UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(GetOwningActor(), 
+		TGameplayTags::Stats_Dead, 
+		DeadAbilityEventData);
+}

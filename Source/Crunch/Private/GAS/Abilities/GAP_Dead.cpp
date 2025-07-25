@@ -39,12 +39,12 @@ void UGAP_Dead::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const F
 		if (TriggerEventData->ContextHandle.GetOriginalInstigatorAbilitySystemComponent()->AbilityActorInfo->AvatarActor.Get())
 		{
 			Killer = TriggerEventData->ContextHandle.GetOriginalInstigatorAbilitySystemComponent()->AbilityActorInfo->AvatarActor.Get();
-			UE_LOG(LogTemp, Warning, TEXT("TriggerEventData->ContextHandle.GetOriginalInstigatorAbilitySystemComponent()->AbilityActorInfo->AvatarActor.Get(): %s"), *Killer->GetName())
+			// UE_LOG(LogTemp, Warning, TEXT("TriggerEventData->ContextHandle.GetOriginalInstigatorAbilitySystemComponent()->AbilityActorInfo->AvatarActor.Get(): %s"), *Killer->GetName())
 		}
 		if (TriggerEventData->Target)
 		{
 			Killer = static_cast<AActor*>(TriggerEventData->Target);
-			UE_LOG(LogTemp, Warning, TEXT("TriggerEventData->Target: %s"), *Killer->GetName())
+			// UE_LOG(LogTemp, Warning, TEXT("TriggerEventData->Target: %s"), *Killer->GetName())
 		}
 
 		
@@ -80,7 +80,7 @@ void UGAP_Dead::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const F
 		{
 			float KillerExperienceReward = TotalExperienceReward * KillerRewardPortion;
 			float KillerGoldReward = TotalGoldReward * KillerRewardPortion;
-			UE_LOG(LogTemp, Warning, TEXT("击杀者经验奖励：%f"), KillerExperienceReward)
+			// UE_LOG(LogTemp, Warning, TEXT("击杀者经验奖励：%f"), KillerExperienceReward)
 			// 创建击杀者奖励效果
 			FGameplayEffectSpecHandle EffectSpecHandle = MakeOutgoingGameplayEffectSpec(RewardEffect);
 			// 设置GE上面的属性值
@@ -97,8 +97,8 @@ void UGAP_Dead::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const F
 		// 把剩余的奖励平均分配给没有k到头的英雄单位
 		float ExperiencePerTarget = TotalExperienceReward / RewardTargets.Num();
 		float GoldPerTarget = TotalGoldReward / RewardTargets.Num();
-		UE_LOG(LogTemp, Warning, TEXT("数组里面多少人%d"), RewardTargets.Num())
-		UE_LOG(LogTemp, Warning, TEXT("平均经验奖励：%f"), ExperiencePerTarget)
+		// UE_LOG(LogTemp, Warning, TEXT("数组里面多少人%d"), RewardTargets.Num())
+		// UE_LOG(LogTemp, Warning, TEXT("平均经验奖励：%f"), ExperiencePerTarget)
 
 		// 创建群体奖励效果
 		FGameplayEffectSpecHandle EffectSpecHandle = MakeOutgoingGameplayEffectSpec(RewardEffect);

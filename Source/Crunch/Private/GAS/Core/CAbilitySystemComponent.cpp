@@ -4,6 +4,7 @@
 #include "GAS/Core/CAbilitySystemComponent.h"
 
 #include "AbilitySystemBlueprintLibrary.h"
+#include "CAbilitySystemStatics.h"
 #include "CAttributeSet.h"
 #include "CHeroAttributeSet.h"
 #include "GameplayEffectExtension.h"
@@ -84,6 +85,7 @@ void UCAbilitySystemComponent::ServerSideInit()
 	InitializeBaseAttributes();
 	ApplyInitialEffects();
 	GiveInitialAbilities();
+	
 }
 
 void UCAbilitySystemComponent::ApplyInitialEffects()
@@ -150,6 +152,56 @@ bool UCAbilitySystemComponent::IsAtMaxLevel() const
 	float CurrentLevel = GetGameplayAttributeValue(UCHeroAttributeSet::GetLevelAttribute(), bFound);
 	float MaxLevel = GetGameplayAttributeValue(UCHeroAttributeSet::GetMaxLevelAttribute(), bFound);
 	return CurrentLevel >= MaxLevel;
+}
+
+void UCAbilitySystemComponent::Server_UpgradeAbilityWithID_Implementation(ECAbilityInputID InputID)
+{
+	// 获取可用升级点数
+	bool bFound = false;
+	float UpgradePoint = GetGameplayAttributeValue(UCHeroAttributeSet::GetUpgradePointAttribute(), bFound);
+	// 检查可用升级点数是否大于0
+	if (!bFound && UpgradePoint <= 0) return;
+
+	// 获取玩家等级
+	float CurrentLevel = GetGameplayAttributeValue(UCHeroAttributeSet::GetLevelAttribute(), bFound);
+	if (!bFound) return;
+	
+	// 获取对应输入ID的技能
+	FGameplayAbilitySpec* AbilitySpec = FindAbilitySpecFromInputID(static_cast<int32>(InputID));
+	// 检查是否有该技能以及等级是否满级
+	if (!AbilitySpec || UCAbilitySystemStatics::IsAbilityAtMaxLevel(*AbilitySpec,CurrentLevel))
+	{
+		return;
+	}
+	UE_LOG(LogTemp, Warning, TEXT("技能升级成功%d"),InputID)
+	// 消耗一个技能点升级技能
+	SetNumericAttributeBase(UCHeroAttributeSet::GetUpgradePointAttribute(), UpgradePoint - 1);
+	AbilitySpec->Level += 1;
+	// 标记 FGameplayAbilitySpec 状态已改变，通知 GAS 需要将其复制到客户端
+	// （直接修改AbilitySpec成员后必须调用此函数）
+	MarkAbilitySpecDirty(*AbilitySpec);
+
+	// 通知客户端更新技能等级
+	Client_AbilitySpecLevelUpdated(AbilitySpec->Handle, AbilitySpec->Level);
+}
+
+bool UCAbilitySystemComponent::Server_UpgradeAbilityWithID_Validate(ECAbilityInputID InputID)
+{
+	return true;
+}
+
+void UCAbilitySystemComponent::Client_AbilitySpecLevelUpdated_Implementation(FGameplayAbilitySpecHandle Handle,
+	int NewLevel)
+{
+	// 通过句柄查找本地技能实例
+	if (FGameplayAbilitySpec* const Spec = FindAbilitySpecFromHandle(Handle))
+	{
+		// 更新客户端技能等级
+		Spec->Level = NewLevel;
+		
+		// 广播变更通知，刷新等客户端响应
+		AbilitySpecDirtiedCallbacks.Broadcast(*Spec);
+	}
 }
 
 void UCAbilitySystemComponent::AuthApplyGameplayEffect(TSubclassOf<UGameplayEffect> GameplayEffect, int Level)

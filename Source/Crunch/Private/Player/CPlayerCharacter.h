@@ -74,6 +74,10 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "Input")
 	TObjectPtr<UInputAction> MoveInputAction;
 
+	// 技能升级触发键
+	UPROPERTY(EditDefaultsOnly, Category = "Input")
+	TObjectPtr<UInputAction> LearnAbilityLeaderAction;
+
 	// 技能输入
 	UPROPERTY(EditDefaultsOnly, Category = "Input")
 	TMap<ECAbilityInputID, TObjectPtr<UInputAction>> GameplayAbilityInputActions;
@@ -83,6 +87,13 @@ private:
 
 	void HandleLookInput(const FInputActionValue& InputActionValue);
 	void HandleMoveInput(const FInputActionValue& InputActionValue);
+	// 技能升级触发按下
+	void LearnAbilityLeaderDown(const FInputActionValue& InputActionValue);
+	// 技能升级触发抬起
+	void LearnAbilityLeaderUp(const FInputActionValue& InputActionValue);
+	// 是否按下技能升级键
+	bool bIsLearnAbilityLeaderDown = false;
+	
 	void HandleAbilityInput(const FInputActionValue& InputActionValue, ECAbilityInputID InputID);
 	// 玩家的输入开关
 	void SetInputEnabledFromPlayerController(bool bEnabled);

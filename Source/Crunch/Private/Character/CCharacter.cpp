@@ -47,6 +47,10 @@ void ACCharacter::ServerSideInit()
 	// 设置当前角色作为Owner和Avatar，用于后续的能力和效果应用
 	CAbilitySystemComponent->InitAbilityActorInfo(this, this);
 	CAbilitySystemComponent->ServerSideInit();
+	// if (CAttributeSet)
+	// {
+	// 	UE_LOG(LogTemp, Warning, TEXT("Name:%s,Health:%f"), *GetName(),CAttributeSet->GetMaxHealth())
+	// }
 }
 
 void ACCharacter::ClientSideInit()
@@ -153,6 +157,14 @@ bool ACCharacter::Server_SendGameplayEventToSelf_Validate(const FGameplayTag& Ev
 {
 	// 返回 true,表示操作有效
 	return true;
+}
+
+void ACCharacter::UpgradeAbilityWithInputID(ECAbilityInputID InputID)
+{
+	if (CAbilitySystemComponent)
+	{
+		CAbilitySystemComponent->Server_UpgradeAbilityWithID(InputID);
+	}
 }
 
 void ACCharacter::BindGASChangeDelegates()

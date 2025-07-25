@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "AbilitySystemComponent.h"
 #include "Blueprint/IUserObjectListEntry.h"
 #include "Blueprint/UserWidget.h"
 #include "Components/Image.h"
@@ -60,11 +61,31 @@ private:
 	// 冷却百分比材质参数名
 	UPROPERTY(EditDefaultsOnly, Category = "Visual")
 	FName CooldownPercentParamName = "Percent";
+
+	// 技能等级材质参数名
+	UPROPERTY(EditDefaultsOnly, Category = "Visual")
+	FName AbilityLevelParamName = "Level";
+
+	// 最大升级的材质参数名
+	UPROPERTY(EditDefaultsOnly, Category = "Visual")
+	FName MaxLevelParamName = "UTiling";
+
+	// 能否释放技能材质参数名
+	UPROPERTY(EditDefaultsOnly, Category = "Visual")
+	FName CanCastAbilityParamName = "CanCast";
+    
+	// 是否有可用升级点材质参数名
+	UPROPERTY(EditDefaultsOnly, Category = "Visual")
+	FName UpgradePointAvailableParamName = "UpgradeAvailable";
 	
 	// 技能图标
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UImage> Icon;
 
+	// 技能等级进度条控件
+	UPROPERTY(meta=(BindWidget))
+	TObjectPtr<UImage> LevelGauge;
+	
 	// 冷却计时文本控件
 	UPROPERTY(meta=(BindWidget))
 	TObjectPtr<UTextBlock> CooldownCounterText;
@@ -110,4 +131,28 @@ private:
 
 	// 冷却刷新回调，更新冷却文本和进度条
 	void UpdateCooldown();
+
+	// 技能所属的能力组件
+	TObjectPtr<const UAbilitySystemComponent> OwnerAbilitySystemComponent;
+
+	// 缓存的技能句柄
+	FGameplayAbilitySpecHandle CachedAbilitySpecHandle;
+
+	// 获取技能Spec
+	const FGameplayAbilitySpec* GetAbilitySpec();
+
+	// 技能是否学习
+	bool bIsAbilityLearned = false;
+
+	// 当技能规格更新时刷新UI显示（等级/冷却/消耗等）
+	void AbilitySpecUpdated(const FGameplayAbilitySpec& AbilitySpec);
+
+	// 更新技能能否释放的状态（考虑法力/学习状态等）
+	void UpdateCanCast();
+
+	// 当升级点数变化时刷新升级提示
+	void UpgradePointUpdated(const FOnAttributeChangeData& Data);
+
+	// 法力变化回调
+	void ManaUpdated(const FOnAttributeChangeData& Data);
 };

@@ -22,6 +22,10 @@ enum class ECAbilityInputID : uint8
 	AbilityFour						UMETA(DisplayName="四技能"),
 	AbilityFive						UMETA(DisplayName="五技能"),
 	AbilitySix						UMETA(DisplayName="六技能"),
+	AbilityQ						UMETA(DisplayName="Q技能"),
+	AbilityE						UMETA(DisplayName="E技能"),
+	AbilityF						UMETA(DisplayName="F技能"),
+	AbilityR						UMETA(DisplayName="R技能"),
 	Confirm							UMETA(DisplayName="确认"),
 	Cancel							UMETA(DisplayName="取消")
 };
@@ -41,7 +45,7 @@ public:
 
 	// 基础伤害大小
 	UPROPERTY(EditAnywhere)
-	float BaseDamage;
+	FScalableFloat BaseDamage;
 
 	// 属性的百分比伤害加成
 	UPROPERTY(EditAnywhere)

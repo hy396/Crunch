@@ -56,6 +56,10 @@ public:
 	// 在服务器端向自身发送游戏事件
 	UFUNCTION(Server, Reliable, WithValidation)
 	void Server_SendGameplayEventToSelf(const FGameplayTag& EventTag, const FGameplayEventData& EventData);
+protected:
+	// 技能升级
+	void UpgradeAbilityWithInputID(ECAbilityInputID InputID);
+
 private:
 	// 绑定GAS属性改变委托
 	void BindGASChangeDelegates();

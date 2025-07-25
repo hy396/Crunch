@@ -17,6 +17,18 @@ UCGameplayAbility::UCGameplayAbility()
 	ActivationBlockedTags.AddTag(TGameplayTags::Stats_Stun);
 }
 
+bool UCGameplayAbility::CanActivateAbility(const FGameplayAbilitySpecHandle Handle,
+	const FGameplayAbilityActorInfo* ActorInfo, const FGameplayTagContainer* SourceTags,
+	const FGameplayTagContainer* TargetTags, FGameplayTagContainer* OptionalRelevantTags) const
+{
+	FGameplayAbilitySpec* AbilitySpec = ActorInfo->AbilitySystemComponent->FindAbilitySpecFromHandle(Handle);
+	if (AbilitySpec && AbilitySpec->Level <= 0)
+	{
+		return false;
+	}
+	return Super::CanActivateAbility(Handle, ActorInfo, SourceTags, TargetTags, OptionalRelevantTags);
+}
+
 UAnimInstance* UCGameplayAbility::GetOwnerAnimInstance() const
 {
 	USkeletalMeshComponent* OwnerSkeletalMeshComp = GetOwningComponentFromActorInfo();
@@ -143,7 +155,8 @@ void UCGameplayAbility::ApplyDamage(AActor* TargetActor,const FGenericDamageEffe
 	ContextHandle.SetAbility(this);
 	ContextHandle.AddSourceObject(AvatarActor);
 	ContextHandle.AddInstigator(AvatarActor, AvatarActor);
-	float NewDamage = Damage.BaseDamage;
+	
+	float NewDamage = Damage.BaseDamage.GetValueAtLevel(GetAbilityLevel());
 	for(auto& Pair : Damage.DamageTypes)
 	{
 		bool bFound ;
@@ -173,7 +186,7 @@ void UCGameplayAbility::ApplyDamage(AActor* TargetActor,const FGenericDamageEffe
 
 void UCGameplayAbility::MakeDamage(const FGenericDamageEffectDef& Damage, int Level)
 {
-	float NewDamage = Damage.BaseDamage;
+	float NewDamage = Damage.BaseDamage.GetValueAtLevel(GetAbilityLevel());
 	//通过标签设置GE使用的配置
 	for(auto& Pair : Damage.DamageTypes)
 	{

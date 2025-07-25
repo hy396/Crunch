@@ -5,6 +5,7 @@
 
 #include "AbilitySystemComponent.h"
 #include "AbilitySystemInterface.h"
+#include "CGameplayAbilityTypes.h"
 #include "TGameplayTags.h"
 
 FGameplayTag UCAbilitySystemStatics::GetBasicAttackAbilityTag()
@@ -41,6 +42,39 @@ bool UCAbilitySystemStatics::IsHero(const AActor* ActorToCheck)
 	return false;
 }
 
+bool UCAbilitySystemStatics::IsAbilityAtMaxLevel(const FGameplayAbilitySpec& Spec, const float PlayLevel)
+{
+	float MaxAbilityLevel;
+	// 如果是大招进来了
+	if (Spec.InputID == static_cast<int32>(ECAbilityInputID::AbilityR))
+	{
+		// 6~10 : 1
+		// 11~15 : 2
+		// 16~18 : 3
+		MaxAbilityLevel = PlayLevel >= 16 ? 3 :
+				   PlayLevel >= 11 ? 2 :
+				   PlayLevel >= 6 ? 1 :
+					0;
+	}else
+	{
+		// Q、E、F的小技能
+		/*
+		* 1 ~ 2 ：1
+		* 3 ~ 4 ：2
+		* 5 ~ 6 ：3
+		* 7 ~ 8 ：4
+		* 9 ~18：5
+		 */
+		MaxAbilityLevel = PlayLevel >= 9 ? 5 :
+					PlayLevel >= 7 ? 4 :
+					PlayLevel >= 5 ? 3 :
+					PlayLevel >= 3 ? 2 :
+					1;
+	}
+	// Spec.InputID 
+	return Spec.Level >= MaxAbilityLevel;
+}
+
 float UCAbilitySystemStatics::GetStaticCooldownDurationForAbility(const UGameplayAbility* Ability)
 {
 	if (!Ability) return 0.f;
@@ -67,4 +101,113 @@ float UCAbilitySystemStatics::GetStaticCostForAbility(const UGameplayAbility* Ab
 	CostEffect->Modifiers[0].ModifierMagnitude.GetStaticMagnitudeIfPossible(1, Cost);
 	// 取正值
 	return FMath::Abs(Cost);
+}
+
+bool UCAbilitySystemStatics::CheckAbilityCost(const FGameplayAbilitySpec& AbilitySpec,
+	const UAbilitySystemComponent& ASC)
+{
+	// 获取技能
+	const UGameplayAbility* AbilityCDO = AbilitySpec.Ability;
+	if (AbilityCDO)
+	{
+		// 调用技能的检查消耗方法
+		return AbilityCDO->CheckCost(AbilitySpec.Handle, ASC.AbilityActorInfo.Get());
+	}
+	// 技能无效
+	return false;
+}
+
+bool UCAbilitySystemStatics::CheckAbilityCostStatic(const UGameplayAbility* AbilityCDO, const UAbilitySystemComponent& ASC)
+{
+	if (AbilityCDO)
+	{
+		// 使用空句柄调用检查（适用于未实例化的技能）
+		return AbilityCDO->CheckCost(FGameplayAbilitySpecHandle(), ASC.AbilityActorInfo.Get());
+	}
+
+	return false;  // 无有效技能对象时默认返回false
+}
+
+float UCAbilitySystemStatics::GetManaCostFor(const UGameplayAbility* AbilityCDO, const UAbilitySystemComponent& ASC,
+	int AbilityLevel)
+{
+	float ManaCost = 0.f;
+	if (AbilityCDO)
+	{
+		// 获取消耗效果
+		UGameplayEffect* CostEffect = AbilityCDO->GetCostGameplayEffect();
+		if (CostEffect && CostEffect->Modifiers.Num() > 0)
+		{
+			// 创建临时的效果规格
+			FGameplayEffectSpecHandle EffectSpec = ASC.MakeOutgoingSpec(
+				CostEffect->GetClass(), 
+				AbilityLevel, 
+				ASC.MakeEffectContext()
+			);
+			
+			// 获取技能的消耗效果的静态效果值
+			CostEffect->Modifiers[0].ModifierMagnitude.AttemptCalculateMagnitude(
+				*EffectSpec.Data.Get(),
+				ManaCost
+				);
+		}
+	}
+	// 返回绝对值（确保消耗值始终为正数）
+	return FMath::Abs(ManaCost);
+}
+
+float UCAbilitySystemStatics::GetCooldownDurationFor(const UGameplayAbility* AbilityCDO,
+	const UAbilitySystemComponent& ASC, int AbilityLevel)
+{
+	float CooldownDuration = 0.f;
+	if (AbilityCDO)
+	{
+		// 获取技能关联的冷却效果
+		UGameplayEffect* CooldownEffect = AbilityCDO->GetCooldownGameplayEffect();
+		if (CooldownEffect)
+		{
+			// 创建临时的效果规格
+			FGameplayEffectSpecHandle EffectSpec = ASC.MakeOutgoingSpec(
+				CooldownEffect->GetClass(), 
+				AbilityLevel, 
+				ASC.MakeEffectContext()
+			);
+            
+			// 计算冷却效果的实际持续时间（考虑冷却缩减属性）
+			CooldownEffect->DurationMagnitude.AttemptCalculateMagnitude(
+				*EffectSpec.Data.Get(), 
+				CooldownDuration
+			);
+		}
+	}
+
+	// 返回绝对值（确保冷却时间始终为正数）
+	return FMath::Abs(CooldownDuration);
+}
+
+float UCAbilitySystemStatics::GetCooldownRemainingFor(const UGameplayAbility* AbilityCDO,
+	const UAbilitySystemComponent& ASC)
+{
+	if (!AbilityCDO) return 0.f;
+
+	// 获取冷却效果
+	UGameplayEffect* CooldownEffect = AbilityCDO->GetCooldownGameplayEffect();
+	if (!CooldownEffect) return 0.f;
+
+	// 创建查询条件：查找此技能对应的冷却效果
+	FGameplayEffectQuery CooldownEffectQuery;
+	CooldownEffectQuery.EffectDefinition = CooldownEffect->GetClass();
+
+	float CooldownRemaining = 0.f;
+	// 获取所有匹配效果的剩余时间
+	TArray<float> CooldownRemainings = ASC.GetActiveEffectsTimeRemaining(CooldownEffectQuery);
+	// 找出最长的剩余时间
+	for (float Remaining : CooldownRemainings)
+	{
+		if (Remaining > CooldownRemaining)
+		{
+			CooldownRemaining = Remaining;
+		}
+	}
+	return CooldownRemaining;
 }

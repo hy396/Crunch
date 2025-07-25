@@ -28,7 +28,26 @@ public:
 	const TMap<ECAbilityInputID, TSubclassOf<UGameplayAbility>>& GetAbilities() const;
 	// 是否达到最大等级
 	bool IsAtMaxLevel() const;
-
+	
+	/**
+	 * 服务器端处理能力升级请求
+	 * 通过指定的ECAbilityInputID参数升级对应能力
+	 * 包含可靠的网络验证机制
+	 * @param InputID - 要升级的能力输入ID
+	 */
+	UFUNCTION(Server, Reliable, WithValidation)
+	void Server_UpgradeAbilityWithID(ECAbilityInputID InputID);
+	
+	/**
+	 * 客户端能力等级更新同步
+	 * 当能力等级发生变化时触发网络同步
+	 * 通过GameplayAbilitySpecHandle定位具体能力实例
+	 * @param Handle - 能力实例句柄
+	 * @param NewLevel - 新的能力等级数值
+	 */
+	UFUNCTION(Client, Reliable)
+	void Client_AbilitySpecLevelUpdated(FGameplayAbilitySpecHandle Handle, int NewLevel);
+	
 private:
 	// 初始效果
 	void ApplyInitialEffects();

@@ -218,6 +218,7 @@ FVector ACPlayerCharacter::GetMoveFwdDir() const
 
 void ACPlayerCharacter::OnAimStateChanged(bool bIsAiming)
 {
+	// if (IsLocallyControlledByPlayer())
 	// 瞄准状态变化时，插值相机到瞄准或默认位置
 	LerpCameraToLocalOffsetLocation(bIsAiming ? CameraAimLocalOffset : FVector{0.f});
 }

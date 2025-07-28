@@ -8,6 +8,7 @@
 #include "Abilities/AbilityListView.h"
 #include "Blueprint/UserWidget.h"
 #include "GAS/Core/CGameplayAbilityTypes.h"
+#include "Shop/ShopWidget.h"
 #include "GameplayWidget.generated.h"
 
 /**
@@ -54,6 +55,10 @@ private:
 	// 属性面板：移动速度显示控件
 	UPROPERTY(meta=(BindWidget))
 	TObjectPtr<UStatsGauge> MoveSpeedGauge;
+
+	// 商店
+	UPROPERTY(meta=(BindWidget))
+	TObjectPtr<UShopWidget> ShopWidget;
 
 	UPROPERTY()
 	TObjectPtr<UAbilitySystemComponent> OwnerAbilitySystemComponent;

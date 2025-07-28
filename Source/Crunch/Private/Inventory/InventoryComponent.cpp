@@ -1,7 +1,7 @@
 ﻿// 幻雨喜欢小猫咪
 
 
-#include "InventoryComponent.h"
+#include "Inventory/InventoryComponent.h"
 
 
 // Sets default values for this component's properties

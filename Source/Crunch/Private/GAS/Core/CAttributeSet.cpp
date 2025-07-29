@@ -288,6 +288,17 @@ void UCAttributeSet::ShowFloatingText(AActor* TargetActor, const float Damage, b
 			break;
 		}
 	}
+
+	// // 从技能释放者身上获取PC并显示伤害数字
+	// if(ACPlayerController* PC = Cast<ACPlayerController>(Props.SourceCharacter->Controller))
+	// {
+	// 	PC->ShowDamageNumber(Damage, TargetActor, IsCriticalHit); //调用显示伤害数字
+	// }
+	// // 从目标身上获取PC并显示伤害数字
+	// if(ACPlayerController* PC = Cast<ACPlayerController>(Props.TargetCharacter->Controller))
+	// {
+	// 	PC->ShowDamageNumber(Damage, TargetActor, IsCriticalHit); //调用显示伤害数字
+	// }
 }
 
 void UCAttributeSet::OnDeadAbility(const FGameplayEffectModCallbackData& Data)

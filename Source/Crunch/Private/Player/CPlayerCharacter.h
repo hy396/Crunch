@@ -7,6 +7,7 @@
 #include "Crunch/Private/Character/CCharacter.h"
 #include "GAS/Core/CGameplayAbilityTypes.h"
 #include "GAS/Core/CHeroAttributeSet.h"
+#include "Inventory/InventoryComponent.h"
 #include "CPlayerCharacter.generated.h"
 
 class UInputAction;
@@ -127,5 +128,10 @@ private:
 
 	// 相机插值Tick回调
 	void TickCameraLocalOffsetLerp(FVector Goal);
+#pragma endregion
+#pragma region 库存
+private:
+	UPROPERTY()
+	TObjectPtr<UInventoryComponent> InventoryComponent;
 #pragma endregion
 };

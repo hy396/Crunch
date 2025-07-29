@@ -3,6 +3,9 @@
 
 #include "Inventory/InventoryComponent.h"
 
+#include "AbilitySystemBlueprintLibrary.h"
+#include "GAS/Core/CHeroAttributeSet.h"
+
 
 // Sets default values for this component's properties
 UInventoryComponent::UInventoryComponent()
@@ -14,23 +17,55 @@ UInventoryComponent::UInventoryComponent()
 	// ...
 }
 
+void UInventoryComponent::TryPurchase(const UPDA_ShopItem* ItemToPurchase)
+{
+	if (!OwnerAbilitySystemComponent) return;
+
+	// 在服务器中进行购买
+	Server_Purchase(ItemToPurchase);
+}
+
+float UInventoryComponent::GetGold() const
+{
+	bool bFound = false;
+	if (OwnerAbilitySystemComponent)
+	{
+		// 获取金币属性
+		float Gold = OwnerAbilitySystemComponent->GetGameplayAttributeValue(UCHeroAttributeSet::GetGoldAttribute(), bFound);
+		if (bFound)
+		{
+			return Gold;
+		}
+	}
+	return 0.f;
+}
+
 
 // Called when the game starts
 void UInventoryComponent::BeginPlay()
 {
 	Super::BeginPlay();
+	OwnerAbilitySystemComponent = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(GetOwner());
 
-	// ...
-	
 }
 
-
-// Called every frame
-void UInventoryComponent::TickComponent(float DeltaTime, ELevelTick TickType,
-                                        FActorComponentTickFunction* ThisTickFunction)
+void UInventoryComponent::Server_Purchase_Implementation(const UPDA_ShopItem* ItemToPurchase)
 {
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+	if (!ItemToPurchase) return;
 
-	// ...
+	// 金币不够无法购买
+	if (GetGold() < ItemToPurchase->GetPrice()) return;
+
+	// 扣掉金币
+	OwnerAbilitySystemComponent->ApplyModToAttribute(UCHeroAttributeSet::GetGoldAttribute(), EGameplayModOp::Additive, -ItemToPurchase->GetPrice());
+
+	// 修复日志输出：使用正确的字符串格式化方式
+	const FString ItemName = ItemToPurchase->GetItemName().BuildSourceString();
+	UE_LOG(LogTemp, Warning, TEXT("购买的物品: %s"), *ItemName);
+}
+
+bool UInventoryComponent::Server_Purchase_Validate(const UPDA_ShopItem* ItemToPurchase)
+{
+	return true;
 }
 

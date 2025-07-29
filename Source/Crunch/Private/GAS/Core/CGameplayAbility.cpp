@@ -166,7 +166,10 @@ void UCGameplayAbility::ApplyDamage(AActor* TargetActor,const FGenericDamageEffe
 			NewDamage += AttributeValue * Pair.Value / 100.f;
 		}
 	}
-	GetAbilitySystemComponentFromActorInfo()->SetNumericAttributeBase(UCAttributeSet::GetBaseDamageAttribute(), NewDamage);
+	// 设置伤害的属性
+	GetAbilitySystemComponentFromActorInfo()->ApplyModToAttribute(UCAttributeSet::GetBaseDamageAttribute(), EGameplayModOp::Override, NewDamage);
+	// GetAbilitySystemComponentFromActorInfo()->SetNumericAttributeBase(UCAttributeSet::GetBaseDamageAttribute(), NewDamage);
+	
 	// 创建效果Spec句柄，指定效果类、能力等级和上下文
 	FGameplayEffectSpecHandle EffectSpecHandle = ASC->MakeOutgoingSpec(Damage.DamageEffect, Level, ContextHandle);
 	// UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(EffectSpecHandle, TGameplayTags::AttributeSet_BaseDamage, NewDamage);

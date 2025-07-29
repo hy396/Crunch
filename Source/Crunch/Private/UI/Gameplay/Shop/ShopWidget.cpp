@@ -15,7 +15,12 @@ void UShopWidget::NativeConstruct()
 
 	// 绑定列表项生成事件
 	ShopItemList->OnEntryWidgetGenerated().AddUObject(this, &UShopWidget::ShopItemWidgetGenerated);
-	
+
+	// 获取玩家的库存组件并存储起来
+	if (APawn* OwnerPawn = GetOwningPlayerPawn())
+	{
+		OwnerInventoryComponent = OwnerPawn->GetComponentByClass<UInventoryComponent>();
+	}
 }
 
 void UShopWidget::LoadShopItems()
@@ -47,6 +52,13 @@ void UShopWidget::ShopItemWidgetGenerated(UUserWidget& NewWidget)
 	UShopItemWidget* ItemWidget = Cast<UShopItemWidget>(&NewWidget);
 	if (ItemWidget)
 	{
+		// 绑定购买事件到库存系统
+		if (OwnerInventoryComponent)
+		{
+			ItemWidget->OnItemPurchaseIssued.AddUObject(
+				OwnerInventoryComponent,
+				&UInventoryComponent::TryPurchase);
+		}
 		// 添加到物品映射表
 		ItemsMap.Add(ItemWidget->GetShopItem(), ItemWidget);;
 	}

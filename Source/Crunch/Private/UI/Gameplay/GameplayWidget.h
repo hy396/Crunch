@@ -23,6 +23,9 @@ public:
 	virtual void NativeConstruct() override;
 
 	void ConfigureAbilities(const TMap<ECAbilityInputID, TSubclassOf<UGameplayAbility>>& Abilities);
+
+	// 切换商店的显示和隐藏
+	void ToggleShop();
 private:
 	// 生命进度条
 	UPROPERTY(meta = (BindWidget))
@@ -59,6 +62,21 @@ private:
 	// 商店
 	UPROPERTY(meta=(BindWidget))
 	TObjectPtr<UShopWidget> ShopWidget;
+
+	// 商店弹出动画
+	UPROPERTY(Transient, meta=(BindWidgetAnim))
+	TObjectPtr<UWidgetAnimation> ShopPopupAnimation;
+
+	// 播放商店弹出动画
+	void PlayShopPopupAnimation(bool bPlayForward);
+	// 锁定或解锁玩家输入
+	void SetOwningPawnInputEnabled(bool bPawnInputEnabled);
+	// 设置鼠标光标显示状态
+	void SetShowMouseCursor(bool bShowMouseCursor);
+	// 设置游戏+UI输入模式
+	void SetFocusToGameAndUI();
+	// 设置纯游戏输入模式
+	void SetFocusToGameOnly();
 
 	UPROPERTY()
 	TObjectPtr<UAbilitySystemComponent> OwnerAbilitySystemComponent;

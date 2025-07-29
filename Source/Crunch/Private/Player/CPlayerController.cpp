@@ -4,6 +4,8 @@
 #include "Crunch/Private/Player/CPlayerController.h"
 
 #include "CPlayerCharacter.h"
+#include "EnhancedInputComponent.h"
+#include "EnhancedInputSubsystems.h"
 #include "Blueprint/UserWidget.h"
 #include "Net/UnrealNetwork.h"
 #include "UI/Gameplay/GameplayWidget.h"
@@ -35,6 +37,33 @@ void ACPlayerController::AcknowledgePossession(class APawn* P)
 		CPlayerCharacter->ClientSideInit();
 		// 创建UI
 		SpawnGameplayWidget();
+	}
+}
+
+void ACPlayerController::SetupInputComponent()
+{
+	Super::SetupInputComponent();
+	// 获取增强输入子系统（Enhanced Input Local Player Subsystem）
+	UEnhancedInputLocalPlayerSubsystem* InputSubsystem = GetLocalPlayer()->GetSubsystem<UEnhancedInputLocalPlayerSubsystem>();
+
+	if (InputSubsystem)
+	{
+		// 移除现有的UI输入映射（避免重复添加）
+		InputSubsystem->RemoveMappingContext(UIInputMapping);
+		// 添加UI输入映射上下文（优先级为1）
+		InputSubsystem->AddMappingContext(UIInputMapping, 1);
+	}
+	// 将基础InputComponent转换为增强输入组件
+	UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(InputComponent);
+	if (EnhancedInputComponent)
+	{
+		// 绑定商店切换输入动作
+		EnhancedInputComponent->BindAction(
+			ShopToggleInputAction,			// 输入动作资产引用
+			ETriggerEvent::Triggered,			// 触发时机：按键时立即触发
+			this,								// 目标对象：当前玩家控制器
+			&ACPlayerController::ToggleShop		// 绑定的成员函数
+		);
 	}
 }
 
@@ -145,21 +174,21 @@ void ACPlayerController::ShowDamageNumber_Implementation(float DamageAmount, AAc
 	DamageText->AddNumberPop(NumberPopRequest);
 }
 
-void ACPlayerController::HandleTargetActorDestroyed(AActor* DestroyedActor)
-{
-	// 遍历所有活跃的 Niagara 组件
-	for (int32 i = ActiveNumberPops.Num() - 1; i >= 0; i--)
-	{
-		UNumberPopComponent_NiagaraText* PopComponent = ActiveNumberPops[i];
-		if (PopComponent && PopComponent->GetOwner() == DestroyedActor)
-		{
-			// 清理组件
-			PopComponent->UnregisterComponent(); // 解除注册
-			PopComponent->MarkAsGarbage();       // 标记为垃圾回收
-			ActiveNumberPops.RemoveAt(i);        // 从容器中移除
-		}
-	}
-}
+// void ACPlayerController::HandleTargetActorDestroyed(AActor* DestroyedActor)
+// {
+// 	// 遍历所有活跃的 Niagara 组件
+// 	for (int32 i = ActiveNumberPops.Num() - 1; i >= 0; i--)
+// 	{
+// 		UNumberPopComponent_NiagaraText* PopComponent = ActiveNumberPops[i];
+// 		if (PopComponent && PopComponent->GetOwner() == DestroyedActor)
+// 		{
+// 			// 清理组件
+// 			PopComponent->UnregisterComponent(); // 解除注册
+// 			PopComponent->MarkAsGarbage();       // 标记为垃圾回收
+// 			ActiveNumberPops.RemoveAt(i);        // 从容器中移除
+// 		}
+// 	}
+// }
 
 void ACPlayerController::SpawnGameplayWidget()
 {
@@ -178,23 +207,32 @@ void ACPlayerController::SpawnGameplayWidget()
 	}
 }
 
-void ACPlayerController::BeginDestroy()
+void ACPlayerController::ToggleShop()
 {
-	for (UNumberPopComponent_NiagaraText* Pop : ActiveNumberPops)
+	// UE_LOG(LogTemp, Warning, TEXT("ToggleShop"))
+	if (GameplayWidget)
 	{
-		if (Pop && Pop->IsValidLowLevel())
-		{
-			// 解绑目标Actor的 OnDestroyed 事件
-			if (AActor* MyOwner = Pop->GetOwner())
-			{
-				MyOwner->OnDestroyed.RemoveAll(this); // 解绑所有与当前对象相关的委托
-			}
-            
-			Pop->UnregisterComponent();
-			Pop->MarkAsGarbage();
-		}
+		GameplayWidget->ToggleShop();
 	}
-	ActiveNumberPops.Empty();
-    
-	Super::BeginDestroy();
 }
+
+// void ACPlayerController::BeginDestroy()
+// {
+// 	for (UNumberPopComponent_NiagaraText* Pop : ActiveNumberPops)
+// 	{
+// 		if (Pop && Pop->IsValidLowLevel())
+// 		{
+// 			// 解绑目标Actor的 OnDestroyed 事件
+// 			if (AActor* MyOwner = Pop->GetOwner())
+// 			{
+// 				MyOwner->OnDestroyed.RemoveAll(this); // 解绑所有与当前对象相关的委托
+// 			}
+//             
+// 			Pop->UnregisterComponent();
+// 			Pop->MarkAsGarbage();
+// 		}
+// 	}
+// 	ActiveNumberPops.Empty();
+//     
+// 	Super::BeginDestroy();
+// }

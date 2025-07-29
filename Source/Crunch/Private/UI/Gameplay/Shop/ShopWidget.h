@@ -6,6 +6,7 @@
 #include "ShopItemWidget.h"
 #include "Blueprint/UserWidget.h"
 #include "Components/TileView.h"
+#include "Inventory/InventoryComponent.h"
 #include "Inventory/PDA_ShopItem.h"
 #include "ShopWidget.generated.h"
 
@@ -37,4 +38,8 @@ private:
 	// 用途：快速查找物品对应的控件实例
 	UPROPERTY()
 	TMap<const UPDA_ShopItem*, const UShopItemWidget*> ItemsMap;
+
+	// 库存组件：获取玩家的库存
+	UPROPERTY()
+	TObjectPtr<UInventoryComponent> OwnerInventoryComponent;
 };

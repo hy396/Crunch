@@ -19,6 +19,24 @@ void UItemWidget::SetIcon(UTexture2D* IconTexture)
 	}
 }
 
+UItemToolTip* UItemWidget::SetToolTipWidget(const UPDA_ShopItem* Item)
+{
+	if (!Item) return nullptr;
+
+	if (GetOwningPlayer() && ItemToolTipClass)
+	{
+		// 创建提示信息控件实例
+		UItemToolTip* ToolTip = CreateWidget<UItemToolTip>(GetOwningPlayer(), ItemToolTipClass);
+		if (ToolTip)
+		{
+			ToolTip->SetItem(Item);	// 设置提示信息
+			SetToolTip(ToolTip);	// 关联到当前控件
+		}
+		return ToolTip;
+	}
+	return nullptr;
+}
+
 FReply UItemWidget::NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
 {
 	// 父类的按下处理

@@ -34,6 +34,8 @@ ACPlayerCharacter::ACPlayerCharacter()
 	GetCharacterMovement()->RotationRate = FRotator(0.0f, 720.0f, 0.0f); // 设置角色的旋转速率
 
 	HeroAttributeSet = CreateDefaultSubobject<UCHeroAttributeSet>(TEXT("HeroAttributeSet"));
+
+	InventoryComponent = CreateDefaultSubobject<UInventoryComponent>("Inventory Component");
 }
 
 void ACPlayerCharacter::PawnClientRestart()
@@ -111,6 +113,7 @@ void ACPlayerCharacter::HandleMoveInput(const FInputActionValue& InputActionValu
 
 void ACPlayerCharacter::LearnAbilityLeaderDown(const FInputActionValue& InputActionValue)
 {
+	UE_LOG(LogTemp, Warning, TEXT("技能按键按下"))
 	bIsLearnAbilityLeaderDown = true;
 }
 

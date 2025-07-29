@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "ItemToolTip.h"
 #include "Blueprint/UserWidget.h"
 #include "Components/Image.h"
 #include "ItemWidget.generated.h"
@@ -23,7 +24,7 @@ public:
 
 protected:
 	// 创建并设置ToolTip控件
-	// UItemToolTip* SetToolTipWidget(const UPA_ShopItem* Item);
+	UItemToolTip* SetToolTipWidget(const UPDA_ShopItem* Item);
 	
 	// 获取图标控件（子类可访问）
 	UImage* GetItemIcon() const { return ItemIcon; }
@@ -33,9 +34,9 @@ private:
 	UPROPERTY(meta=(BindWidget))
 	TObjectPtr<UImage> ItemIcon;
 
-	// ToolTip控件类（在编辑器中设置默认类型）
-	// UPROPERTY(EditDefaultsOnly, Category = "ToolTip")
-	// TSubclassOf<UItemToolTip> ItemToolTipClass;
+	// 提示信息显示控件
+	UPROPERTY(EditDefaultsOnly, Category = "ToolTip")
+	TSubclassOf<UItemToolTip> ItemToolTipClass;
 
 	// 鼠标按下事件处理
 	virtual FReply NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override;

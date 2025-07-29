@@ -22,6 +22,8 @@ public:
 	virtual void OnPossess(APawn* NewPawn) override;
 	// 玩家控制器控制一个Pawn时调用（仅在客户端中调用，也在监听服务器（listening server）上调用）
 	virtual void AcknowledgePossession(APawn* P) override;
+	// 设置输入组件
+	virtual void SetupInputComponent() override;
 
 	// 设置团队ID
 	virtual void SetGenericTeamId(const FGenericTeamId& NewTeamID) override;
@@ -32,7 +34,7 @@ public:
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
 	// 销毁
-	virtual void BeginDestroy() override;
+	// virtual void BeginDestroy() override;
 	// 在每个客户端显示伤害数值
 //	UFUNCTION(Client, Reliable)
 //	void ShowDamageNumber(float DamageAmount, ACharacter* TargetCharacter, bool bCriticalHit);
@@ -49,10 +51,10 @@ private:
 	UPROPERTY(EditAnywhere, Category = "Components")
 	TSubclassOf<UNumberPopComponent_NiagaraText> NumberPopComponentClass;
 	// 对象池管理
-	UPROPERTY()
-	TArray<TObjectPtr<UNumberPopComponent_NiagaraText>> ActiveNumberPops;
-	UFUNCTION()
-	void HandleTargetActorDestroyed(AActor* DestroyedActor);
+	// UPROPERTY()
+	// TArray<TObjectPtr<UNumberPopComponent_NiagaraText>> ActiveNumberPops;
+	// UFUNCTION()
+	// void HandleTargetActorDestroyed(AActor* DestroyedActor);
 
 	
 	UPROPERTY(EditDefaultsOnly, Category = "UI")
@@ -64,4 +66,16 @@ private:
 	// 团队ID
 	UPROPERTY(Replicated)
 	FGenericTeamId TeamID;
+
+	// UI输入映射
+	UPROPERTY(EditDefaultsOnly, Category = "Input")
+	TObjectPtr<UInputMappingContext> UIInputMapping;
+
+	// 商店打开/关闭的按键
+	UPROPERTY(EditDefaultsOnly, Category = "Input")
+	TObjectPtr<UInputAction> ShopToggleInputAction;
+
+	// 商店的开关/关闭
+	UFUNCTION()
+	void ToggleShop();
 };

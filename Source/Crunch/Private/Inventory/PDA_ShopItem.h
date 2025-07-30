@@ -112,7 +112,7 @@ private:
 	FText ItemName;
 
 	/** 物品详细描述 */
-	UPROPERTY(EditDefaultsOnly, Category = "ShopItem", meta = (DisplayName = "物品描述"))
+	UPROPERTY(EditDefaultsOnly, Category = "ShopItem", meta = (DisplayName = "物品描述", MultiLine = true))
 	FText ItemDescription;
 
 	/** 标识物品是否为消耗品 */

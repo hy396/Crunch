@@ -133,6 +133,7 @@ private:
 	void UpdateCooldown();
 
 	// 技能所属的能力组件
+	UPROPERTY()
 	TObjectPtr<const UAbilitySystemComponent> OwnerAbilitySystemComponent;
 
 	// 缓存的技能句柄

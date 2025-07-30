@@ -8,7 +8,6 @@ void UItemWidget::NativeConstruct()
 	Super::NativeConstruct();
 	// 允许控件获得焦点
 	SetIsFocusable(true);
-	
 }
 
 void UItemWidget::SetIcon(UTexture2D* IconTexture)
@@ -30,6 +29,7 @@ UItemToolTip* UItemWidget::SetToolTipWidget(const UPDA_ShopItem* Item)
 		if (ToolTip)
 		{
 			ToolTip->SetItem(Item);	// 设置提示信息
+			// 添加提示信息（调用该函数后才能实现把控件信息跟着鼠标走）
 			SetToolTip(ToolTip);	// 关联到当前控件
 		}
 		return ToolTip;

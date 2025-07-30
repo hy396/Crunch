@@ -43,12 +43,12 @@ private:
 	TObjectPtr<UTextBlock> ItemTitleText;
 
 	// 物品描述文本控件
-	UPROPERTY(meta=(BindWidget))
-	TObjectPtr<UTextBlock> ItemDescriptionText;
+	// UPROPERTY(meta=(BindWidget))
+	// TObjectPtr<UTextBlock> ItemDescriptionText;
 	
 	// RichTextStyleRow 多格式文本块，物品描述文本控件
-	// UPROPERTY(meta=(BindWidget))
-	// TObjectPtr<URichTextBlock> ItemDescriptionText;
+	UPROPERTY(meta=(BindWidget))
+	TObjectPtr<URichTextBlock> ItemDescriptionText;
 	
 	// 物品价格文本控件
 	UPROPERTY(meta=(BindWidget))

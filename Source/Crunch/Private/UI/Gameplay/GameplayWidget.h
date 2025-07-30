@@ -8,6 +8,7 @@
 #include "Abilities/AbilityListView.h"
 #include "Blueprint/UserWidget.h"
 #include "GAS/Core/CGameplayAbilityTypes.h"
+#include "Inventory/InventoryWidget.h"
 #include "Shop/ShopWidget.h"
 #include "GameplayWidget.generated.h"
 
@@ -62,6 +63,10 @@ private:
 	// 商店
 	UPROPERTY(meta=(BindWidget))
 	TObjectPtr<UShopWidget> ShopWidget;
+
+	// 背包UI
+	UPROPERTY(meta=(BindWidget))
+	TObjectPtr<UInventoryWidget> InventoryWidget;
 
 	// 商店弹出动画
 	UPROPERTY(Transient, meta=(BindWidgetAnim))

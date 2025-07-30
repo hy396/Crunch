@@ -62,7 +62,10 @@ void UAbilityGauge::NativeOnListItemObjectSet(UObject* ListItemObject)
 	AbilityCDO = Cast<UGameplayAbility>(ListItemObject);
 
 	// 获取冷却和消耗
-	float CoolDownDuration = UCAbilitySystemStatics::GetStaticCooldownDurationForAbility(AbilityCDO);
+	// float CoolDownDuration = UCAbilitySystemStatics::GetStaticCooldownDurationForAbility(AbilityCDO);
+	// 带冷却缩减的操作
+	// float CoolDownDuration = UCAbilitySystemStatics::GetStaticCooldownDurationForAbilityHasAttribute(AbilityCDO);
+	float CoolDownDuration = UCAbilitySystemStatics::GetCooldownDurationFor(AbilityCDO, *OwnerAbilitySystemComponent, 1);
 	float Cost = UCAbilitySystemStatics::GetStaticCostForAbility(AbilityCDO);
 
 	// 设置冷却和消耗
@@ -100,7 +103,7 @@ void UAbilityGauge::AbilityCommitted(UGameplayAbility* Ability)
 		float CooldownDuration = 0.f;
 		// 返回当前激活的冷却剩余时间（秒）及该冷却的原始持续时间
 		Ability->GetCooldownTimeRemainingAndDuration(Ability->GetCurrentAbilitySpecHandle(), Ability->GetCurrentActorInfo(), CooldownTimeRemaining, CooldownDuration);
-
+		// UE_LOG(LogTemp, Warning, TEXT("冷却：%f"), CooldownTimeRemaining)
 		// 获取到的冷却为0，不启动定时器，退出（出现这样的结果可能是没有设置cd的GE，这样启动的定时器会变成负数）
 		if (CooldownDuration == 0.f) return;
 		// 启动UI技能冷却
@@ -111,7 +114,7 @@ void UAbilityGauge::AbilityCommitted(UGameplayAbility* Ability)
 void UAbilityGauge::StartCooldown(float CooldownTimeRemaining, float CooldownDuration)
 {
 	// 设置冷却时间
-	// CooldownDurationText->SetText(FText::AsNumber(CooldownDuration));
+	CooldownDurationText->SetText(FText::AsNumber(CooldownDuration));
 	CooldownCounterText->SetText(FText::AsNumber(CooldownDuration));
 	// 缓存冷却总时长
 	CachedCooldownDuration = CooldownDuration;
@@ -191,6 +194,8 @@ void UAbilityGauge::AbilitySpecUpdated(const FGameplayAbilitySpec& AbilitySpec)
 	// 并显示新的冷却时间和法力消耗
 	float NewCooldownDuration = UCAbilitySystemStatics::GetCooldownDurationFor(AbilitySpec.Ability, *OwnerAbilitySystemComponent, AbilitySpec.Level);
 	float NewCost = UCAbilitySystemStatics::GetManaCostFor(AbilitySpec.Ability, *OwnerAbilitySystemComponent, AbilitySpec.Level);
+	// UE_LOG(LogTemp, Warning, TEXT("冷却：%f"), NewCooldownDuration)
+	// 获取冷却总时长
 	CooldownDurationText->SetText(FText::AsNumber(NewCooldownDuration));
 	CostText->SetText(FText::AsNumber(NewCost));
 }

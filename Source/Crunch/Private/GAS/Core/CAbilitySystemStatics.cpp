@@ -5,7 +5,9 @@
 
 #include "AbilitySystemComponent.h"
 #include "AbilitySystemInterface.h"
+#include "CGameplayAbility.h"
 #include "CGameplayAbilityTypes.h"
+#include "CHeroAttributeSet.h"
 #include "TGameplayTags.h"
 
 FGameplayTag UCAbilitySystemStatics::GetBasicAttackAbilityTag()
@@ -89,6 +91,27 @@ float UCAbilitySystemStatics::GetStaticCooldownDurationForAbility(const UGamepla
 	return CooldownDuration;
 }
 
+// float UCAbilitySystemStatics::GetStaticCooldownDurationForAbilityHasAttribute(const UGameplayAbility* Ability)
+// {
+// 	float CooldownDuration = 0.f;
+// 	if (!Ability) return CooldownDuration;
+// 	const UCGameplayAbility* AbilityCOD = Cast<UCGameplayAbility>(Ability);
+// 	if (!AbilityCOD) return CooldownDuration;
+//
+// 	// 获取基础冷却时间
+// 	float BaseCooldown = AbilityCOD->CooldownDuration.GetValueAtLevel(1);
+// 	// 获取冷却缩减属性值
+// 	bool bFound;
+// 	float CooldownReduction = AbilityCOD->GetAbilitySystemComponentFromActorInfo()->GetGameplayAttributeValue(UCHeroAttributeSet::GetCooldownReductionAttribute(), bFound);
+// 	if (bFound)
+// 	{
+// 		// 计算最终冷却时间
+// 		CooldownDuration = BaseCooldown * (1.0f - CooldownReduction/100.0f);
+// 	}	
+// 	// 返回绝对值（确保冷却时间始终为正数）
+// 	return FMath::Abs(CooldownDuration);
+// }
+
 float UCAbilitySystemStatics::GetStaticCostForAbility(const UGameplayAbility* Ability)
 {
 	if (!Ability) return 0.f;
@@ -160,24 +183,42 @@ float UCAbilitySystemStatics::GetCooldownDurationFor(const UGameplayAbility* Abi
 	const UAbilitySystemComponent& ASC, int AbilityLevel)
 {
 	float CooldownDuration = 0.f;
+	// if (AbilityCDO)
+	// {
+	// 	// 获取技能关联的冷却效果
+	// 	UGameplayEffect* CooldownEffect = AbilityCDO->GetCooldownGameplayEffect();
+	// 	if (CooldownEffect)
+	// 	{
+	// 		// 创建临时的效果规格
+	// 		FGameplayEffectSpecHandle EffectSpec = ASC.MakeOutgoingSpec(
+	// 			CooldownEffect->GetClass(), 
+	// 			AbilityLevel, 
+	// 			ASC.MakeEffectContext()
+	// 		);
+	//            //CustomMagnitude
+	// 		// 计算冷却效果的实际持续时间（考虑冷却缩减属性）
+	// 		CooldownEffect->DurationMagnitude.AttemptCalculateMagnitude(
+	// 			*EffectSpec.Data.Get(), 
+	// 			CooldownDuration
+	// 		);
+	// 	}
+	// }
+
 	if (AbilityCDO)
 	{
-		// 获取技能关联的冷却效果
-		UGameplayEffect* CooldownEffect = AbilityCDO->GetCooldownGameplayEffect();
-		if (CooldownEffect)
+		const UCGameplayAbility* Ability = Cast<UCGameplayAbility>(AbilityCDO);
+		if (!Ability) return CooldownDuration;
+		
+		// 获取基础冷却时间
+		float BaseCooldown = Ability->CooldownDuration.GetValueAtLevel(AbilityLevel);
+
+		// 获取冷却缩减属性值
+		bool bFound;
+		float CooldownReduction = ASC.GetGameplayAttributeValue(UCHeroAttributeSet::GetCooldownReductionAttribute(), bFound);
+		if (bFound)
 		{
-			// 创建临时的效果规格
-			FGameplayEffectSpecHandle EffectSpec = ASC.MakeOutgoingSpec(
-				CooldownEffect->GetClass(), 
-				AbilityLevel, 
-				ASC.MakeEffectContext()
-			);
-            
-			// 计算冷却效果的实际持续时间（考虑冷却缩减属性）
-			CooldownEffect->DurationMagnitude.AttemptCalculateMagnitude(
-				*EffectSpec.Data.Get(), 
-				CooldownDuration
-			);
+			// 计算最终冷却时间
+			CooldownDuration = BaseCooldown * (1.0f - CooldownReduction/100.0f);
 		}
 	}
 

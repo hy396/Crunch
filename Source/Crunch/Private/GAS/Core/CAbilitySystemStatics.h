@@ -28,6 +28,7 @@ public:
 
 	// 获取技能冷却
 	static float GetStaticCooldownDurationForAbility(const UGameplayAbility* Ability);
+	// static float GetStaticCooldownDurationForAbilityHasAttribute(const UGameplayAbility* Ability);
 	// 获取技能消耗
 	static float GetStaticCostForAbility(const UGameplayAbility* Ability);
 

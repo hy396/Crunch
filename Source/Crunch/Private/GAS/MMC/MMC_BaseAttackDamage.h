@@ -18,6 +18,7 @@ public:
 	UMMC_BaseAttackDamage();
 	virtual float CalculateBaseMagnitude_Implementation(const FGameplayEffectSpec& Spec) const override;
 private:
-	FGameplayEffectAttributeCaptureDefinition DamageCaptureDef;
-	FGameplayEffectAttributeCaptureDefinition ArmorCaptureDef;
+	// FGameplayEffectAttributeCaptureDefinition DamageCaptureDef;
+	// FGameplayEffectAttributeCaptureDefinition ArmorCaptureDef;
+	FGameplayEffectAttributeCaptureDefinition CooldownReductionCaptureDef;
 };

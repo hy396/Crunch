@@ -128,15 +128,16 @@ void UCGameplayAbility::ApplyGameplayEffectToHitResultActor(const FHitResult& Hi
 
 void UCGameplayAbility::ApplyDamage(AActor* TargetActor,const FGenericDamageEffectDef& Damage, int Level)
 {
-	// 创建一个游戏效果上下文句柄，包含当前能力规范句柄和当前Actor信息
-	// FGameplayEffectContextHandle EffectContext = MakeEffectContext(GetCurrentAbilitySpecHandle(), GetCurrentActorInfo());
-	// EffectContext.AddSourceObject(GetAbilitySystemComponentFromActorInfo()->GetAvatarActor());
-	//
-	// // 创建一个传出游戏效果规范句柄，包含指定的GameplayEffect和等级
-	// FGameplayEffectSpecHandle EffectSpecHandle = MakeOutgoingGameplayEffectSpec(Damage.DamageEffect, Level);
-	//
-	// float NewDamage = Damage.BaseDamage;
-	// //通过标签设置GE使用的配置
+	const UAbilitySystemComponent* ASC = GetAbilitySystemComponentFromActorInfo();
+	AActor* AvatarActor				   = GetAvatarActorFromActorInfo();
+	// 创建效果上下文， 设置能力 、源对象 和 施加者
+	FGameplayEffectContextHandle ContextHandle = ASC->MakeEffectContext();
+	ContextHandle.SetAbility(this);
+	ContextHandle.AddSourceObject(AvatarActor);
+	ContextHandle.AddInstigator(AvatarActor, AvatarActor);
+	// 配置伤害
+	MakeDamage(Damage, Level);
+	// float NewDamage = Damage.BaseDamage.GetValueAtLevel(GetAbilityLevel());
 	// for(auto& Pair : Damage.DamageTypes)
 	// {
 	// 	bool bFound ;
@@ -146,28 +147,9 @@ void UCGameplayAbility::ApplyDamage(AActor* TargetActor,const FGenericDamageEffe
 	// 		NewDamage += AttributeValue * Pair.Value / 100.f;
 	// 	}
 	// }
-	// // 将上下文设置到效果规范数据中
-	// EffectSpecHandle.Data->SetContext(EffectContext);
-	const UAbilitySystemComponent* ASC = GetAbilitySystemComponentFromActorInfo();
-	AActor* AvatarActor				   = GetAvatarActorFromActorInfo();
-	// 创建效果上下文， 设置能力 、源对象 和 施加者
-	FGameplayEffectContextHandle ContextHandle = ASC->MakeEffectContext();
-	ContextHandle.SetAbility(this);
-	ContextHandle.AddSourceObject(AvatarActor);
-	ContextHandle.AddInstigator(AvatarActor, AvatarActor);
-	
-	float NewDamage = Damage.BaseDamage.GetValueAtLevel(GetAbilityLevel());
-	for(auto& Pair : Damage.DamageTypes)
-	{
-		bool bFound ;
-		float AttributeValue = GetAbilitySystemComponentFromActorInfo()->GetGameplayAttributeValue(Pair.Key, bFound);
-		if (bFound)
-		{
-			NewDamage += AttributeValue * Pair.Value / 100.f;
-		}
-	}
-	// 设置伤害的属性
-	GetAbilitySystemComponentFromActorInfo()->ApplyModToAttribute(UCAttributeSet::GetBaseDamageAttribute(), EGameplayModOp::Override, NewDamage);
+	// // 设置伤害的属性
+	// GetAbilitySystemComponentFromActorInfo()->ApplyModToAttribute(UCAttributeSet::GetBaseAttackDamageAttribute(), EGameplayModOp::Override, NewDamage);
+
 	// GetAbilitySystemComponentFromActorInfo()->SetNumericAttributeBase(UCAttributeSet::GetBaseDamageAttribute(), NewDamage);
 	
 	// 创建效果Spec句柄，指定效果类、能力等级和上下文
@@ -189,18 +171,40 @@ void UCGameplayAbility::ApplyDamage(AActor* TargetActor,const FGenericDamageEffe
 
 void UCGameplayAbility::MakeDamage(const FGenericDamageEffectDef& Damage, int Level)
 {
-	float NewDamage = Damage.BaseDamage.GetValueAtLevel(GetAbilityLevel());
-	//通过标签设置GE使用的配置
-	for(auto& Pair : Damage.DamageTypes)
+	// 通通置为0
+	float BaseAttackDamage = 0.f;
+	float BaseMagicDamage = 0.f;
+	float BaseTrueDamage = 0.f;
+	for (const auto& TypePair : Damage.DamageTypeDefinitions)
 	{
-		bool bFound ;
-		float AttributeValue = GetAbilitySystemComponentFromActorInfo()->GetGameplayAttributeValue(Pair.Key, bFound);
-		if (bFound)
+		float TotalModifier = TypePair.Value.BaseDamage.GetValueAtLevel(Level);
+		for (const auto& Modifier : TypePair.Value.AttributeDamageModifiers)
 		{
-			NewDamage += AttributeValue * Pair.Value / 100.f;
+			bool bFound ;
+			float AttributeValue = GetAbilitySystemComponentFromActorInfo()->GetGameplayAttributeValue(Modifier.Key, bFound);
+			if (bFound)
+			{
+				TotalModifier += AttributeValue * Modifier.Value / 100.0f;
+			}
+		}
+		switch (TypePair.Key)
+		{
+			case EDamageType::PhysicalDamage :
+				BaseAttackDamage = TotalModifier;
+				break;
+			case EDamageType::MagicDamage :
+				BaseMagicDamage = TotalModifier;
+				break;
+			case EDamageType::TrueDamage :
+				BaseTrueDamage = TotalModifier;
+				break;
+			default:
+				break;
 		}
 	}
-	GetAbilitySystemComponentFromActorInfo()->SetNumericAttributeBase(UCAttributeSet::GetBaseDamageAttribute(), NewDamage);
+	GetAbilitySystemComponentFromActorInfo()->ApplyModToAttribute(UCAttributeSet::GetBaseAttackDamageAttribute(), EGameplayModOp::Override, BaseAttackDamage);
+	GetAbilitySystemComponentFromActorInfo()->ApplyModToAttribute(UCAttributeSet::GetBaseMagicDamageAttribute(), EGameplayModOp::Override, BaseMagicDamage);
+	GetAbilitySystemComponentFromActorInfo()->ApplyModToAttribute(UCAttributeSet::GetBaseTrueDamageAttribute(), EGameplayModOp::Override, BaseTrueDamage);
 }
 
 void UCGameplayAbility::PushSelf(const FVector& PushVel)

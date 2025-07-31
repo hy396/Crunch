@@ -36,14 +36,15 @@ void UGAP_Dead::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const F
 		// AActor* Killer = TriggerEventData->ContextHandle.GetEffectCauser();
 		// ECC 获取
 		AActor* Killer = nullptr;
-		if (TriggerEventData->ContextHandle.GetOriginalInstigatorAbilitySystemComponent()->AbilityActorInfo->AvatarActor.Get())
-		{
-			Killer = TriggerEventData->ContextHandle.GetOriginalInstigatorAbilitySystemComponent()->AbilityActorInfo->AvatarActor.Get();
-			// UE_LOG(LogTemp, Warning, TEXT("TriggerEventData->ContextHandle.GetOriginalInstigatorAbilitySystemComponent()->AbilityActorInfo->AvatarActor.Get(): %s"), *Killer->GetName())
-		}
+		// if (TriggerEventData->ContextHandle.GetOriginalInstigatorAbilitySystemComponent()->AbilityActorInfo->AvatarActor.Get())
+		// {
+		// 	Killer = TriggerEventData->ContextHandle.GetOriginalInstigatorAbilitySystemComponent()->AbilityActorInfo->AvatarActor.Get();
+		// 	// UE_LOG(LogTemp, Warning, TEXT("TriggerEventData->ContextHandle.GetOriginalInstigatorAbilitySystemComponent()->AbilityActorInfo->AvatarActor.Get(): %s"), *Killer->GetName())
+		// }
 		if (TriggerEventData->Target)
 		{
 			Killer = static_cast<AActor*>(TriggerEventData->Target);
+			// Killer = const_cast<AActor*>(TriggerEventData->Target.Get());
 			// UE_LOG(LogTemp, Warning, TEXT("TriggerEventData->Target: %s"), *Killer->GetName())
 		}
 

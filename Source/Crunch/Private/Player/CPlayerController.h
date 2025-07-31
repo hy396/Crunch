@@ -40,7 +40,7 @@ public:
 //	void ShowDamageNumber(float DamageAmount, ACharacter* TargetCharacter, bool bCriticalHit);
 
 	UFUNCTION(Client, Reliable)
-	void ShowDamageNumber(float DamageAmount, AActor* TargetActor, bool bCriticalHit);
+	void ShowDamageNumber(float DamageAmount, ACharacter* TargetCharacter, bool bCriticalHit, EDamageType Type);
 
 private:
 	void SpawnGameplayWidget();

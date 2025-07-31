@@ -160,7 +160,7 @@ void UCAbilitySystemComponent::Server_UpgradeAbilityWithID_Implementation(ECAbil
 	bool bFound = false;
 	float UpgradePoint = GetGameplayAttributeValue(UCHeroAttributeSet::GetUpgradePointAttribute(), bFound);
 	// 检查可用升级点数是否大于0
-	if (!bFound && UpgradePoint <= 0) return;
+	if (!bFound || UpgradePoint <= 0) return;
 
 	// 获取玩家等级
 	float CurrentLevel = GetGameplayAttributeValue(UCHeroAttributeSet::GetLevelAttribute(), bFound);

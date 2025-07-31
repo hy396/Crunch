@@ -9,34 +9,47 @@
 struct FDamageStatics
 {
 	// FGameplayEffectAttributeCaptureDefinition
-	// 基础伤害
-	DECLARE_ATTRIBUTE_CAPTUREDEF(BaseDamage);
-	// 攻击百分比
-	DECLARE_ATTRIBUTE_CAPTUREDEF(AttackPowerCoefficient);
-	// 物理攻击
-	DECLARE_ATTRIBUTE_CAPTUREDEF(AttackPower);
+	// 物理基础伤害
+	DECLARE_ATTRIBUTE_CAPTUREDEF(BaseAttackDamage);
+	// 魔法基础伤害
+	DECLARE_ATTRIBUTE_CAPTUREDEF(BaseMagicDamage);
+	// 真实基础伤害
+	DECLARE_ATTRIBUTE_CAPTUREDEF(BaseTrueDamage);
+	
 	// 护甲穿透
 	DECLARE_ATTRIBUTE_CAPTUREDEF(ArmorPenetration);
 	// 护甲穿透百分比
 	DECLARE_ATTRIBUTE_CAPTUREDEF(ArmorPenetrationPercent);
+
+	// 法术穿透
+	DECLARE_ATTRIBUTE_CAPTUREDEF(MagicPenetration);
+	// 法术穿透百分比
+	DECLARE_ATTRIBUTE_CAPTUREDEF(MagicPenetrationPercent);
+	
 	// 伤害加深
 	DECLARE_ATTRIBUTE_CAPTUREDEF(DamageAmplification);
-	// 敌方的防御
+	// 敌方的物理防御
 	DECLARE_ATTRIBUTE_CAPTUREDEF(Armor);
+	// 敌方的法术抗性
+	DECLARE_ATTRIBUTE_CAPTUREDEF(MagicResistance);
 	// 伤害减免
 	DECLARE_ATTRIBUTE_CAPTUREDEF(DamageReduction);
 
 	FDamageStatics()
 	{
 	 	// 参数：1.属性集 2.属性名 3.目标还是自身 4.是否设置快照（true为创建时获取，false为应用时获取）
-		DEFINE_ATTRIBUTE_CAPTUREDEF(UCAttributeSet, BaseDamage, Source, false);
-		DEFINE_ATTRIBUTE_CAPTUREDEF(UCAttributeSet, AttackPowerCoefficient, Source, false);
-		DEFINE_ATTRIBUTE_CAPTUREDEF(UCAttributeSet, AttackPower, Source, false);
+		DEFINE_ATTRIBUTE_CAPTUREDEF(UCAttributeSet, BaseAttackDamage, Source, false);
+		DEFINE_ATTRIBUTE_CAPTUREDEF(UCAttributeSet, BaseMagicDamage, Source, false);
+		DEFINE_ATTRIBUTE_CAPTUREDEF(UCAttributeSet, BaseTrueDamage, Source, false);
 		DEFINE_ATTRIBUTE_CAPTUREDEF(UCHeroAttributeSet, ArmorPenetration, Source, false);
 		DEFINE_ATTRIBUTE_CAPTUREDEF(UCHeroAttributeSet, ArmorPenetrationPercent, Source, false);
+		DEFINE_ATTRIBUTE_CAPTUREDEF(UCHeroAttributeSet, MagicPenetration, Source, false);
+		DEFINE_ATTRIBUTE_CAPTUREDEF(UCHeroAttributeSet, MagicPenetrationPercent, Source, false);
+
 		DEFINE_ATTRIBUTE_CAPTUREDEF(UCHeroAttributeSet, DamageAmplification, Source, false);
 		
 		DEFINE_ATTRIBUTE_CAPTUREDEF(UCAttributeSet, Armor, Target, false);
+		DEFINE_ATTRIBUTE_CAPTUREDEF(UCAttributeSet, MagicResistance, Target, false);
 		DEFINE_ATTRIBUTE_CAPTUREDEF(UCHeroAttributeSet, DamageReduction, Target, false);
 	 }
 };
@@ -50,14 +63,19 @@ static FDamageStatics& DamageStatics()
 UECC_AttackDamage::UECC_AttackDamage()
 {
 	// 将属性添加到捕获列表中
-	RelevantAttributesToCapture.Add(DamageStatics().BaseDamageDef);
-	RelevantAttributesToCapture.Add(DamageStatics().AttackPowerDef);
-	RelevantAttributesToCapture.Add(DamageStatics().AttackPowerCoefficientDef);
+	RelevantAttributesToCapture.Add(DamageStatics().BaseAttackDamageDef);
+	RelevantAttributesToCapture.Add(DamageStatics().BaseMagicDamageDef);
+	RelevantAttributesToCapture.Add(DamageStatics().BaseTrueDamageDef);
+	
 	RelevantAttributesToCapture.Add(DamageStatics().ArmorPenetrationDef);
 	RelevantAttributesToCapture.Add(DamageStatics().ArmorPenetrationPercentDef);
+	RelevantAttributesToCapture.Add(DamageStatics().MagicPenetrationDef);
+	RelevantAttributesToCapture.Add(DamageStatics().MagicPenetrationPercentDef);
+
 	RelevantAttributesToCapture.Add(DamageStatics().DamageAmplificationDef);
 	
 	RelevantAttributesToCapture.Add(DamageStatics().ArmorDef);
+	RelevantAttributesToCapture.Add(DamageStatics().MagicResistanceDef);
 	RelevantAttributesToCapture.Add(DamageStatics().DamageReductionDef);
 }
 
@@ -77,71 +95,114 @@ void UECC_AttackDamage::Execute_Implementation(const FGameplayEffectCustomExecut
 	EvaluateParameters.SourceTags = SourceTags;
 	EvaluateParameters.TargetTags = TargetTags;
 
-	// 计算基础伤害值
-	float BaseDamage = 0.0f;
-	ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(
-		DamageStatics().BaseDamageDef, 
-		EvaluateParameters, 
-		BaseDamage
-	);
-
-	// 获取攻击计算系数
-	// float AttackPowerCoefficient = 0.0f;
-	// ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(DamageStatics().AttackPowerCoefficientDef, EvaluateParameters, AttackPowerCoefficient);
-
-	// 获取攻击力
-	float AttackPower = 0.0f;
-	ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(DamageStatics().AttackPowerDef, EvaluateParameters, AttackPower);
-
-	// 获取护甲穿透百分比
-	float ArmorPenetrationPercent = 0.0f;
-	ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(DamageStatics().ArmorPenetrationPercentDef, EvaluateParameters, ArmorPenetrationPercent);
-
-	// 获取护甲穿透
-	float ArmorPenetration = 0.0f;
-	ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(DamageStatics().ArmorPenetrationDef, EvaluateParameters, ArmorPenetration);
-
-	// 获取目标护甲
-	float TargetArmor = 0.0f;
-	ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(DamageStatics().ArmorDef, EvaluateParameters, TargetArmor);
-
 	// 获取伤害加深
 	float DamageAmp = 0.0f;
 	ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(DamageStatics().DamageAmplificationDef, EvaluateParameters, DamageAmp);
-
 	// 获取敌方的伤害减免
 	float DamageReduction = 0.0f;
 	ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(DamageStatics().DamageReductionDef, EvaluateParameters, DamageReduction);
-
-	// 1. 计算基础伤害
-	// 公式: 基础伤害 + 攻击力 × 攻击力系数
-	//float PhysicalDamage = BaseDamage + AttackPower * (AttackPowerCoefficient / 100.0f);
 	
-	// 2. 处理固定护甲穿透
-	TargetArmor = FMath::Max(0.0f, TargetArmor - ArmorPenetration);
-	
-	// 3. 处理百分比护甲穿透
-	TargetArmor = FMath::Max(0.0f, TargetArmor * (1.0f - FMath::Min(ArmorPenetrationPercent, 100.0f) / 100.0f));
-	
-	// 4. 计算护甲减免（计算出来的是免伤率）
-	float ArmorReduction = TargetArmor / (TargetArmor + 100.0f);
-	BaseDamage *= (1.0f - FMath::Min(ArmorReduction / 100.0f + DamageReduction/100.0f, 1.0f));
+	// 计算基础物理伤害值
+	float BaseAttackDamage = 0.0f;
+	ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(
+		DamageStatics().BaseAttackDamageDef, 
+		EvaluateParameters, 
+		BaseAttackDamage
+	);
 
-	// 5. 应用伤害加深（百分比提升）
-	BaseDamage *= (1.0f + DamageAmp / 100.0f);
-	//DamageReduction 敌方的伤害减免
-	// 6. 应用固定伤害减免
-	// float FinalDamage = FMath::Max(0.0f, PhysicalDamage - DamageReduction);
-
-	// 7. 输出到AttackDamage属性
-	if (BaseDamage > 0.0f)
+	// 物理伤害的处理
+	if (BaseAttackDamage > 0.0f)
 	{
-		// 添加输出修饰符
+		// 获取护甲穿透百分比
+		float ArmorPenetrationPercent = 0.0f;
+		ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(DamageStatics().ArmorPenetrationPercentDef, EvaluateParameters, ArmorPenetrationPercent);
+		// 获取护甲穿透
+		float ArmorPenetration = 0.0f;
+		ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(DamageStatics().ArmorPenetrationDef, EvaluateParameters, ArmorPenetration);
+		// 获取目标护甲
+		float TargetArmor = 0.0f;
+		ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(DamageStatics().ArmorDef, EvaluateParameters, TargetArmor);
+		// 1. 处理固定护甲穿透
+		TargetArmor = FMath::Max(0.0f, TargetArmor - ArmorPenetration);
+		// 2. 处理百分比护甲穿透
+		TargetArmor = FMath::Max(0.0f, TargetArmor * (1.0f - FMath::Min(ArmorPenetrationPercent, 100.0f) / 100.0f));
+		// 3. 计算护甲减免（计算出来的是免伤率）
+		float ArmorReduction = TargetArmor / (TargetArmor + 100.0f);
+		BaseAttackDamage *= (1.0f - FMath::Min(ArmorReduction / 100.0f + DamageReduction/100.0f, 1.0f));
+		// 4. 应用伤害加深（百分比提升）
+		BaseAttackDamage *= (1.0f + DamageAmp / 100.0f);
+		// 5. 输出到AttackDamage属性
+		if (BaseAttackDamage > 0.0f)
+		{
+			// 添加输出修饰符
+			OutExecutionOutput.AddOutputModifier(
+				FGameplayModifierEvaluatedData(
+				UCAttributeSet::GetAttackDamageAttribute(), //获取到伤害属性
+				EGameplayModOp::Override, 
+				BaseAttackDamage	//伤害
+				));
+		}
+	}
+
+	// 计算基础法术伤害值
+	float BaseMagicDamage = 0.0f;
+	ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(
+		DamageStatics().BaseMagicDamageDef, 
+		EvaluateParameters, 
+		BaseMagicDamage
+	);
+	if (BaseMagicDamage > 0)
+	{
+		// 获取法术穿透百分比
+		float MagicPenetrationPercent = 0.0f;
+		ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(
+			DamageStatics().MagicPenetrationPercentDef,
+			EvaluateParameters, MagicPenetrationPercent);
+		// 获取法术穿透
+		float MagicPenetration = 0.0f;
+		ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(
+			DamageStatics().MagicPenetrationDef,
+			EvaluateParameters, MagicPenetration);
+		// 获取目标法抗
+		float TargetMagicResistance = 0.0f;
+		ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(
+			DamageStatics().MagicResistanceDef, EvaluateParameters, TargetMagicResistance);
+		// 1. 处理固定法术穿透
+		TargetMagicResistance = FMath::Max(0.0f, TargetMagicResistance - MagicPenetration);
+		// 2. 处理百分比法术穿透
+		TargetMagicResistance = FMath::Max(0.0f, TargetMagicResistance * (1.0f - FMath::Min(MagicPenetrationPercent, 100.0f) / 100.0f));
+		// 3. 计算法抗减免（计算出来的是免伤率）
+		float MagicResistanceReduction = TargetMagicResistance / (TargetMagicResistance + 100.0f);
+		BaseMagicDamage *= (1.0f - FMath::Min(MagicResistanceReduction / 100.0f + DamageReduction/100.0f, 1.0f));
+		// 4. 应用伤害加深（百分比提升）
+		BaseMagicDamage *= (1.0f + DamageAmp / 100.0f);
 		OutExecutionOutput.AddOutputModifier(
 			FGameplayModifierEvaluatedData(
-			UCAttributeSet::GetAttackDamageAttribute(), //获取到伤害属性
-			EGameplayModOp::Additive, //加法
-			BaseDamage	//伤害
+			UCAttributeSet::GetMagicDamageAttribute(), //获取到伤害属性
+			EGameplayModOp::Override, 
+			BaseMagicDamage	//伤害
+			));
+	}
+	
+	// 计算基础真实伤害值
+	float BaseTrueDamage = 0.0f;
+	ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(
+		DamageStatics().BaseTrueDamageDef, 
+		EvaluateParameters, 
+		BaseTrueDamage
+	);
+	if (BaseTrueDamage > 0.0f)
+	{
+		// 计算伤害减免
+		BaseTrueDamage *= (1.0f - FMath::Min(DamageReduction/100.0f, 1.0f));
+		// 应用伤害加深（百分比提升）
+		BaseTrueDamage *= (1.0f + DamageAmp / 100.0f);
+		
+		OutExecutionOutput.AddOutputModifier(
+			FGameplayModifierEvaluatedData(
+			UCAttributeSet::GetTrueDamageAttribute(), //获取到伤害属性
+			EGameplayModOp::Override, 
+			BaseTrueDamage	//伤害
 			));
 	}
 }

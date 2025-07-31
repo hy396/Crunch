@@ -3,10 +3,13 @@
 
 #include "GAS/Core/CGameplayAbilityTypes.h"
 
+FDamageDefinition::FDamageDefinition()
+	: BaseDamage{0.f}
+{
+}
+
 FGenericDamageEffectDef::FGenericDamageEffectDef()
 	:DamageEffect{nullptr},
-	BaseDamage{0.f},
-	DamageTypes{},
 	PushVelocity{0.f}
 {
 }

@@ -29,27 +29,43 @@ enum class ECAbilityInputID : uint8
 	Confirm							UMETA(DisplayName="确认"),
 	Cancel							UMETA(DisplayName="取消")
 };
+UENUM(BlueprintType)
+enum class EDamageType : uint8
+{
+	PhysicalDamage					UMETA(DisplayName="物理伤害"),  // 物理伤害
+	MagicDamage						UMETA(DisplayName="魔法伤害"),  // 魔法伤害
+	TrueDamage						UMETA(DisplayName="真实伤害"),  // 真实伤害
+};
 
+// 
+USTRUCT(BlueprintType)
+struct FDamageDefinition
+{
+	GENERATED_BODY()
+public:
+	FDamageDefinition();
+	// 基础伤害
+	UPROPERTY(EditAnywhere)
+	FScalableFloat BaseDamage;
+	// 属性的百分比伤害加成
+	UPROPERTY(EditAnywhere)
+	TMap<FGameplayAttribute, float> AttributeDamageModifiers;
+};
 // 伤害效果定义
 USTRUCT(BlueprintType)
 struct FGenericDamageEffectDef
 {
 	GENERATED_BODY()
-
 public:
 	FGenericDamageEffectDef();
 
 	// 伤害类型
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<UGameplayEffect> DamageEffect;
-
-	// 基础伤害大小
+	
+	// 伤害类型
 	UPROPERTY(EditAnywhere)
-	FScalableFloat BaseDamage;
-
-	// 属性的百分比伤害加成
-	UPROPERTY(EditAnywhere)
-	TMap<FGameplayAttribute, float> DamageTypes;
+	TMap<EDamageType,FDamageDefinition> DamageTypeDefinitions;
 
 	// 力的大小
 	UPROPERTY(EditAnywhere)

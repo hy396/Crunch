@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "AbilitySystemComponent.h"
 #include "AttributeSet.h"
+#include "CGameplayAbilityTypes.h"
 #include "CAttributeSet.generated.h"
 
 //宏的设置，编译时会默认给变量生成相应的Getter以及Setter函数，当前设置会生成四个函数，获取属性，获取值，设置值，以及初始化值。
@@ -88,16 +89,19 @@ public:
 	FGameplayAttributeData MaxMana;
 	ATTRIBUTE_ACCESSORS(UCAttributeSet, MaxMana)
 
-	// 传值的基础伤害
-	UPROPERTY(ReplicatedUsing = OnRep_BaseDamage)
-	FGameplayAttributeData BaseDamage;
-	ATTRIBUTE_ACCESSORS(UCAttributeSet, BaseDamage)
+	// 传值物理的基础伤害
+	UPROPERTY(ReplicatedUsing = OnRep_BaseAttackDamage)
+	FGameplayAttributeData BaseAttackDamage;
+	ATTRIBUTE_ACCESSORS(UCAttributeSet, BaseAttackDamage)
+	// 魔法的基础伤害
+	UPROPERTY(ReplicatedUsing = OnRep_BaseMagicDamage)
+	FGameplayAttributeData BaseMagicDamage;
+	ATTRIBUTE_ACCESSORS(UCAttributeSet, BaseMagicDamage)
+	// 真伤的基础伤害
+	UPROPERTY(ReplicatedUsing = OnRep_BaseTrueDamage)
+	FGameplayAttributeData BaseTrueDamage;
+	ATTRIBUTE_ACCESSORS(UCAttributeSet, BaseTrueDamage)
 
-	// 攻击力系数
-	UPROPERTY(ReplicatedUsing = OnRep_AttackPowerCoefficient)
-	FGameplayAttributeData AttackPowerCoefficient;
-	ATTRIBUTE_ACCESSORS(UCAttributeSet, AttackPowerCoefficient)
-	
 	// 物理伤害
 	UPROPERTY(ReplicatedUsing = OnRep_AttackDamage)
 	FGameplayAttributeData AttackDamage;
@@ -176,9 +180,12 @@ public:
 	UFUNCTION()
 	void OnRep_MagicResistance(const FGameplayAttributeData& OldMagicResistance);
 	UFUNCTION()
-	 void OnRep_AttackPowerCoefficient(const FGameplayAttributeData& OldAttackPowerCoefficient);
+	void OnRep_BaseAttackDamage(const FGameplayAttributeData& OldBaseAttackDamage);
+
 	UFUNCTION()
-	void OnRep_BaseDamage(const FGameplayAttributeData& OldBaseDamage);
+	void OnRep_BaseMagicDamage(const FGameplayAttributeData& OldBaseMagicDamage);
+	UFUNCTION()
+	void OnRep_BaseTrueDamage(const FGameplayAttributeData& OldBaseTrueDamage);
 	UFUNCTION()
 	void OnRep_MagicDamage(const FGameplayAttributeData& OldMagicDamage);
 	UFUNCTION()
@@ -187,13 +194,16 @@ public:
 private:
 	// 设置效果属性
 	void SetEffectProperties(const FGameplayEffectModCallbackData& Data, FEffectProperties& Props) const;
+	// 伤害处理函数
+	void Damage(const FEffectProperties& Props, EDamageType Type, const float Damage);
+
 	// TODO: 未来如果学不会奶瓜将改回Aura的WBP
 	//显示伤害数字
 	// static void ShowFloatingText(const FEffectProperties& Props, const float Damage, bool IsCriticalHit);
-	static void ShowFloatingText(AActor* TargetActor, float Damage, bool IsCriticalHit);
+	static void ShowFloatingText(const FEffectProperties& Props, float Damage, bool IsCriticalHitE, EDamageType Type);
 
 	// 用于激活角色死亡被动的函数
-	void OnDeadAbility(const FGameplayEffectModCallbackData& Data);
-//	UFUNCTION(Client, Reliable)
-//	void Client_ShowFloatingText(const FEffectProperties& Props, const float Damage, bool IsCriticalHit);
+	void OnDeadAbility(const FEffectProperties& Props);
+
+	//void OnDeadAbility(const FGameplayEffectModCallbackData& Data);
 };

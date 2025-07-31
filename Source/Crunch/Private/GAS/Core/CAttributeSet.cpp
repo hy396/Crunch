@@ -20,8 +20,10 @@ void UCAttributeSet::GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>&
 	DOREPLIFETIME_CONDITION_NOTIFY(UCAttributeSet, Mana, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UCAttributeSet, MaxMana, COND_None, REPNOTIFY_Always);
 
-	DOREPLIFETIME_CONDITION_NOTIFY(UCAttributeSet, BaseDamage, COND_None, REPNOTIFY_Always);
-	DOREPLIFETIME_CONDITION_NOTIFY(UCAttributeSet, AttackPowerCoefficient, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UCAttributeSet, BaseAttackDamage, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UCAttributeSet, BaseMagicDamage, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UCAttributeSet, BaseTrueDamage, COND_None, REPNOTIFY_Always);
+	
 	DOREPLIFETIME_CONDITION_NOTIFY(UCAttributeSet, AttackDamage, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UCAttributeSet, MagicDamage, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UCAttributeSet, TrueDamage, COND_None, REPNOTIFY_Always);
@@ -50,6 +52,8 @@ void UCAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, flo
 
 void UCAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data)
 {
+	FEffectProperties Props;
+	SetEffectProperties(Data, Props);
 	if (Data.EvaluatedData.Attribute == GetHealthAttribute())
 	{
 		SetHealth(FMath::Clamp(GetHealth(), 0, GetMaxHealth()));
@@ -60,89 +64,40 @@ void UCAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackD
 		SetMana(FMath::Clamp(GetMana(), 0, GetMaxMana()));
 		SetCachedManaPercent(GetMana()/GetMaxMana());
 	}
-	// if (Data.EvaluatedData.Attribute == GetMaxHealthAttribute())
-	// {
-	// 	RescaleHealth();
-	// }
-	// if (Data.EvaluatedData.Attribute == GetMaxManaAttribute())
-	// {
-	// 	RescaleMana();
-	// }
-	// 伤害
+	
+	// 物理伤害
 	if (Data.EvaluatedData.Attribute == GetAttackDamageAttribute())
 	{
-		// FEffectProperties Props;
-		// SetEffectProperties(Data, Props);
 		float NewDamage = GetAttackDamage();
 		SetAttackDamage(0.f);
-		bool bCriticalHit = false;
-		UAbilitySystemComponent* SourceASC = Data.EffectSpec.GetContext().GetOriginalInstigatorAbilitySystemComponent();
 		if (NewDamage > 0.f)
 		{
-			if (SourceASC)
-			{
-				bool bFound = false;
-				const float EffectiveCriticalHitChance = SourceASC->GetGameplayAttributeValue(UCHeroAttributeSet::GetCriticalStrikeChanceAttribute(), bFound);
-				if (bFound)
-				{
-					bFound = false;
-					bCriticalHit = FMath::RandRange(1, 100) < EffectiveCriticalHitChance;
-					if (bCriticalHit)
-					{
-						const float CriticalStrikeDamage = SourceASC->GetGameplayAttributeValue(UCHeroAttributeSet::GetCriticalStrikeDamageAttribute(), bFound);
-						if (bFound)
-						{
-							NewDamage *= (1.f + CriticalStrikeDamage / 100.f);
-							// UE_LOG(LogTemp, Warning, TEXT("暴击"))
-						}
-					}
-				}
-			}
-			
-			const float NewHealth = GetHealth() - NewDamage;
-			SetHealth(FMath::Clamp(NewHealth, 0.f, GetMaxHealth()));
-			UE_LOG(LogTemp, Log, TEXT("NewDamage: %f"), NewDamage)
-			
-			// 如果生命小于等于0触发死亡
-			if (NewHealth <= 0.f)
-			{
-				// 触发死亡被动
-				OnDeadAbility(Data);
-			}
-			// 显示伤害数字（Aura的方法）（2025/07/20：现在成功了）
-			if (AActor* TargetActor = Data.Target.AbilityActorInfo->AvatarActor.Get())
-			{
-				ShowFloatingText(TargetActor,NewDamage, bCriticalHit);
-			}
-			// Client_ShowFloatingText_Implementation(Props,NewDamage, bCriticalHit);
-			
-			// GC 的方法，失败
-			// if (Props.SourceASC)
-			// {
-			// 	FGameplayCueParameters BlastingGameplayCueParameters;
-			// 	if (AActor* Target = Data.Target.AbilityActorInfo->AvatarActor.Get())
-			// 	{
-			// 		// 设置特效的位置
-			// 		BlastingGameplayCueParameters.Location = Target->GetActorLocation();
-			// 		// 随便找一个变量设置暴击
-			// 		BlastingGameplayCueParameters.NormalizedMagnitude = bCriticalHit ? 1.f : 0.f;
-			// 	}
-			// 	// if (AActor* Source = Props.SourceASC->AbilityActorInfo->AvatarActor.Get())
-			// 	// {
-			// 	// 	BlastingGameplayCueParameters.SourceObject = Source;
-			// 	// }
-			// 	// 随便找一个变量存伤害值
-			// 	BlastingGameplayCueParameters.RawMagnitude = NewDamage;
-			// 	UE_LOG(LogTemp, Warning, TEXT("奶瓜GC"))
-			// 	// 播放奶瓜数字
-			// 	Props.SourceASC->ExecuteGameplayCue(UCAbilitySystemStatics::GetDamageNumberGameplayCueTag(), BlastingGameplayCueParameters);
-			// }
-			// Source是输出者，Target是挨打的
-			// UE_LOG(LogTemp, Warning, TEXT("SourceASCName: %s"), *Data.EffectSpec.GetContext().GetOriginalInstigatorAbilitySystemComponent()->GetName())
-			// UE_LOG(LogTemp, Warning, TEXT("TargetASCName: %s"), *UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(Data.Target.AbilityActorInfo->AvatarActor.Get())->GetName())
-
-			// UE_LOG(LogTemp, Warning, TEXT("SourceName: %s"), *Data.EffectSpec.GetContext().GetOriginalInstigatorAbilitySystemComponent()->AbilityActorInfo->AvatarActor.Get()->GetName())
-			// UE_LOG(LogTemp, Warning, TEXT("TargetName: %s"), *Data.Target.AbilityActorInfo->AvatarActor.Get()->GetName())
+			UE_LOG(LogTemp, Warning, TEXT("物理: %f"), NewDamage)
+			Damage(Props, EDamageType::PhysicalDamage, NewDamage);
+		}
+	}
+	
+	// 魔法伤害
+	if (Data.EvaluatedData.Attribute == GetMagicDamageAttribute())
+	{
+		float NewDamage = GetMagicDamage();
+		SetMagicDamage(0.f);
+		if (NewDamage > 0.f)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("魔法伤害: %f"), NewDamage)
+			Damage(Props,EDamageType::MagicDamage, NewDamage);
+		}
+	}
+	
+	// 真实伤害
+	if (Data.EvaluatedData.Attribute == GetTrueDamageAttribute())
+	{
+		float NewDamage = GetTrueDamage();
+		SetTrueDamage(0.f);
+		if (NewDamage > 0.f)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("真实伤害: %f"), NewDamage)
+			Damage(Props,EDamageType::TrueDamage, NewDamage);
 		}
 	}
 }
@@ -224,14 +179,19 @@ void UCAttributeSet::OnRep_MagicResistance(const FGameplayAttributeData& OldValu
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UCAttributeSet, MagicResistance, OldValue);
 }
 
-void UCAttributeSet::OnRep_AttackPowerCoefficient(const FGameplayAttributeData& OldAttackPowerCoefficient)
+void UCAttributeSet::OnRep_BaseAttackDamage(const FGameplayAttributeData& OldBaseAttackDamage)
 {
-	GAMEPLAYATTRIBUTE_REPNOTIFY(UCAttributeSet, AttackPowerCoefficient, OldAttackPowerCoefficient);
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UCAttributeSet, BaseAttackDamage, OldBaseAttackDamage);
 }
 
-void UCAttributeSet::OnRep_BaseDamage(const FGameplayAttributeData& OldBaseDamage)
+void UCAttributeSet::OnRep_BaseMagicDamage(const FGameplayAttributeData& OldBaseMagicDamage)
 {
-	GAMEPLAYATTRIBUTE_REPNOTIFY(UCAttributeSet, BaseDamage, OldBaseDamage);
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UCAttributeSet, BaseMagicDamage, OldBaseMagicDamage);
+}
+
+void UCAttributeSet::OnRep_BaseTrueDamage(const FGameplayAttributeData& OldBaseTrueDamage)
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UCAttributeSet, BaseTrueDamage, OldBaseTrueDamage);
 }
 
 void UCAttributeSet::OnRep_MagicDamage(const FGameplayAttributeData& OldMagicDamage)
@@ -276,39 +236,76 @@ void UCAttributeSet::SetEffectProperties(const FGameplayEffectModCallbackData& D
 	}
 }
 
-void UCAttributeSet::ShowFloatingText(AActor* TargetActor, const float Damage, bool IsCriticalHit)
+void UCAttributeSet::Damage(const FEffectProperties& Props, EDamageType Type, const float Damage)
 {
-	for (int32 i = 0; ;++i)
+	bool bCriticalHit = false;
+	float NewDamage = Damage;
+	if (Props.SourceASC)
 	{
-		if (ACPlayerController* PC = Cast<ACPlayerController>(UGameplayStatics::GetPlayerController(TargetActor,i)))
+		bool bFound = false;
+		const float EffectiveCriticalHitChance = Props.SourceASC->GetGameplayAttributeValue(UCHeroAttributeSet::GetCriticalStrikeChanceAttribute(), bFound);
+		if (bFound)
 		{
-			PC->ShowDamageNumber(Damage, TargetActor, IsCriticalHit); //调用显示伤害数字
-		}else
-		{
-			break;
+			bFound = false;
+			bCriticalHit = FMath::RandRange(1, 100) < EffectiveCriticalHitChance;
+			if (bCriticalHit)
+			{
+				const float CriticalStrikeDamage = Props.SourceASC->GetGameplayAttributeValue(UCHeroAttributeSet::GetCriticalStrikeDamageAttribute(), bFound);
+				if (bFound)
+				{
+					NewDamage *= (1.f + CriticalStrikeDamage / 100.f);
+					// UE_LOG(LogTemp, Warning, TEXT("暴击"))
+				}
+			}
 		}
 	}
-
-	// // 从技能释放者身上获取PC并显示伤害数字
-	// if(ACPlayerController* PC = Cast<ACPlayerController>(Props.SourceCharacter->Controller))
-	// {
-	// 	PC->ShowDamageNumber(Damage, TargetActor, IsCriticalHit); //调用显示伤害数字
-	// }
-	// // 从目标身上获取PC并显示伤害数字
-	// if(ACPlayerController* PC = Cast<ACPlayerController>(Props.TargetCharacter->Controller))
-	// {
-	// 	PC->ShowDamageNumber(Damage, TargetActor, IsCriticalHit); //调用显示伤害数字
-	// }
+			
+	const float NewHealth = GetHealth() - NewDamage;
+	SetHealth(FMath::Clamp(NewHealth, 0.f, GetMaxHealth()));
+	// UE_LOG(LogTemp, Log, TEXT("NewDamage: %f"), NewDamage)
+			
+	// 如果生命小于等于0触发死亡
+	if (NewHealth <= 0.f)
+	{
+		// 触发死亡被动
+		OnDeadAbility(Props);
+	}
+	// TODO:添加第四个参数，用来传递伤害的类型
+	ShowFloatingText(Props,NewDamage, bCriticalHit, Type);
 }
 
-void UCAttributeSet::OnDeadAbility(const FGameplayEffectModCallbackData& Data)
+void UCAttributeSet::ShowFloatingText(const FEffectProperties& Props, const float Damage, bool IsCriticalHit, EDamageType Type)
+{
+	// for (int32 i = 0; ;++i)
+	// {
+	// 	if (ACPlayerController* PC = Cast<ACPlayerController>(UGameplayStatics::GetPlayerController(TargetActor,i)))
+	// 	{
+	// 		PC->ShowDamageNumber(Damage, TargetActor, IsCriticalHit); //调用显示伤害数字
+	// 	}else
+	// 	{
+	// 		break;
+	// 	}
+	// }
+
+	// 从技能释放者身上获取PC并显示伤害数字
+	if(ACPlayerController* PC = Cast<ACPlayerController>(Props.SourceCharacter->Controller))
+	{
+		PC->ShowDamageNumber(Damage, Props.TargetCharacter, IsCriticalHit, Type); //调用显示伤害数字
+	}
+	// 从目标身上获取PC并显示伤害数字
+	if(ACPlayerController* PC = Cast<ACPlayerController>(Props.TargetCharacter->Controller))
+	{
+		PC->ShowDamageNumber(Damage, Props.TargetCharacter, IsCriticalHit, Type); //调用显示伤害数字
+	}
+}
+
+void UCAttributeSet::OnDeadAbility(const FEffectProperties& Props)
 {
 	FGameplayEventData DeadAbilityEventData;
-	if (AActor* TargetActor = Data.EffectSpec.GetContext().GetOriginalInstigatorAbilitySystemComponent()->AbilityActorInfo->AvatarActor.Get())
+	if (Props.SourceAvatarActor)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Dead：%s"), *GetOwningActor()->GetName())
-		DeadAbilityEventData.Target = TargetActor;
-		DeadAbilityEventData.ContextHandle = Data.EffectSpec.GetContext();
+		// UE_LOG(LogTemp, Warning, TEXT("Dead：%s"), *GetOwningActor()->GetName())
+		DeadAbilityEventData.Target = Props.SourceAvatarActor;
 	}
 	
 	UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(GetOwningActor(), 

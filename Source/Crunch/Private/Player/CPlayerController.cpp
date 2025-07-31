@@ -142,18 +142,18 @@ void ACPlayerController::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& O
 // 	// 	DamageText->AddNumberPop(NumberPopRequest);
 // 	// }
 // }
-void ACPlayerController::ShowDamageNumber_Implementation(float DamageAmount, AActor* TargetActor, bool bCriticalHit)
+void ACPlayerController::ShowDamageNumber_Implementation(float DamageAmount, ACharacter* TargetCharacter, bool bCriticalHit, EDamageType Type)
 {
-	if (!IsValid(TargetActor) || !NumberPopComponentClass || !IsLocalController())
+	if (!IsValid(TargetCharacter) || !NumberPopComponentClass || !IsLocalController())
 		return;
 
 	// 获取目标Actor上的现有组件
-	UNumberPopComponent_NiagaraText* DamageText = TargetActor->GetComponentByClass<UNumberPopComponent_NiagaraText>();
+	UNumberPopComponent_NiagaraText* DamageText = TargetCharacter->GetComponentByClass<UNumberPopComponent_NiagaraText>();
 
 	// 不存在则创建并附加
 	if (!DamageText)
 	{
-		DamageText = NewObject<UNumberPopComponent_NiagaraText>(TargetActor, NumberPopComponentClass);
+		DamageText = NewObject<UNumberPopComponent_NiagaraText>(TargetCharacter, NumberPopComponentClass);
 		if (!DamageText)
 		{
 #if !(UE_BUILD_SHIPPING || UE_BUILD_TEST)
@@ -164,14 +164,22 @@ void ACPlayerController::ShowDamageNumber_Implementation(float DamageAmount, AAc
         
 		DamageText->RegisterComponent(); // 注册组件
 	}
-
+	//修改~Begin
+	// 新增随机偏移
+	FVector BaseOffset(0, 0, 200);
+	float RandomX = FMath::FRandRange(-50.0f, 50.0f);  // X轴随机偏移
+	float RandomY = FMath::FRandRange(-50.0f, 50.0f);  // Y轴随机偏移
+	float RandomZ = FMath::FRandRange(-20.0f, 20.0f);  // Z轴微调
+	//修改~End
+	// TODO:添加各种伤害类型的伤害数字特效
 	// 设置显示参数
 	FNumberPopRequest NumberPopRequest;
-	NumberPopRequest.WorldLocation = TargetActor->GetActorLocation() + FVector(0, 0, 200);
+	NumberPopRequest.WorldLocation = TargetCharacter->GetActorLocation() + BaseOffset + FVector(RandomX, RandomY, RandomZ) ;
+	// NumberPopRequest.WorldLocation = TargetCharacter->GetActorLocation() + FVector(0, 0, 200);
 	NumberPopRequest.bIsCriticalDamage = bCriticalHit;
 	NumberPopRequest.NumberToDisplay = DamageAmount;
     
-	DamageText->AddNumberPop(NumberPopRequest);
+	DamageText->AddNumberPop(NumberPopRequest, Type);
 }
 
 // void ACPlayerController::HandleTargetActorDestroyed(AActor* DestroyedActor)

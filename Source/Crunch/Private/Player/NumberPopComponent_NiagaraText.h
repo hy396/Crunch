@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Components/ControllerComponent.h"
+#include "GAS/Core/CGameplayAbilityTypes.h"
 #include "NumberPopComponent_NiagaraText.generated.h"
 
 
@@ -50,8 +51,11 @@ public:
 	 * @param NewRequest 新的数字弹出请求数据
 	 */
 	UFUNCTION(BlueprintCallable, Category = Foo)
-	void AddNumberPop(const FNumberPopRequest& NewRequest);
+	void AddNumberPop(const FNumberPopRequest& NewRequest, EDamageType Type);
 
+	void AddAttackNumber(const FNumberPopRequest& NewRequest);
+	void AddMagicNumber(const FNumberPopRequest& NewRequest);
+	void AddTrueNumber(const FNumberPopRequest& NewRequest);
 	UPROPERTY(EditDefaultsOnly, Category="DamagePop")
 	FName NiagaraArrayName;
 
@@ -63,4 +67,8 @@ protected:
 	
 	UPROPERTY(EditDefaultsOnly, Category = "Number Pop|Style")
 	TObjectPtr<UNiagaraComponent> NiagaraComp;
+	UPROPERTY(EditDefaultsOnly, Category = "Number Pop|Style")
+	TObjectPtr<UNiagaraComponent> MagicNiagaraComp;
+	UPROPERTY(EditDefaultsOnly, Category = "Number Pop|Style")
+	TObjectPtr<UNiagaraComponent> TrueNiagaraComp;
 };

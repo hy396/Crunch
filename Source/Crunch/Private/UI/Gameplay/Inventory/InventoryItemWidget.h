@@ -7,6 +7,16 @@
 #include "UI/Common/ItemWidget.h"
 #include "InventoryItemWidget.generated.h"
 
+
+class UInventoryItemWidget;
+
+// 定义委托：当库存物品被拖放时触发
+DECLARE_MULTICAST_DELEGATE_TwoParams(
+	FOnInventoryItemDropped, 
+	UInventoryItemWidget* /* 目标槽位 */, 
+	UInventoryItemWidget* /* 来源槽位 */
+);
+
 /**
  * 
  */
@@ -15,6 +25,10 @@ class CRUNCH_API UInventoryItemWidget : public UItemWidget
 {
 	GENERATED_BODY()
 public:
+	// 委托：当物品被拖放到此槽位时触发
+	FOnInventoryItemDropped OnInventoryItemDropped;
+
+	
 	virtual void NativeConstruct() override;
 	// 检查槽位是否为空
 	bool IsEmpty() const;
@@ -28,6 +42,15 @@ public:
 	FORCEINLINE int GetSlotNumber() const { return SlotNumber; }
 	// 更新堆叠数量显示
 	void UpdateStackCount();
+	// 获取图标
+	UTexture2D* GetIconTexture();
+	
+	// 获取关联的库存物品
+	FORCEINLINE const UInventoryItem* GetInventoryItem() const { return InventoryItem; }
+	
+	// 获取物品句柄
+	FInventoryItemHandle GetItemHandle() const;
+
 private:
 	// 更新施法状态显示（是否可施放）
 	void UpdateCanCastDisplay(bool bCanCast);
@@ -56,4 +79,32 @@ private:
 	const UInventoryItem* InventoryItem;
 	// 当前槽位编号
 	int32 SlotNumber;
+
+	// 右键点击事件处理
+	virtual void RightButtonClicked() override;
+	
+	// 左键点击事件处理
+	virtual void LeftButtonClicked() override;
+	
+	/******************************************/
+	/*           拖放功能                     */
+	/******************************************/
+private:
+	// 检测到拖拽时触发
+	virtual void NativeOnDragDetected(
+		const FGeometry& InGeometry, 
+		const FPointerEvent& InMouseEvent, 
+		UDragDropOperation*& OutOperation
+	) override;
+	
+	// 物品被拖放到此控件时触发（放置操作）
+	virtual bool NativeOnDrop(
+		const FGeometry& InGeometry, 
+		const FDragDropEvent& InDragDropEvent, 
+		UDragDropOperation* InOperation
+	) override;
+
+	// 拖放操作类
+	UPROPERTY(EditDefaultsOnly, Category = "Drag Drop")
+	TSubclassOf<class UInventoryItemDragDropOp> DragDropOpClass;
 };

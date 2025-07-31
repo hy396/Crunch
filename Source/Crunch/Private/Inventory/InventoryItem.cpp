@@ -66,10 +66,109 @@ bool UInventoryItem::IsValid() const
 	return ShopItem != nullptr;
 }
 
+bool UInventoryItem::AddStackCount()
+{
+	if (IsStackFull())
+	{
+		// 堆叠数已满
+		return false;
+	}
+	++StackCount;
+	return true;
+}
+
+bool UInventoryItem::ReduceStackCount()
+{
+	--StackCount;
+	// 还有剩余的数量返回 true,没了返回 false
+	return StackCount > 0;
+}
+
+bool UInventoryItem::SetStackCount(int32 NewStackCount)
+{
+	const UPDA_ShopItem* Item = GetShopItem();
+	if (!Item) return false;
+
+	// 传入的堆叠数量在合理区间
+	if (NewStackCount > 0 && NewStackCount <= Item->GetMaxStackCount())
+	{
+		StackCount = NewStackCount;
+		return true;
+	}
+	return false;
+}
+
+bool UInventoryItem::IsStackFull() const
+{
+	const UPDA_ShopItem* Item = GetShopItem();
+	return Item && StackCount >= Item->GetMaxStackCount();
+}
+
+bool UInventoryItem::IsForItem(const UPDA_ShopItem* Item) const
+{
+	return Item && GetShopItem() == Item;
+}
+
+bool UInventoryItem::IsGrantingAbility(TSubclassOf<class UGameplayAbility> AbilityClass) const
+{
+	// 是否为指定的技能
+	return GetShopItem() && GetShopItem()->GetGrantedAbility() == AbilityClass;
+}
+
+bool UInventoryItem::IsGrantingAnyAbility() const
+{
+	// 是否有技能
+	return GetShopItem() && GetShopItem()->GetGrantedAbility() != nullptr;
+}
+
 // TODO:在这里的变化可以尝试修改技能按键
 void UInventoryItem::SetSlot(int32 NewSlot)
 {
 	Slot = NewSlot;
+	if (OwnerAbilitySystemComponent->GetOwner()->HasAuthority())
+	{
+		UE_LOG(LogTemp, Warning, TEXT("服务器更新插槽"))
+	}else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("客户端更新插槽"))
+		return;
+	}
+	// 定义槽位到输入ID的映射表（静态常量避免重复初始化）
+	static const TMap<int32, ECAbilityInputID> SlotInputMap = {
+		{0, ECAbilityInputID::AbilityOne},
+		{1, ECAbilityInputID::AbilityTwo},
+		{2, ECAbilityInputID::AbilityThree},
+		{3, ECAbilityInputID::AbilityFour},
+		{4, ECAbilityInputID::AbilityFive},
+		{5, ECAbilityInputID::AbilitySix}
+	};
+
+	// 查找对应的输入ID（找不到时返回None）
+	const ECAbilityInputID SelectedInput = SlotInputMap.FindRef(Slot, ECAbilityInputID::None);
+	UE_LOG(LogTemp, Warning, TEXT("SelectedInput: %d"), SelectedInput)
+    
+	// 提前退出条件：无效输入或无能力组件
+	if (SelectedInput == ECAbilityInputID::None || !OwnerAbilitySystemComponent) 
+		return;
+	
+	// 移除授予的能力重新绑定
+	if (GrantedAbilitySpecHandle.IsValid())
+	{
+		OwnerAbilitySystemComponent->SetRemoveAbilityOnEnd(GrantedAbilitySpecHandle);
+		if (GetShopItem()->GetGrantedAbility())
+		{
+			GrantedAbilitySpecHandle = OwnerAbilitySystemComponent->K2_GiveAbility(
+			GetShopItem()->GetGrantedAbility(),
+				1,
+				static_cast<int32>(SelectedInput));
+		}
+	}
+	
+	// 更新技能输入绑定
+	// if (FGameplayAbilitySpec* Spec = OwnerAbilitySystemComponent->FindAbilitySpecFromHandle(GrantedAbilitySpecHandle))
+	// {
+	// 	Spec->InputID = static_cast<int32>(SelectedInput);
+	// }
 }
 
 void UInventoryItem::InitItem(const FInventoryItemHandle& NewHandle, const UPDA_ShopItem* NewShopItem,
@@ -110,7 +209,7 @@ void UInventoryItem::ApplyGASModifications()
 			);
 
 		// TODO: 绑定输入按键，等插槽上线，使用枚举的方式来绑定插槽
-		// GrantedAbiltiySpecHandle = OwnerAbilitySystemComponent->GiveAbility(
+		// GrantedAbilitySpecHandle = OwnerAbilitySystemComponent->GiveAbility(
 		// 	FGameplayAbilitySpec(GrantedAbility,
 		// 		1,
 		// 		static_cast<int32>(ECAbilityInputID::BasicAttack),

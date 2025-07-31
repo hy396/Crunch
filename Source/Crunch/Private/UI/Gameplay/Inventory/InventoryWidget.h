@@ -52,8 +52,12 @@ private:
 	void ItemAdded(const UInventoryItem* InventoryItem);
 	
 	// 处理物品堆叠数量变化事件
-	// void ItemStackCountChanged(const FInventoryItemHandle& Handle, int NewCount);
+	void ItemStackCountChanged(const FInventoryItemHandle& Handle, int NewCount);
 
 	// 获取下一个可用槽位控件
 	UInventoryItemWidget* GetNextAvailableSlot() const;
+
+	// 处理物品拖放事件
+	void HandleItemDragDrop(UInventoryItemWidget* DestinationWidget, UInventoryItemWidget* SourceWidget);
+	
 };

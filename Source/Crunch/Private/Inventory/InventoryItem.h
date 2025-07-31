@@ -66,6 +66,36 @@ public:
 	UInventoryItem();
 	// 检查物品是否有效初始化
 	bool IsValid() const;
+
+	/**
+	 * 尝试添加物品堆叠数量
+	 * @return 是否成功增加堆叠数量
+	 */
+	bool AddStackCount();
+	/**
+	 * 尝试减少堆叠数量
+	 * @return 减少后堆叠是否非空
+	 */
+	bool ReduceStackCount();
+	/**
+	 * 设置堆叠数量
+	 * @param NewStackCount 设置的堆叠数量
+	 * @return 是否成功设置
+	 */
+	bool SetStackCount(int32 NewStackCount);
+
+	// 检查堆叠是否已满
+	bool IsStackFull() const;
+
+	// 检查此物品实例是否对应指定商店物品
+	bool IsForItem(const UPDA_ShopItem* Item) const;
+	
+	// 检查此物品是否授予特定能力
+	bool IsGrantingAbility(TSubclassOf<class UGameplayAbility> AbilityClass) const;
+	
+	// 检查此物品是否授予任何能力
+	bool IsGrantingAnyAbility() const;
+	
 	/**
 	 * 初始化物品实例
 	 * @param NewHandle 分配给此物品的唯一句柄

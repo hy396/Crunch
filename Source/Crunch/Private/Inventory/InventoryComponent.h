@@ -11,6 +11,8 @@
 
 // 委托声明：当新物品添加到库存时广播
 DECLARE_MULTICAST_DELEGATE_OneParam(FOnItemAddedDelegate, const UInventoryItem* /*NewItem*/);
+// 委托声明：当物品堆叠数量变化时广播
+DECLARE_MULTICAST_DELEGATE_TwoParams(FOnItemStackCountChangeDelegate, const FInventoryItemHandle&, int32 /*NewCount*/);
 
 
 /**
@@ -27,6 +29,9 @@ public:
 
 	// 物品添加事件委托
 	FOnItemAddedDelegate OnItemAdded;
+
+	// 物品堆叠数量变化事件委托
+	FOnItemStackCountChangeDelegate OnItemStackCountChanged;
 	
 	// 尝试购买商店物品
 	void TryPurchase(const UPDA_ShopItem* ItemToPurchase);
@@ -34,12 +39,21 @@ public:
 	float GetGold() const;
 	// 获取库存容量
 	FORCEINLINE int32 GetCapacity() const { return Capacity; }
+	// TODO:25/07/31更改为服务器调用函数
 	// 处理物品槽位变更
+	UFUNCTION(Server, Reliable, WithValidation)
 	void ItemSlotChanged(const FInventoryItemHandle& Handle, int32 NewSlotNumber);
 	// 通过句柄获取库存物品
 	UInventoryItem* GetInventoryItemByHandle(const FInventoryItemHandle& Handle) const;
 
+	// 检查指定物品类型是否已达库存上限
+	bool IsFullFor(const UPDA_ShopItem* Item) const;
 
+	// 检查所有槽位是否已被占用
+	bool IsAllSlotOccupied() const;
+	
+	// 获取指定物品可堆叠的库存实例
+	UInventoryItem* GetAvailableStackForItem(const UPDA_ShopItem* Item) const;
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
@@ -73,4 +87,8 @@ private:
 	/** 客户端：处理物品添加通知 */
 	UFUNCTION(Client, Reliable)
 	void Client_ItemAdded(FInventoryItemHandle AssignedHandle, const UPDA_ShopItem* Item);
+
+	/** 客户端：处理物品堆叠数量变更通知 */
+	UFUNCTION(Client, Reliable)
+	void Client_ItemStackCountChanged(FInventoryItemHandle Handle, int NewCount);
 };

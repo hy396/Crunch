@@ -48,10 +48,37 @@ namespace TGameplayTags
 
 	CRUNCH_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Role_Hero)
 
-	// 属性
-	CRUNCH_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(AttributeSet_BaseDamage)
+
 	// 经验
 	CRUNCH_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(AttributeSet_Experience)
 	// 金币
 	CRUNCH_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(AttributeSet_Gold)
+
+	// 伤害类型
+	// 物理伤害
+	CRUNCH_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(DamageType_AttackDamage)
+	// 魔法伤害
+	CRUNCH_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(DamageType_MagicDamage)
+	// 真实伤害
+	CRUNCH_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(DamageType_TrueDamage)
+
+	// 属性基础
+	// 最大生命值
+	CRUNCH_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attribute_MaxHealth)
+	// 当前生命值
+	CRUNCH_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attribute_Health)
+	// 最大魔法值
+	CRUNCH_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attribute_MaxMana)
+	// 当前魔法值
+	CRUNCH_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attribute_Mana)
+	// 攻击力
+	CRUNCH_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attribute_AttackPower)
+	// 魔法强度
+	CRUNCH_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attribute_MagicPower)
+	// 物抗
+	CRUNCH_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attribute_Armor)
+	// 魔抗
+	CRUNCH_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attribute_MagicResistance)
+	// 移动速度
+	CRUNCH_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attribute_MoveSpeed)
 }

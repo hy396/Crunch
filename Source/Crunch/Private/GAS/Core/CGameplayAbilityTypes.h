@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameplayEffect.h"
+#include "TGameplayTags.h"
 #include "CGameplayAbilityTypes.generated.h"
 
 /**
@@ -29,13 +30,13 @@ enum class ECAbilityInputID : uint8
 	Confirm							UMETA(DisplayName="确认"),
 	Cancel							UMETA(DisplayName="取消")
 };
-UENUM(BlueprintType)
-enum class EDamageType : uint8
-{
-	PhysicalDamage					UMETA(DisplayName="物理伤害"),  // 物理伤害
-	MagicDamage						UMETA(DisplayName="魔法伤害"),  // 魔法伤害
-	TrueDamage						UMETA(DisplayName="真实伤害"),  // 真实伤害
-};
+// UENUM(BlueprintType)
+// enum class ETDamageType : uint8
+// {
+// 	PhysicalDamage					UMETA(DisplayName="物理伤害"),  // 物理伤害
+// 	MagicDamage						UMETA(DisplayName="魔法伤害"),  // 魔法伤害
+// 	TrueDamage						UMETA(DisplayName="真实伤害"),  // 真实伤害
+// };
 
 // 
 USTRUCT(BlueprintType)
@@ -48,8 +49,8 @@ public:
 	UPROPERTY(EditAnywhere)
 	FScalableFloat BaseDamage;
 	// 属性的百分比伤害加成
-	UPROPERTY(EditAnywhere)
-	TMap<FGameplayAttribute, float> AttributeDamageModifiers;
+	UPROPERTY(EditAnywhere, meta = (Categories = "Attribute"))
+	TMap<FGameplayTag, float> AttributeDamageModifiers;
 };
 // 伤害效果定义
 USTRUCT(BlueprintType)
@@ -64,8 +65,8 @@ public:
 	TSubclassOf<UGameplayEffect> DamageEffect;
 	
 	// 伤害类型
-	UPROPERTY(EditAnywhere)
-	TMap<EDamageType,FDamageDefinition> DamageTypeDefinitions;
+	UPROPERTY(EditAnywhere, meta = (Categories = "DamageType"))
+	TMap<FGameplayTag,FDamageDefinition> DamageTypeDefinitions;
 
 	// 力的大小
 	UPROPERTY(EditAnywhere)

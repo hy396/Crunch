@@ -135,76 +135,75 @@ void UCGameplayAbility::ApplyDamage(AActor* TargetActor,const FGenericDamageEffe
 	ContextHandle.SetAbility(this);
 	ContextHandle.AddSourceObject(AvatarActor);
 	ContextHandle.AddInstigator(AvatarActor, AvatarActor);
-	// 配置伤害
-	MakeDamage(Damage, Level);
-	// float NewDamage = Damage.BaseDamage.GetValueAtLevel(GetAbilityLevel());
-	// for(auto& Pair : Damage.DamageTypes)
-	// {
-	// 	bool bFound ;
-	// 	float AttributeValue = GetAbilitySystemComponentFromActorInfo()->GetGameplayAttributeValue(Pair.Key, bFound);
-	// 	if (bFound)
-	// 	{
-	// 		NewDamage += AttributeValue * Pair.Value / 100.f;
-	// 	}
-	// }
-	// // 设置伤害的属性
-	// GetAbilitySystemComponentFromActorInfo()->ApplyModToAttribute(UCAttributeSet::GetBaseAttackDamageAttribute(), EGameplayModOp::Override, NewDamage);
-
-	// GetAbilitySystemComponentFromActorInfo()->SetNumericAttributeBase(UCAttributeSet::GetBaseDamageAttribute(), NewDamage);
+	// // 创建效果Spec句柄，指定效果类、能力等级和上下文
+	// FGameplayEffectSpecHandle EffectSpecHandle = ASC->MakeOutgoingSpec(Damage.DamageEffect, Level, ContextHandle);
 	
-	// 创建效果Spec句柄，指定效果类、能力等级和上下文
-	FGameplayEffectSpecHandle EffectSpecHandle = ASC->MakeOutgoingSpec(Damage.DamageEffect, Level, ContextHandle);
-	// UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(EffectSpecHandle, TGameplayTags::AttributeSet_BaseDamage, NewDamage);
-	// UAbilitySystemBlueprintLibrary::AssignSetByCallerMagnitude(EffectSpecHandle, "CAttributeSet.BaseDamage", NewDamage);
-	// if (EffectSpecHandle.IsValid())
-	// {
-	// 	// 设置由调用者指定的基础伤害数值
-	// 	EffectSpecHandle.Data->SetSetByCallerMagnitude(TGameplayTags::AttributeSet_BaseDamage, NewDamage);
-	// }
-	// 在目标上应用游戏效果规范
-	ApplyGameplayEffectSpecToTarget(GetCurrentAbilitySpecHandle(),
-									GetCurrentActorInfo(),
-									GetCurrentActivationInfo(),
-									EffectSpecHandle,
-									UAbilitySystemBlueprintLibrary::AbilityTargetDataFromActor(TargetActor));
+	// 配置伤害
+	// MakeDamage(Damage, Level);
+	for (const auto& TypePair : Damage.DamageTypeDefinitions)
+	{
+		// 创建效果Spec句柄，指定效果类、能力等级和上下文
+		FGameplayEffectSpecHandle EffectSpecHandle = ASC->MakeOutgoingSpec(Damage.DamageEffect, Level, ContextHandle);
+		float TotalModifier = TypePair.Value.BaseDamage.GetValueAtLevel(Level);
+		for (const auto& Modifier : TypePair.Value.AttributeDamageModifiers)
+		{
+			UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(EffectSpecHandle, Modifier.Key, Modifier.Value);
+		}
+		UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(EffectSpecHandle, TypePair.Key, TotalModifier);
+		// 在目标上应用游戏效果规范
+		ApplyGameplayEffectSpecToTarget(GetCurrentAbilitySpecHandle(),
+										GetCurrentActorInfo(),
+										GetCurrentActivationInfo(),
+										EffectSpecHandle,
+										UAbilitySystemBlueprintLibrary::AbilityTargetDataFromActor(TargetActor));
+	}
+	// // 在目标上应用游戏效果规范
+	// ApplyGameplayEffectSpecToTarget(GetCurrentAbilitySpecHandle(),
+	// 								GetCurrentActorInfo(),
+	// 								GetCurrentActivationInfo(),
+	// 								EffectSpecHandle,
+	// 								UAbilitySystemBlueprintLibrary::AbilityTargetDataFromActor(TargetActor));
 }
 
 void UCGameplayAbility::MakeDamage(const FGenericDamageEffectDef& Damage, int Level)
 {
+	// TODO:废弃方案，但有点感情，没删
 	// 通通置为0
-	float BaseAttackDamage = 0.f;
-	float BaseMagicDamage = 0.f;
-	float BaseTrueDamage = 0.f;
-	for (const auto& TypePair : Damage.DamageTypeDefinitions)
-	{
-		float TotalModifier = TypePair.Value.BaseDamage.GetValueAtLevel(Level);
-		for (const auto& Modifier : TypePair.Value.AttributeDamageModifiers)
-		{
-			bool bFound ;
-			float AttributeValue = GetAbilitySystemComponentFromActorInfo()->GetGameplayAttributeValue(Modifier.Key, bFound);
-			if (bFound)
-			{
-				TotalModifier += AttributeValue * Modifier.Value / 100.0f;
-			}
-		}
-		switch (TypePair.Key)
-		{
-			case EDamageType::PhysicalDamage :
-				BaseAttackDamage = TotalModifier;
-				break;
-			case EDamageType::MagicDamage :
-				BaseMagicDamage = TotalModifier;
-				break;
-			case EDamageType::TrueDamage :
-				BaseTrueDamage = TotalModifier;
-				break;
-			default:
-				break;
-		}
-	}
-	GetAbilitySystemComponentFromActorInfo()->ApplyModToAttribute(UCAttributeSet::GetBaseAttackDamageAttribute(), EGameplayModOp::Override, BaseAttackDamage);
-	GetAbilitySystemComponentFromActorInfo()->ApplyModToAttribute(UCAttributeSet::GetBaseMagicDamageAttribute(), EGameplayModOp::Override, BaseMagicDamage);
-	GetAbilitySystemComponentFromActorInfo()->ApplyModToAttribute(UCAttributeSet::GetBaseTrueDamageAttribute(), EGameplayModOp::Override, BaseTrueDamage);
+	// float BaseAttackDamage = 0.f;
+	// float BaseMagicDamage = 0.f;
+	// float BaseTrueDamage = 0.f;
+	// for (const auto& TypePair : Damage.DamageTypeDefinitions)
+	// {
+	// 	float TotalModifier = TypePair.Value.BaseDamage.GetValueAtLevel(Level);
+	// 	for (const auto& Modifier : TypePair.Value.AttributeDamageModifiers)
+	// 	{
+	// 		bool bFound ;
+	// 		float AttributeValue = GetAbilitySystemComponentFromActorInfo()->GetGameplayAttributeValue(Modifier.Key, bFound);
+	// 		if (bFound)
+	// 		{
+	// 			TotalModifier += AttributeValue * Modifier.Value / 100.0f;
+	// 		}
+	// 	}
+	// 	
+	// 	// switch (TypePair.Key)
+	// 	// {
+	// 	// 	case ETDamageType::PhysicalDamage :
+	// 	// 		BaseAttackDamage = TotalModifier;
+	// 	// 		break;
+	// 	// 	case ETDamageType::MagicDamage :
+	// 	// 		BaseMagicDamage = TotalModifier;
+	// 	// 		break;
+	// 	// 	case ETDamageType::TrueDamage :
+	// 	// 		BaseTrueDamage = TotalModifier;
+	// 	// 		break;
+	// 	// 	default:
+	// 	// 		break;
+	// 	// }
+	// 	
+	// }
+	// GetAbilitySystemComponentFromActorInfo()->ApplyModToAttribute(UCAttributeSet::GetBaseAttackDamageAttribute(), EGameplayModOp::Override, BaseAttackDamage);
+	// GetAbilitySystemComponentFromActorInfo()->ApplyModToAttribute(UCAttributeSet::GetBaseMagicDamageAttribute(), EGameplayModOp::Override, BaseMagicDamage);
+	// GetAbilitySystemComponentFromActorInfo()->ApplyModToAttribute(UCAttributeSet::GetBaseTrueDamageAttribute(), EGameplayModOp::Override, BaseTrueDamage);
 }
 
 void UCGameplayAbility::PushSelf(const FVector& PushVel)

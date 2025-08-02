@@ -12,7 +12,7 @@ UNumberPopComponent_NiagaraText::UNumberPopComponent_NiagaraText(const FObjectIn
 	// bReplicates = true;
 }
 
-void UNumberPopComponent_NiagaraText::AddNumberPop(const FNumberPopRequest& NewRequest, EDamageType Type)
+void UNumberPopComponent_NiagaraText::AddNumberPop(const FNumberPopRequest& NewRequest, FGameplayTag DamageType)
 {
 	// int32 LocalDamage = NewRequest.NumberToDisplay;
 	//
@@ -62,29 +62,16 @@ void UNumberPopComponent_NiagaraText::AddNumberPop(const FNumberPopRequest& NewR
 	//
 	// // 将更新后的数组写回 Niagara 组件UNiagaraDataInterfaceArrayFunctionLibrary::SetNiagaraArrayVector4(NiagaraComp, NiagaraArrayName, DamageList);
 	// UNiagaraDataInterfaceArrayFunctionLibrary::SetNiagaraArrayVector4(NiagaraComp, NiagaraArrayName, DamageList);
-	switch (Type)
+	if (DamageType.MatchesTagExact(TGameplayTags::DamageType_AttackDamage))
 	{
-		case EDamageType::PhysicalDamage:
-		{
-			AddAttackNumber(NewRequest);
-			break;
-		}
-		case EDamageType::MagicDamage:
-		{
-			AddMagicNumber(NewRequest);
-			break;
-		}
-		case EDamageType::TrueDamage:
-		{
-			AddTrueNumber(NewRequest);
-			break;
-		}
-		default:
-		{
-			break;
-		}
+		AddAttackNumber(NewRequest);
+	}else if (DamageType.MatchesTagExact(TGameplayTags::DamageType_MagicDamage))
+	{
+		AddMagicNumber(NewRequest);
+	}else if (DamageType.MatchesTagExact(TGameplayTags::DamageType_TrueDamage))
+	{
+		AddTrueNumber(NewRequest);
 	}
-	
 }
 
 void UNumberPopComponent_NiagaraText::AddAttackNumber(const FNumberPopRequest& NewRequest)
@@ -128,6 +115,17 @@ void UNumberPopComponent_NiagaraText::AddAttackNumber(const FNumberPopRequest& N
 		NewRequest.WorldLocation.Z,
 		LocalDamage));
 
+	// TODO: 测试的东西25/08/03
+	// 修改Begin
+	for (int32 i = 0; i < 10; i++)
+	{
+		DamageList.Add(FVector4(
+			NewRequest.WorldLocation.X ,
+			NewRequest.WorldLocation.Y,
+			NewRequest.WorldLocation.Z + i * 20.f,
+			10*i));
+	}
+	// 修改End
 	// 将更新后的数组写回 Niagara 组件UNiagaraDataInterfaceArrayFunctionLibrary::SetNiagaraArrayVector4(NiagaraComp, NiagaraArrayName, DamageList);
 	UNiagaraDataInterfaceArrayFunctionLibrary::SetNiagaraArrayVector4(NiagaraComp, NiagaraArrayName, DamageList);
 }

@@ -20,9 +20,9 @@ void UCAttributeSet::GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>&
 	DOREPLIFETIME_CONDITION_NOTIFY(UCAttributeSet, Mana, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UCAttributeSet, MaxMana, COND_None, REPNOTIFY_Always);
 
-	DOREPLIFETIME_CONDITION_NOTIFY(UCAttributeSet, BaseAttackDamage, COND_None, REPNOTIFY_Always);
-	DOREPLIFETIME_CONDITION_NOTIFY(UCAttributeSet, BaseMagicDamage, COND_None, REPNOTIFY_Always);
-	DOREPLIFETIME_CONDITION_NOTIFY(UCAttributeSet, BaseTrueDamage, COND_None, REPNOTIFY_Always);
+	// DOREPLIFETIME_CONDITION_NOTIFY(UCAttributeSet, BaseAttackDamage, COND_None, REPNOTIFY_Always);
+	// DOREPLIFETIME_CONDITION_NOTIFY(UCAttributeSet, BaseMagicDamage, COND_None, REPNOTIFY_Always);
+	// DOREPLIFETIME_CONDITION_NOTIFY(UCAttributeSet, BaseTrueDamage, COND_None, REPNOTIFY_Always);
 	
 	DOREPLIFETIME_CONDITION_NOTIFY(UCAttributeSet, AttackDamage, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UCAttributeSet, MagicDamage, COND_None, REPNOTIFY_Always);
@@ -73,7 +73,7 @@ void UCAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackD
 		if (NewDamage > 0.f)
 		{
 			UE_LOG(LogTemp, Warning, TEXT("物理: %f"), NewDamage)
-			Damage(Props, EDamageType::PhysicalDamage, NewDamage);
+			Damage(Props, TGameplayTags::DamageType_AttackDamage, NewDamage);
 		}
 	}
 	
@@ -85,7 +85,7 @@ void UCAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackD
 		if (NewDamage > 0.f)
 		{
 			UE_LOG(LogTemp, Warning, TEXT("魔法伤害: %f"), NewDamage)
-			Damage(Props,EDamageType::MagicDamage, NewDamage);
+			Damage(Props,TGameplayTags::DamageType_MagicDamage, NewDamage);
 		}
 	}
 	
@@ -97,7 +97,7 @@ void UCAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackD
 		if (NewDamage > 0.f)
 		{
 			UE_LOG(LogTemp, Warning, TEXT("真实伤害: %f"), NewDamage)
-			Damage(Props,EDamageType::TrueDamage, NewDamage);
+			Damage(Props,TGameplayTags::DamageType_TrueDamage, NewDamage);
 		}
 	}
 }
@@ -179,20 +179,20 @@ void UCAttributeSet::OnRep_MagicResistance(const FGameplayAttributeData& OldValu
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UCAttributeSet, MagicResistance, OldValue);
 }
 
-void UCAttributeSet::OnRep_BaseAttackDamage(const FGameplayAttributeData& OldBaseAttackDamage)
-{
-	GAMEPLAYATTRIBUTE_REPNOTIFY(UCAttributeSet, BaseAttackDamage, OldBaseAttackDamage);
-}
-
-void UCAttributeSet::OnRep_BaseMagicDamage(const FGameplayAttributeData& OldBaseMagicDamage)
-{
-	GAMEPLAYATTRIBUTE_REPNOTIFY(UCAttributeSet, BaseMagicDamage, OldBaseMagicDamage);
-}
-
-void UCAttributeSet::OnRep_BaseTrueDamage(const FGameplayAttributeData& OldBaseTrueDamage)
-{
-	GAMEPLAYATTRIBUTE_REPNOTIFY(UCAttributeSet, BaseTrueDamage, OldBaseTrueDamage);
-}
+// void UCAttributeSet::OnRep_BaseAttackDamage(const FGameplayAttributeData& OldBaseAttackDamage)
+// {
+// 	GAMEPLAYATTRIBUTE_REPNOTIFY(UCAttributeSet, BaseAttackDamage, OldBaseAttackDamage);
+// }
+//
+// void UCAttributeSet::OnRep_BaseMagicDamage(const FGameplayAttributeData& OldBaseMagicDamage)
+// {
+// 	GAMEPLAYATTRIBUTE_REPNOTIFY(UCAttributeSet, BaseMagicDamage, OldBaseMagicDamage);
+// }
+//
+// void UCAttributeSet::OnRep_BaseTrueDamage(const FGameplayAttributeData& OldBaseTrueDamage)
+// {
+// 	GAMEPLAYATTRIBUTE_REPNOTIFY(UCAttributeSet, BaseTrueDamage, OldBaseTrueDamage);
+// }
 
 void UCAttributeSet::OnRep_MagicDamage(const FGameplayAttributeData& OldMagicDamage)
 {
@@ -236,7 +236,7 @@ void UCAttributeSet::SetEffectProperties(const FGameplayEffectModCallbackData& D
 	}
 }
 
-void UCAttributeSet::Damage(const FEffectProperties& Props, EDamageType Type, const float Damage)
+void UCAttributeSet::Damage(const FEffectProperties& Props, FGameplayTag DamageType, const float Damage)
 {
 	bool bCriticalHit = false;
 	float NewDamage = Damage;
@@ -271,10 +271,10 @@ void UCAttributeSet::Damage(const FEffectProperties& Props, EDamageType Type, co
 		OnDeadAbility(Props);
 	}
 	// TODO:添加第四个参数，用来传递伤害的类型
-	ShowFloatingText(Props,NewDamage, bCriticalHit, Type);
+	ShowFloatingText(Props,NewDamage, bCriticalHit, DamageType);
 }
 
-void UCAttributeSet::ShowFloatingText(const FEffectProperties& Props, const float Damage, bool IsCriticalHit, EDamageType Type)
+void UCAttributeSet::ShowFloatingText(const FEffectProperties& Props, const float Damage, bool IsCriticalHit, FGameplayTag DamageType)
 {
 	// for (int32 i = 0; ;++i)
 	// {
@@ -290,12 +290,12 @@ void UCAttributeSet::ShowFloatingText(const FEffectProperties& Props, const floa
 	// 从技能释放者身上获取PC并显示伤害数字
 	if(ACPlayerController* PC = Cast<ACPlayerController>(Props.SourceCharacter->Controller))
 	{
-		PC->ShowDamageNumber(Damage, Props.TargetCharacter, IsCriticalHit, Type); //调用显示伤害数字
+		PC->ShowDamageNumber(Damage, Props.TargetCharacter, IsCriticalHit, DamageType); //调用显示伤害数字
 	}
 	// 从目标身上获取PC并显示伤害数字
 	if(ACPlayerController* PC = Cast<ACPlayerController>(Props.TargetCharacter->Controller))
 	{
-		PC->ShowDamageNumber(Damage, Props.TargetCharacter, IsCriticalHit, Type); //调用显示伤害数字
+		PC->ShowDamageNumber(Damage, Props.TargetCharacter, IsCriticalHit, DamageType); //调用显示伤害数字
 	}
 }
 

@@ -37,8 +37,20 @@ namespace TGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Role_Hero, "Role.Hero", "英雄角色")
 
 	// 属性
-	UE_DEFINE_GAMEPLAY_TAG_COMMENT(AttributeSet_BaseDamage, "AttributeSet.BaseDamage", "基础伤害")
-
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(AttributeSet_Experience, "AttributeSet.Experience", "经验值")
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(AttributeSet_Gold, "AttributeSet.Gold", "金币")
+
+	// 伤害类型
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(DamageType_AttackDamage, "DamageType.AttackDamage", "物理伤害")
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(DamageType_MagicDamage, "DamageType.MagicDamage", "魔法伤害")
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(DamageType_TrueDamage, "DamageType.TrueDamage", "真实伤害")
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Attribute_MaxHealth, "Attribute.MaxHealth", "最大生命值")
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Attribute_Health, "Attribute.Health", "生命值")
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Attribute_MaxMana, "Attribute.MaxMana", "最大法术值")
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Attribute_Mana, "Attribute.Mana", "法术值")
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Attribute_AttackPower, "Attribute.AttackPower", "攻击力")
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Attribute_MagicPower, "Attribute.MagicPower", "魔法强度")
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Attribute_Armor, "Attribute.Armor", "护甲")
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Attribute_MagicResistance, "Attribute.MagicResistance", "魔法抗性")
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Attribute_MoveSpeed, "Attribute.MoveSpeed", "移动速度")
 }

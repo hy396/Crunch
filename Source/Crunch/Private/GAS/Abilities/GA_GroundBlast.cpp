@@ -64,22 +64,22 @@ void UGA_GroundBlast::TargetConfirmed(const FGameplayAbilityTargetDataHandle& Ta
 	// 仅在服务器上执行伤害和击退
 	if (K2_HasAuthority())
 	{
-		MakeDamage(DamageEffectDef,GetAbilityLevel(CurrentSpecHandle, CurrentActorInfo));
+		// MakeDamage(DamageEffectDef,GetAbilityLevel(CurrentSpecHandle, CurrentActorInfo));
 		// 对目标应用伤害效果
-		BP_ApplyGameplayEffectToTarget(TargetDataHandle, DamageEffectDef.DamageEffect, GetAbilityLevel(CurrentSpecHandle, CurrentActorInfo));
+		// BP_ApplyGameplayEffectToTarget(TargetDataHandle, DamageEffectDef.DamageEffect, GetAbilityLevel(CurrentSpecHandle, CurrentActorInfo));
 
-		// // 获取命中目标的数量
-		// TArray<AActor*> HitActors = UAbilitySystemBlueprintLibrary::GetAllActorsFromTargetData(TargetDataHandle);
-		// for (int32 i = 0; i < HitActors.Num(); ++i)
-		// {
-		// 	AActor* HitActor = HitActors[i];
-		// 	// 检查 HitResult 是否有效
-		// 	if (HitActor)
-		// 	{
-		// 		UE_LOG(LogTemp, Warning, TEXT("命中Actor: %s"), *HitActor->GetName());
-		// 		ApplyDamage(HitActor, DamageEffectDef, GetAbilityLevel(CurrentSpecHandle, CurrentActorInfo));
-		// 	}
-		// }
+		// 获取命中目标的数量
+		TArray<AActor*> HitActors = UAbilitySystemBlueprintLibrary::GetAllActorsFromTargetData(TargetDataHandle);
+		for (int32 i = 0; i < HitActors.Num(); ++i)
+		{
+			AActor* HitActor = HitActors[i];
+			// 检查 HitResult 是否有效
+			if (HitActor)
+			{
+				// UE_LOG(LogTemp, Warning, TEXT("命中Actor: %s"), *HitActor->GetName());
+				ApplyDamage(HitActor, DamageEffectDef, GetAbilityLevel(CurrentSpecHandle, CurrentActorInfo));
+			}
+		}
 		// ApplyDamage
 		// 对目标施加推力
 		PushTargets(TargetDataHandle, DamageEffectDef.PushVelocity);

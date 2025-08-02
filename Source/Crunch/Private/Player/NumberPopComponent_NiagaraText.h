@@ -49,9 +49,10 @@ public:
 	/** 
 	 * 添加一个数字弹出到列表中以进行可视化展示
 	 * @param NewRequest 新的数字弹出请求数据
+	 * @param DamageType 伤害类型
 	 */
 	UFUNCTION(BlueprintCallable, Category = Foo)
-	void AddNumberPop(const FNumberPopRequest& NewRequest, EDamageType Type);
+	void AddNumberPop(const FNumberPopRequest& NewRequest, FGameplayTag DamageType);
 
 	void AddAttackNumber(const FNumberPopRequest& NewRequest);
 	void AddMagicNumber(const FNumberPopRequest& NewRequest);

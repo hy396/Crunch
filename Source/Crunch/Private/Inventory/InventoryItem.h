@@ -108,6 +108,15 @@ public:
 	// 获取物品的唯一句柄
 	FInventoryItemHandle GetHandle() const { return Handle; }
 
+	// 尝试激活物品授予的能力
+	bool TryActivateGrantedAbility();
+	
+	// 应用物品的消耗效果
+	void ApplyConsumeEffect();
+	
+	// 移除所有应用的游戏能力系统修改
+	void RemoveGASModifications();
+
 	// 获取当前堆叠数量
 	FORCEINLINE int32 GetStackCount() const { return StackCount; }
 	

@@ -133,36 +133,37 @@ void UInventoryItem::SetSlot(int32 NewSlot)
 		UE_LOG(LogTemp, Warning, TEXT("客户端更新插槽"))
 		return;
 	}
-	// 定义槽位到输入ID的映射表（静态常量避免重复初始化）
-	static const TMap<int32, ECAbilityInputID> SlotInputMap = {
-		{0, ECAbilityInputID::AbilityOne},
-		{1, ECAbilityInputID::AbilityTwo},
-		{2, ECAbilityInputID::AbilityThree},
-		{3, ECAbilityInputID::AbilityFour},
-		{4, ECAbilityInputID::AbilityFive},
-		{5, ECAbilityInputID::AbilitySix}
-	};
-
-	// 查找对应的输入ID（找不到时返回None）
-	const ECAbilityInputID SelectedInput = SlotInputMap.FindRef(Slot, ECAbilityInputID::None);
-	UE_LOG(LogTemp, Warning, TEXT("SelectedInput: %d"), SelectedInput)
-    
-	// 提前退出条件：无效输入或无能力组件
-	if (SelectedInput == ECAbilityInputID::None || !OwnerAbilitySystemComponent) 
-		return;
-	
-	// 移除授予的能力重新绑定
-	if (GrantedAbilitySpecHandle.IsValid())
-	{
-		OwnerAbilitySystemComponent->SetRemoveAbilityOnEnd(GrantedAbilitySpecHandle);
-		if (GetShopItem()->GetGrantedAbility())
-		{
-			GrantedAbilitySpecHandle = OwnerAbilitySystemComponent->K2_GiveAbility(
-			GetShopItem()->GetGrantedAbility(),
-				1,
-				static_cast<int32>(SelectedInput));
-		}
-	}
+	// TODO:25/08/01 似乎不需要用这种操作，这种操作难以关联到太多的信息
+	// // 定义槽位到输入ID的映射表（静态常量避免重复初始化）
+	// static const TMap<int32, ECAbilityInputID> SlotInputMap = {
+	// 	{0, ECAbilityInputID::AbilityOne},
+	// 	{1, ECAbilityInputID::AbilityTwo},
+	// 	{2, ECAbilityInputID::AbilityThree},
+	// 	{3, ECAbilityInputID::AbilityFour},
+	// 	{4, ECAbilityInputID::AbilityFive},
+	// 	{5, ECAbilityInputID::AbilitySix}
+	// };
+	//
+	// // 查找对应的输入ID（找不到时返回None）
+	// const ECAbilityInputID SelectedInput = SlotInputMap.FindRef(Slot, ECAbilityInputID::None);
+	// UE_LOG(LogTemp, Warning, TEXT("SelectedInput: %d"), SelectedInput)
+ //    
+	// // 提前退出条件：无效输入或无能力组件
+	// if (SelectedInput == ECAbilityInputID::None || !OwnerAbilitySystemComponent) 
+	// 	return;
+	//
+	// // 移除授予的能力重新绑定
+	// if (GrantedAbilitySpecHandle.IsValid())
+	// {
+	// 	OwnerAbilitySystemComponent->SetRemoveAbilityOnEnd(GrantedAbilitySpecHandle);
+	// 	if (GetShopItem()->GetGrantedAbility())
+	// 	{
+	// 		GrantedAbilitySpecHandle = OwnerAbilitySystemComponent->K2_GiveAbility(
+	// 		GetShopItem()->GetGrantedAbility(),
+	// 			1,
+	// 			static_cast<int32>(SelectedInput));
+	// 	}
+	// }
 	
 	// 更新技能输入绑定
 	// if (FGameplayAbilitySpec* Spec = OwnerAbilitySystemComponent->FindAbilitySpecFromHandle(GrantedAbilitySpecHandle))
@@ -182,6 +183,51 @@ void UInventoryItem::InitItem(const FInventoryItemHandle& NewHandle, const UPDA_
 
 	// 应用GAS修改
 	ApplyGASModifications();
+}
+
+bool UInventoryItem::TryActivateGrantedAbility()
+{
+	if (!GrantedAbilitySpecHandle.IsValid()) return false;
+	if (!OwnerAbilitySystemComponent) return false;
+
+	// 激活技能，成功返回true
+	return OwnerAbilitySystemComponent->TryActivateAbility(GrantedAbilitySpecHandle);
+}
+
+void UInventoryItem::ApplyConsumeEffect()
+{
+	if (!ShopItem) return;
+
+	TSubclassOf<UGameplayEffect> ConsumeEffect = GetShopItem()->GetConsumeEffect();
+	if (ConsumeEffect) return;
+	
+	// 应用消耗效果
+	OwnerAbilitySystemComponent->BP_ApplyGameplayEffectToSelf(
+		ConsumeEffect,
+		1,
+		OwnerAbilitySystemComponent->MakeEffectContext()
+		);
+}
+
+void UInventoryItem::RemoveGASModifications()
+{
+	if (!OwnerAbilitySystemComponent) return;
+
+	// 服务器端执行
+	if (OwnerAbilitySystemComponent->GetOwner()->HasAuthority())
+	{
+		// 移除装备效果
+		if (AppliedEquipedEffectHandle.IsValid())
+		{
+			OwnerAbilitySystemComponent->RemoveActiveGameplayEffect(AppliedEquipedEffectHandle);
+		}
+
+		// 移除技能
+		if (GrantedAbilitySpecHandle.IsValid())
+		{
+			OwnerAbilitySystemComponent->SetRemoveAbilityOnEnd(GrantedAbilitySpecHandle);
+		}
+	}
 }
 
 void UInventoryItem::ApplyGASModifications()

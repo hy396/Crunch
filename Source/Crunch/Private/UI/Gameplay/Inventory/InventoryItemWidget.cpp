@@ -103,10 +103,14 @@ void UInventoryItemWidget::UpdateCanCastDisplay(bool bCanCast)
 
 void UInventoryItemWidget::RightButtonClicked()
 {
+	if (!IsEmpty())
+		OnRightButtonClicked.Broadcast(GetItemHandle()); // 广播右键点击事件
 }
 
 void UInventoryItemWidget::LeftButtonClicked()
 {
+	if (!IsEmpty())
+		OnLeftButtonClicked.Broadcast(GetItemHandle()); // 广播左键点击事件
 }
 
 void UInventoryItemWidget::NativeOnDragDetected(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent,

@@ -115,16 +115,16 @@ void UNumberPopComponent_NiagaraText::AddAttackNumber(const FNumberPopRequest& N
 		NewRequest.WorldLocation.Z,
 		LocalDamage));
 
-	// TODO: 测试的东西25/08/03
+	// TODO: 测试的东西25/08/03，如此确实可以弹出多种伤害
 	// 修改Begin
-	for (int32 i = 0; i < 10; i++)
-	{
-		DamageList.Add(FVector4(
-			NewRequest.WorldLocation.X ,
-			NewRequest.WorldLocation.Y,
-			NewRequest.WorldLocation.Z + i * 20.f,
-			10*i));
-	}
+	// for (int32 i = 0; i < 10; i++)
+	// {
+	// 	DamageList.Add(FVector4(
+	// 		NewRequest.WorldLocation.X ,
+	// 		NewRequest.WorldLocation.Y,
+	// 		NewRequest.WorldLocation.Z + i * 20.f,
+	// 		10*i));
+	// }
 	// 修改End
 	// 将更新后的数组写回 Niagara 组件UNiagaraDataInterfaceArrayFunctionLibrary::SetNiagaraArrayVector4(NiagaraComp, NiagaraArrayName, DamageList);
 	UNiagaraDataInterfaceArrayFunctionLibrary::SetNiagaraArrayVector4(NiagaraComp, NiagaraArrayName, DamageList);

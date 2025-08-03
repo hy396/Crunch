@@ -142,7 +142,7 @@ void ACPlayerController::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& O
 // 	// 	DamageText->AddNumberPop(NumberPopRequest);
 // 	// }
 // }
-void ACPlayerController::ShowDamageNumber_Implementation(float DamageAmount, ACharacter* TargetCharacter, bool bCriticalHit, EDamageType Type)
+void ACPlayerController::ShowDamageNumber_Implementation(float DamageAmount, ACharacter* TargetCharacter, bool bCriticalHit, FGameplayTag DamageType)
 {
 	if (!IsValid(TargetCharacter) || !NumberPopComponentClass || !IsLocalController())
 		return;
@@ -167,9 +167,9 @@ void ACPlayerController::ShowDamageNumber_Implementation(float DamageAmount, ACh
 	//修改~Begin
 	// 新增随机偏移
 	FVector BaseOffset(0, 0, 200);
-	float RandomX = FMath::FRandRange(-50.0f, 50.0f);  // X轴随机偏移
-	float RandomY = FMath::FRandRange(-50.0f, 50.0f);  // Y轴随机偏移
-	float RandomZ = FMath::FRandRange(-20.0f, 20.0f);  // Z轴微调
+	float RandomX = FMath::FRandRange(-100.0f, 100.0f);  // X轴随机偏移
+	float RandomY = FMath::FRandRange(-100.0f, 100.0f);  // Y轴随机偏移
+	float RandomZ = FMath::FRandRange(-20.0f, 50.0f);  // Z轴微调
 	//修改~End
 	// TODO:添加各种伤害类型的伤害数字特效
 	// 设置显示参数
@@ -179,7 +179,7 @@ void ACPlayerController::ShowDamageNumber_Implementation(float DamageAmount, ACh
 	NumberPopRequest.bIsCriticalDamage = bCriticalHit;
 	NumberPopRequest.NumberToDisplay = DamageAmount;
     
-	DamageText->AddNumberPop(NumberPopRequest, Type);
+	DamageText->AddNumberPop(NumberPopRequest, DamageType);
 }
 
 // void ACPlayerController::HandleTargetActorDestroyed(AActor* DestroyedActor)

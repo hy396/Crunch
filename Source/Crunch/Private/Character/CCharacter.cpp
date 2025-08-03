@@ -178,10 +178,6 @@ void ACCharacter::BindGASChangeDelegates()
 		CAbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(CAttributeSet->GetMoveSpeedAttribute()).AddUObject(this, &ACCharacter::MoveSpeedUpdated);
 		CAbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(UCAttributeSet::GetMaxHealthAttribute()).AddUObject(this, &ACCharacter::MaxHealthUpdated);
 		CAbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(UCAttributeSet::GetMaxManaAttribute()).AddUObject(this, &ACCharacter::MaxManaUpdated);
-
-		// 伤害绑定
-		// CAbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(CAttributeSet->GetAttackDamageAttribute()).AddUObject(this, &ACCharacter::AttackDamageUpdated);
-
 	}
 }
 
@@ -251,18 +247,6 @@ void ACCharacter::MaxManaUpdated(const FOnAttributeChangeData& Data)
 		CAttributeSet->RescaleMana();
 	}
 }
-
-// void ACCharacter::AttackDamageUpdated(const FOnAttributeChangeData& Data)
-// {
-// 	float Damage = Data.NewValue;
-// 	CAttributeSet->SetAttackDamage(0.f);
-// 	if (Damage > 0.f)
-// 	{
-// 		UE_LOG(LogTemp, Warning, TEXT("%s扣血：%f"),*GetName(), Damage);
-// 		float Health = FMath::Max(CAttributeSet->GetHealth() - Damage,0.f);
-// 		CAttributeSet->SetHealth(Health);
-// 	}
-// }
 
 void ACCharacter::OnStun()
 {

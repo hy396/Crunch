@@ -52,6 +52,18 @@ bool UCAssetManager::GetLoadedShopItems(TArray<const UPDA_ShopItem*>& OutItems) 
 	return bLoaded;
 }
 
+const FItemCollection* UCAssetManager::GetCombinationForItem(const UPDA_ShopItem* Item) const
+{
+	// 在合成映射表中查找材料对应的合成结果
+	return CombinationMap.Find(Item);
+}
+
+const FItemCollection* UCAssetManager::GetIngredientForItem(const UPDA_ShopItem* Item) const
+{
+	// 在材料映射表中查找物品所需的材料
+	return IngredientMap.Find(Item);
+}
+
 // 商店物品加载完成后的处理
 void UCAssetManager::ShopItemLoadFinished(FStreamableDelegate Callback)
 {

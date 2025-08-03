@@ -3,6 +3,9 @@
 
 #include "InventoryWidget.h"
 
+#include "InventoryContextMenuWidget.h"
+#include "Blueprint/SlateBlueprintLibrary.h"
+#include "Blueprint/WidgetLayoutLibrary.h"
 #include "Components/WrapBoxSlot.h"
 
 void UInventoryWidget::NativeConstruct()
@@ -18,7 +21,9 @@ void UInventoryWidget::NativeConstruct()
 			InventoryComponent->OnItemAdded.AddUObject(this, &UInventoryWidget::ItemAdded);
 			// 背包物品堆叠数量改变事件绑定
 			InventoryComponent->OnItemStackCountChanged.AddUObject(this, &UInventoryWidget::ItemStackCountChanged);
-
+			// 移除物品事件绑定
+			InventoryComponent->OnItemRemoved.AddUObject(this, &UInventoryWidget::ItemRemoved);
+			
 			// 获取背包容量
 			int32 Capacity = InventoryComponent->GetCapacity();
 			// 清空背包
@@ -37,10 +42,136 @@ void UInventoryWidget::NativeConstruct()
 
 					// 绑定拖拽放置事件
 					NewEmptyWidget->OnInventoryItemDropped.AddUObject(this, &UInventoryWidget::HandleItemDragDrop);
+					// 绑定左键点击事件，点击时调用 InventoryComponent 的 TryActivateItem（尝试使用物品）
+					NewEmptyWidget->OnLeftButtonClicked.AddUObject(
+						InventoryComponent, &UInventoryComponent::TryActivateItem
+					);
+					// 绑定右键点击事件，点击时在此 Widget 中切换显示上下文菜单
+					NewEmptyWidget->OnRightButtonClicked.AddUObject(
+						this, &UInventoryWidget::ToggleContextMenu
+					);
 				}
 			}
+			// 在界面中生成一个上下文菜单（初始状态为隐藏）
+			SpawnContextMenu();
 		}
 	}
+}
+
+void UInventoryWidget::NativeOnFocusChanging(const FWeakWidgetPath& PreviousFocusPath, const FWidgetPath& NewWidgetPath,
+	const FFocusEvent& InFocusEvent)
+{
+	Super::NativeOnFocusChanging(PreviousFocusPath, NewWidgetPath, InFocusEvent);
+
+	// 如果焦点不在上下文菜单上,关闭菜单(使用和售出的按钮)
+	if (!NewWidgetPath.ContainsWidget(ContextMenuWidget->GetCachedWidget().Get()))
+	{
+		ClearContextMenu();
+	}
+}
+
+void UInventoryWidget::SpawnContextMenu()
+{
+	if (!ContextMenuWidgetClass) return;
+	
+	ContextMenuWidget = CreateWidget<UInventoryContextMenuWidget>(this, ContextMenuWidgetClass);
+	if (ContextMenuWidget)
+	{
+		// 绑定使用按钮和售出按钮
+		ContextMenuWidget->GetUseButtonClickedEvent().AddDynamic(this, &UInventoryWidget::UseFocusedItem);
+		ContextMenuWidget->GetSellButtonClickedEvent().AddDynamic(this, &UInventoryWidget::SellFocusedItem);
+
+		// 将上下文菜单添加到视口，设置层级为 1，以确保浮于其他 UI 之上
+		ContextMenuWidget->AddToViewport(1);
+		// 初始时将上下文菜单隐藏
+		SetContextMenuVisible(false);
+	}
+}
+
+void UInventoryWidget::SellFocusedItem()
+{
+	// 通知库存组件出售物品
+	InventoryComponent->SellItem(CurrentFocusedItemHandle);
+	SetContextMenuVisible(false); // 关闭菜单
+}
+
+void UInventoryWidget::UseFocusedItem()
+{
+	// 通知库存组件激活物品
+	InventoryComponent->TryActivateItem(CurrentFocusedItemHandle);
+	SetContextMenuVisible(false); // 关闭菜单
+}
+
+void UInventoryWidget::SetContextMenuVisible(bool bContextMenuVisible)
+{
+	if (ContextMenuWidget)
+	{
+		ContextMenuWidget->SetVisibility(
+			bContextMenuVisible ? 
+			ESlateVisibility::Visible : 
+			ESlateVisibility::Hidden
+		);
+	}
+}
+
+void UInventoryWidget::ToggleContextMenu(const FInventoryItemHandle& ItemHandle)
+{
+	// 如果点击的是当前焦点物品，则关闭菜单
+	if (CurrentFocusedItemHandle == ItemHandle)
+	{
+		ClearContextMenu();
+		return;
+	}
+
+	// 设置新的焦点物品
+	CurrentFocusedItemHandle = ItemHandle;
+	
+	// 查找对应的物品控件
+	TObjectPtr<UInventoryItemWidget>* ItemWidgetPtrPtr = PopulatedItemEntryWidgets.Find(ItemHandle);
+	if (!ItemWidgetPtrPtr) return;
+	
+	UInventoryItemWidget* ItemWidget = *ItemWidgetPtrPtr;
+	if (!ItemWidget) return;
+
+	// 显示菜单
+	SetContextMenuVisible(true);
+
+	// 计算菜单位置（物品右侧中心点）
+	FVector2D ItemAbsPos = ItemWidget->GetCachedGeometry().GetAbsolutePositionAtCoordinates(FVector2D{1.f, 0.5f});
+
+	// 转换为视口坐标
+	FVector2D ItemWidgetPixelPos, ItemWidgetViewportPos;
+	// 将绝对屏幕坐标转换为视口坐标系中的位置。
+	USlateBlueprintLibrary::AbsoluteToViewport(this, ItemAbsPos, ItemWidgetPixelPos, ItemWidgetViewportPos);
+
+	// 获取玩家控制器，以便查询视口尺寸，防止菜单被拉出屏幕
+	if (APlayerController* OwningPlayerController = GetOwningPlayer())
+	{
+		int32 ViewportSizeX, ViewportSizeY;
+		OwningPlayerController->GetViewportSize(ViewportSizeX, ViewportSizeY);
+		// 获取当前 UI 缩放比例（DPI 缩放）
+		float Scale = UWidgetLayoutLibrary::GetViewportScale(this);
+
+		// 计算菜单底部是否超出屏幕下缘：
+		// Overshoot = (菜单顶部Y坐标 + 菜单高度 * 缩放) - 屏幕高度
+		float MenuHeightScaled = ContextMenuWidget->GetDesiredSize().Y * Scale;
+		float Overshoot = ItemWidgetPixelPos.Y + MenuHeightScaled - ViewportSizeY;
+		
+		// 如果超出，则将菜单向上移动 Overshoot 像素，保证完全可见
+		if (Overshoot > 0.f)
+		{
+			ItemWidgetPixelPos.Y -= Overshoot;
+		}
+	}
+
+	// 设置菜单位置
+	ContextMenuWidget->SetPositionInViewport(ItemWidgetPixelPos);
+}
+
+void UInventoryWidget::ClearContextMenu()
+{
+	SetContextMenuVisible(false);
+	CurrentFocusedItemHandle = FInventoryItemHandle::InvalidHandle(); // 重置焦点物品
 }
 
 void UInventoryWidget::ItemAdded(const UInventoryItem* InventoryItem)
@@ -103,7 +234,7 @@ void UInventoryWidget::HandleItemDragDrop(
 	SourceWidget->UpdateInventoryItem(DestinationItem);
 
 	// 物品交换位置后,更新Map
-	PopulatedItemEntryWidgets[DestinationWidget->GetItemHandle()] = SourceWidget;
+	PopulatedItemEntryWidgets[DestinationWidget->GetItemHandle()] = DestinationWidget;
 	
 	// 通知库存组件目标槽位变化
 	if (InventoryComponent)
@@ -131,6 +262,22 @@ void UInventoryWidget::HandleItemDragDrop(
 				SourceWidget->GetItemHandle(), 
 				SourceWidget->GetSlotNumber()
 			);
+		}
+	}
+}
+
+void UInventoryWidget::ItemRemoved(const FInventoryItemHandle& ItemHandle)
+{
+	// 查找对应的物品
+	if (TObjectPtr<UInventoryItemWidget>* FoundWidget = PopulatedItemEntryWidgets.Find(ItemHandle))
+	{
+		if (*FoundWidget)
+		{
+			// 清空槽位显示
+			(*FoundWidget)->EmptySlot();
+			
+			// 从映射表中移除
+			PopulatedItemEntryWidgets.Remove(ItemHandle);
 		}
 	}
 }

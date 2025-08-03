@@ -16,7 +16,7 @@
 #include "CCharacter.generated.h"
 
 UCLASS()
-class ACCharacter : public ACharacter, public IAbilitySystemInterface, public IGenericTeamAgentInterface	//, public ICombatInterface
+class ACCharacter : public ACharacter, public IAbilitySystemInterface, public IGenericTeamAgentInterface
 {
 	GENERATED_BODY()
 
@@ -34,12 +34,7 @@ public:
 	const TMap<ECAbilityInputID, TSubclassOf<UGameplayAbility>>& GetAbilities() const;
 	// 头顶UI颜色
 	void SetOverHeadWidgetColor();
-	
-	// UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components")
-	// TObjectPtr<UNumberPopComponent_NiagaraText> NumberPopComponent;
 
-	// 添加Niagara文字
-	// virtual void AddNiagaraText_Implementation(const FNumberPopRequest& NewRequest) override;
 protected:
 	virtual void BeginPlay() override;
 	// 只在服务器执行
@@ -81,8 +76,7 @@ private:
 	void MaxHealthUpdated(const FOnAttributeChangeData& Data);
 	// 最大法力值改变回调
 	void MaxManaUpdated(const FOnAttributeChangeData& Data);
-	// 伤害传入
-	// void AttackDamageUpdated(const FOnAttributeChangeData& Data);
+
 	UPROPERTY(VisibleDefaultsOnly, Category = "Gameplay Ability")
 	TObjectPtr<UCAbilitySystemComponent> CAbilitySystemComponent;
 	UPROPERTY()

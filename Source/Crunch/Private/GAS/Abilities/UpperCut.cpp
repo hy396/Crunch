@@ -35,6 +35,7 @@ void UUpperCut::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const F
 		UAbilityTask_WaitGameplayEvent* WaitLaunchEventTask = UAbilityTask_WaitGameplayEvent::WaitGameplayEvent(this, TGameplayTags::Ability_Uppercut_Launch);
 		WaitLaunchEventTask->EventReceived.AddDynamic(this, &UUpperCut::StartLaunching);
 		WaitLaunchEventTask->ReadyForActivation();
+
 	}
 
 	NextComboName = NAME_None;

@@ -17,6 +17,12 @@ DECLARE_MULTICAST_DELEGATE_TwoParams(
 	UInventoryItemWidget* /* 来源槽位 */
 );
 
+// 定义委托：当按钮点击时触发
+DECLARE_MULTICAST_DELEGATE_OneParam(
+	FOnButtonClick, 
+	const FInventoryItemHandle& /* 物品句柄 */
+);
+
 /**
  * 
  */
@@ -28,6 +34,11 @@ public:
 	// 委托：当物品被拖放到此槽位时触发
 	FOnInventoryItemDropped OnInventoryItemDropped;
 
+	// 委托：当左键点击此物品时触发
+	FOnButtonClick OnLeftButtonClicked;
+	
+	// 委托：当右键点击此物品时触发
+	FOnButtonClick OnRightButtonClicked;
 	
 	virtual void NativeConstruct() override;
 	// 检查槽位是否为空

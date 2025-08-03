@@ -51,6 +51,8 @@
     <file url="file://$PROJECT_DIR$/Source/Crunch/Private/UI/Gameplay/GameplayWidget.h" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/Crunch/Private/UI/Gameplay/OverHeadStatsGauge.cpp" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/Crunch/Private/UI/Gameplay/OverHeadStatsGauge.h" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Source/Crunch/Private/UI/Gameplay/Shop/TreeNodeInterface.cpp" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Source/Crunch/Private/UI/Gameplay/Shop/TreeNodeInterface.h" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/Crunch/Private/UI/Gameplay/ValueGauge.h" charset="UTF-8" />
   </component>
 </project>

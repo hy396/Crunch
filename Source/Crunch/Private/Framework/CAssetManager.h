@@ -32,6 +32,20 @@ public:
 	 */
 	bool GetLoadedShopItems(TArray<const UPDA_ShopItem*>& OutItems) const;
 
+	/**
+	 * 获取指定物品能合成的所有结果物品
+	 * @param Item - 作为材料的物品
+	 * @return 指向结果物品集合的指针（找不到返回nullptr）
+	 */
+	const FItemCollection* GetCombinationForItem(const UPDA_ShopItem* Item) const;
+	
+	/**
+	 * 获取合成指定物品所需的所有材料
+	 * @param Item - 目标物品
+	 * @return 指向材料物品集合的指针（找不到返回nullptr）
+	 */
+	const FItemCollection* GetIngredientForItem(const UPDA_ShopItem* Item) const;
+
 private:
 	// 商店物品加载完成后的处理
 	void ShopItemLoadFinished(FStreamableDelegate Callback);

@@ -180,6 +180,16 @@ void ACPlayerCharacter::SetInputEnabledFromPlayerController(bool bEnabled)
 	}
 }
 
+/**
+ * TODO: 眩晕就禁用一切输入我觉得很抽象，万一有技能被控了也能用呢
+ * 或许可以改成眩晕禁用移动的输入
+ * APlayerController* PC = GetController<APlayerController>();
+ * if (!PC) return;
+ * UEnhancedInputComponent* EIC = Cast<UEnhancedInputComponent>(PC->InputComponent);
+ * if (!EIC) return;
+ * // MovementMappingSet 是输入映射集合UInputMappingContext
+ * EIC->SetMappingSetEnabled(MovementMappingSet, bEnabled);
+ */
 void ACPlayerCharacter::OnStun()
 {
 	SetInputEnabledFromPlayerController(false);

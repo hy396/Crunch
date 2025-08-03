@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Player/NumberPopComponent_NiagaraText.h"
+// #include "Player/NumberPopComponent_NiagaraText.h"
 #include "UObject/Interface.h"
 #include "CombatInterface.generated.h"
 
@@ -24,8 +24,8 @@ class ICombatInterface
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
 	// 声明为网络调用（客户端执行）
-	UFUNCTION(BlueprintCallable, Category = "Combat", BlueprintNativeEvent)
-	void AddNiagaraText(const FNumberPopRequest& Request);
+	// UFUNCTION(BlueprintCallable, Category = "Combat", BlueprintNativeEvent)
+	// void AddNiagaraText(const FNumberPopRequest& Request);
 	// ✅ 修正后的声明：仅保留 Client RPC 和 BlueprintCallable
 	// UFUNCTION(Client, Reliable,BlueprintCallable, Category = "Combat")
 	// virtual void AddNiagaraText(const FNumberPopRequest& Request) = 0;

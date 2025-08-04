@@ -127,7 +127,8 @@ UInventoryItem* UInventoryComponent::GetAvailableStackForItem(const UPDA_ShopIte
 	return nullptr;
 }
 
-// TODO:此函数稍加修改利用可以实现CalculateItemEffectivePrice的逻辑
+// TODO:此函数稍加修改利用可以实现CalculateItemEffectivePrice的逻辑,我又觉得不妥，这个还是过于辣鸡，我需要进行新的重构，但是这个有借鉴之处
+// TODO:将此函数与商店UI`ShopWidget`的CalculateItemEffectivePrice 和 CalculateSubTreeValue相结合，生成的函数要可以用来给商店UI更改。
 bool UInventoryComponent::FindIngredientForItem(const UPDA_ShopItem* Item, TArray<UInventoryItem*>& OutIngredients,
 	const TArray<const UPDA_ShopItem*>& IngredientToIgnore)
 {
@@ -174,6 +175,80 @@ UInventoryItem* UInventoryComponent::TryGetItemForShopItem(const UPDA_ShopItem* 
 	return nullptr;
 }
 
+TArray<FInventoryItemHandle> UInventoryComponent::TryGetItemForShopItemHandles(const UPDA_ShopItem* Item) const
+{
+	if (!Item) return TArray<FInventoryItemHandle>();
+
+	// 寻找背包中所有跟该物品有关的句柄,将句柄放入到数组中
+	TArray<FInventoryItemHandle> FoundHandles;
+	for (const TPair<FInventoryItemHandle, UInventoryItem*>& ItemHandlePair : InventoryMap)
+	{
+		// if (ItemHandlePair.Value && ItemHandlePair.Value->IsForItem(Item))
+		if (ItemHandlePair.Value && ItemHandlePair.Value->GetShopItem() == Item)
+		{
+			FoundHandles.Add(ItemHandlePair.Key);
+		}
+	}
+	return FoundHandles;
+}
+
+float UInventoryComponent::GetPurchasePrice(const UPDA_ShopItem* Item,
+	TArray<FInventoryItemHandle>& OutItemHandles) const
+{
+	if (!Item) return 0.f;
+
+	// 初始化价格
+	float PurchasePrice = Item->GetPrice();
+	// 寻找合成材料
+	FindCombinationForItem(Item, OutItemHandles);
+	for (const FInventoryItemHandle& Handle : OutItemHandles)
+	{
+		// 根据句柄寻找物品，如果找到了，则开始修改价格
+		if (UInventoryItem* FoundItem =GetInventoryItemByHandle(Handle))
+		{
+			// 获取物品价格
+			float IngredientPrice = FoundItem->GetShopItem()->GetPrice();
+			// 修改价格
+			PurchasePrice -= IngredientPrice;
+		}
+	}
+	return PurchasePrice;
+}
+
+void UInventoryComponent::FindCombinationForItem(const UPDA_ShopItem* Item,
+	TArray<FInventoryItemHandle>& OutItemHandles) const
+{
+	// 获取物品合成所需材料
+	const FItemCollection* Ingredients = UCAssetManager::Get().GetIngredientForItem(Item);
+	if (!Ingredients) return ;
+
+	// 遍历材料列表
+	for (const UPDA_ShopItem* Ingredient : Ingredients->GetItems())
+	{
+		UE_LOG(LogTemp, Log, TEXT("子节点物品: %s"), *Ingredient->GetItemName().ToString())
+		// 获取背包中所有该物品的句柄
+		TArray<FInventoryItemHandle> Temp = TryGetItemForShopItemHandles(Ingredient);
+		// 是否找到物品
+		bool bFound = false;
+		for (const FInventoryItemHandle& Handle : Temp)
+		{
+			// 忽略重复句柄
+			if (OutItemHandles.Contains(Handle))
+			{
+				continue;
+			}
+			// 找到后,添加句柄,并退出循环（避免添加更多的句柄进来造成无用的浪费）（其实是造成错误）
+			bFound = true;
+			OutItemHandles.AddUnique(Handle);
+			break;
+		}
+		// 如果没有找到物品则继续向下寻找
+		if (!bFound)
+		{
+			FindCombinationForItem(Ingredient, OutItemHandles);
+		}
+	}
+}
 
 // Called when the game starts
 void UInventoryComponent::BeginPlay()
@@ -265,6 +340,43 @@ bool UInventoryComponent::TryItemCombination(const UPDA_ShopItem* NewItem)
 	}
 
 	return false;
+}
+
+void UInventoryComponent::GrantItem(const UPDA_ShopItem* NewItem, float PurchasePrice,
+	TArray<FInventoryItemHandle> RemoveHandles)
+{
+	// 仅限服务端
+	if (!GetOwner()->HasAuthority()) return;
+	// 尝试堆叠
+	if (UInventoryItem* StackItem = GetAvailableStackForItem(NewItem))
+	{
+		StackItem->AddStackCount();
+		// 通知堆叠数量变化
+		OnItemStackCountChanged.Broadcast(StackItem->GetHandle(), StackItem->GetStackCount());
+		Client_ItemStackCountChanged(StackItem->GetHandle(), StackItem->GetStackCount());
+	}else
+	{
+		// 去掉背包中需要移除的物品
+		for (const FInventoryItemHandle& Handle : RemoveHandles)
+		{
+			RemoveItem(GetInventoryItemByHandle(Handle));
+		}
+		
+		// 创建新物品对象
+		UInventoryItem* InventoryItem = NewObject<UInventoryItem>();
+		FInventoryItemHandle NewHandle = FInventoryItemHandle::CreateHandle();
+		// 初始化物品
+		InventoryItem->InitItem(NewHandle, NewItem, OwnerAbilitySystemComponent);
+		// 添加到背包
+		InventoryMap.Add(NewHandle, InventoryItem);
+		OnItemAdded.Broadcast(InventoryItem);
+
+		UE_LOG(LogTemp, Warning, TEXT("服务器中添加的物品: %s, 唯一ID: %d"), *(InventoryItem->GetShopItem()->GetItemName().ToString()), NewHandle.GetHandleId());
+		// FGameplayAbilitySpecHandle GrantedAbilitySpecHandle = InventoryItem->GetGrantedAbilitySpecHandle();
+
+		// 通知客户端
+		Client_ItemAdded(NewHandle, NewItem);
+	}
 }
 
 void UInventoryComponent::Server_SellItem_Implementation(FInventoryItemHandle ItemHandle)
@@ -400,16 +512,44 @@ void UInventoryComponent::Server_Purchase_Implementation(const UPDA_ShopItem* It
 {
 	if (!ItemToPurchase) return;
 
-	// TODO:购买逻辑的金币`(ItemToPurchase->GetPrice())`此值或许需要进行传递的方式把价值传过去,或许需要修改
-	// 金币不够无法购买
-	if (GetGold() < ItemToPurchase->GetPrice()) return;
-	// 背包不够也不能购买
-	if (IsFullFor(ItemToPurchase)) return;
+	// 需要移除的物品
+	TArray<FInventoryItemHandle> Ingredients;
+	// 购买物品的金额
+	float PurchasePrice = GetPurchasePrice(ItemToPurchase,Ingredients);
+	// 金币不够无法购买(理论上金币是够的)
+	if (GetGold() < PurchasePrice) return;
 
+	// TODO:25/08/04修改的堆叠以及自动合成机制，不知是否有BUG先todo一手
+	// 物品可以堆叠，并且有位置放
+	if (GetAvailableStackForItem(ItemToPurchase))
+	{
+		// 扣掉金币
+		OwnerAbilitySystemComponent->ApplyModToAttribute(UCHeroAttributeSet::GetGoldAttribute(), EGameplayModOp::Additive, -PurchasePrice);
+		GrantItem(ItemToPurchase, PurchasePrice,Ingredients);
+		return;
+	}
+	// 不可堆叠物,计算参与合成后的位置
+	// 计算格子
+	if (InventoryMap.Num() - Ingredients.Num() + 1 > GetCapacity()) return;
+
+	// 格子足够，直接购买
 	// 扣掉金币
-	OwnerAbilitySystemComponent->ApplyModToAttribute(UCHeroAttributeSet::GetGoldAttribute(), EGameplayModOp::Additive, -ItemToPurchase->GetPrice());
-	// 添加物品
-	GrantItem(ItemToPurchase);
+	OwnerAbilitySystemComponent->ApplyModToAttribute(UCHeroAttributeSet::GetGoldAttribute(), EGameplayModOp::Additive, -PurchasePrice);
+	GrantItem(ItemToPurchase, PurchasePrice,Ingredients);
+	
+
+	
+
+	
+	// // 金币不够无法购买
+	// if (GetGold() < ItemToPurchase->GetPrice()) return;
+	// // 背包不够也不能购买
+	// if (IsFullFor(ItemToPurchase)) return;
+	//
+	// // 扣掉金币
+	// OwnerAbilitySystemComponent->ApplyModToAttribute(UCHeroAttributeSet::GetGoldAttribute(), EGameplayModOp::Additive, -ItemToPurchase->GetPrice());
+	// // 添加物品
+	// GrantItem(ItemToPurchase);
 	// 修复日志输出：使用正确的字符串格式化方式
 	// const FString ItemName = ItemToPurchase->GetItemName().BuildSourceString();
 	// UE_LOG(LogTemp, Warning, TEXT("购买的物品: %s"), *ItemName);

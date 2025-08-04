@@ -82,18 +82,18 @@ private:
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UButton> BuyButton;
 
-	// 显示指定物品的合成树
+	// 选择某个商品
 	void SelectedShopItem(const UShopItemWidget* ItemWidget);
 
 	/**
 	 * TODO:感觉可以把实际价格的重构修改到背包组件中去
 	 * 这样可以在商店调用背包组件的函数，减少重复定义
 	 */ 
-	/** 计算物品实际价格 */
-	float CalculateItemEffectivePrice(const UShopItemWidget* ItemWidget);
-
-	/** 递归计算子节点价值 */
-	float CalculateSubTreeValue(const ITreeNodeInterface* NodeInterface);
+	// /** 计算物品实际价格 */
+	// float CalculateItemEffectivePrice(const UShopItemWidget* ItemWidget);
+	//
+	// /** 递归计算子节点价值 */
+	// float CalculateSubTreeValue(const ITreeNodeInterface* NodeInterface);
 
 	// TODO:还欠缺购买商品自动合成库存已有物品逻辑
 	// 我觉得自动合成的逻辑跟这个递归计算子节点价值逻辑差不多，换成remove就ok了
@@ -101,5 +101,10 @@ private:
 	/** 按钮点击事件处理 */
 	UFUNCTION()
 	void OnBuyButtonClicked();
+	
+	// DECLARE_MULTICAST_DELEGATE_OneParam(FOnItemRemovedDelegate, const FInventoryItemHandle& /*ItemHandle*/);
+	// TODO:或许需要添加一个FInventoryItemHandle传值，传的时候随便传拉，反正都要关闭按钮和数字置0
+	// 禁用按钮，将金额置为0
+	void SetButtonNoEnabledAndPriceTextZero(const FInventoryItemHandle& ItemHandle = FInventoryItemHandle::InvalidHandle());
 
 };

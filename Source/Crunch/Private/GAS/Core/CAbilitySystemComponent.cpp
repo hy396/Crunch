@@ -245,7 +245,7 @@ void UCAbilitySystemComponent::HealthUpdated(const FOnAttributeChangeData& Chang
 			if(AbilitySystemGenerics && AbilitySystemGenerics->GetDeathEffect())
 				AuthApplyGameplayEffect(AbilitySystemGenerics->GetDeathEffect());
 
-			// TODO:这里是由GE直接扣血的时候触发这种的死亡，我使用的是GCC触发的方式是在属性这边发送事件
+			// TODO:这里是由GE直接扣血的时候触发这种的死亡，我使用的是ECC触发的方式是在属性这边发送事件
 			// // 创建需要传给死亡被动技能的事件数据
 			// FGameplayEventData DeadAbilityEventData;
 			// if (ChangeData.GEModData)

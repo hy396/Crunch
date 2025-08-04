@@ -76,6 +76,23 @@ public:
 	
 	// 尝试获取与商店物品对应的库存物品
 	UInventoryItem* TryGetItemForShopItem(const UPDA_ShopItem* Item) const;
+
+	// 修改Begin~
+	// 尝试获取与商店物品对应的库存物品句柄数组，获取全部东西有关的
+	TArray<FInventoryItemHandle> TryGetItemForShopItemHandles(const UPDA_ShopItem* Item) const;
+
+	/**
+	 * 计算购买物物品所需的实际金币
+	 * @param Item 需要购买的物品
+	 * @param OutItemHandles 参与合成的物品(后续用来出售)
+	 * @return 事件购买金额
+	 */
+	float GetPurchasePrice(const UPDA_ShopItem* Item, TArray<FInventoryItemHandle>& OutItemHandles) const;
+
+	// 寻找可以参与合成的物品
+	void FindCombinationForItem(const UPDA_ShopItem* Item, TArray<FInventoryItemHandle>& OutItemHandles) const;
+	
+	// 修改End~
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
@@ -120,6 +137,13 @@ private:
 	/** 尝试物品合成 */
 	bool TryItemCombination(const UPDA_ShopItem* NewItem);
 	// TODO:我觉得这里需要添加全新的购买逻辑，合成这种方式实在是太唐了
+	/**
+	 * 全新购买物品逻辑
+	 * @param NewItem 需要购买的物品
+	 * @param PurchasePrice 提前计算过的购买价格
+	 * @param RemoveHandles 需要出售的物品
+	 */
+	void GrantItem(const UPDA_ShopItem* NewItem,float PurchasePrice,TArray<FInventoryItemHandle> RemoveHandles);
 	/*********************************************************/
 	/*                   Client                              */
 	/*********************************************************/

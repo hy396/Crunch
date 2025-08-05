@@ -65,7 +65,8 @@ void UAbilityGauge::NativeOnListItemObjectSet(UObject* ListItemObject)
 	// float CoolDownDuration = UCAbilitySystemStatics::GetStaticCooldownDurationForAbility(AbilityCDO);
 	// 带冷却缩减的操作
 	// float CoolDownDuration = UCAbilitySystemStatics::GetStaticCooldownDurationForAbilityHasAttribute(AbilityCDO);
-	float CoolDownDuration = UCAbilitySystemStatics::GetCooldownDurationFor(AbilityCDO, *OwnerAbilitySystemComponent, 1);
+	// float CoolDownDuration = UCAbilitySystemStatics::GetCooldownDurationFor(AbilityCDO, *OwnerAbilitySystemComponent, 1);
+	float CoolDownDuration = UCAbilitySystemStatics::GetCooldownDurationForMMCCD(AbilityCDO, *OwnerAbilitySystemComponent, 1);
 	float Cost = UCAbilitySystemStatics::GetStaticCostForAbility(AbilityCDO);
 
 	// 设置冷却和消耗
@@ -192,7 +193,7 @@ void UAbilityGauge::AbilitySpecUpdated(const FGameplayAbilitySpec& AbilitySpec)
 	UpdateCanCast();
 
 	// 并显示新的冷却时间和法力消耗
-	float NewCooldownDuration = UCAbilitySystemStatics::GetCooldownDurationFor(AbilitySpec.Ability, *OwnerAbilitySystemComponent, AbilitySpec.Level);
+	float NewCooldownDuration = UCAbilitySystemStatics::GetCooldownDurationForMMCCD(AbilitySpec.Ability, *OwnerAbilitySystemComponent, AbilitySpec.Level);
 	float NewCost = UCAbilitySystemStatics::GetManaCostFor(AbilitySpec.Ability, *OwnerAbilitySystemComponent, AbilitySpec.Level);
 	// UE_LOG(LogTemp, Warning, TEXT("冷却：%f"), NewCooldownDuration)
 	// 获取冷却总时长

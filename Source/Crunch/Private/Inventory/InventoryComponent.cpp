@@ -127,8 +127,6 @@ UInventoryItem* UInventoryComponent::GetAvailableStackForItem(const UPDA_ShopIte
 	return nullptr;
 }
 
-// TODO:此函数稍加修改利用可以实现CalculateItemEffectivePrice的逻辑,我又觉得不妥，这个还是过于辣鸡，我需要进行新的重构，但是这个有借鉴之处
-// TODO:将此函数与商店UI`ShopWidget`的CalculateItemEffectivePrice 和 CalculateSubTreeValue相结合，生成的函数要可以用来给商店UI更改。
 bool UInventoryComponent::FindIngredientForItem(const UPDA_ShopItem* Item, TArray<UInventoryItem*>& OutIngredients,
 	const TArray<const UPDA_ShopItem*>& IngredientToIgnore)
 {
@@ -173,6 +171,19 @@ UInventoryItem* UInventoryComponent::TryGetItemForShopItem(const UPDA_ShopItem* 
 		}
 	}
 	return nullptr;
+}
+
+void UInventoryComponent::TryActivateItemInSlot(int32 SlotNumber)
+{
+	// 遍历背包查找指定槽位的物品并激活
+	for (TPair<FInventoryItemHandle, UInventoryItem*>& ItemPair : InventoryMap)
+	{
+		if (ItemPair.Value->GetItemSlot() == SlotNumber)
+		{
+			Server_ActivateItem(ItemPair.Key);
+			return;
+		}
+	}
 }
 
 TArray<FInventoryItemHandle> UInventoryComponent::TryGetItemForShopItemHandles(const UPDA_ShopItem* Item) const
@@ -256,6 +267,37 @@ void UInventoryComponent::BeginPlay()
 	Super::BeginPlay();
 	OwnerAbilitySystemComponent = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(GetOwner());
 
+	// 绑定能力释放回调
+	if (OwnerAbilitySystemComponent)
+		OwnerAbilitySystemComponent->AbilityCommittedCallbacks.AddUObject(this, &UInventoryComponent::AbilityCommitted);
+}
+
+void UInventoryComponent::AbilityCommitted(class UGameplayAbility* CommittedAbility)
+{
+	if (!CommittedAbility) return;
+
+	float CooldownTimeRemaining = 0.f;
+	float CooldownDuration = 0.f;
+
+	// 获取技能冷却时间
+	CommittedAbility->GetCooldownTimeRemainingAndDuration(
+		CommittedAbility->GetCurrentAbilitySpecHandle(),
+		CommittedAbility->GetCurrentActorInfo(),
+		CooldownTimeRemaining,
+		CooldownDuration
+	);
+
+	// 遍历背包，找到授予该技能的物品，广播冷却信息
+	for (TPair<FInventoryItemHandle, UInventoryItem*>& ItemPair : InventoryMap)
+	{
+		if (!ItemPair.Value)
+			continue;
+
+		if (ItemPair.Value->IsGrantingAbility(CommittedAbility->GetClass()))
+		{
+			OnItemAbilityCommitted.Broadcast(ItemPair.Key, CooldownDuration, CooldownTimeRemaining);
+		}
+	}
 }
 
 void UInventoryComponent::Server_ActivateItem_Implementation(FInventoryItemHandle ItemHandle)
@@ -372,10 +414,10 @@ void UInventoryComponent::GrantItem(const UPDA_ShopItem* NewItem, float Purchase
 		OnItemAdded.Broadcast(InventoryItem);
 
 		UE_LOG(LogTemp, Warning, TEXT("服务器中添加的物品: %s, 唯一ID: %d"), *(InventoryItem->GetShopItem()->GetItemName().ToString()), NewHandle.GetHandleId());
-		// FGameplayAbilitySpecHandle GrantedAbilitySpecHandle = InventoryItem->GetGrantedAbilitySpecHandle();
+		FGameplayAbilitySpecHandle GrantedAbilitySpecHandle = InventoryItem->GetGrantedAbilitySpecHandle();
 
 		// 通知客户端
-		Client_ItemAdded(NewHandle, NewItem);
+		Client_ItemAdded(NewHandle, NewItem, GrantedAbilitySpecHandle);
 	}
 }
 
@@ -453,10 +495,9 @@ void UInventoryComponent::GrantItem(const UPDA_ShopItem* NewItem)
 			InventoryMap.Add(NewHandle, InventoryItem);
 			OnItemAdded.Broadcast(InventoryItem);
 			UE_LOG(LogTemp, Warning, TEXT("服务器中添加的物品: %s, 唯一ID: %d"), *(InventoryItem->GetShopItem()->GetItemName().ToString()), NewHandle.GetHandleId());
-			// FGameplayAbilitySpecHandle GrantedAbilitySpecHandle = InventoryItem->GetGrantedAbilitySpecHandle();
-
+			FGameplayAbilitySpecHandle GrantedAbilitySpecHandle = InventoryItem->GetGrantedAbilitySpecHandle();
 			// 通知客户端
-			Client_ItemAdded(NewHandle, NewItem);
+			Client_ItemAdded(NewHandle, NewItem, GrantedAbilitySpecHandle);
 		}
 	}
 }
@@ -483,6 +524,7 @@ void UInventoryComponent::Client_ItemRemoved_Implementation(FInventoryItemHandle
 
 	UInventoryItem* InventoryItem = GetInventoryItemByHandle(ItemHandle);
 	if (!InventoryItem) return;
+	
 	// 移除GAS效果
 	InventoryItem->RemoveGASModifications();
 	OnItemRemoved.Broadcast(ItemHandle);
@@ -491,7 +533,7 @@ void UInventoryComponent::Client_ItemRemoved_Implementation(FInventoryItemHandle
 }
 
 void UInventoryComponent::Client_ItemAdded_Implementation(FInventoryItemHandle AssignedHandle,
-                                                          const UPDA_ShopItem* Item)
+                                                          const UPDA_ShopItem* Item, FGameplayAbilitySpecHandle GrantedAbilitySpecHandle)
 {
 	if (GetOwner()->HasAuthority()) return;// 确保客户端调用
 
@@ -499,8 +541,11 @@ void UInventoryComponent::Client_ItemAdded_Implementation(FInventoryItemHandle A
 	{
 		// 创建本地物品副本
 		UInventoryItem* InventoryItem = NewObject<UInventoryItem>();
+		// 先传给他在初始化，反正这个句柄的修改在服务器，这里是客户端
+		InventoryItem->SetGrantedAbilitySpecHandle(GrantedAbilitySpecHandle);
+		UE_LOG(LogTemp, Warning, TEXT("设置了GrantedAbilitySpecHandle"))
 		InventoryItem->InitItem(AssignedHandle, Item, OwnerAbilitySystemComponent);
-		// InventoryItem->SetGarbageEliminationEnabled(GrantedAbilitySpecHandle)
+		// InventoryItem->SetGrantedAbilitySpecHandle(GrantedAbilitySpecHandle);
 		// 添加到本地库存
 		InventoryMap.Add(AssignedHandle, InventoryItem);
 		OnItemAdded.Broadcast(InventoryItem);
@@ -516,7 +561,7 @@ void UInventoryComponent::Server_Purchase_Implementation(const UPDA_ShopItem* It
 	TArray<FInventoryItemHandle> Ingredients;
 	// 购买物品的金额
 	float PurchasePrice = GetPurchasePrice(ItemToPurchase,Ingredients);
-	// 金币不够无法购买(理论上金币是够的)
+	// 金币不够无法购买(理论上金币是够的)(新添加了双击购买，理论失败，退回了右键购买，理论失败)
 	if (GetGold() < PurchasePrice) return;
 
 	// TODO:25/08/04修改的堆叠以及自动合成机制，不知是否有BUG先todo一手

@@ -17,6 +17,9 @@ DECLARE_MULTICAST_DELEGATE_OneParam(FOnItemRemovedDelegate, const FInventoryItem
 // 委托声明：当物品堆叠数量变化时广播
 DECLARE_MULTICAST_DELEGATE_TwoParams(FOnItemStackCountChangeDelegate, const FInventoryItemHandle&, int32 /*NewCount*/);
 
+// 委托声明：当物品授予的能力被使用时广播（包含冷却信息）
+DECLARE_MULTICAST_DELEGATE_ThreeParams(FOnItemAbilityCommitted, const FInventoryItemHandle&, float /*CooldownDuration*/, float /*CooldownTimeRemaining*/);
+
 
 /**
  * 库存管理组件，负责处理物品的添加、移除、使用和交易逻辑
@@ -36,6 +39,9 @@ public:
 	FOnItemRemovedDelegate OnItemRemoved;
 	// 物品堆叠数量变化事件委托
 	FOnItemStackCountChangeDelegate OnItemStackCountChanged;
+
+	// 物品能力使用事件委托
+	FOnItemAbilityCommitted OnItemAbilityCommitted;
 	
 	// 尝试激活指定句柄对应的物品
 	void TryActivateItem(const FInventoryItemHandle& ItemHandle);
@@ -77,6 +83,9 @@ public:
 	// 尝试获取与商店物品对应的库存物品
 	UInventoryItem* TryGetItemForShopItem(const UPDA_ShopItem* Item) const;
 
+	// 尝试激活指定槽位的物品
+	void TryActivateItemInSlot(int32 SlotNumber);
+	
 	// 修改Begin~
 	// 尝试获取与商店物品对应的库存物品句柄数组，获取全部东西有关的
 	TArray<FInventoryItemHandle> TryGetItemForShopItemHandles(const UPDA_ShopItem* Item) const;
@@ -101,13 +110,17 @@ private:
 	/** 库存容量（槽位数） */
 	UPROPERTY(EditDefaultsOnly, Category = "Inventory")
 	int32 Capacity = 6;
-	
+
+	/** 所有者的能力系统组件 */
 	UPROPERTY()
 	TObjectPtr<UAbilitySystemComponent> OwnerAbilitySystemComponent;
 
-	// 存储物品
+	/** 库存物品映射（句柄->物品实例） */
 	UPROPERTY()
 	TMap<FInventoryItemHandle, UInventoryItem*> InventoryMap;
+
+	/** 能力使用回调 */
+	void AbilityCommitted(class UGameplayAbility* CommittedAbility);
 
 	/*********************************************************/
 	/*                   Server RPCs                         */
@@ -136,7 +149,7 @@ private:
 
 	/** 尝试物品合成 */
 	bool TryItemCombination(const UPDA_ShopItem* NewItem);
-	// TODO:我觉得这里需要添加全新的购买逻辑，合成这种方式实在是太唐了
+	// TODO:我觉得这里需要添加全新的购买逻辑，合成这种方式实在是太唐了，（25/08/04以解决）
 	/**
 	 * 全新购买物品逻辑
 	 * @param NewItem 需要购买的物品
@@ -150,7 +163,7 @@ private:
 private:
 	/** 客户端：处理物品添加通知 */
 	UFUNCTION(Client, Reliable)
-	void Client_ItemAdded(FInventoryItemHandle AssignedHandle, const UPDA_ShopItem* Item);
+	void Client_ItemAdded(FInventoryItemHandle AssignedHandle, const UPDA_ShopItem* Item, FGameplayAbilitySpecHandle GrantedAbilitySpecHandle);
 
 	/** 客户端：处理物品移除通知 */
 	UFUNCTION(Client, Reliable)

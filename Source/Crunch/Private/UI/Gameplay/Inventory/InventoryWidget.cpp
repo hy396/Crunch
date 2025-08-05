@@ -23,7 +23,9 @@ void UInventoryWidget::NativeConstruct()
 			InventoryComponent->OnItemStackCountChanged.AddUObject(this, &UInventoryWidget::ItemStackCountChanged);
 			// 移除物品事件绑定
 			InventoryComponent->OnItemRemoved.AddUObject(this, &UInventoryWidget::ItemRemoved);
-			
+			// 背包物品技能释放委托绑定
+			InventoryComponent->OnItemAbilityCommitted.AddUObject(this, &UInventoryWidget::ItemAbilityCommitted);
+            
 			// 获取背包容量
 			int32 Capacity = InventoryComponent->GetCapacity();
 			// 清空背包
@@ -278,6 +280,19 @@ void UInventoryWidget::ItemRemoved(const FInventoryItemHandle& ItemHandle)
 			
 			// 从映射表中移除
 			PopulatedItemEntryWidgets.Remove(ItemHandle);
+		}
+	}
+}
+
+void UInventoryWidget::ItemAbilityCommitted(const FInventoryItemHandle& ItemHandle, float CooldownDuration,
+	float CooldownTimeRemaining)
+{
+	// 查找对应控件并启动冷却显示
+	if (TObjectPtr<UInventoryItemWidget>* FoundWidget = PopulatedItemEntryWidgets.Find(ItemHandle))
+	{
+		if (*FoundWidget)
+		{
+			(*FoundWidget)->StartCooldown(CooldownDuration, CooldownTimeRemaining);
 		}
 	}
 }

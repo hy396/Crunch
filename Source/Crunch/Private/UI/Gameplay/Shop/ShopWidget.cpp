@@ -71,14 +71,14 @@ void UShopWidget::ShopItemWidgetGenerated(UUserWidget& NewWidget)
 	if (ItemWidget)
 	{
 		// TODO:右键购买的操作将在推出购买按钮的时候取消掉
-		// TODO:25/08/04 购买事件以及补全，去掉右键购买操作
+		// TODO:25/08/04 购买事件以及补全，去掉右键购买操作(25/08/04 17:30 我后悔了我感觉或许也是有用的)
 		// 绑定购买事件到库存系统
-		// if (OwnerInventoryComponent)
-		// {
-		// 	ItemWidget->OnItemPurchaseIssued.AddUObject(
-		// 		OwnerInventoryComponent,
-		// 		&UInventoryComponent::TryPurchase);
-		// }
+		if (OwnerInventoryComponent)
+		{
+			ItemWidget->OnItemPurchaseIssued.AddUObject(
+				OwnerInventoryComponent,
+				&UInventoryComponent::TryPurchase);
+		}
 		
 		// 绑定选择事件(鼠标左键)到合成树显示
 		ItemWidget->OnShopItemClicked.AddUObject(
@@ -108,6 +108,8 @@ void UShopWidget::SelectedShopItem(const UShopItemWidget* ItemWidget)
 {
 	// TODO:再此添加选择的物品，并修改显示的价格
 	if (!ItemWidget) return;
+
+	
 	// CurrentSelectedItem = ItemWidget;
 	// 随便创建一个数组用来传递商品
 	TArray<FInventoryItemHandle> Ingredients;

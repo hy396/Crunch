@@ -8,7 +8,7 @@
 #include "InventoryItem.generated.h"
 
 
-// 委托声明：当物品授予的能力可施放状态更新时广播
+// 委托声明：当物品授予的能力可释放状态更新时广播
 DECLARE_MULTICAST_DELEGATE_OneParam(FOnAbilityCanCastUpdatedDelegate, bool /*bCanCast*/)
 
 /**
@@ -63,6 +63,9 @@ class CRUNCH_API UInventoryItem : public UObject
 {
 	GENERATED_BODY()
 public:
+	// 当物品授予的能力可释放状态变更时广播的委托
+	FOnAbilityCanCastUpdatedDelegate OnAbilityCanCastUpdated;
+	
 	UInventoryItem();
 	// 检查物品是否有效初始化
 	bool IsValid() const;
@@ -125,6 +128,26 @@ public:
 	
 	// 获取物品在库存中的槽位
 	int32 GetItemSlot() const { return Slot; }
+
+	// 获取能力剩余冷却时间
+	float GetAbilityCooldownTimeRemaining() const;
+	
+	// 获取能力总冷却时长
+	float GetAbilityCooldownDuration() const;
+
+	// TODO:没必要，等着我删吧
+	// 获取能力法力消耗
+	float GetAbilityManaCost() const;
+	
+	// 检查能力当前是否可施放
+	bool CanCastAbility() const;
+	
+	// 获取授予的能力规格句柄
+	FGameplayAbilitySpecHandle GetGrantedAbilitySpecHandle() const { return GrantedAbilitySpecHandle; }
+	
+	// 设置授予的能力规格句柄
+	void SetGrantedAbilitySpecHandle(FGameplayAbilitySpecHandle SpecHandle) { GrantedAbilitySpecHandle = SpecHandle; }
+
 private:
 	// 应用游戏能力系统修改（效果和能力）
 	void ApplyGASModifications();
@@ -132,6 +155,10 @@ private:
 	// 拥有者的能力系统组件
 	UPROPERTY()
 	TObjectPtr<UAbilitySystemComponent> OwnerAbilitySystemComponent;
+
+	// TODO:坐等删除
+	// 法力更新
+	void ManaUpdated(const FOnAttributeChangeData& ChangeData);
 	
 	// 关联的商店物品资产
 	UPROPERTY()

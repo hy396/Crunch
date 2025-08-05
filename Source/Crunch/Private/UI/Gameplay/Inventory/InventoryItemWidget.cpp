@@ -23,6 +23,9 @@ void UInventoryItemWidget::SetSlotNumber(int NewSlotNumber)
 
 void UInventoryItemWidget::UpdateInventoryItem(const UInventoryItem* Item)
 {
+	// 清理之前的施法状态委托
+	UnBindCanCastAbilityDelegate();
+	
 	InventoryItem = Item;
 	// 如果物品无效或数量为0，清空槽位
 	if (!InventoryItem || !InventoryItem->IsValid() || InventoryItem->GetStackCount() == 0)
@@ -49,11 +52,51 @@ void UInventoryItemWidget::UpdateInventoryItem(const UInventoryItem* Item)
 	{
 		StackCountText->SetVisibility(ESlateVisibility::Hidden);
 	}
-	
+	// 重置冷却显示
+	ClearCooldown();
+	// 检测物品是否有能力
+	if (InventoryItem->IsGrantingAnyAbility())
+	{
+		// TODO:这里刚购买物品的时候会产生获取技能等级失败之类的警告，这是正常且必要的
+		// 更新施法状态（是否可施放）
+		UpdateCanCastDisplay(InventoryItem->CanCastAbility());
+		
+		// 获取冷却信息
+		float AbilityCooldownRemaining = InventoryItem->GetAbilityCooldownTimeRemaining();
+		float AbilityCooldownDuration = InventoryItem->GetAbilityCooldownDuration();
+		// 如果还在冷却中，显示冷却
+		if (AbilityCooldownRemaining > 0.f)
+		{
+			StartCooldown(AbilityCooldownDuration, AbilityCooldownRemaining);
+		}
+
+		// TODO:等着被我删吧，法力显示
+		// 更新法力消耗显示
+		float AbilityCost = InventoryItem->GetAbilityManaCost();
+		ManaCostText->SetVisibility(AbilityCost == 0.f ? ESlateVisibility::Hidden : ESlateVisibility::Visible);
+		ManaCostText->SetText(FText::AsNumber(AbilityCost));
+
+		// 更新总冷却时间显示
+		CooldownDurationText->SetVisibility(AbilityCooldownDuration == 0.f? ESlateVisibility::Hidden : ESlateVisibility::Visible);
+		CooldownDurationText->SetText(FText::AsNumber(AbilityCooldownDuration));
+		
+		// 绑定施法状态变化委托
+		BindCanCastAbilityDelegate();
+	}
+	else // 非能力物品
+	{
+		UpdateCanCastDisplay(true); // 总是显示为可施放状态
+		ManaCostText->SetVisibility(ESlateVisibility::Hidden);
+		CooldownDurationText->SetVisibility(ESlateVisibility::Hidden);
+		CooldownCountText->SetVisibility(ESlateVisibility::Hidden);
+	}
 }
 
 void UInventoryItemWidget::EmptySlot()
 {
+	ClearCooldown(); // 清除冷却显示
+	UnBindCanCastAbilityDelegate(); // 解绑委托
+	
 	// 清空物品
 	InventoryItem = nullptr;
 	SetIcon(EmptyTexture);
@@ -99,6 +142,11 @@ FInventoryItemHandle UInventoryItemWidget::GetItemHandle() const
 
 void UInventoryItemWidget::UpdateCanCastDisplay(bool bCanCast)
 {
+	// 设置动态材质参数（1=可施放，0=不可施放）
+	GetItemIcon()->GetDynamicMaterial()->SetScalarParameterValue(
+		CanCastDynamicMaterialParamName, 
+		bCanCast ? 1.f : 0.f
+	);
 }
 
 void UInventoryItemWidget::RightButtonClicked()
@@ -145,4 +193,126 @@ bool UInventoryItemWidget::NativeOnDrop(const FGeometry& InGeometry, const FDrag
 		}
 	}
 	return Super::NativeOnDrop(InGeometry, InDragDropEvent, InOperation);
+}
+
+void UInventoryItemWidget::StartCooldown(float CooldownDuration, float TimeRemaining)
+{
+	// 设置冷却
+	CooldownTimeRemaining = TimeRemaining;
+	CooldownTimeDuration = CooldownDuration;
+
+	// 万一冷却设置的时间弄错了,就不搞
+	if (CooldownTimeRemaining > 0)
+	{
+		// TODO:感觉可以加一个UI动画，播放的时候先闪一下，不然倒数计时很突兀，CooldownTimeRemaining的时候也可以加一个结束的闪
+		// 设置冷却结束定时器
+		GetWorld()->GetTimerManager().SetTimer(
+			CooldownDurationTimerHandle,
+			this,
+			&UInventoryItemWidget::CooldownFinished,
+			CooldownTimeRemaining
+			);
+		// 设置冷却更新定时器（间隔更新）
+		GetWorld()->GetTimerManager().SetTimer(
+			CooldownUpdateTimerHandle, 
+			this, 
+			&UInventoryItemWidget::UpdateCooldown, 
+			CooldownUpdateInterval, 
+			true
+			);
+		// 先修改再显示，不然好抽象啊
+		CooldownDisplayFormattingOptions.MaximumFractionalDigits = CooldownTimeRemaining > 1.f ? 0 : 2;
+		CooldownCountText->SetText(FText::AsNumber(CooldownTimeRemaining, &CooldownDisplayFormattingOptions));
+		// // 显示之前再刷新一下这个图标吧，不然也好抽象啊
+		// if (GetItemIcon())
+		// {
+		// 	// 使用动态材质设置冷却进度
+		// 	GetItemIcon()->GetDynamicMaterial()->SetScalarParameterValue(
+		// 		CooldownAmtDynamicMaterialParamName, 
+		// 		1.f
+		// 	);
+		// }
+		// 显示冷却倒计时文本
+		CooldownCountText->SetVisibility(ESlateVisibility::Visible);
+	}
+}
+
+void UInventoryItemWidget::BindCanCastAbilityDelegate()
+{
+	if (InventoryItem)
+	{
+		// 通过const_cast移除const修饰以绑定委托
+		const_cast<UInventoryItem*>(InventoryItem)->OnAbilityCanCastUpdated.AddUObject(
+			this, 
+			&UInventoryItemWidget::UpdateCanCastDisplay
+		);
+	}
+}
+
+void UInventoryItemWidget::UnBindCanCastAbilityDelegate()
+{
+	if (InventoryItem)
+	{
+		// 移除所有与当前对象相关的委托绑定
+		const_cast<UInventoryItem*>(InventoryItem)->OnAbilityCanCastUpdated.RemoveAll(this);
+	}
+}
+
+void UInventoryItemWidget::CooldownFinished()
+{
+	// 清除更新定时器
+	GetWorld()->GetTimerManager().ClearTimer(CooldownUpdateTimerHandle);
+	
+	// 隐藏冷却倒计时文本
+	CooldownCountText->SetVisibility(ESlateVisibility::Hidden);
+
+	// 刷新材质
+	if (GetItemIcon())
+	{
+		GetItemIcon()->GetDynamicMaterial()->SetScalarParameterValue(
+			CooldownAmtDynamicMaterialParamName, 
+			1.f
+		);
+	}
+}
+
+void UInventoryItemWidget::UpdateCooldown()
+{
+	// 更新剩余时间
+	CooldownTimeRemaining -= CooldownUpdateInterval;
+	
+	// 计算冷却进度（0-1）
+	float CooldownAmt = 1.f - CooldownTimeRemaining / CooldownTimeDuration;
+	
+	// 设置文本格式（大于1秒显示整数，小于1秒显示小数）
+	CooldownDisplayFormattingOptions.MaximumFractionalDigits = CooldownTimeRemaining > 1.f ? 0 : 2;
+	CooldownCountText->SetText(FText::AsNumber(CooldownTimeRemaining, &CooldownDisplayFormattingOptions));
+
+	if (GetItemIcon())
+	{
+		// 使用动态材质设置冷却进度
+		GetItemIcon()->GetDynamicMaterial()->SetScalarParameterValue(
+			CooldownAmtDynamicMaterialParamName, 
+			CooldownAmt
+		);
+	}
+}
+
+void UInventoryItemWidget::ClearCooldown()
+{
+	CooldownFinished(); // 复用冷却结束逻辑
+}
+
+void UInventoryItemWidget::SetIcon(UTexture2D* IconTexture)
+{
+	if (GetItemIcon())
+	{
+		// 使用动态材质设置图标
+		GetItemIcon()->GetDynamicMaterial()->SetTextureParameterValue(
+			IconTextureDynamicMaterialParamName, 
+			IconTexture
+		);
+		return;
+	}
+	Super::SetIcon(IconTexture);
 }

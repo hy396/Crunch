@@ -83,6 +83,8 @@ void ACPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 		{
 			EnhancedInputComponent->BindAction(InputActionPair.Value, ETriggerEvent::Triggered, this, &ACPlayerCharacter::HandleAbilityInput, InputActionPair.Key);
 		}
+
+		EnhancedInputComponent->BindAction(UseInventoryItemAction, ETriggerEvent::Triggered, this, &ACPlayerCharacter::UseInventoryItem);
 	}
 }
 
@@ -120,6 +122,13 @@ void ACPlayerCharacter::LearnAbilityLeaderDown(const FInputActionValue& InputAct
 void ACPlayerCharacter::LearnAbilityLeaderUp(const FInputActionValue& InputActionValue)
 {
 	bIsLearnAbilityLeaderDown = false;
+}
+
+void ACPlayerCharacter::UseInventoryItem(const FInputActionValue& InputActionValue)
+{
+	// 获取输入的值,把值传过去
+	int Value = FMath::RoundToInt(InputActionValue.Get<float>());
+	InventoryComponent->TryActivateItemInSlot(Value-1);
 }
 
 void ACPlayerCharacter::HandleAbilityInput(const FInputActionValue& InputActionValue, ECAbilityInputID InputID)

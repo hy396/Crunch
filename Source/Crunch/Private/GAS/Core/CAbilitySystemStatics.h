@@ -28,7 +28,6 @@ public:
 
 	// 获取技能冷却
 	static float GetStaticCooldownDurationForAbility(const UGameplayAbility* Ability);
-	// static float GetStaticCooldownDurationForAbilityHasAttribute(const UGameplayAbility* Ability);
 	// 获取技能消耗
 	static float GetStaticCostForAbility(const UGameplayAbility* Ability);
 
@@ -56,6 +55,13 @@ public:
 	// @param AbilityLevel - 当前技能等级
 	// @return 计算后的实际冷却时间（秒）
 	static float GetCooldownDurationFor(const UGameplayAbility* AbilityCDO, const UAbilitySystemComponent& ASC, int AbilityLevel);
+
+	// 获取技能的当前冷却时间
+	// @param AbilityCDO - 技能的默认对象
+	// @param ASC - 所属的能力系统组件（用于获取冷却修饰符）
+	// @param AbilityLevel - 当前技能等级
+	// @return 计算后的实际冷却时间（秒）
+	static float GetCooldownDurationForMMCCD(const UGameplayAbility* AbilityCDO, const UAbilitySystemComponent& ASC, int AbilityLevel);
 	
 	// 获取技能的剩余冷却时间
 	// @param AbilityCDO - 技能的默认对象

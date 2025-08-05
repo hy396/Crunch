@@ -4,6 +4,8 @@
 #include "Inventory/InventoryItem.h"
 
 #include "AbilitySystemComponent.h"
+#include "GAS/Core/CAbilitySystemStatics.h"
+#include "GAS/Core/CAttributeSet.h"
 #include "GAS/Core/CGameplayAbilityTypes.h"
 
 FInventoryItemHandle::FInventoryItemHandle()
@@ -172,6 +174,55 @@ void UInventoryItem::SetSlot(int32 NewSlot)
 	// }
 }
 
+float UInventoryItem::GetAbilityCooldownTimeRemaining() const
+{
+	if (!IsGrantingAnyAbility() || !OwnerAbilitySystemComponent) return 0.f;
+	
+	return UCAbilitySystemStatics::GetCooldownRemainingFor(
+		GetShopItem()->GetGrantedAbilityCDO(), 
+		*OwnerAbilitySystemComponent
+	);
+}
+
+float UInventoryItem::GetAbilityCooldownDuration() const
+{
+	if (!IsGrantingAnyAbility() || !OwnerAbilitySystemComponent) return 0.f;
+	
+	return UCAbilitySystemStatics::GetCooldownDurationFor(
+		GetShopItem()->GetGrantedAbilityCDO(), 
+		*OwnerAbilitySystemComponent, 
+		1 // 默认能力等级
+	);
+}
+
+float UInventoryItem::GetAbilityManaCost() const
+{
+	if (!IsGrantingAnyAbility() || !OwnerAbilitySystemComponent) return 0.f;
+	
+	return UCAbilitySystemStatics::GetManaCostFor(
+		GetShopItem()->GetGrantedAbilityCDO(), 
+		*OwnerAbilitySystemComponent, 
+		1 // 默认能力等级
+	);
+}
+
+bool UInventoryItem::CanCastAbility() const
+{
+	if (!IsGrantingAnyAbility() || !OwnerAbilitySystemComponent) return false;
+	
+	// 优先通过能力规格检查
+	if (FGameplayAbilitySpec* Spec = OwnerAbilitySystemComponent->FindAbilitySpecFromHandle(GrantedAbilitySpecHandle))
+	{
+		return UCAbilitySystemStatics::CheckAbilityCost(*Spec, *OwnerAbilitySystemComponent);
+	}
+	
+	// 回退到通过CDO静态检查
+	return UCAbilitySystemStatics::CheckAbilityCostStatic(
+		GetShopItem()->GetGrantedAbilityCDO(), 
+		*OwnerAbilitySystemComponent
+	);
+}
+
 void UInventoryItem::InitItem(const FInventoryItemHandle& NewHandle, const UPDA_ShopItem* NewShopItem,
                               UAbilitySystemComponent* AbilitySystemComponent)
 {
@@ -181,6 +232,14 @@ void UInventoryItem::InitItem(const FInventoryItemHandle& NewHandle, const UPDA_
 	// 设置能力系统组件并绑定属性变化委托
 	OwnerAbilitySystemComponent = AbilitySystemComponent;
 
+	if (OwnerAbilitySystemComponent)
+	{
+		// 绑定法力变化
+		OwnerAbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(
+			UCAttributeSet::GetManaAttribute()
+		).AddUObject(this, &UInventoryItem::ManaUpdated);
+	}
+	
 	// 应用GAS修改
 	ApplyGASModifications();
 }
@@ -213,9 +272,16 @@ void UInventoryItem::RemoveGASModifications()
 {
 	if (!OwnerAbilitySystemComponent) return;
 
+	// TODO:等我移除法力的时候就得把这个一起移除了
+	// 解除Mana属性变化委托
+	OwnerAbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(
+		UCAttributeSet::GetManaAttribute()
+	).RemoveAll(this);
+	
 	// 服务器端执行
 	if (OwnerAbilitySystemComponent->GetOwner()->HasAuthority())
 	{
+		// TODO:添加更多的GE的时候也需要在这里添加GE的移除效果
 		// 移除装备效果
 		if (AppliedEquipedEffectHandle.IsValid())
 		{
@@ -233,8 +299,10 @@ void UInventoryItem::RemoveGASModifications()
 void UInventoryItem::ApplyGASModifications()
 {
 	if (!GetShopItem() || !OwnerAbilitySystemComponent) return;
+	// 仅服务器端执行
 	if (!OwnerAbilitySystemComponent->GetOwner()->HasAuthority()) return;
 
+	// TODO:添加唯一被动什么的可以在这里调整，可以将装备效果换成一个数组，同时装备多个不同的效果
 	// 应用装备效果
 	TSubclassOf<UGameplayEffect> EquipEffect = GetShopItem()->GetEquippedEffect();
 	if (EquipEffect)
@@ -261,4 +329,10 @@ void UInventoryItem::ApplyGASModifications()
 		// 		static_cast<int32>(ECAbilityInputID::BasicAttack),
 		// 		nullptr));
 	}
+}
+
+void UInventoryItem::ManaUpdated(const FOnAttributeChangeData& ChangeData)
+{
+	// 技能可用委托更新
+	OnAbilityCanCastUpdated.Broadcast(CanCastAbility());
 }

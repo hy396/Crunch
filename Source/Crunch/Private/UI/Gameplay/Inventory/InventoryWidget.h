@@ -94,4 +94,11 @@ private:
 
 	// 处理物品移除事件
 	void ItemRemoved(const FInventoryItemHandle& ItemHandle);
+
+	// 处理物品能力提交事件（冷却开始）
+	void ItemAbilityCommitted(
+		const FInventoryItemHandle& ItemHandle, 
+		float CooldownDuration, 
+		float CooldownTimeRemaining
+	);
 };

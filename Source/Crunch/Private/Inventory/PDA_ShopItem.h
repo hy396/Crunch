@@ -74,6 +74,7 @@ public:
 	// 获取物品的出售价格（设为购入价格的一半）
 	float GetSellPrice() const { return Price / 2.0f; }
 
+	// TODO:可以切换为数组,多个效果，然后有点效果采用堆叠的形式，限制堆叠大小为1
 	// 获取装备时触发的GE
 	TSubclassOf<UGameplayEffect> GetEquippedEffect() const { return EquippedEffect; }
 	
@@ -119,6 +120,7 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "ShopItem", meta = (DisplayName = "是否为消耗品"))
 	bool bIsConsumable;
 
+	// TODO:可以切换为数组,多个效果，然后有点效果采用堆叠的形式，限制堆叠大小为1
 	/** 装备时应用的GameplayEffect */
 	UPROPERTY(EditDefaultsOnly, Category = "ShopItem", meta = (DisplayName = "装备效果"))
 	TSubclassOf<UGameplayEffect> EquippedEffect;
@@ -130,6 +132,7 @@ private:
 	/** 物品授予的GameplayAbility */
 	UPROPERTY(EditDefaultsOnly, Category = "ShopItem", meta = (DisplayName = "授予能力"))
 	TSubclassOf<UGameplayAbility> GrantedAbility;
+	// TODO:要不要加一个数组呢？用来存储被动技能
 
 	/** 标识物品是否可堆叠 */
 	UPROPERTY(EditDefaultsOnly, Category = "ShopItem", meta = (DisplayName = "是否可堆叠"))

@@ -88,6 +88,7 @@ private:
 	/**
 	 * TODO:感觉可以把实际价格的重构修改到背包组件中去
 	 * 这样可以在商店调用背包组件的函数，减少重复定义
+	 * 递归调用应该使用句柄来操作，可以去掉重复这种失误
 	 */ 
 	// /** 计算物品实际价格 */
 	// float CalculateItemEffectivePrice(const UShopItemWidget* ItemWidget);

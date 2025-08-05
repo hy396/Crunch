@@ -79,6 +79,10 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "Input")
 	TObjectPtr<UInputAction> LearnAbilityLeaderAction;
 
+	// 使用库存物品
+	UPROPERTY(EditDefaultsOnly, Category = "Input")
+	TObjectPtr<UInputAction> UseInventoryItemAction;
+
 	// 技能输入
 	UPROPERTY(EditDefaultsOnly, Category = "Input")
 	TMap<ECAbilityInputID, TObjectPtr<UInputAction>> GameplayAbilityInputActions;
@@ -92,6 +96,8 @@ private:
 	void LearnAbilityLeaderDown(const FInputActionValue& InputActionValue);
 	// 技能升级触发抬起
 	void LearnAbilityLeaderUp(const FInputActionValue& InputActionValue);
+	// 使用库存物品
+	void UseInventoryItem(const FInputActionValue& InputActionValue);
 	// 是否按下技能升级键
 	bool bIsLearnAbilityLeaderDown = false;
 	

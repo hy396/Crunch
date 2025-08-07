@@ -8,8 +8,9 @@
 
 class UInventoryItemWidget;
 class UItemWidget;
+
 /**
- * 
+ * 拖拽物品
  */
 UCLASS()
 class CRUNCH_API UInventoryItemDragDropOp : public UDragDropOperation

@@ -12,6 +12,7 @@
 #include "Shop/ShopWidget.h"
 #include "GameplayWidget.generated.h"
 
+class USkeletalMeshRenderWidget;
 /**
  * 
  */
@@ -68,6 +69,10 @@ private:
 	UPROPERTY(meta=(BindWidget))
 	TObjectPtr<UInventoryWidget> InventoryWidget;
 
+	// 头像UI
+	UPROPERTY(meta=(BindWidget))
+	TObjectPtr<USkeletalMeshRenderWidget> HeadshotWidget;
+	
 	// 商店弹出动画
 	UPROPERTY(Transient, meta=(BindWidgetAnim))
 	TObjectPtr<UWidgetAnimation> ShopPopupAnimation;

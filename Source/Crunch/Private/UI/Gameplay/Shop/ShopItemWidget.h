@@ -6,7 +6,7 @@
 #include "TreeNodeInterface.h"
 #include "Blueprint/IUserObjectListEntry.h"
 #include "Inventory/PDA_ShopItem.h"
-#include "UI/Common/ItemWidget.h"
+#include "UI/Common/Items/ItemWidget.h"
 #include "ShopItemWidget.generated.h"
 
 

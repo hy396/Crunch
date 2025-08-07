@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Inventory/InventoryItem.h"
-#include "UI/Common/ItemWidget.h"
+#include "UI/Common/Items/ItemWidget.h"
 #include "InventoryItemWidget.generated.h"
 
 

@@ -4,7 +4,7 @@
 #include "InventoryItemDragDropOp.h"
 
 #include "InventoryItemWidget.h"
-#include "UI/Common/ItemWidget.h"
+#include "UI/Common/Items/ItemWidget.h"
 
 void UInventoryItemDragDropOp::SetDraggedItem(UInventoryItemWidget* DraggedItem)
 {

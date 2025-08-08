@@ -64,6 +64,8 @@ void ACPlayerController::SetupInputComponent()
 			this,								// 目标对象：当前玩家控制器
 			&ACPlayerController::ToggleShop		// 绑定的成员函数
 		);
+		// 绑定游戏菜单切换输入动作
+		EnhancedInputComponent->BindAction(ToggleGameplayMenuAction, ETriggerEvent::Triggered, this, &ACPlayerController::ToggleGameplayMenu);
 	}
 }
 
@@ -81,6 +83,40 @@ void ACPlayerController::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& O
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 	DOREPLIFETIME(ACPlayerController, TeamID);
+}
+
+void ACPlayerController::MatchFinished(AActor* ViewTarget, int WiningTeam)
+{
+	// 仅在服务器执行
+	if (!HasAuthority())
+		return;
+
+	// 禁用玩家输入控制
+	CPlayerCharacter->DisableInput(this);
+	
+	// 调用客户端RPC同步比赛结束状态
+	Client_MatchFinished(ViewTarget, WiningTeam);
+}
+
+void ACPlayerController::Client_MatchFinished_Implementation(AActor* ViewTarget, int WiningTeam)
+{
+	// 切换视角到获胜目标，带有平滑过渡
+	SetViewTargetWithBlend(ViewTarget, MatchFinishViewBlendTimeDuration);
+
+	// 默认提示为胜利
+	FString WinLoseMsg = TEXT("获胜");
+	// 如果玩家队伍ID与获胜队伍不一致，则显示失败提示
+	if (GetGenericTeamId().GetId() != WiningTeam)
+	{
+		WinLoseMsg = TEXT("失败");
+	}
+
+	// 设置游戏菜单标题为胜负提示
+	GameplayWidget->SetGameplayMenuTitle(WinLoseMsg);
+	
+	// 延迟一段时间后显示胜负界面
+	FTimerHandle ShowWinLoseStateTimerHandle;
+	GetWorldTimerManager().SetTimer(ShowWinLoseStateTimerHandle, this, &ACPlayerController::ShowWinLoseState, MatchFinishViewBlendTimeDuration);
 }
 
 // void ACPlayerController::ShowDamageNumber_Implementation(float DamageAmount, AActor* TargetActor, bool bCriticalHit)
@@ -198,6 +234,8 @@ void ACPlayerController::ShowDamageNumber_Implementation(float DamageAmount, ACh
 // 	}
 // }
 
+
+
 void ACPlayerController::SpawnGameplayWidget()
 {
 	// 检查当前玩家控制器是否是本地玩家控制器
@@ -224,6 +262,21 @@ void ACPlayerController::ToggleShop()
 	}
 }
 
+void ACPlayerController::ToggleGameplayMenu()
+{
+	if (GameplayWidget)
+	{
+		GameplayWidget->ToggleGameplayMenu();
+	}
+}
+
+void ACPlayerController::ShowWinLoseState()
+{
+	if (GameplayWidget)
+	{
+		GameplayWidget->ShowGameplayMenu();
+	}
+}
 // void ACPlayerController::BeginDestroy()
 // {
 // 	for (UNumberPopComponent_NiagaraText* Pop : ActiveNumberPops)

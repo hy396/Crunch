@@ -4,6 +4,9 @@
 #include "UI/Gameplay/GameplayWidget.h"
 #include "AbilitySystemBlueprintLibrary.h"
 #include "AbilitySystemComponent.h"
+#include "Components/CanvasPanel.h"
+#include "Components/WidgetSwitcher.h"
+#include "GameplayMenu/GameplayMenu.h"
 #include "GAS/Core/CAttributeSet.h"
 #include "GAS/Core/CHeroAttributeSet.h"
 
@@ -21,6 +24,19 @@ void UGameplayWidget::NativeConstruct()
 		// 绑定每秒回复的属性
 		HealthBar->SetRegenValueTextToGameplayAttribute(OwnerAbilitySystemComponent, UCHeroAttributeSet::GetHealthRegenAttribute());
 		ManaBar->SetRegenValueTextToGameplayAttribute(OwnerAbilitySystemComponent, UCHeroAttributeSet::GetManaRegenAttribute());
+	}
+
+	// 初始设置：隐藏鼠标，只允许游戏输入
+	SetShowMouseCursor(false);
+	SetFocusToGameOnly();
+	
+	// 绑定游戏菜单的继续按钮事件
+	if (GameplayMenu)
+	{
+		GameplayMenu->GetResumeButtonClickedEventDelegate().AddDynamic(
+			this, 
+			&UGameplayWidget::ToggleGameplayMenu
+		);
 	}
 }
 
@@ -68,6 +84,51 @@ void UGameplayWidget::ToggleShop()
 		// 切换到纯游戏输入模式
 		SetFocusToGameOnly();
 	}
+}
+
+void UGameplayWidget::ToggleGameplayMenu()
+{
+	// 如果当前显示的是游戏菜单
+	if (MainSwitcher->GetActiveWidget() == GameplayMenuRootPanel)
+	{
+		// 切换到游戏主界面
+		MainSwitcher->SetActiveWidget(GameplayWidgetRootPanel);
+		
+		// 启用玩家输入
+		SetOwningPawnInputEnabled(true);
+		
+		// 隐藏鼠标光标
+		SetShowMouseCursor(false);
+		
+		// 切换到纯游戏输入模式
+		SetFocusToGameOnly();
+	}
+	else // 如果当前显示的是游戏界面
+	{
+		// 显示游戏菜单
+		ShowGameplayMenu();
+	}
+}
+
+void UGameplayWidget::ShowGameplayMenu()
+{
+	// 切换到游戏菜单界面
+	MainSwitcher->SetActiveWidget(GameplayMenuRootPanel);
+
+	// 禁用玩家输入
+	SetOwningPawnInputEnabled(false);
+
+	// 显示鼠标光标
+	SetShowMouseCursor(true);
+
+	// 切换到游戏+UI输入模式
+	SetFocusToGameAndUI();
+}
+
+void UGameplayWidget::SetGameplayMenuTitle(const FString& NewTitle)
+{
+	// 更新游戏菜单标题
+	GameplayMenu->SetTitleText(NewTitle);
 }
 
 void UGameplayWidget::PlayShopPopupAnimation(bool bPlayForward)

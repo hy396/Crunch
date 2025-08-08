@@ -12,6 +12,10 @@
 #include "Shop/ShopWidget.h"
 #include "GameplayWidget.generated.h"
 
+class UCanvasPanel;
+class UWidgetSwitcher;
+class UGameplayMenu;
+class UMatchStatWidget;
 class USkeletalMeshRenderWidget;
 /**
  * 
@@ -28,6 +32,16 @@ public:
 
 	// 切换商店的显示和隐藏
 	void ToggleShop();
+
+	// 切换游戏菜单显示/隐藏
+	UFUNCTION()
+	void ToggleGameplayMenu();
+
+	// 显示游戏菜单（强制显示）
+	void ShowGameplayMenu();
+
+	// 设置游戏菜单标题文本
+	void SetGameplayMenuTitle(const FString& NewTitle);
 private:
 	// 生命进度条
 	UPROPERTY(meta = (BindWidget))
@@ -72,6 +86,26 @@ private:
 	// 头像UI
 	UPROPERTY(meta=(BindWidget))
 	TObjectPtr<USkeletalMeshRenderWidget> HeadshotWidget;
+
+	// 比赛统计信息控件
+	UPROPERTY(meta=(BindWidget))
+	TObjectPtr<UMatchStatWidget> MatchStatWidget;
+
+	// 游戏菜单
+	UPROPERTY(meta=(BindWidget))
+	TObjectPtr<UGameplayMenu> GameplayMenu;
+	
+	// 主界面切换控件
+	UPROPERTY(meta=(BindWidget))
+	TObjectPtr<UWidgetSwitcher> MainSwitcher; 
+
+	// 游戏主界面根面板
+	UPROPERTY(meta=(BindWidget))
+	TObjectPtr<UCanvasPanel> GameplayWidgetRootPanel; 
+
+	// 游戏菜单根面板
+	UPROPERTY(meta=(BindWidget))
+	TObjectPtr<UCanvasPanel> GameplayMenuRootPanel; 
 	
 	// 商店弹出动画
 	UPROPERTY(Transient, meta=(BindWidgetAnim))

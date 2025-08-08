@@ -7,7 +7,7 @@
 #include "MMC_BaseAttackDamage.generated.h"
 
 /**
- * 
+ * 用于计算冷却的MMC计算类
  */
 UCLASS()
 class UMMC_BaseAttackDamage : public UGameplayModMagnitudeCalculation

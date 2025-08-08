@@ -5243,6 +5243,237 @@
         </WebConversation>
       </list>
     </option>
-    <option name="currentConversation" />
+    <option name="currentConversation">
+      <WebConversation>
+        <option name="session">
+          <ChatSession>
+            <option name="messages">
+              <list>
+                <UIChatMessage>
+                  <option name="command" value="" />
+                  <option name="content" value="&#10;```&#10;CONSOLE: Use build tool: D:\cpp\MSBuild\Current\Bin\MSBuild.exe&#10;:   : null&#10;0:39:59 Building D:\UE_5.4\Engine\Source\Programs\UnrealBuildTool\UnrealBuildTool.csproj&#10;0:39:59 Building D:\UE_5.4\Engine\Source\Programs\Shared\EpicGames.Build\EpicGames.Build.csproj&#10;0:39:59 Building D:\UE_5.4\Engine\Source\Programs\Shared\EpicGames.Core\EpicGames.Core.csproj&#10;0:39:59 Building D:\UE_5.4\Engine\Source\Programs\Shared\EpicGames.Horde\EpicGames.Horde.csproj&#10;0:39:59 Building D:\UE_5.4\Engine\Source\Programs\Shared\EpicGames.IoHash\EpicGames.IoHash.csproj&#10;0:39:59 Building D:\UE_5.4\Engine\Source\Programs\Shared\EpicGames.OIDC\EpicGames.OIDC.csproj&#10;0:39:59 Building D:\UE_5.4\Engine\Source\Programs\Shared\EpicGames.Serialization\EpicGames.Serialization.csproj&#10;0:39:59 Building D:\UE_5.4\Engine\Source\Programs\Shared\EpicGames.UBA\EpicGames.UBA.csproj&#10;0:39:59 Building D:\UE_5.4\Engine\Source\Programs\Shared\EpicGames.UHT\EpicGames.UHT.csproj&#10;0:40:00 Building D:\UE_5.4\Engine\Source\Programs\Shared\EpicGames.MsBuild\EpicGames.MsBuild.csproj&#10;0:40:00 Building D:\UE_5.4\Engine\Source\Programs\Shared\EpicGames.Oodle\EpicGames.Oodle.csproj&#10;EpicGames.Core -&gt; D:\UE_5.4\Engine\Source\Programs\Shared\EpicGames.Core\bin\Development\net6.0\EpicGames.Core.dll&#10;EpicGames.IoHash -&gt; D:\UE_5.4\Engine\Source\Programs\Shared\EpicGames.IoHash\bin\Development\net6.0\EpicGames.IoHash.dll&#10;EpicGames.MsBuild -&gt; D:\UE_5.4\Engine\Source\Programs\Shared\EpicGames.MsBuild\bin\Development\net6.0\EpicGames.MsBuild.dll&#10;EpicGames.Build -&gt; D:\UE_5.4\Engine\Source\Programs\Shared\EpicGames.Build\bin\Development\net6.0\EpicGames.Build.dll&#10;EpicGames.OIDC -&gt; D:\UE_5.4\Engine\Source\Programs\Shared\EpicGames.OIDC\bin\Development\net6.0\EpicGames.OIDC.dll&#10;EpicGames.Oodle -&gt; D:\UE_5.4\Engine\Source\Programs\Shared\EpicGames.Oodle\bin\Development\net6.0\EpicGames.Oodle.dll&#10;EpicGames.Serialization -&gt; D:\UE_5.4\Engine\Source\Programs\Shared\EpicGames.Serialization\bin\Development\net6.0\EpicGames.Serialization.dll&#10;EpicGames.Horde -&gt; D:\UE_5.4\Engine\Source\Programs\Shared\EpicGames.Horde\bin\Development\net6.0\EpicGames.Horde.dll&#10;EpicGames.UBA -&gt; D:\UE_5.4\Engine\Source\Programs\Shared\EpicGames.UBA\bin\Development\net6.0\EpicGames.UBA.dll&#10;EpicGames.UHT -&gt; D:\UE_5.4\Engine\Source\Programs\Shared\EpicGames.UHT\bin\Development\net6.0\EpicGames.UHT.dll&#10;UnrealBuildTool -&gt; D:\UE_5.4\Engine\Binaries\DotNET\UnrealBuildTool\UnrealBuildTool.dll&#10;0:40:01 Building D:\ue_texiao\Crunch\Intermediate\ProjectFiles\Crunch.vcxproj&#10;D:\UE_5.4\Engine\Build\BatchFiles\Build.bat CrunchEditor Win64 Development -Project=&quot;D:\ue_texiao\Crunch\Crunch.uproject&quot; -WaitMutex -FromMsBuild -architecture=x64&#10;Using bundled DotNet SDK version: 6.0.302&#10;Running UnrealBuildTool: dotnet &quot;..\..\Engine\Binaries\DotNET\UnrealBuildTool\UnrealBuildTool.dll&quot; CrunchEditor Win64 Development -Project=&quot;D:\ue_texiao\Crunch\Crunch.uproject&quot; -WaitMutex -FromMsBuild -architecture=x64&#10;Log file: C:\Users\幻雨\AppData\Local\UnrealBuildTool\Log.txt&#10;Using 'git status' to determine working set for adaptive non-unity build (D:\ue_texiao\Crunch).&#10;Invalidating makefile for CrunchEditor (source directory added)&#10;Parsing headers for CrunchEditor&#10;  Running Internal UnrealHeaderTool D:\ue_texiao\Crunch\Crunch.uproject D:\ue_texiao\Crunch\Intermediate\Build\Win64\CrunchEditor\Development\CrunchEditor.uhtmanifest -WarningsAsErrors -installed&#10;Total of 4 written&#10;Reflection code generated for CrunchEditor in 1.2514268 seconds&#10;Total execution time: 5.42 seconds&#10;Unable to build while Live Coding is active. Exit the editor and game, or press Ctrl+Alt+F11 if iterating on code in the editor or game&#10;11&gt;Microsoft.MakeFile.Targets(44,5): Error MSB3073 : 命令“D:\UE_5.4\Engine\Build\BatchFiles\Build.bat CrunchEditor Win64 Development -Project=&quot;D:\ue_texiao\Crunch\Crunch.uproject&quot; -WaitMutex -FromMsBuild -architecture=x64”已退出，代码为 6。&#10;&#10;```" />
+                  <option name="cost" value="0" />
+                  <option name="createdAt" value="1754671304235" />
+                  <option name="localReferences">
+                    <list>
+                      <LocalReferences>
+                        <option name="isRequestStage" value="true" />
+                        <option name="range">
+                          <RefRange />
+                        </option>
+                        <option name="uri" value="{&quot;path&quot;:&quot;file:///D:/ue_texiao/Crunch/Source/Crunch/Private/UI/Gameplay/GameplayMenu/GameplayMenu.h&quot;}" />
+                      </LocalReferences>
+                    </list>
+                  </option>
+                  <option name="parser">
+                    <SimpleMarkdownStreamParser>
+                      <option name="columns">
+                        <list>
+                          <option value="3" />
+                          <option value="62" />
+                          <option value="9" />
+                          <option value="87" />
+                          <option value="94" />
+                          <option value="92" />
+                          <option value="94" />
+                          <option value="96" />
+                          <option value="92" />
+                          <option value="110" />
+                          <option value="90" />
+                          <option value="90" />
+                          <option value="98" />
+                          <option value="94" />
+                          <option value="113" />
+                          <option value="119" />
+                          <option value="122" />
+                          <option value="116" />
+                          <option value="113" />
+                          <option value="116" />
+                          <option value="140" />
+                          <option value="116" />
+                          <option value="110" />
+                          <option value="110" />
+                          <option value="86" />
+                          <option value="76" />
+                          <option value="162" />
+                          <option value="40" />
+                          <option value="217" />
+                          <option value="58" />
+                          <option value="94" />
+                          <option value="62" />
+                          <option value="31" />
+                          <option value="194" />
+                          <option value="17" />
+                          <option value="62" />
+                          <option value="33" />
+                          <option value="134" />
+                          <option value="229" />
+                          <option value="-1" />
+                        </list>
+                      </option>
+                      <option name="content" value="&#10;```&#10;CONSOLE: Use build tool: D:\cpp\MSBuild\Current\Bin\MSBuild.exe&#10;:   : null&#10;0:39:59 Building D:\UE_5.4\Engine\Source\Programs\UnrealBuildTool\UnrealBuildTool.csproj&#10;0:39:59 Building D:\UE_5.4\Engine\Source\Programs\Shared\EpicGames.Build\EpicGames.Build.csproj&#10;0:39:59 Building D:\UE_5.4\Engine\Source\Programs\Shared\EpicGames.Core\EpicGames.Core.csproj&#10;0:39:59 Building D:\UE_5.4\Engine\Source\Programs\Shared\EpicGames.Horde\EpicGames.Horde.csproj&#10;0:39:59 Building D:\UE_5.4\Engine\Source\Programs\Shared\EpicGames.IoHash\EpicGames.IoHash.csproj&#10;0:39:59 Building D:\UE_5.4\Engine\Source\Programs\Shared\EpicGames.OIDC\EpicGames.OIDC.csproj&#10;0:39:59 Building D:\UE_5.4\Engine\Source\Programs\Shared\EpicGames.Serialization\EpicGames.Serialization.csproj&#10;0:39:59 Building D:\UE_5.4\Engine\Source\Programs\Shared\EpicGames.UBA\EpicGames.UBA.csproj&#10;0:39:59 Building D:\UE_5.4\Engine\Source\Programs\Shared\EpicGames.UHT\EpicGames.UHT.csproj&#10;0:40:00 Building D:\UE_5.4\Engine\Source\Programs\Shared\EpicGames.MsBuild\EpicGames.MsBuild.csproj&#10;0:40:00 Building D:\UE_5.4\Engine\Source\Programs\Shared\EpicGames.Oodle\EpicGames.Oodle.csproj&#10;EpicGames.Core -&gt; D:\UE_5.4\Engine\Source\Programs\Shared\EpicGames.Core\bin\Development\net6.0\EpicGames.Core.dll&#10;EpicGames.IoHash -&gt; D:\UE_5.4\Engine\Source\Programs\Shared\EpicGames.IoHash\bin\Development\net6.0\EpicGames.IoHash.dll&#10;EpicGames.MsBuild -&gt; D:\UE_5.4\Engine\Source\Programs\Shared\EpicGames.MsBuild\bin\Development\net6.0\EpicGames.MsBuild.dll&#10;EpicGames.Build -&gt; D:\UE_5.4\Engine\Source\Programs\Shared\EpicGames.Build\bin\Development\net6.0\EpicGames.Build.dll&#10;EpicGames.OIDC -&gt; D:\UE_5.4\Engine\Source\Programs\Shared\EpicGames.OIDC\bin\Development\net6.0\EpicGames.OIDC.dll&#10;EpicGames.Oodle -&gt; D:\UE_5.4\Engine\Source\Programs\Shared\EpicGames.Oodle\bin\Development\net6.0\EpicGames.Oodle.dll&#10;EpicGames.Serialization -&gt; D:\UE_5.4\Engine\Source\Programs\Shared\EpicGames.Serialization\bin\Development\net6.0\EpicGames.Serialization.dll&#10;EpicGames.Horde -&gt; D:\UE_5.4\Engine\Source\Programs\Shared\EpicGames.Horde\bin\Development\net6.0\EpicGames.Horde.dll&#10;EpicGames.UBA -&gt; D:\UE_5.4\Engine\Source\Programs\Shared\EpicGames.UBA\bin\Development\net6.0\EpicGames.UBA.dll&#10;EpicGames.UHT -&gt; D:\UE_5.4\Engine\Source\Programs\Shared\EpicGames.UHT\bin\Development\net6.0\EpicGames.UHT.dll&#10;UnrealBuildTool -&gt; D:\UE_5.4\Engine\Binaries\DotNET\UnrealBuildTool\UnrealBuildTool.dll&#10;0:40:01 Building D:\ue_texiao\Crunch\Intermediate\ProjectFiles\Crunch.vcxproj&#10;D:\UE_5.4\Engine\Build\BatchFiles\Build.bat CrunchEditor Win64 Development -Project=&quot;D:\ue_texiao\Crunch\Crunch.uproject&quot; -WaitMutex -FromMsBuild -architecture=x64&#10;Using bundled DotNet SDK version: 6.0.302&#10;Running UnrealBuildTool: dotnet &quot;..\..\Engine\Binaries\DotNET\UnrealBuildTool\UnrealBuildTool.dll&quot; CrunchEditor Win64 Development -Project=&quot;D:\ue_texiao\Crunch\Crunch.uproject&quot; -WaitMutex -FromMsBuild -architecture=x64&#10;Log file: C:\Users\幻雨\AppData\Local\UnrealBuildTool\Log.txt&#10;Using 'git status' to determine working set for adaptive non-unity build (D:\ue_texiao\Crunch).&#10;Invalidating makefile for CrunchEditor (source directory added)&#10;Parsing headers for CrunchEditor&#10;  Running Internal UnrealHeaderTool D:\ue_texiao\Crunch\Crunch.uproject D:\ue_texiao\Crunch\Intermediate\Build\Win64\CrunchEditor\Development\CrunchEditor.uhtmanifest -WarningsAsErrors -installed&#10;Total of 4 written&#10;Reflection code generated for CrunchEditor in 1.2514268 seconds&#10;Total execution time: 5.42 seconds&#10;Unable to build while Live Coding is active. Exit the editor and game, or press Ctrl+Alt+F11 if iterating on code in the editor or game&#10;11&gt;Microsoft.MakeFile.Targets(44,5): Error MSB3073 : 命令“D:\UE_5.4\Engine\Build\BatchFiles\Build.bat CrunchEditor Win64 Development -Project=&quot;D:\ue_texiao\Crunch\Crunch.uproject&quot; -WaitMutex -FromMsBuild -architecture=x64”已退出，代码为 6。&#10;&#10;```" />
+                      <option name="nodes">
+                        <list>
+                          <MarkdownNode>
+                            <option name="children">
+                              <list />
+                            </option>
+                            <option name="content" value="" />
+                            <option name="contentId" value="0" />
+                            <option name="settled" value="true" />
+                            <option name="type" value="line" />
+                            <option name="xmlData">
+                              <XmlNode />
+                            </option>
+                          </MarkdownNode>
+                          <MarkdownNode>
+                            <option name="children">
+                              <list />
+                            </option>
+                            <option name="content" value="CONSOLE: Use build tool: D:\cpp\MSBuild\Current\Bin\MSBuild.exe&#10;:   : null&#10;0:39:59 Building D:\UE_5.4\Engine\Source\Programs\UnrealBuildTool\UnrealBuildTool.csproj&#10;0:39:59 Building D:\UE_5.4\Engine\Source\Programs\Shared\EpicGames.Build\EpicGames.Build.csproj&#10;0:39:59 Building D:\UE_5.4\Engine\Source\Programs\Shared\EpicGames.Core\EpicGames.Core.csproj&#10;0:39:59 Building D:\UE_5.4\Engine\Source\Programs\Shared\EpicGames.Horde\EpicGames.Horde.csproj&#10;0:39:59 Building D:\UE_5.4\Engine\Source\Programs\Shared\EpicGames.IoHash\EpicGames.IoHash.csproj&#10;0:39:59 Building D:\UE_5.4\Engine\Source\Programs\Shared\EpicGames.OIDC\EpicGames.OIDC.csproj&#10;0:39:59 Building D:\UE_5.4\Engine\Source\Programs\Shared\EpicGames.Serialization\EpicGames.Serialization.csproj&#10;0:39:59 Building D:\UE_5.4\Engine\Source\Programs\Shared\EpicGames.UBA\EpicGames.UBA.csproj&#10;0:39:59 Building D:\UE_5.4\Engine\Source\Programs\Shared\EpicGames.UHT\EpicGames.UHT.csproj&#10;0:40:00 Building D:\UE_5.4\Engine\Source\Programs\Shared\EpicGames.MsBuild\EpicGames.MsBuild.csproj&#10;0:40:00 Building D:\UE_5.4\Engine\Source\Programs\Shared\EpicGames.Oodle\EpicGames.Oodle.csproj&#10;EpicGames.Core -&gt; D:\UE_5.4\Engine\Source\Programs\Shared\EpicGames.Core\bin\Development\net6.0\EpicGames.Core.dll&#10;EpicGames.IoHash -&gt; D:\UE_5.4\Engine\Source\Programs\Shared\EpicGames.IoHash\bin\Development\net6.0\EpicGames.IoHash.dll&#10;EpicGames.MsBuild -&gt; D:\UE_5.4\Engine\Source\Programs\Shared\EpicGames.MsBuild\bin\Development\net6.0\EpicGames.MsBuild.dll&#10;EpicGames.Build -&gt; D:\UE_5.4\Engine\Source\Programs\Shared\EpicGames.Build\bin\Development\net6.0\EpicGames.Build.dll&#10;EpicGames.OIDC -&gt; D:\UE_5.4\Engine\Source\Programs\Shared\EpicGames.OIDC\bin\Development\net6.0\EpicGames.OIDC.dll&#10;EpicGames.Oodle -&gt; D:\UE_5.4\Engine\Source\Programs\Shared\EpicGames.Oodle\bin\Development\net6.0\EpicGames.Oodle.dll&#10;EpicGames.Serialization -&gt; D:\UE_5.4\Engine\Source\Programs\Shared\EpicGames.Serialization\bin\Development\net6.0\EpicGames.Serialization.dll&#10;EpicGames.Horde -&gt; D:\UE_5.4\Engine\Source\Programs\Shared\EpicGames.Horde\bin\Development\net6.0\EpicGames.Horde.dll&#10;EpicGames.UBA -&gt; D:\UE_5.4\Engine\Source\Programs\Shared\EpicGames.UBA\bin\Development\net6.0\EpicGames.UBA.dll&#10;EpicGames.UHT -&gt; D:\UE_5.4\Engine\Source\Programs\Shared\EpicGames.UHT\bin\Development\net6.0\EpicGames.UHT.dll&#10;UnrealBuildTool -&gt; D:\UE_5.4\Engine\Binaries\DotNET\UnrealBuildTool\UnrealBuildTool.dll&#10;0:40:01 Building D:\ue_texiao\Crunch\Intermediate\ProjectFiles\Crunch.vcxproj&#10;D:\UE_5.4\Engine\Build\BatchFiles\Build.bat CrunchEditor Win64 Development -Project=&quot;D:\ue_texiao\Crunch\Crunch.uproject&quot; -WaitMutex -FromMsBuild -architecture=x64&#10;Using bundled DotNet SDK version: 6.0.302&#10;Running UnrealBuildTool: dotnet &quot;..\..\Engine\Binaries\DotNET\UnrealBuildTool\UnrealBuildTool.dll&quot; CrunchEditor Win64 Development -Project=&quot;D:\ue_texiao\Crunch\Crunch.uproject&quot; -WaitMutex -FromMsBuild -architecture=x64&#10;Log file: C:\Users\幻雨\AppData\Local\UnrealBuildTool\Log.txt&#10;Using 'git status' to determine working set for adaptive non-unity build (D:\ue_texiao\Crunch).&#10;Invalidating makefile for CrunchEditor (source directory added)&#10;Parsing headers for CrunchEditor&#10;  Running Internal UnrealHeaderTool D:\ue_texiao\Crunch\Crunch.uproject D:\ue_texiao\Crunch\Intermediate\Build\Win64\CrunchEditor\Development\CrunchEditor.uhtmanifest -WarningsAsErrors -installed&#10;Total of 4 written&#10;Reflection code generated for CrunchEditor in 1.2514268 seconds&#10;Total execution time: 5.42 seconds&#10;Unable to build while Live Coding is active. Exit the editor and game, or press Ctrl+Alt+F11 if iterating on code in the editor or game&#10;11&gt;Microsoft.MakeFile.Targets(44,5): Error MSB3073 : 命令“D:\UE_5.4\Engine\Build\BatchFiles\Build.bat CrunchEditor Win64 Development -Project=&quot;D:\ue_texiao\Crunch\Crunch.uproject&quot; -WaitMutex -FromMsBuild -architecture=x64”已退出，代码为 6。&#10;&#10;" />
+                            <option name="contentId" value="-1704145959" />
+                            <option name="expectEnding" value="```" />
+                            <option name="indentSize" value="0" />
+                            <option name="language" value="" />
+                            <option name="settled" value="false" />
+                            <option name="type" value="code-block" />
+                            <option name="xmlData">
+                              <XmlNode />
+                            </option>
+                          </MarkdownNode>
+                        </list>
+                      </option>
+                      <option name="parserState">
+                        <ParserState>
+                          <option name="line" value="40" />
+                          <option name="column" value="2" />
+                          <option name="offset" value="3863" />
+                          <option name="closing" value="true" />
+                          <option name="innerBlock" value="1" />
+                          <option name="moveCursor" value="true" />
+                        </ParserState>
+                      </option>
+                    </SimpleMarkdownStreamParser>
+                  </option>
+                  <option name="range">
+                    <CodeActionChatRequestRange>
+                      <option name="start">
+                        <CodeActionChatRequestRangePosition />
+                      </option>
+                      <option name="end">
+                        <CodeActionChatRequestRangePosition>
+                          <option name="character" value="10000" />
+                        </CodeActionChatRequestRangePosition>
+                      </option>
+                    </CodeActionChatRequestRange>
+                  </option>
+                  <option name="role" value="user" />
+                  <option name="selectedRanges">
+                    <list />
+                  </option>
+                  <option name="uri" value="" />
+                  <option name="variables">
+                    <list />
+                  </option>
+                </UIChatMessage>
+                <UIChatMessage>
+                  <option name="actions">
+                    <list />
+                  </option>
+                  <option name="codebaseReferences">
+                    <list />
+                  </option>
+                  <option name="codebaseStatus" value="init" />
+                  <option name="command" value="" />
+                  <option name="content" value="很抱歉，我们遇到了一个问题。请稍后再试或者联系管理员。" />
+                  <option name="cost" value="-1" />
+                  <option name="error" value="" />
+                  <option name="id" value="01988a8f4e2b7885a776f89498a5459a" />
+                  <option name="knowledgeReferences">
+                    <list />
+                  </option>
+                  <option name="localReferences">
+                    <list>
+                      <LocalReferences>
+                        <option name="isRequestStage" value="true" />
+                        <option name="range">
+                          <RefRange />
+                        </option>
+                        <option name="uri" value="{&quot;path&quot;:&quot;file:///D:/ue_texiao/Crunch/Source/Crunch/Private/UI/Gameplay/GameplayMenu/GameplayMenu.h&quot;}" />
+                      </LocalReferences>
+                    </list>
+                  </option>
+                  <option name="parser">
+                    <SimpleMarkdownStreamParser>
+                      <option name="columns">
+                        <list>
+                          <option value="26" />
+                        </list>
+                      </option>
+                      <option name="content" value="很抱歉，我们遇到了一个问题。请稍后再试或者联系管理员。&#10;" />
+                      <option name="nodes">
+                        <list>
+                          <MarkdownNode>
+                            <option name="children">
+                              <list />
+                            </option>
+                            <option name="content" value="很抱歉，我们遇到了一个问题。请稍后再试或者联系管理员。" />
+                            <option name="contentId" value="2134116429" />
+                            <option name="settled" value="true" />
+                            <option name="type" value="line" />
+                            <option name="xmlData">
+                              <XmlNode />
+                            </option>
+                          </MarkdownNode>
+                          <MarkdownNode>
+                            <option name="children">
+                              <list />
+                            </option>
+                            <option name="content" value="" />
+                            <option name="contentId" value="0" />
+                            <option name="settled" value="false" />
+                            <option name="type" value="undetermined" />
+                            <option name="xmlData">
+                              <XmlNode />
+                            </option>
+                          </MarkdownNode>
+                        </list>
+                      </option>
+                      <option name="parserState">
+                        <ParserState>
+                          <option name="line" value="1" />
+                          <option name="column" value="-1" />
+                          <option name="offset" value="28" />
+                          <option name="moveCursor" value="true" />
+                        </ParserState>
+                      </option>
+                    </SimpleMarkdownStreamParser>
+                  </option>
+                  <option name="references">
+                    <list />
+                  </option>
+                  <option name="role" value="assistant" />
+                  <option name="topic" value="" />
+                </UIChatMessage>
+              </list>
+            </option>
+            <option name="messagesV3">
+              <list />
+            </option>
+            <option name="sessionId" value="0198889accf57885a776e3cf723a49d8" />
+            <option name="source" value="codeAction" />
+          </ChatSession>
+        </option>
+        <option name="conversationId" value="0198889accf57885a776e3cf723a49d8" />
+        <option name="conversation">
+          <Conversation>
+            <option name="createTime" value="1754638503398" />
+            <option name="id" value="0198889accf57885a776e3cf723a49d8" />
+            <option name="title" value="&#10;```&#10;CONSOLE: Use build tool: D:\cpp\MSBuild\Current\Bin\MSBuild.exe&#10;:   : null&#10;0:39:59 Building D:\UE_5.4\Engine\Source\Programs\UnrealBuildTool\UnrealBuildTool.csproj&#10;0:39:59 Building D:\UE_5.4\Engine\Source\Programs\Shared\EpicGames.Build\EpicGames.Build.csproj&#10;0:39:59 Building D:\UE_5.4\Engine\Source\Programs\Shared\EpicGames.Core\EpicGames.Core.csproj&#10;0:39:59 Building D:\UE_5.4\Engine\Source\Programs\Shared\EpicGames.Horde\EpicGames.Horde.csproj&#10;0:39:59 Building D:\UE_5.4\Engine\Source\Programs\Shared\EpicGames.IoHash\EpicGames.IoHash.csproj&#10;0:39:59 Building D:\UE_5.4\Engine\Source\Programs\Shared\EpicGames.OIDC\EpicGames.OIDC.csproj&#10;0:39:59 Building D:\UE_5.4\Engine\Source\Programs\Shared\EpicGames.Serialization\EpicGames.Serialization.csproj&#10;0:39:59 Building D:\UE_5.4\Engine\Source\Programs\Shared\EpicGames.UBA\EpicGames.UBA.csproj&#10;0:39:59 Building D:\UE_5.4\Engine\Source\Programs\Shared\EpicGames.UHT\EpicGames.UHT.csproj&#10;0:40:00 Building D:\UE_5.4\Engine\Source\Programs\Shared\EpicGames.MsBuild\EpicGames.MsBuild.csproj&#10;0:40:00 Building D:\UE_5.4\Engine\Source\Programs\Shared\EpicGames.Oodle\EpicGames.Oodle.csproj&#10;EpicGames.Core -&gt; D:\UE_5.4\Engine\Source\Programs\Shared\EpicGames.Core\bin\Development\net6.0\EpicGames.Core.dll&#10;EpicGames.IoHash -&gt; D:\UE_5.4\Engine\Source\Programs\Shared\EpicGames.IoHash\bin\Development\net6.0\EpicGames.IoHash.dll&#10;EpicGames.MsBuild -&gt; D:\UE_5.4\Engine\Source\Programs\Shared\EpicGames.MsBuild\bin\Development\net6.0\EpicGames.MsBuild.dll&#10;EpicGames.Build -&gt; D:\UE_5.4\Engine\Source\Programs\Shared\EpicGames.Build\bin\Development\net6.0\EpicGames.Build.dll&#10;EpicGames.OIDC -&gt; D:\UE_5.4\Engine\Source\Programs\Shared\EpicGames.OIDC\bin\Development\net6.0\EpicGames.OIDC.dll&#10;EpicGames.Oodle -&gt; D:\UE_5.4\Engine\Source\Programs\Shared\EpicGames.Oodle\bin\Development\net6.0\EpicGames.Oodle.dll&#10;EpicGames.Serialization -&gt; D:\UE_5.4\Engine\Source\Programs\Shared\EpicGames.Serialization\bin\Development\net6.0\EpicGames.Serialization.dll&#10;EpicGames.Horde -&gt; D:\UE_5.4\Engine\Source\Programs\Shared\EpicGames.Horde\bin\Development\net6.0\EpicGames.Horde.dll&#10;EpicGames.UBA -&gt; D:\UE_5.4\Engine\Source\Programs\Shared\EpicGames.UBA\bin\Development\net6.0\EpicGames.UBA.dll&#10;EpicGames.UHT -&gt; D:\UE_5.4\Engine\Source\Programs\Shared\EpicGames.UHT\bin\Development\net6.0\EpicGames.UHT.dll&#10;UnrealBuildTool -&gt; D:\UE_5.4\Engine\Binaries\DotNET\UnrealBuildTool\UnrealBuildTool.dll&#10;0:40:01 Building D:\ue_texiao\Crunch\Intermediate\ProjectFiles\Crunch.vcxproj&#10;D:\UE_5.4\Engine\Build\BatchFiles\Build.bat CrunchEditor Win64 Development -Project=&quot;D:\ue_texiao\Crunch\Crunch.uproject&quot; -WaitMutex -FromMsBuild -architecture=x64&#10;Using bundled DotNet SDK version: 6.0.302&#10;Running UnrealBuildTool: dotnet &quot;..\..\Engine\Binaries\DotNET\UnrealBuildTool\UnrealBuildTool.dll&quot; CrunchEditor Win64 Development -Project=&quot;D:\ue_texiao\Crunch\Crunch.uproject&quot; -WaitMutex -FromMsBuild -architecture=x64&#10;Log file: C:\Users\幻雨\AppData\Local\UnrealBuildTool\Log.txt&#10;Using 'git status' to determine working set for adaptive non-unity build (D:\ue_texiao\Crunch).&#10;Invalidating makefile for CrunchEditor (source directory added)&#10;Parsing headers for CrunchEditor&#10;  Running Internal UnrealHeaderTool D:\ue_texiao\Crunch\Crunch.uproject D:\ue_texiao\Crunch\Intermediate\Build\Win64\CrunchEditor\Development\CrunchEditor.uhtmanifest -WarningsAsErrors -installed&#10;Total of 4 written&#10;Reflection code generated for CrunchEditor in 1.2514268 seconds&#10;Total execution time: 5.42 seconds&#10;Unable to build while Live Coding is active. Exit the editor and game, or press Ctrl+Alt+F11 if iterating on code in the editor or game&#10;11&gt;Microsoft.MakeFile.Targets(44,5): Error MSB3073 : 命令“D:\UE_5.4\Engine\Build\BatchFiles\Build.bat CrunchEditor Win64 Development -Project=&quot;D:\ue_texiao\Crunch\Crunch.uproject&quot; -WaitMutex -FromMsBuild -architecture=x64”已退出，代码为 6。&#10;&#10;```" />
+            <option name="updateTime" value="1754638503398" />
+          </Conversation>
+        </option>
+      </WebConversation>
+    </option>
   </component>
 </project>

@@ -33,6 +33,8 @@ public:
 
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
+	// 比赛结束处理
+	void MatchFinished(AActor* ViewTarget, int WiningTeam);
 	// 销毁
 	// virtual void BeginDestroy() override;
 	// 在每个客户端显示伤害数值
@@ -43,7 +45,16 @@ public:
 	void ShowDamageNumber(float DamageAmount, ACharacter* TargetCharacter, bool bCriticalHit, FGameplayTag DamageType);
 
 private:
+	// 客户端比赛结束处理
+	UFUNCTION(Client, Reliable)
+	void Client_MatchFinished(AActor* ViewTarget, int WiningTeam);
+
+	// 生成游戏主界面控件
 	void SpawnGameplayWidget();
+
+	// 比赛结束视角切换时长
+	UPROPERTY(EditDefaultsOnly, Category="View")
+	float MatchFinishViewBlendTimeDuration = 2.f;
 	
 	UPROPERTY()
 	TObjectPtr<ACPlayerCharacter> CPlayerCharacter;
@@ -75,7 +86,18 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "Input")
 	TObjectPtr<UInputAction> ShopToggleInputAction;
 
+	// 游戏菜单的开关/关闭
+	UPROPERTY(EditDefaultsOnly, Category = "Input")
+	TObjectPtr<UInputAction> ToggleGameplayMenuAction;
+
+	
 	// 商店的开关/关闭
 	UFUNCTION()
 	void ToggleShop();
+
+	// 游戏菜单的开关/关闭
+	UFUNCTION()
+	void ToggleGameplayMenu();
+	// 显示游戏结果
+	void ShowWinLoseState();
 };

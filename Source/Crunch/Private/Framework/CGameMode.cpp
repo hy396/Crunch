@@ -4,7 +4,9 @@
 #include "Crunch/Private/Framework/CGameMode.h"
 
 #include "EngineUtils.h"
+#include "StormCore.h"
 #include "GameFramework/PlayerStart.h"
+#include "Player/CPlayerController.h"
 
 APlayerController* ACGameMode::SpawnPlayerController(ENetRole InRemoteRole, const FString& Options)
 {
@@ -21,6 +23,45 @@ APlayerController* ACGameMode::SpawnPlayerController(ENetRole InRemoteRole, cons
 	// 分配出生点
 	NewPlayerController->StartSpot = FindNextStartSpotForTeam(TeamId);
 	return NewPlayerController;
+}
+
+void ACGameMode::StartPlay()
+{
+	Super::StartPlay();
+	// 游戏开始时候，绑定风暴核心中的比赛结束的委托
+	AStormCore* StormCore = GetStormCore();
+	if (StormCore)
+	{
+		StormCore->OnGoalReachedDelegate.AddUObject(this, &ACGameMode::MatchFinished);
+	}
+}
+
+AStormCore* ACGameMode::GetStormCore() const
+{
+	// 寻找场景中的风暴核心
+	UWorld* World = GetWorld();
+	if (World)
+	{
+		for (TActorIterator<AStormCore> It(World); It; ++It)
+		{
+			return *It;
+		}
+	}
+
+	return nullptr;
+}
+
+void ACGameMode::MatchFinished(AActor* ViewTarget, int WiningTeam)
+{
+	// 遍历场景中的所有玩家控制器，并调用MatchFinished方法
+	UWorld* World = GetWorld();
+	if (World)
+	{
+		for (TActorIterator<ACPlayerController> It(World); It; ++It)
+		{
+			It->MatchFinished(ViewTarget, WiningTeam);
+		}
+	}
 }
 
 FGenericTeamId ACGameMode::GetTeamIDForPlayer(const AController* InController) const

@@ -88,6 +88,13 @@ void ACPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 	}
 }
 
+void ACPlayerCharacter::GetActorEyesViewPoint(FVector& OutLocation, FRotator& OutRotation) const
+{
+	// 获取视角摄像机的位置和旋转
+	OutLocation = ViewCamera->GetComponentLocation();
+	OutRotation = GetBaseAimRotation();
+}
+
 void ACPlayerCharacter::HandleLookInput(const FInputActionValue& InputActionValue)
 {
 	// 将输入值从FVector2D转换为FVector2D类型

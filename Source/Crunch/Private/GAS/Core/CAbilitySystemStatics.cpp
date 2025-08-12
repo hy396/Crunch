@@ -30,7 +30,16 @@ FGameplayTag UCAbilitySystemStatics::GetDamageNumberGameplayCueTag()
 	return FGameplayTag::RequestGameplayTag("GameplayCue.Damage.Number");
 }
 
+bool UCAbilitySystemStatics::IsActorDead(const AActor* ActorToCheck)
+{
+	return ActorHasTag(ActorToCheck, TGameplayTags::Stats_Dead);
+}
+
 bool UCAbilitySystemStatics::IsHero(const AActor* ActorToCheck)
+{
+	return ActorHasTag(ActorToCheck, TGameplayTags::Role_Hero);
+}
+bool UCAbilitySystemStatics::ActorHasTag(const AActor* ActorToCheck, const FGameplayTag& Tag)
 {
 	const IAbilitySystemInterface* ActorISA = Cast<IAbilitySystemInterface>(ActorToCheck);
 	if (ActorISA)
@@ -38,7 +47,7 @@ bool UCAbilitySystemStatics::IsHero(const AActor* ActorToCheck)
 		UAbilitySystemComponent* ActorASC = ActorISA->GetAbilitySystemComponent();
 		if (ActorASC)
 		{
-			return ActorASC->HasMatchingGameplayTag(TGameplayTags::Role_Hero);
+			return ActorASC->HasMatchingGameplayTag(Tag);
 		}
 	}
 	return false;

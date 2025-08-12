@@ -278,7 +278,8 @@ void ACCharacter::ConfigureOverHeadStatusWidget()
 	{
 		// 使用能力系统组件配置头顶统计量表
 		OverheadStatsGuage->ConfigureWithASC(GetAbilitySystemComponent());
-		//if (!HasAuthority())
+		// TODO: 获取本地玩家角色
+		//if (!HasAuthority()) 
 		//{
 			// 获取到本地玩家角色
 			APawn* LocalPlayerPawn = UGameplayStatics::GetPlayerPawn(this, 0);
@@ -288,10 +289,6 @@ void ACCharacter::ConfigureOverHeadStatusWidget()
 				const IGenericTeamAgentInterface* LocalTeamInterface = Cast<IGenericTeamAgentInterface>(LocalPlayerPawn);
 				if (LocalTeamInterface)
 				{
-					// UE_LOG(LogTemp, Warning, TEXT("本地玩家 TeamID: %u"), LocalTeamInterface->GetGenericTeamId().GetId());
-					// UE_LOG(LogTemp, Warning, TEXT("当前角色 TeamID: %u"), GetGenericTeamId().GetId());
-					// UE_LOG(LogTemp, Warning, TEXT("态度: %s"), *UEnum::GetValueAsString(GetTeamAttitudeTowards(*LocalPlayerPawn)));
-
 					// 设置头顶UI组件的血条颜色
 					OverheadStatsGuage->SetHealthBarColor(GetTeamAttitudeTowards(*LocalPlayerPawn));
 				}

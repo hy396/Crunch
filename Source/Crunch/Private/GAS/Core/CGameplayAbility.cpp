@@ -29,6 +29,57 @@ bool UCGameplayAbility::CanActivateAbility(const FGameplayAbilitySpecHandle Hand
 	return Super::CanActivateAbility(Handle, ActorInfo, SourceTags, TargetTags, OptionalRelevantTags);
 }
 
+AActor* UCGameplayAbility::GetAimTarget(float AimDistance, ETeamAttitude::Type TeamAttitude) const
+{
+	// 获取当前执行能力的角色
+	AActor* OwnerAvatarActor = GetAvatarActorFromActorInfo();
+	if (OwnerAvatarActor)
+	{
+		// 获取角色的视觉位置和视角方向
+		FVector Location;
+		FRotator Rotation;
+		OwnerAvatarActor->GetActorEyesViewPoint(Location, Rotation);
+		
+		// 计算瞄准射线的终点
+		FVector AimEnd = Location + Rotation.Vector() * AimDistance;
+
+		// 设置碰撞查询参数
+		FCollisionQueryParams CollisionQueryParams;
+		CollisionQueryParams.AddIgnoredActor(OwnerAvatarActor); // 忽略自身
+        
+		// 设置碰撞对象查询参数（只查询Pawn类型对象）
+		FCollisionObjectQueryParams CollisionObjectQueryParams;
+		CollisionObjectQueryParams.AddObjectTypesToQuery(ECC_Pawn); // 仅检测Pawn对象
+
+		// 调试模式：绘制瞄准线
+		if (ShouldDrawDebug())
+		{
+			DrawDebugLine(GetWorld(), Location, AimEnd, FColor::Red, false, 2.f, 0U, 3.f);
+		}
+		// 射线检测
+		TArray<FHitResult> HitResults;
+		if (GetWorld()->LineTraceMultiByObjectType(
+			HitResults,
+			Location,
+			AimEnd,
+			CollisionObjectQueryParams,
+			CollisionQueryParams))
+		{
+			// 遍历命中结果
+			for (FHitResult& HitResult : HitResults)
+			{
+				// 寻找指定阵容的Actor
+				if (IsActorTeamAttitudeIs(HitResult.GetActor(), TeamAttitude))
+				{
+					// 返回命中的Actor
+					return HitResult.GetActor();
+				}
+			}
+		}
+	}
+	return nullptr;
+}
+
 UAnimInstance* UCGameplayAbility::GetOwnerAnimInstance() const
 {
 	USkeletalMeshComponent* OwnerSkeletalMeshComp = GetOwningComponentFromActorInfo();
@@ -249,6 +300,50 @@ void UCGameplayAbility::PushTargets(const FGameplayAbilityTargetDataHandle& Targ
 	PushTargets(Targets, PushVel);
 }
 
+void UCGameplayAbility::PlayMontageLocally(UAnimMontage* MontageToPlay)
+{
+	UAnimInstance* OwnerAnimInst = GetOwnerAnimInstance();
+	if (OwnerAnimInst && !OwnerAnimInst->Montage_IsPlaying(MontageToPlay))
+	{
+		OwnerAnimInst->Montage_Play(MontageToPlay);
+	}
+}
+
+void UCGameplayAbility::StopMontageAfterCurrentSection(UAnimMontage* MontageToStop)
+{
+	UAnimInstance* OwnerAnimInst = GetOwnerAnimInstance();
+	if (OwnerAnimInst)
+	{
+		FName CurrentSectionName = OwnerAnimInst->Montage_GetCurrentSection(MontageToStop);
+		OwnerAnimInst->Montage_SetNextSection(CurrentSectionName, NAME_None, MontageToStop);
+	}
+}
+
+FGenericTeamId UCGameplayAbility::GetOwnerTeamId() const
+{
+	IGenericTeamAgentInterface* OwnerTeamInterface = Cast<IGenericTeamAgentInterface>(GetAvatarActorFromActorInfo());
+	if (OwnerTeamInterface)
+	{
+		return OwnerTeamInterface->GetGenericTeamId();
+	}
+
+	return FGenericTeamId::NoTeam;
+}
+
+bool UCGameplayAbility::IsActorTeamAttitudeIs(const AActor* OtherActor, ETeamAttitude::Type TeamAttitude) const
+{
+	if (!OtherActor)
+		return false;
+
+	IGenericTeamAgentInterface* OwnerTeamAgentInterface = Cast<IGenericTeamAgentInterface>(GetAvatarActorFromActorInfo());
+	if (OwnerTeamAgentInterface)
+	{
+		return OwnerTeamAgentInterface->GetTeamAttitudeTowards(*OtherActor) == TeamAttitude;
+	}
+
+	return false;
+}
+
 ACharacter* UCGameplayAbility::GetOwningAvatarCharacter()
 {
 	if (!AvatarCharacter)
@@ -257,4 +352,13 @@ ACharacter* UCGameplayAbility::GetOwningAvatarCharacter()
 		AvatarCharacter = Cast<ACharacter>(GetAvatarActorFromActorInfo());
 	}
 	return AvatarCharacter;
+}
+
+void UCGameplayAbility::SendLocalGameplayEvent(const FGameplayTag& EventTag, const FGameplayEventData& EventData)
+{
+	UAbilitySystemComponent* OwnerASC = GetAbilitySystemComponentFromActorInfo();
+	if (OwnerASC)
+	{
+		OwnerASC->HandleGameplayEvent(EventTag, &EventData);
+	}
 }

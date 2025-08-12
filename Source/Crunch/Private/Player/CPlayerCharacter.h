@@ -28,7 +28,8 @@ public:
      */
     virtual void PawnClientRestart() override;
 	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
-
+	// 获取角色视觉的位置和旋转
+	virtual void GetActorEyesViewPoint(FVector& OutLocation, FRotator& OutRotation) const  override;
 private:
 	UPROPERTY(VisibleDefaultsOnly, Category = "View")
 	TObjectPtr<class USpringArmComponent> CameraBoom;

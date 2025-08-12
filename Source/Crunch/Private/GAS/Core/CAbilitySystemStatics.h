@@ -21,8 +21,13 @@ public:
 	static FGameplayTag GetCameraShakeGameplayCueTag();
 
 	static FGameplayTag GetDamageNumberGameplayCueTag();
+
+	// 判断Actor是否死亡
+	static bool IsActorDead(const AActor* ActorToCheck);
 	// 判断是否为英雄
 	static bool IsHero(const AActor* ActorToCheck);
+	// 判断Actor是否拥有指定标签
+	static bool ActorHasTag(const AActor* ActorToCheck, const FGameplayTag& Tag);
 	// 判断技能是否达到最大等级
 	static bool IsAbilityAtMaxLevel(const FGameplayAbilitySpec& Spec, const float PlayLevel);
 

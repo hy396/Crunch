@@ -25,6 +25,9 @@ public:
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Cooldown")
 	FScalableFloat CooldownDuration;
 protected:
+	// 获取瞄准目标（按距离和阵营过滤）
+	AActor* GetAimTarget(float AimDistance, ETeamAttitude::Type TeamAttitude) const;
+	
 	// 获取拥有者的动画实例
 	UAnimInstance* GetOwnerAnimInstance() const;
 	// 毫无用武之地
@@ -59,9 +62,20 @@ protected:
 	// 推动TargetData中的所有目标
 	void PushTargets(const FGameplayAbilityTargetDataHandle& TargetDataHandle, const FVector& PushVel);
 
-
+	// 本地播放Montage动画
+	void PlayMontageLocally(UAnimMontage* MontageToPlay);
+	// 播放完当前分段后停止Montage
+	void StopMontageAfterCurrentSection(UAnimMontage* MontageToStop);
+	// 获取拥有者的队伍ID
+	FGenericTeamId GetOwnerTeamId() const;
+	// 判断目标是否为指定阵营
+	bool IsActorTeamAttitudeIs(const AActor* OtherActor, ETeamAttitude::Type TeamAttitude) const;
 	// 获取拥有者角色指针
 	ACharacter* GetOwningAvatarCharacter();
+
+	// 发送本地Gameplay事件
+	void SendLocalGameplayEvent(const FGameplayTag& EventTag, const FGameplayEventData& EventData);
+
 private:
 	UPROPERTY(EditDefaultsOnly, Category = "Debug")
 	bool bShouldDrawDebug = false;

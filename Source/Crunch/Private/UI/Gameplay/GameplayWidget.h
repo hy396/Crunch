@@ -12,6 +12,7 @@
 #include "Shop/ShopWidget.h"
 #include "GameplayWidget.generated.h"
 
+class UCrosshairWidget;
 class UCanvasPanel;
 class UWidgetSwitcher;
 class UGameplayMenu;
@@ -105,7 +106,11 @@ private:
 
 	// 游戏菜单根面板
 	UPROPERTY(meta=(BindWidget))
-	TObjectPtr<UCanvasPanel> GameplayMenuRootPanel; 
+	TObjectPtr<UCanvasPanel> GameplayMenuRootPanel;
+
+	// 准星UI
+	UPROPERTY(meta=(BindWidget))
+	TObjectPtr<UCrosshairWidget> CrosshairWidget;
 	
 	// 商店弹出动画
 	UPROPERTY(Transient, meta=(BindWidgetAnim))

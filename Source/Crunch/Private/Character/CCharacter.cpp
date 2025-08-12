@@ -98,6 +98,16 @@ void ACCharacter::SetOverHeadWidgetColor()
 	}
 }
 
+FVector ACCharacter::GetCaptureLocalPosition() const
+{
+	return HeadshotCaptureLocalPosition;
+}
+
+FRotator ACCharacter::GetCaptureLocalRotation() const
+{
+	return HeadshotCaptureLocalRotation;
+}
+
 // void ACCharacter::AddNiagaraText_Implementation(const FNumberPopRequest& NewRequest)
 // {
 // 	// 添加特效文字

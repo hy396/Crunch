@@ -13,10 +13,11 @@
 #include "Interaction/CombatInterface.h"
 #include "Perception/AIPerceptionStimuliSourceComponent.h"
 #include "Player/NumberPopComponent_NiagaraText.h"
+#include "UI/Common/Rendering/RenderActorTargetInterface.h"
 #include "CCharacter.generated.h"
 
 UCLASS()
-class ACCharacter : public ACharacter, public IAbilitySystemInterface, public IGenericTeamAgentInterface
+class ACCharacter : public ACharacter, public IAbilitySystemInterface, public IGenericTeamAgentInterface, public IRenderActorTargetInterface
 {
 	GENERATED_BODY()
 
@@ -34,6 +35,18 @@ public:
 	const TMap<ECAbilityInputID, TSubclassOf<UGameplayAbility>>& GetAbilities() const;
 	// 头顶UI颜色
 	void SetOverHeadWidgetColor();
+
+	// 获取头像截取的位置
+	virtual FVector GetCaptureLocalPosition() const override;
+	// 获取头像截取的旋转
+	virtual FRotator GetCaptureLocalRotation() const override;
+
+private:
+	// 头像截取位置和旋转
+	UPROPERTY(EditDefaultsOnly, Category = "Capture")
+	FVector HeadshotCaptureLocalPosition;
+	UPROPERTY(EditDefaultsOnly, Category = "Capture")
+	FRotator HeadshotCaptureLocalRotation;
 
 protected:
 	virtual void BeginPlay() override;

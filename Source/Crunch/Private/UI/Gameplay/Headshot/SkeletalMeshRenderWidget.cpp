@@ -4,7 +4,9 @@
 #include "SkeletalMeshRenderWidget.h"
 
 #include "SkeletalMeshRenderActor.h"
+#include "Components/SceneCaptureComponent2D.h"
 #include "GameFramework/Character.h"
+#include "UI/Common/Rendering/RenderActorTargetInterface.h"
 
 void USkeletalMeshRenderWidget::NativeConstruct()
 {
@@ -12,6 +14,8 @@ void USkeletalMeshRenderWidget::NativeConstruct()
 	
 	// 获取拥有该UI的玩家角色
 	ACharacter* PlayerCharacter = GetOwningPlayerPawn<ACharacter>();
+	// 尝试转换为渲染目标接口
+	IRenderActorTargetInterface* PlayerCharacterRenderTargetInterface = Cast<IRenderActorTargetInterface>(PlayerCharacter);
 
 	if (PlayerCharacter && SkeletalMeshRenderActor)
 	{
@@ -26,9 +30,14 @@ void USkeletalMeshRenderWidget::NativeConstruct()
 
 		// 获取场景捕捉组件
 		USceneCaptureComponent2D* SceneCapture = SkeletalMeshRenderActor->GetCaptureComponent();
-		
+		// 如果接口和场景捕捉组件都有效
+		if (PlayerCharacterRenderTargetInterface && SceneCapture)
+		{
+			// 设置捕捉组件的相对位置和旋转
+			SceneCapture->SetRelativeLocation(PlayerCharacterRenderTargetInterface->GetCaptureLocalPosition());
+			SceneCapture->SetRelativeRotation(PlayerCharacterRenderTargetInterface->GetCaptureLocalRotation());
+		}
 	}
-	
 }
 
 void USkeletalMeshRenderWidget::SpawnRenderActor()

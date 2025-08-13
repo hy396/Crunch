@@ -30,7 +30,10 @@ namespace TGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Ability_Shoot, "Ability.Shoot", "射击技能")
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Ability_Shoot_Hand_l, "Ability.Shoot.Hand_l", "左手开火")
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Ability_Shoot_Hand_r, "Ability.Shoot.Hand_r", "右手开火")
-	
+
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Ability_Laser_Shoot, "Ability.Laser.Shoot", "激光技能")
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Ability_Laser_Cooldown, "Ability.Laser.Cooldown", "激光技能冷却")
+
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Stats_Dead, "Stats.Dead", "死亡")
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Stats_Stun, "Stats.Stun", "眩晕")
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Stats_Aim, "Stats.Aim", "瞄准")

@@ -11,6 +11,7 @@
 #include "Abilities/Tasks/AbilityTask_NetworkSyncPoint.h"
 #include "GAS/Core/CAbilitySystemStatics.h"
 #include "GameplayTagsManager.h"
+#include "Net/UnrealNetwork.h"
 
 UGA_Shoot::UGA_Shoot(): AimTargetAbilitySystemComponent(nullptr)
 {
@@ -68,17 +69,23 @@ void UGA_Shoot::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGamep
 	}
 	// 通知目标已更新
 	SendLocalGameplayEvent(TGameplayTags::Target_Updated, FGameplayEventData());
-
 	
 	// 停止射击
 	StopShooting(FGameplayEventData());
 	Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
 }
 
+// void UGA_Shoot::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+// {
+// 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+// 	DOREPLIFETIME(UGA_Shoot, ServerSocketLocation);
+// 	DOREPLIFETIME(UGA_Shoot, bHasClientLocation);
+// }
+
 void UGA_Shoot::StartShooting(FGameplayEventData Payload)
 {
 	UE_LOG(LogTemp, Warning, TEXT("开始射击技能"));
-	// 1. 网络同步任务：确保客户端-服务器同步
+	// // 1. 网络同步任务：确保客户端-服务器同步
 	// UAbilityTask_NetworkSyncPoint* NetWorkSync = UAbilityTask_NetworkSyncPoint::WaitNetSync(
 	// 	this, 
 	// 	EAbilityTaskNetSyncType::OnlyServerWait  // 仅服务器等待同步
@@ -93,6 +100,7 @@ void UGA_Shoot::StartShooting(FGameplayEventData Payload)
 	// 		ShootMontage               // 使用的动画蒙太奇资源
 	// 	);
 	// PlayShootMontage->ReadyForActivation();
+
 	
 	// 仅在服务器有权限时播放动画
 	if (HasAuthority(&CurrentActivationInfo))
@@ -104,10 +112,12 @@ void UGA_Shoot::StartShooting(FGameplayEventData Payload)
 	}
 	else
 	{
+		// TODO: 客户端运行有问题
 		// 客户端本地播放射击动画
 		PlayMontageLocally(ShootMontage);
 		//UE_LOG(LogTemp, Warning, TEXT("客户端"))
 	}
+	
 	// 查找瞄准目标并启动检测定时器
 	FindAimTarget();
 	StartAimTargetCheckTimer();
@@ -137,13 +147,8 @@ void UGA_Shoot::StopShooting(FGameplayEventData Payload)
 void UGA_Shoot::ShootProjectile(FGameplayEventData Payload)
 {
 	UE_LOG(LogTemp, Warning, TEXT("发射子弹"))
-	// // 默认发射位置为角色位置
-	// FVector SocketLocation = GetAvatarActorFromActorInfo()->GetActorLocation();
-	// // 我从客户端中获取发射位置
-	// UE_LOG(LogTemp, Warning, TEXT("发射位置1：%s"), *SocketLocation.ToString())
-	// // 获取角色的骨骼
-	// USkeletalMeshComponent* MeshComp = GetOwningComponentFromActorInfo();
-	// if (MeshComp)
+
+	// if (!K2_HasAuthority())
 	// {
 	// 	// 如果事件标签包含Socket名，则用Socket位置
 	// 	TArray<FName> OutNames;
@@ -152,35 +157,15 @@ void UGA_Shoot::ShootProjectile(FGameplayEventData Payload)
 	// 	{
 	// 		FName SocketName = OutNames.Last();
 	// 		//UE_LOG(LogTemp, Warning, TEXT("SocketName：%s"), *SocketName.ToString())
-	// 		SocketLocation = MeshComp->GetSocketLocation(SocketName);
-	// 	}
+	// 		FVector SocketLocation = GetAvatarMeshSocketLocation(SocketName);
+	// 		UE_LOG(LogTemp, Warning, TEXT("客户端的发射位置：%s"), *SocketLocation.ToString())
+	// 		// 将客户端计算的位置发送给服务器
+	// 		// ServerSetProjectileSpawnLocation(SocketLocation);
+	// 	}	
 	// }
-	 if (!K2_HasAuthority())
-	 {
-	 	// 默认发射位置为角色位置
-		// SocketLocation_0 = GetAvatarActorFromActorInfo()->GetActorLocation();
-	 // 	// 我从客户端中获取发射位置
-	 // 	UE_LOG(LogTemp, Warning, TEXT("发射位置1：%s"), *SocketLocation_0.ToString())
-	 // 	// 获取角色的骨骼
-	 // 	USkeletalMeshComponent* MeshComp = GetOwningComponentFromActorInfo();
-	 // 	if (MeshComp)
-	 // 	{
-	 // 		// 如果事件标签包含Socket名，则用Socket位置
-	 // 		TArray<FName> OutNames;
-	 // 		UGameplayTagsManager::Get().SplitGameplayTagFName(Payload.EventTag, OutNames);
-	 // 		if (OutNames.Num() != 0)
-	 // 		{
-	 // 			FName SocketName = OutNames.Last();
-	 // 			//UE_LOG(LogTemp, Warning, TEXT("SocketName：%s"), *SocketName.ToString())
-	 // 			SocketLocation_0 = MeshComp->GetSocketLocation(SocketName);
-	 // 		}
-	 // 	}
-		// UE_LOG(LogTemp, Warning, TEXT("客户端的发射位置：%s"), *SocketLocation_0.ToString())
-	 }
 	// 仅在服务器有权限时发射子弹
 	if (K2_HasAuthority())
 	{
-		// UE_LOG(LogTemp, Warning, TEXT("服务器的发射位置：%s"), *SocketLocation_0.ToString())
 		// 获取拥有者Actor
 		AActor* OwnerAvatarActor = GetAvatarActorFromActorInfo();
 		FActorSpawnParameters SpawnParams;
@@ -189,30 +174,23 @@ void UGA_Shoot::ShootProjectile(FGameplayEventData Payload)
 
 		// 默认发射位置为角色位置
 		FVector SocketLocation = GetAvatarActorFromActorInfo()->GetActorLocation();
-		UE_LOG(LogTemp, Warning, TEXT("发射位置1：%s"), *SocketLocation.ToString())
-		// 获取角色的骨骼
-		USkeletalMeshComponent* MeshComp = GetOwningComponentFromActorInfo();
-		if (MeshComp)
-		{
-			// TODO:服务器获取的数据在客户端运行下无法获取
-			// 如果事件标签包含Socket名，则用Socket位置
-			TArray<FName> OutNames;
-			UGameplayTagsManager::Get().SplitGameplayTagFName(Payload.EventTag, OutNames);
-			if (OutNames.Num() != 0)
+			// 获取角色的骨骼
+			USkeletalMeshComponent* MeshComp = GetOwningComponentFromActorInfo();
+			if (MeshComp)
 			{
-				FName SocketName = OutNames.Last();
-				//UE_LOG(LogTemp, Warning, TEXT("SocketName：%s"), *SocketName.ToString())
-				SocketLocation = MeshComp->GetSocketLocation(SocketName);
-				UE_LOG(LogTemp, Warning, TEXT("发射位置2：%s"), *SocketLocation.ToString())
+				// TODO:服务器获取的数据在客户端运行下无法获取
+				// 如果事件标签包含Socket名，则用Socket位置
+				TArray<FName> OutNames;
+				UGameplayTagsManager::Get().SplitGameplayTagFName(Payload.EventTag, OutNames);
+				if (OutNames.Num() != 0)
+				{
+					FName SocketName = OutNames.Last();
+					//UE_LOG(LogTemp, Warning, TEXT("SocketName：%s"), *SocketName.ToString())
+					SocketLocation = MeshComp->GetSocketLocation(SocketName);
+					// SocketLocation = GetAvatarMeshSocketLocation(SocketName);
+					UE_LOG(LogTemp, Warning, TEXT("服务器的发射位置：%s"), *SocketLocation.ToString())
+				}
 			}
-		}
-		// //TODO:获取一下传入的数据
-		// if (Payload.ContextHandle.HasOrigin())
-		// {
-		// 	SocketLocation = Payload.ContextHandle.GetOrigin();
-		// 	UE_LOG(LogTemp, Warning, TEXT("发射位置2：%s"), *SocketLocation.ToString())
-		// }
-
 		// 生成子弹
 		AProjectileActor* ProjectileActor = GetWorld()->SpawnActor<AProjectileActor>(ProjectileClass, SocketLocation, OwnerAvatarActor->GetActorRotation(), SpawnParams);
 		if (ProjectileActor)
@@ -328,4 +306,9 @@ void UGA_Shoot::TargetDeadTagUpdated(const FGameplayTag Tag, int32 NewCount)
 	}
 }
 
-
+// void UGA_Shoot::ServerSetProjectileSpawnLocation_Implementation(const FVector& Location)
+// {
+// 	// 存储客户端传递的位置
+// 	ServerSocketLocation = Location;
+// 	bHasClientLocation = true; // 标记已收到客户端数据
+// }

@@ -10,6 +10,7 @@
 #include "GameFramework/Character.h"
 #include "GAS/Abilities/GAP_Launched.h"
 #include "Kismet/KismetSystemLibrary.h"
+#include "Net/UnrealNetwork.h"
 
 UCGameplayAbility::UCGameplayAbility()
 {
@@ -177,7 +178,7 @@ void UCGameplayAbility::ApplyGameplayEffectToHitResultActor(const FHitResult& Hi
 									UAbilitySystemBlueprintLibrary::AbilityTargetDataFromActor(HitResult.GetActor()));
 }
 
-void UCGameplayAbility::ApplyDamage(AActor* TargetActor,const FGenericDamageEffectDef& Damage, int Level)
+void UCGameplayAbility::ApplyDamageToActor(AActor* TargetActor,const FGenericDamageEffectDef& Damage, int Level)
 {
 	const UAbilitySystemComponent* ASC = GetAbilitySystemComponentFromActorInfo();
 	AActor* AvatarActor				   = GetAvatarActorFromActorInfo();
@@ -214,6 +215,32 @@ void UCGameplayAbility::ApplyDamage(AActor* TargetActor,const FGenericDamageEffe
 	// 								GetCurrentActivationInfo(),
 	// 								EffectSpecHandle,
 	// 								UAbilitySystemBlueprintLibrary::AbilityTargetDataFromActor(TargetActor));
+}
+
+void UCGameplayAbility::ApplyDamageToTargetDataHandle(const FGameplayAbilityTargetDataHandle& TargetDataHandle,
+	const FGenericDamageEffectDef& Damage, int Level)
+{
+	const UAbilitySystemComponent* ASC = GetAbilitySystemComponentFromActorInfo();
+	AActor* AvatarActor				   = GetAvatarActorFromActorInfo();
+	// 创建效果上下文， 设置能力 、源对象 和 施加者
+	FGameplayEffectContextHandle ContextHandle = ASC->MakeEffectContext();
+	ContextHandle.SetAbility(this);
+	ContextHandle.AddSourceObject(AvatarActor);
+	ContextHandle.AddInstigator(AvatarActor, AvatarActor);
+
+	for (const auto& TypePair : Damage.DamageTypeDefinitions)
+	{
+		// 创建效果Spec句柄，指定效果类、能力等级和上下文
+		FGameplayEffectSpecHandle EffectSpecHandle = ASC->MakeOutgoingSpec(Damage.DamageEffect, Level, ContextHandle);
+		float TotalModifier = TypePair.Value.BaseDamage.GetValueAtLevel(Level);
+		for (const auto& Modifier : TypePair.Value.AttributeDamageModifiers)
+		{
+			UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(EffectSpecHandle, Modifier.Key, Modifier.Value);
+		}
+		UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(EffectSpecHandle, TypePair.Key, TotalModifier);
+		// 在目标上应用游戏效果规范
+		K2_ApplyGameplayEffectSpecToTarget(EffectSpecHandle,TargetDataHandle);
+	}
 }
 
 void UCGameplayAbility::MakeDamage(const FGenericDamageEffectDef& Damage, int Level)
@@ -361,4 +388,24 @@ void UCGameplayAbility::SendLocalGameplayEvent(const FGameplayTag& EventTag, con
 	{
 		OwnerASC->HandleGameplayEvent(EventTag, &EventData);
 	}
+}
+
+// void UCGameplayAbility::Client_SetAvatarMeshSocketLocation_Implementation(FName SocketName)
+// {
+// 	FVector SocketLocation = GetAvatarActorFromActorInfo()->GetActorLocation();
+// 	if (const USkeletalMeshComponent* MeshComp = GetOwningComponentFromActorInfo())
+// 	{
+// 		SocketLocation = MeshComp->GetSocketLocation(SocketName);
+// 	}
+// 	My_SocketLocation = SocketLocation;
+// }
+
+FVector UCGameplayAbility::GetAvatarMeshSocketLocation(const FName SocketName) const
+{
+	FVector SocketLocation = GetAvatarActorFromActorInfo()->GetActorLocation();
+	if (const USkeletalMeshComponent* MeshComp = GetOwningComponentFromActorInfo())
+	{
+		SocketLocation = MeshComp->GetSocketLocation(SocketName);
+	}
+	return SocketLocation;
 }

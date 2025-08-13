@@ -137,6 +137,7 @@ private:
 #pragma endregion
 #pragma region 眩晕(Stun)
 private:
+	// 眩晕蒙太奇
 	UPROPERTY(EditDefaultsOnly, Category = "Stun")
 	UAnimMontage* StunMontage;
 

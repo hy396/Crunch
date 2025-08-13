@@ -24,6 +24,7 @@ public:
 	// 技能冷却
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Cooldown")
 	FScalableFloat CooldownDuration;
+
 protected:
 	// 获取瞄准目标（按距离和阵营过滤）
 	AActor* GetAimTarget(float AimDistance, ETeamAttitude::Type TeamAttitude) const;
@@ -45,8 +46,11 @@ protected:
 	*/
 	void ApplyGameplayEffectToHitResultActor(const FHitResult& HitResult, TSubclassOf<UGameplayEffect> GameplayEffect, int Level = 1);
 
-	void ApplyDamage(AActor* TargetActor,const FGenericDamageEffectDef& Damage, int Level = 1);
+	// 将伤害应用于Actor
+	void ApplyDamageToActor(AActor* TargetActor,const FGenericDamageEffectDef& Damage, int Level = 1);
 
+	// 将伤害应用到TargetDataHandle中的所有目标
+	void ApplyDamageToTargetDataHandle(const FGameplayAbilityTargetDataHandle& TargetDataHandle, const FGenericDamageEffectDef& Damage, int Level = 1);
 
 	// 设置伤害
 	void MakeDamage(const FGenericDamageEffectDef& Damage, int Level = 1);
@@ -76,6 +80,11 @@ protected:
 	// 发送本地Gameplay事件
 	void SendLocalGameplayEvent(const FGameplayTag& EventTag, const FGameplayEventData& EventData);
 
+// 获取骨骼位置Begin~
+	// 客户端中获取骨骼位置
+	// UFUNCTION(Client, Reliable)
+	// void Client_SetAvatarMeshSocketLocation(FName SocketName);
+	FVector GetAvatarMeshSocketLocation(FName SocketName) const;
 private:
 	UPROPERTY(EditDefaultsOnly, Category = "Debug")
 	bool bShouldDrawDebug = false;

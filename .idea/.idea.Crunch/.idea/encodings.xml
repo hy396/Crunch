@@ -37,8 +37,8 @@
     <file url="file://$PROJECT_DIR$/Source/Crunch/Private/GAS/Core/TGameplayTags.h" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/Crunch/Private/GAS/Executions/ECC_AttackDamage.cpp" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/Crunch/Private/GAS/Executions/ECC_AttackDamage.h" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/Source/Crunch/Private/GAS/MMC/MMC_BaseAttackDamage.cpp" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/Source/Crunch/Private/GAS/MMC/MMC_BaseAttackDamage.h" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Source/Crunch/Private/GAS/MMC/MMC_AbilityCooldown.cpp" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Source/Crunch/Private/GAS/MMC/MMC_AbilityCooldown.h" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/Crunch/Private/GAS/TA/TargetActor_GroundPick.cpp" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/Crunch/Private/GAS/TA/TargetActor_GroundPick.h" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/Crunch/Private/Player/CPlayerCharacter.cpp" charset="UTF-8" />

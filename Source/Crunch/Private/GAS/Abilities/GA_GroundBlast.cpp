@@ -77,7 +77,7 @@ void UGA_GroundBlast::TargetConfirmed(const FGameplayAbilityTargetDataHandle& Ta
 			if (HitActor)
 			{
 				// UE_LOG(LogTemp, Warning, TEXT("命中Actor: %s"), *HitActor->GetName());
-				ApplyDamage(HitActor, DamageEffectDef, GetAbilityLevel(CurrentSpecHandle, CurrentActorInfo));
+				ApplyDamageToActor(HitActor, DamageEffectDef, GetAbilityLevel(CurrentSpecHandle, CurrentActorInfo));
 			}
 		}
 		// ApplyDamage

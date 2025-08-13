@@ -90,7 +90,7 @@ void ACPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 
 void ACPlayerCharacter::GetActorEyesViewPoint(FVector& OutLocation, FRotator& OutRotation) const
 {
-	// 获取视角摄像机的位置和旋转
+	// 获取视角摄像机的位置和角色基础瞄准方向
 	OutLocation = ViewCamera->GetComponentLocation();
 	OutRotation = GetBaseAimRotation();
 }

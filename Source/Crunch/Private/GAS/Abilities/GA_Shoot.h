@@ -27,7 +27,8 @@ public:
 
 	// 结束能力（能力生命周期结束）
 	virtual void EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled) override;
-
+	// 网络属性同步
+	// virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 private:
 	// 命中弹道时应用的效果
 	UPROPERTY(EditDefaultsOnly, Category = "Shoot")
@@ -96,4 +97,13 @@ private:
 
 	// 目标死亡标签更新回调
 	void TargetDeadTagUpdated(const FGameplayTag Tag, int32 NewCount);
+
+	// // 服务器设置弹道位置
+	// UFUNCTION(Server, Reliable)
+	// void ServerSetProjectileSpawnLocation(const FVector& Location);
+	// // 存储客户端传递的位置
+	// UPROPERTY(Replicated)
+	// FVector ServerSocketLocation;
+	// UPROPERTY(Replicated)
+	// bool bHasClientLocation = false; // 标记已收到客户端数据
 };

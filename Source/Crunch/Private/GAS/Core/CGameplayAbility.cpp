@@ -10,7 +10,7 @@
 #include "GameFramework/Character.h"
 #include "GAS/Abilities/GAP_Launched.h"
 #include "Kismet/KismetSystemLibrary.h"
-#include "Net/UnrealNetwork.h"
+// #include "Net/UnrealNetwork.h"
 
 UCGameplayAbility::UCGameplayAbility()
 {

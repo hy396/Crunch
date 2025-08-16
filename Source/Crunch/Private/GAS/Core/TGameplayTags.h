@@ -43,7 +43,13 @@ namespace TGameplayTags
 	// 激光
 	CRUNCH_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Ability_Laser_Shoot)
 	CRUNCH_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Ability_Laser_Cooldown)
+	// 黑洞冷却
 	CRUNCH_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Ability_BlackHole_Cooldown)
+	
+	// 冲刺
+	CRUNCH_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Ability_Dash)
+	CRUNCH_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Ability_Dash_Start)
+	CRUNCH_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Ability_Dash_Cooldown)
 	
 	// 状态 
 	// 死亡

@@ -36,6 +36,10 @@ namespace TGameplayTags
 
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Ability_BlackHole_Cooldown, "Ability.BlackHole.Cooldown", "黑洞技能冷却")
 
+	// 冲刺
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Ability_Dash, "Ability.Dash", "冲刺技能")
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Ability_Dash_Start, "Ability.Dash.Start", "冲刺技能开始")
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Ability_Dash_Cooldown, "Ability.Dash.Cooldown", "冲刺技能冷却")
 
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Stats_Dead, "Stats.Dead", "死亡")
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Stats_Stun, "Stats.Stun", "眩晕")

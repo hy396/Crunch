@@ -92,6 +92,8 @@ private:
 
 	// 移动速度改变回调
 	void MoveSpeedUpdated(const FOnAttributeChangeData& Data);
+	// 加速移动速度改变回调
+	void MoveSpeedAccelerationUpdated(const FOnAttributeChangeData& Data);
 	// 最大生命值改变回调
 	void MaxHealthUpdated(const FOnAttributeChangeData& Data);
 	// 最大法力值改变回调

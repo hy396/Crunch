@@ -122,6 +122,7 @@ UECC_AttackDamage::UECC_AttackDamage()
 void UECC_AttackDamage::Execute_Implementation(const FGameplayEffectCustomExecutionParameters& ExecutionParams,
 	FGameplayEffectCustomExecutionOutput& OutExecutionOutput) const
 {
+//#if WITH_SERVER_CODE
 	//存储标签和属性快照对应的Map
 	TMap<FGameplayTag, FGameplayEffectAttributeCaptureDefinition> TagsToCaptureDefs;
 	// TODO:添加新的需要修改的属性值，添加新的标签和值
@@ -268,4 +269,5 @@ void UECC_AttackDamage::Execute_Implementation(const FGameplayEffectCustomExecut
 			BaseTrueDamage	//伤害
 			));
 	}
+//#endif // #if WITH_SERVER_CODE
 }

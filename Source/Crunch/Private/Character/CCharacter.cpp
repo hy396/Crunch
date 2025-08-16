@@ -184,7 +184,8 @@ void ACCharacter::BindGASChangeDelegates()
 		CAbilitySystemComponent->RegisterGameplayTagEvent(TGameplayTags::Stats_Dead).AddUObject(this, &ACCharacter::DeathTagUpdated);
 		CAbilitySystemComponent->RegisterGameplayTagEvent(TGameplayTags::Stats_Stun).AddUObject(this, &ACCharacter::StunTagUpdated);
 		CAbilitySystemComponent->RegisterGameplayTagEvent(TGameplayTags::Stats_Aim).AddUObject(this, &ACCharacter::AimTagUpdated);
-
+		CAbilitySystemComponent->RegisterGameplayTagEvent(TGameplayTags::Stats_Focus).AddUObject(this, &ACCharacter::FocusTagUpdated);
+		
 		CAbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(CAttributeSet->GetMoveSpeedAttribute()).AddUObject(this, &ACCharacter::MoveSpeedUpdated);
 		CAbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(UCAttributeSet::GetMaxHealthAttribute()).AddUObject(this, &ACCharacter::MaxHealthUpdated);
 		CAbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(UCAttributeSet::GetMaxManaAttribute()).AddUObject(this, &ACCharacter::MaxManaUpdated);
@@ -221,6 +222,11 @@ void ACCharacter::StunTagUpdated(const FGameplayTag Tag, int32 NewCount)
 void ACCharacter::AimTagUpdated(const FGameplayTag Tag, int32 NewCount)
 {
 	SetIsAiming(NewCount != 0);
+}
+
+void ACCharacter::FocusTagUpdated(const FGameplayTag Tag, int32 NewCount)
+{
+	bIsInFocusMode = NewCount > 0;
 }
 
 void ACCharacter::SetIsAiming(bool bIsAiming)

@@ -66,6 +66,15 @@ protected:
 	// 推动TargetData中的所有目标
 	void PushTargets(const FGameplayAbilityTargetDataHandle& TargetDataHandle, const FVector& PushVel);
 
+	// 从拥有者位置推动目标
+	void PushTargetsFromOwnerLocation(const TArray<AActor*>& Targets, float PushSpeed);
+	void PushTargetsFromOwnerLocation(const FGameplayAbilityTargetDataHandle& TargetDataHandle, float PushSpeed);
+
+	// 从指定位置推动目标
+	void PushTargetsFromLocation(const FGameplayAbilityTargetDataHandle& TargetDataHandle, const FVector& FromLocation, float PushSpeed);
+	void PushTargetsFromLocation(const TArray<AActor*>& Targets, const FVector& FromLocation, float PushSpeed);
+   
+	
 	// 本地播放Montage动画
 	void PlayMontageLocally(UAnimMontage* MontageToPlay);
 	// 播放完当前分段后停止Montage

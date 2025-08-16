@@ -34,12 +34,18 @@ namespace TGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Ability_Laser_Shoot, "Ability.Laser.Shoot", "激光技能")
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Ability_Laser_Cooldown, "Ability.Laser.Cooldown", "激光技能冷却")
 
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Ability_BlackHole_Cooldown, "Ability.BlackHole.Cooldown", "黑洞技能冷却")
+
+
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Stats_Dead, "Stats.Dead", "死亡")
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Stats_Stun, "Stats.Stun", "眩晕")
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Stats_Aim, "Stats.Aim", "瞄准")
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Stats_Crosshair, "Stats.Crosshair", "准星")
 	//目标更新
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Target_Updated, "Target.Updated", "目标更新")
+
+	// 聚焦
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Stats_Focus, "Stats.Focus", "聚焦")
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Stats_Health_Full, "Stats.Health.Full", "生命值满")
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Stats_Mana_Full, "Stats.Mana.Full", "法术值满")
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Stats_Health_Empty, "Stats.Health.Empty", "生命值空")

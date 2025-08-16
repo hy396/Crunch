@@ -64,6 +64,8 @@ public:
 	// 在服务器端向自身发送游戏事件
 	UFUNCTION(Server, Reliable, WithValidation)
 	void Server_SendGameplayEventToSelf(const FGameplayTag& EventTag, const FGameplayEventData& EventData);
+	// 获取聚焦模式
+	FORCEINLINE bool GetIsInFocusMode() const { return bIsInFocusMode; }
 protected:
 	// 技能升级
 	void UpgradeAbilityWithInputID(ECAbilityInputID InputID);
@@ -77,6 +79,11 @@ private:
 	void StunTagUpdated(const FGameplayTag Tag, int32 NewCount);
 	// 瞄准标签变化回调
 	void AimTagUpdated(const FGameplayTag Tag, int32 NewCount);
+	// 焦点标签变化回调
+	void FocusTagUpdated(const FGameplayTag Tag, int32 NewCount);
+
+	// 是否处于聚焦模式
+	bool bIsInFocusMode = false;
 	
 	// 设置是否处于瞄准状态
 	void SetIsAiming(bool bIsAiming);

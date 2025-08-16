@@ -7,6 +7,7 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "Blueprint/UserWidget.h"
+#include "Components/CapsuleComponent.h"
 #include "Net/UnrealNetwork.h"
 #include "UI/Gameplay/GameplayWidget.h"
 
@@ -202,7 +203,7 @@ void ACPlayerController::ShowDamageNumber_Implementation(float DamageAmount, ACh
 	}
 	//修改~Begin
 	// 新增随机偏移
-	FVector BaseOffset(0, 0, 200);
+	FVector BaseOffset(0, 0, TargetCharacter->GetCapsuleComponent()->GetScaledCapsuleHalfHeight());
 	float RandomX = FMath::FRandRange(-100.0f, 100.0f);  // X轴随机偏移
 	float RandomY = FMath::FRandRange(-100.0f, 100.0f);  // Y轴随机偏移
 	float RandomZ = FMath::FRandRange(-20.0f, 50.0f);  // Z轴微调
@@ -233,8 +234,6 @@ void ACPlayerController::ShowDamageNumber_Implementation(float DamageAmount, ACh
 // 		}
 // 	}
 // }
-
-
 
 void ACPlayerController::SpawnGameplayWidget()
 {

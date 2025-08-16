@@ -109,9 +109,9 @@ void ACPlayerCharacter::HandleLookInput(const FInputActionValue& InputActionValu
 void ACPlayerCharacter::HandleMoveInput(const FInputActionValue& InputActionValue)
 {
 	// 如果玩家处于聚焦模式，则不处理移动输入
-	// if (GetIsInFocusMode())
-	// 	return;
-	//
+	if (GetIsInFocusMode())
+		return;
+	
 	// 获取输入值并转换为FVector2D类型
 	FVector2D InputVal = InputActionValue.Get<FVector2D>();
 	// 对输入值进行归一化处理

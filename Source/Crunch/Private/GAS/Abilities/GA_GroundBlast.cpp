@@ -22,8 +22,11 @@ void UGA_GroundBlast::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
 	const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo,
 	const FGameplayEventData* TriggerEventData)
 {
-	if (!HasAuthorityOrPredictionKey(ActorInfo, &ActivationInfo)) return;
-
+	if (!HasAuthorityOrPredictionKey(ActorInfo, &ActivationInfo))
+	{
+		K2_EndAbility();
+		return;
+	}
 	UAbilityTask_PlayMontageAndWait* PlayGroundBlasAnimTask = UAbilityTask_PlayMontageAndWait::CreatePlayMontageAndWaitProxy(this, NAME_None, TargetingMontage);
 	PlayGroundBlasAnimTask->OnBlendOut.AddDynamic(this, &UGA_GroundBlast::K2_EndAbility);
 	PlayGroundBlasAnimTask->OnCancelled.AddDynamic(this, &UGA_GroundBlast::K2_EndAbility);
@@ -67,19 +70,20 @@ void UGA_GroundBlast::TargetConfirmed(const FGameplayAbilityTargetDataHandle& Ta
 		// MakeDamage(DamageEffectDef,GetAbilityLevel(CurrentSpecHandle, CurrentActorInfo));
 		// 对目标应用伤害效果
 		// BP_ApplyGameplayEffectToTarget(TargetDataHandle, DamageEffectDef.DamageEffect, GetAbilityLevel(CurrentSpecHandle, CurrentActorInfo));
-
-		// 获取命中目标的数量
-		TArray<AActor*> HitActors = UAbilitySystemBlueprintLibrary::GetAllActorsFromTargetData(TargetDataHandle);
-		for (int32 i = 0; i < HitActors.Num(); ++i)
-		{
-			AActor* HitActor = HitActors[i];
-			// 检查 HitResult 是否有效
-			if (HitActor)
-			{
-				// UE_LOG(LogTemp, Warning, TEXT("命中Actor: %s"), *HitActor->GetName());
-				ApplyDamageToActor(HitActor, DamageEffectDef, GetAbilityLevel(CurrentSpecHandle, CurrentActorInfo));
-			}
-		}
+		// 使用新创建的函数
+		ApplyDamageToTargetDataHandle(TargetDataHandle, DamageEffectDef, GetAbilityLevel(CurrentSpecHandle, CurrentActorInfo));
+		// // 获取命中目标的数量
+		// TArray<AActor*> HitActors = UAbilitySystemBlueprintLibrary::GetAllActorsFromTargetData(TargetDataHandle);
+		// for (int32 i = 0; i < HitActors.Num(); ++i)
+		// {
+		// 	AActor* HitActor = HitActors[i];
+		// 	// 检查 HitResult 是否有效
+		// 	if (HitActor)
+		// 	{
+		// 		// UE_LOG(LogTemp, Warning, TEXT("命中Actor: %s"), *HitActor->GetName());
+		// 		ApplyDamageToActor(HitActor, DamageEffectDef, GetAbilityLevel(CurrentSpecHandle, CurrentActorInfo));
+		// 	}
+		// }
 		// ApplyDamage
 		// 对目标施加推力
 		PushTargets(TargetDataHandle, DamageEffectDef.PushVelocity);

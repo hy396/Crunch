@@ -41,6 +41,11 @@ namespace TGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Ability_Dash_Start, "Ability.Dash.Start", "冲刺技能开始")
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Ability_Dash_Cooldown, "Ability.Dash.Cooldown", "冲刺技能冷却")
 
+	// 龙卷风冷却
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Ability_Tornado_Cooldown, "Ability.Tornado.Cooldown", "龙卷风技能冷却")
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Ability_Generic_Damage, "Ability.Generic.Damage", "技能伤害")
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Ability_Generic_Target, "Ability.Generic.Target", "技能目标")
+	
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Stats_Dead, "Stats.Dead", "死亡")
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Stats_Stun, "Stats.Stun", "眩晕")
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Stats_Aim, "Stats.Aim", "瞄准")

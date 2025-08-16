@@ -246,13 +246,11 @@ void ACCharacter::OnAimStateChanged(bool bIsAiming)
 }
 void ACCharacter::MoveSpeedUpdated(const FOnAttributeChangeData& Data)
 {
-	UE_LOG(LogTemp, Warning, TEXT("MoveSpeedUpdated: %f"), Data.NewValue)
 	GetCharacterMovement()->MaxWalkSpeed = Data.NewValue;
 }
 
 void ACCharacter::MoveSpeedAccelerationUpdated(const FOnAttributeChangeData& Data)
 {
-	UE_LOG(LogTemp, Warning, TEXT("MaxAcceleration: %f"), Data.NewValue)
 	GetCharacterMovement()->MaxAcceleration = Data.NewValue;
 }
 

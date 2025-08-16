@@ -81,6 +81,23 @@ void UAbilityGauge::NativeOnListItemObjectSet(UObject* ListItemObject)
 	{
 		float MaxLevel = AbilitySpec->InputID == static_cast<int32>(ECAbilityInputID::AbilityR) ? 3 : 5;
 		LevelGauge->GetDynamicMaterial()->SetScalarParameterValue(MaxLevelParamName, MaxLevel);
+
+		if (OwnerAbilitySystemComponent)
+		{
+			// 初始化升级点显示（获取当前值并刷新UI）
+			bool bFound = false;
+			float UpgradePoint = OwnerAbilitySystemComponent->GetGameplayAttributeValue(UCHeroAttributeSet::GetUpgradePointAttribute(), bFound);
+			if (bFound)
+			{
+				// 创建属性变化数据结构（模拟属性变化事件）
+				FOnAttributeChangeData ChangeData;
+				ChangeData.NewValue = UpgradePoint;
+            
+				// 手动调用升级点更新函数以刷新UI
+				UpgradePointUpdated(ChangeData);
+			}
+		}
+		// Icon->GetDynamicMaterial()->SetScalarParameterValue(UpgradePointAvailableParamName, MaxLevel == 3 ? 0.f : 1.f);
 	}
 }
 
@@ -226,7 +243,6 @@ void UAbilityGauge::UpgradePointUpdated(const FOnAttributeChangeData& Data)
 	bool HasUpgradePoint = Data.NewValue > 0;
 	// 获取当前技能规格
 	const FGameplayAbilitySpec* AbilitySpec = GetAbilitySpec();
-    
 	if (AbilitySpec && OwnerAbilitySystemComponent)
 	{
 		// 获取玩家等级
@@ -242,7 +258,6 @@ void UAbilityGauge::UpgradePointUpdated(const FOnAttributeChangeData& Data)
 			}
 		}
 	}
-    
 	// 更新UI材质显示（1=可升级，0=不可升级）
 	Icon->GetDynamicMaterial()->SetScalarParameterValue(UpgradePointAvailableParamName, HasUpgradePoint ? 1 : 0);
 }

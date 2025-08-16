@@ -68,6 +68,8 @@ bool UCAbilitySystemStatics::IsAbilityAtMaxLevel(const FGameplayAbilitySpec& Spe
 				   PlayLevel >= 11 ? 2 :
 				   PlayLevel >= 6 ? 1 :
 					0;
+		//UE_LOG(LogTemp, Warning, TEXT("IsAbilityAtMaxLevelR: %f"), MaxAbilityLevel)
+
 	}else
 	{
 		// Q、E、F的小技能
@@ -83,8 +85,10 @@ bool UCAbilitySystemStatics::IsAbilityAtMaxLevel(const FGameplayAbilitySpec& Spe
 					PlayLevel >= 5 ? 3 :
 					PlayLevel >= 3 ? 2 :
 					1;
+		//UE_LOG(LogTemp, Warning, TEXT("IsAbilityAtMaxLevelQEF: %f"), MaxAbilityLevel)
+
 	}
-	// Spec.InputID 
+	// Spec.InputID
 	return Spec.Level >= MaxAbilityLevel;
 }
 

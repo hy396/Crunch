@@ -55,6 +55,8 @@ namespace TGameplayTags
 	CRUNCH_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Ability_Tornado_Cooldown)
 	// 冻结冷却
 	CRUNCH_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Ability_Freeze_Cooldown)
+	CRUNCH_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Ability_Blink_Teleport)
+	CRUNCH_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Ability_Blink_Cooldown)
 	
 	// 通用技能伤害
 	CRUNCH_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Ability_Generic_Damage)

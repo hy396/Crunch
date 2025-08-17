@@ -44,6 +44,9 @@ namespace TGameplayTags
 	// 龙卷风冷却
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Ability_Tornado_Cooldown, "Ability.Tornado.Cooldown", "龙卷风技能冷却")
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Ability_Freeze_Cooldown, "Ability.Freeze.Cooldown", "冻结技能冷却")
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Ability_Blink_Teleport, "Ability.Blink.Teleport", "闪烁技能")
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Ability_Blink_Cooldown, "Ability.Blink.Cooldown", "闪烁技能冷却")
+
 	
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Ability_Generic_Damage, "Ability.Generic.Damage", "技能伤害")
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Ability_Generic_Target, "Ability.Generic.Target", "技能目标")

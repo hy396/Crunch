@@ -17,14 +17,25 @@ class ACGameMode : public AGameModeBase
 public:
 	virtual APlayerController* SpawnPlayerController(ENetRole InRemoteRole, const FString& Options) override;
 
-	// 重写：游戏开始时调用
+	// 游戏开始时调用
 	virtual void StartPlay() override;
+
+	// 获取控制器对应的默认Pawn类（优先玩家选择，否则用备用Pawn）
+	virtual UClass* GetDefaultPawnClassForController_Implementation(AController* Controller) override;
+
+	// 为玩家生成默认Pawn，并分配队伍与出生点
+	virtual APawn* SpawnDefaultPawnFor_Implementation(AController* NewPlayer, AActor* StartSpot) override;
+
 private:
 	// 获取指定玩家的队伍ID
 	FGenericTeamId GetTeamIDForPlayer(const AController* InController) const;
 	
 	// 根据队伍ID查找下一个出生点
 	AActor* FindNextStartSpotForTeam(const FGenericTeamId& TeamID) const;
+
+	// 玩家备份Pawn
+	UPROPERTY(EditDefaultsOnly, Category = "Team")
+	TSubclassOf<APawn> BackupPawn;
 	
 	// 队伍ID到出生点Tag的映射
 	UPROPERTY(EditDefaultsOnly, Category = "Team")

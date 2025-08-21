@@ -95,7 +95,7 @@ void UGA_Blink::GroundPickTargetReceived(const FGameplayAbilityTargetDataHandle&
 				this, 
 				TGameplayTags::Ability_Blink_Teleport
 			);
-			UE_LOG(LogTemp, Warning, TEXT("绑定动画回调"))
+			// UE_LOG(LogTemp, Warning, TEXT("绑定动画回调"))
 			// 绑定传送事件回调
 			WaitTeleportTimePoint->EventReceived.AddDynamic(this, &UGA_Blink::Teleport);
 			WaitTeleportTimePoint->ReadyForActivation();
@@ -118,7 +118,7 @@ void UGA_Blink::Teleport(FGameplayEventData Payload)
 
 		UE_LOG(LogTemp, Warning, TEXT("当前位置1:%s"),*GetAvatarActorFromActorInfo()->GetActorLocation().ToString())
 		// 将角色传送到目标位置
-		GetAvatarActorFromActorInfo()->SetActorLocation(PickedTeleportLocation);
+		GetAvatarActorFromActorInfo()->SetActorLocation(PickedTeleportLocation + FVector(0,0,50.f));
 
 		UE_LOG(LogTemp, Warning, TEXT("当前位置2:%s"),*GetAvatarActorFromActorInfo()->GetActorLocation().ToString())
 		// 对落点范围内的目标应用伤害效果

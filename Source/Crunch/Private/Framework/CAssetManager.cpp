@@ -3,6 +3,8 @@
 
 #include "Framework/CAssetManager.h"
 
+#include "Character/PDA_CharacterDefinition.h"
+
 UCAssetManager& UCAssetManager::Get()
 {
 	// 尝试从引擎获取当前资产管理器实例
@@ -15,6 +17,37 @@ UCAssetManager& UCAssetManager::Get()
 	// 如果获取失败，记录致命错误并创建新实例（安全后备）
 	UE_LOG(LogLoad, Fatal, TEXT("资源管理器 必须是 CAssetManager 类型的实例"));
 	return (*NewObject<UCAssetManager>());
+}
+
+void UCAssetManager::LoadCharacterDefinitions(const FStreamableDelegate& LoadFinishedCallback)
+{
+	// 使用主资产类型加载角色定义资产
+	LoadPrimaryAssetsWithType(
+		UPDA_CharacterDefinition::GetCharacterDefinitionAssetType(), // 角色定义资产类型
+		TArray<FName>(),                                           // 无特定资产名称
+		LoadFinishedCallback                                   // 加载完成回调
+	);
+}
+
+bool UCAssetManager::GetLoadedCharacterDefinitions(TArray<UPDA_CharacterDefinition*>& LoadedCharacterDefinitions) const
+{
+	TArray<UObject*> LoadedObjects;
+	// 获取指定类型的主资产对象列表
+	bool bLoaded = GetPrimaryAssetObjectList(
+		UPDA_CharacterDefinition::GetCharacterDefinitionAssetType(), 
+		LoadedObjects
+	);
+
+	if (bLoaded)
+	{
+		// 将加载的对象转换为角色定义类型
+		for (UObject* LoadedObject : LoadedObjects)
+		{
+			LoadedCharacterDefinitions.Add(Cast<UPDA_CharacterDefinition>(LoadedObject));
+		}
+	}
+
+	return bLoaded;
 }
 
 // 加载所有商店物品类型的主资产，并在加载完成后触发回调

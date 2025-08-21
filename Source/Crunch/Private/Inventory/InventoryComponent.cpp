@@ -1,9 +1,10 @@
 ﻿// 幻雨喜欢小猫咪
 
 
-#include "Inventory/InventoryComponent.h"
+#include "InventoryComponent.h"
 
 #include "AbilitySystemBlueprintLibrary.h"
+#include "InventoryItem.h"
 #include "Framework/CAssetManager.h"
 #include "GAS/Core/CHeroAttributeSet.h"
 
@@ -561,9 +562,10 @@ void UInventoryComponent::Server_Purchase_Implementation(const UPDA_ShopItem* It
 	TArray<FInventoryItemHandle> Ingredients;
 	// 购买物品的金额
 	float PurchasePrice = GetPurchasePrice(ItemToPurchase,Ingredients);
+	
 	// 金币不够无法购买(理论上金币是够的)(新添加了双击购买，理论失败，退回了右键购买，理论失败)
 	if (GetGold() < PurchasePrice) return;
-
+	
 	// TODO:25/08/04修改的堆叠以及自动合成机制，不知是否有BUG先todo一手
 	// 物品可以堆叠，并且有位置放
 	if (GetAvailableStackForItem(ItemToPurchase))
@@ -573,10 +575,10 @@ void UInventoryComponent::Server_Purchase_Implementation(const UPDA_ShopItem* It
 		GrantItem(ItemToPurchase, PurchasePrice,Ingredients);
 		return;
 	}
+	UE_LOG(LogTemp, Warning, TEXT("移除的数量: %d，背包格子：%d"), Ingredients.Num(),InventoryMap.Num())
 	// 不可堆叠物,计算参与合成后的位置
 	// 计算格子
 	if (InventoryMap.Num() - Ingredients.Num() + 1 > GetCapacity()) return;
-
 	// 格子足够，直接购买
 	// 扣掉金币
 	OwnerAbilitySystemComponent->ApplyModToAttribute(UCHeroAttributeSet::GetGoldAttribute(), EGameplayModOp::Additive, -PurchasePrice);
@@ -586,18 +588,23 @@ void UInventoryComponent::Server_Purchase_Implementation(const UPDA_ShopItem* It
 	
 
 	
-	// // 金币不够无法购买
-	// if (GetGold() < ItemToPurchase->GetPrice()) return;
-	// // 背包不够也不能购买
-	// if (IsFullFor(ItemToPurchase)) return;
+	// // 检查金币是否足够
+	// if (GetGold() < ItemToPurchase->GetPrice())
+	// 	return;
 	//
-	// // 扣掉金币
-	// OwnerAbilitySystemComponent->ApplyModToAttribute(UCHeroAttributeSet::GetGoldAttribute(), EGameplayModOp::Additive, -ItemToPurchase->GetPrice());
-	// // 添加物品
-	// GrantItem(ItemToPurchase);
-	// 修复日志输出：使用正确的字符串格式化方式
-	// const FString ItemName = ItemToPurchase->GetItemName().BuildSourceString();
-	// UE_LOG(LogTemp, Warning, TEXT("购买的物品: %s"), *ItemName);
+	// // 背包未满则直接购买
+	// if (!IsFullFor(ItemToPurchase))
+	// {
+	// 	OwnerAbilitySystemComponent->ApplyModToAttribute(UCHeroAttributeSet::GetGoldAttribute(), EGameplayModOp::Additive, -ItemToPurchase->GetPrice());
+	// 	GrantItem(ItemToPurchase);
+	// 	return;
+	// }
+	//
+	// // 背包满时尝试合成
+	// if (TryItemCombination(ItemToPurchase))
+	// {
+	// 	OwnerAbilitySystemComponent->ApplyModToAttribute(UCHeroAttributeSet::GetGoldAttribute(), EGameplayModOp::Additive, -ItemToPurchase->GetPrice());
+	// }
 }
 
 bool UInventoryComponent::Server_Purchase_Validate(const UPDA_ShopItem* ItemToPurchase)

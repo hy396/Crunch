@@ -4,9 +4,15 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
+#include "UI/Gameplay/Abilities/AbilityListView.h"
 #include "Player/PlayerInfoTypes.h"
 #include "LobbyWidget.generated.h"
 
+class UPlayerTeamLayoutWidget;
+// class UAbilityListView;
+class ACharacterDisplay;
+class AMPlayerState;
+class UTileView;
 class ACGameState;
 class ALobbyPlayerController;
 class UTeamSelectionWidget;
@@ -55,10 +61,34 @@ private:
 	 */
 	void SlotSelected(uint8 NewSlotID);
 
+	// 英雄选择根节点
+	UPROPERTY(meta=(BindWidget))	
+	TObjectPtr<UWidget> HeroSelectionRoot;
 
+	// 角色选择列表
+	UPROPERTY(meta=(BindWidget))	
+	TObjectPtr<UTileView> CharacterSelectionTileView;
+
+	// 技能列表
+	UPROPERTY(meta=(BindWidget))
+	TObjectPtr<UAbilityListView> AbilityListView;
+
+	// 玩家队伍布局
+	UPROPERTY(meta=(BindWidget))
+	TObjectPtr<UPlayerTeamLayoutWidget> PlayerTeamLayoutWidget;
+
+	// TODO:把开始按钮改为英雄选择确定按钮，添加一个定时器，倒数计时，全部英雄确定后，过一定时间开始游戏，如果有玩家没有选择英雄，自动选择一个英雄帮他确定
+	// 开始游戏按钮
+	UPROPERTY(meta=(BindWidget))
+	TObjectPtr<UButton> StartMatchButton;
+	
 	// 玩家控制器
 	UPROPERTY()
 	TObjectPtr<ALobbyPlayerController> LobbyPlayerController;
+
+	// 该大厅UI拥有者的玩家状态
+	UPROPERTY()
+	TObjectPtr<AMPlayerState> MPlayerState;
 	
 	/**
 	 * 配置游戏状态监听
@@ -78,4 +108,28 @@ private:
 	 * @param PlayerSelections 玩家选择信息数组
 	 */
 	void UpdatePlayerSelectionDisplay(const TArray<FPlayerSelection>& PlayerSelections);
+
+	// 开始英雄选择按钮点击事件处理
+	UFUNCTION()
+	void StartHeroSelectionButtonClicked();
+	// 切换到英雄选择界面
+	void SwitchToHeroSelection();
+	// 角色定义加载完成回调，设置角色选择列表项
+	void CharacterDefinitionLoaded();
+	// 角色选择列表项点击事件处理
+	void CharacterSelected(UObject* SelectedUObject);
+	// 展示的角色类
+	UPROPERTY(EditDefaultsOnly, Category = "Character Display")
+	TSubclassOf<ACharacterDisplay> CharacterDisplayClass;
+	// 存储用来展示的角色
+	UPROPERTY()
+	TObjectPtr<ACharacterDisplay> CharacterDisplay;
+	// 创建角色展示
+	void SpawnCharacterDisplay();
+	// 更新角色展示
+	void UpdateCharacterDisplay(const FPlayerSelection& PlayerSelection);
+
+	// 启动游戏按钮点击事件处理
+	UFUNCTION()
+	void StartMatchButtonClicked();
 };

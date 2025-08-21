@@ -7,6 +7,7 @@
 #include "StormCore.h"
 #include "GameFramework/PlayerStart.h"
 #include "Player/CPlayerController.h"
+#include "Player/MPlayerState.h"
 
 APlayerController* ACGameMode::SpawnPlayerController(ENetRole InRemoteRole, const FString& Options)
 {
@@ -34,6 +35,40 @@ void ACGameMode::StartPlay()
 	{
 		StormCore->OnGoalReachedDelegate.AddUObject(this, &ACGameMode::MatchFinished);
 	}
+}
+
+UClass* ACGameMode::GetDefaultPawnClassForController_Implementation(AController* Controller)
+{
+	// 获取玩家控制器对应的自定义玩家状态
+	AMPlayerState* MPlayerState = Controller->GetPlayerState<AMPlayerState>();
+
+	// 如果玩家状态存在，并且玩家已经选择了自己的 Pawn 类
+	if (MPlayerState && MPlayerState->GetSelectedPawnClass())
+	{
+		// 使用玩家选择的 Pawn 类
+		return MPlayerState->GetSelectedPawnClass();
+	}
+
+	// 否则返回备用 Pawn（BackupPawn）
+	return BackupPawn;
+}
+
+APawn* ACGameMode::SpawnDefaultPawnFor_Implementation(AController* NewPlayer, AActor* StartSpot)
+{
+	IGenericTeamAgentInterface* NewPlayerTeamInterface = Cast<IGenericTeamAgentInterface>(NewPlayer);
+	// 获取团队ID
+	FGenericTeamId TeamId = GetTeamIDForPlayer(NewPlayer);
+	if (NewPlayerTeamInterface)
+	{
+		// 设置团队ID
+		NewPlayerTeamInterface->SetGenericTeamId(TeamId);
+	}
+	// 分配出生点
+	StartSpot = FindNextStartSpotForTeam(TeamId);
+	// 设置玩家控制器的出生点
+	NewPlayer->StartSpot = StartSpot;
+	
+	return Super::SpawnDefaultPawnFor_Implementation(NewPlayer, StartSpot);
 }
 
 AStormCore* ACGameMode::GetStormCore() const
@@ -66,6 +101,16 @@ void ACGameMode::MatchFinished(AActor* ViewTarget, int WiningTeam)
 
 FGenericTeamId ACGameMode::GetTeamIDForPlayer(const AController* InController) const
 {
+	// 获取玩家状态
+	AMPlayerState* MPlayerState = InController->GetPlayerState<AMPlayerState>();
+
+	// 如果玩家状态存在，并且玩家已选择 Pawn
+	if (MPlayerState && MPlayerState->GetSelectedPawnClass())
+	{
+		// 根据玩家在队伍槽位信息计算队伍 ID
+		return MPlayerState->GetTeamIdBasedOnSlot();
+	}
+	
 	// 没有玩家状态时，简单轮流分配队伍
 	static int PlayerCount = 0;
 	++PlayerCount;

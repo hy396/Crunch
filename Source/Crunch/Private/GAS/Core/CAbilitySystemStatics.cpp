@@ -94,16 +94,30 @@ bool UCAbilitySystemStatics::IsAbilityAtMaxLevel(const FGameplayAbilitySpec& Spe
 
 float UCAbilitySystemStatics::GetStaticCooldownDurationForAbility(const UGameplayAbility* Ability)
 {
-	if (!Ability) return 0.f;
+	// if (!Ability) return 0.f;
+	//
+	// // 获取冷却效果
+	// const UGameplayEffect* CoolDownEffect = Ability->GetCooldownGameplayEffect();
+	// if (!CoolDownEffect) return 0.f;
+	//
+	// float CooldownDuration = 0.f;
+	// // 调用GetStaticMagnitudeIfPossible方法从冷却效果中获取静态持续时间值
+	// CoolDownEffect->DurationMagnitude.GetStaticMagnitudeIfPossible(1, CooldownDuration);
+	// return CooldownDuration;
 
-	// 获取冷却效果
-	const UGameplayEffect* CoolDownEffect = Ability->GetCooldownGameplayEffect();
-	if (!CoolDownEffect) return 0.f;
 
 	float CooldownDuration = 0.f;
-	// 调用GetStaticMagnitudeIfPossible方法从冷却效果中获取静态持续时间值
-	CoolDownEffect->DurationMagnitude.GetStaticMagnitudeIfPossible(1, CooldownDuration);
-	return CooldownDuration;
+	if (Ability)
+	{
+		const UCGameplayAbility* AbilityCDO = Cast<UCGameplayAbility>(Ability);
+		if (!AbilityCDO) return CooldownDuration;
+		
+		// 获取基础冷却时间
+		CooldownDuration = AbilityCDO->CooldownDuration.GetValueAtLevel(1);
+	}
+
+	// 返回绝对值（确保冷却时间始终为正数）
+	return FMath::Abs(CooldownDuration);
 }
 
 float UCAbilitySystemStatics::GetStaticCostForAbility(const UGameplayAbility* Ability)
@@ -216,13 +230,13 @@ float UCAbilitySystemStatics::GetCooldownDurationForMMCCD(const UGameplayAbility
 		float BaseCooldown = Ability->CooldownDuration.GetValueAtLevel(AbilityLevel);
 
 		// 获取冷却缩减属性值
-		bool bFound;
+		bool bFound = false;
 		float CooldownReduction = ASC.GetGameplayAttributeValue(UCHeroAttributeSet::GetCooldownReductionAttribute(), bFound);
 		if (bFound)
 		{
 			// 计算最终冷却时间
 			CooldownDuration = BaseCooldown * (1.0f - CooldownReduction/100.0f);
-		}
+		}	
 	}
 
 	// 返回绝对值（确保冷却时间始终为正数）

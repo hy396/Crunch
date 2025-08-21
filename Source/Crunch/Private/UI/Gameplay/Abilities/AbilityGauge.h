@@ -77,6 +77,12 @@ private:
 	// 是否有可用升级点材质参数名
 	UPROPERTY(EditDefaultsOnly, Category = "Visual")
 	FName UpgradePointAvailableParamName = "UpgradeAvailable";
+
+	// 技能信息提示框
+	UPROPERTY(EditDefaultsOnly, Category = "Tool Tip")
+	TSubclassOf<class UAbilityToolTip> AbilityToolTipClass;
+	// 创建提示框
+	void CreateToolTipWidget(const FAbilityWidgetData* AbilityWidgetData);
 	
 	// 技能图标
 	UPROPERTY(meta = (BindWidget))

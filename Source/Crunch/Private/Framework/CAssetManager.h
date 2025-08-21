@@ -7,6 +7,7 @@
 #include "Inventory/PDA_ShopItem.h"
 #include "CAssetManager.generated.h"
 
+class UPDA_CharacterDefinition;
 /**
  * 自定义资产管理器，负责游戏核心资产的加载和管理
  * 处理角色定义、商店物品加载，并提供物品合成系统的数据支持
@@ -18,6 +19,18 @@ class UCAssetManager : public UAssetManager
 public:
 	// 获取资产管理器单例
 	static UCAssetManager& Get();
+	/**
+	 * 异步加载所有角色定义资产
+	 * @param LoadFinishedCallback - 加载完成时执行的回调
+	 */
+	void LoadCharacterDefinitions(const FStreamableDelegate& LoadFinishedCallback);
+	
+	/**
+	 * 获取已加载的角色定义资产
+	 * @param LoadedCharacterDefinitions - 输出加载的角色定义数组
+	 * @return 是否成功获取
+	 */
+	bool GetLoadedCharacterDefinitions(TArray<UPDA_CharacterDefinition*>& LoadedCharacterDefinitions) const;
 
 	/**
 	 * 异步加载所有商店物品资产

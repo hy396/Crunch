@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "PlayerInfoTypes.generated.h"
 
+class UPDA_CharacterDefinition;
 class APlayerState;
 
 /**
@@ -54,6 +55,18 @@ public:
 	FORCEINLINE FString GetPlayerNickName() const { return PlayerNickName; }
 	
 	/**
+	 * 获取玩家选择的角色资产
+	 * @return 玩家选择的角色资产
+	 */
+	FORCEINLINE const UPDA_CharacterDefinition* GetCharacterDefinition() const { return CharacterDefinition; }
+
+	/**
+	 * 设置玩家选择的角色资产
+	 * @param NewCharacterDefinition 新的角色资产
+	 */
+	FORCEINLINE void SetCharacterDefinition(const UPDA_CharacterDefinition* NewCharacterDefinition) { CharacterDefinition = NewCharacterDefinition; }
+	
+	/**
 	 * 检查是否属于指定玩家
 	 * @param PlayerState 待比较的玩家状态对象
 	 * @return 是否匹配
@@ -84,4 +97,8 @@ private:
 	/** 玩家显示名称 */
 	UPROPERTY() 
 	FString PlayerNickName;
+
+	// 玩家选择的角色资产
+	UPROPERTY()
+	TObjectPtr<const UPDA_CharacterDefinition> CharacterDefinition;
 };

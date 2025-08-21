@@ -7,6 +7,7 @@
 #include "Player/PlayerInfoTypes.h"
 #include "CGameState.generated.h"
 
+class UPDA_CharacterDefinition;
 /**
  * 玩家选择更新委托
  * 当玩家选择状态发生变化时广播
@@ -31,12 +32,12 @@ public:
 	 */
 	void RequestPlayerSelectionChange(const APlayerState* RequestingPlayer, uint8 DesiredSlot);
 
-	// /**
-	//  * 设置角色选择
-	//  * @param SelectingPlayer 正在选择的玩家状态
-	//  * @param SelectedDefination 选择的角色定义
-	//  */
-	// void SetCharacterSelected(const APlayerState* SelectingPlayer, const UPA_CharacterDefination* SelectedDefination);
+	/**
+	 * 设置角色选择
+	 * @param SelectingPlayer 正在选择的玩家状态
+	 * @param SelectedDefinition 选择的角色定义
+	 */
+	void SetCharacterSelected(const APlayerState* SelectingPlayer, const UPDA_CharacterDefinition* SelectedDefinition);
 
 	/**
 	 * 检查槽位是否被占用
@@ -45,18 +46,18 @@ public:
 	 */
 	bool IsSlotOccupied(uint8 SlotId) const;
 
-	// /**
-	//  * 检查角色是否已被选择
-	//  * @param Definiation 要检查的角色定义
-	//  * @return 是否已被选择
-	//  */
-	// bool IsDefiniationSelected(const UPA_CharacterDefination* Definiation) const;
-	//
-	// /**
-	//  * 取消角色选择
-	//  * @param DefiniationToDeselect 要取消选择的角色定义
-	//  */
-	// void SetCharacterDeselected(const UPA_CharacterDefination* DefiniationToDeselect);
+	/**
+	 * 检查角色是否已被选择
+	 * @param Definition 要检查的角色定义
+	 * @return 是否已被选择
+	 */
+	bool IsDefinitionSelected(const UPDA_CharacterDefinition* Definition) const;
+	
+	/**
+	 * 取消角色选择
+	 * @param DefinitionToDeselect 要取消选择的角色定义
+	 */
+	void SetCharacterDeselected(const UPDA_CharacterDefinition* DefinitionToDeselect);
 
 	
 	/** 玩家选择更新事件（多播委托） */
@@ -74,11 +75,11 @@ public:
 	 */
 	bool CanStartHeroSelection() const;
 
-	// /**
-	//  * 检查是否可以开始比赛
-	//  * @return 是否满足开始比赛条件
-	//  */
-	// bool CanStartMatch() const;
+	/**
+	 * 检查是否可以开始比赛
+	 * @return 是否满足开始比赛条件
+	 */
+	bool CanStartMatch() const;
 
 	/**
 	 * 复制属性接口实现

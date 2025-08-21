@@ -5,6 +5,7 @@
 
 #include "AbilitySystemBlueprintLibrary.h"
 #include "AbilitySystemComponent.h"
+#include "AbilitySystemInterface.h"
 #include "CAttributeSet.h"
 #include "TGameplayTags.h"
 #include "GameFramework/Character.h"
@@ -309,8 +310,11 @@ void UCGameplayAbility::PushTarget(AActor* Target, const FVector& PushVel)
 	HitData->HitResult = HitResult;
 	EventData.TargetData.Add(HitData);
 	// UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(Target, TGameplayTags::Ability_Passive_Launch_Activate, EventData);
-	// 用标签激活技能
-	UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(Target, UGAP_Launched::GetLaunchedAbilityActivationTag(), EventData);
+	if (Target->GetClass()->ImplementsInterface(UAbilitySystemInterface::StaticClass()))
+	{
+		// 用标签激活技能
+		UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(Target, UGAP_Launched::GetLaunchedAbilityActivationTag(), EventData);
+	}
 }
 
 void UCGameplayAbility::PushTargets(const TArray<AActor*>& Targets, const FVector& PushVel)

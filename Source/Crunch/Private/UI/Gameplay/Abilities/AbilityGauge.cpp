@@ -5,10 +5,12 @@
 
 #include "AbilitySystemBlueprintLibrary.h"
 #include "AbilitySystemComponent.h"
+#include "AbilityToolTip.h"
 #include "Components/Image.h"
 #include "GAS/Core/CAbilitySystemStatics.h"
 #include "Abilities/GameplayAbility.h"
 #include "GAS/Core/CAttributeSet.h"
+#include "GAS/Core/CGameplayAbility.h"
 #include "GAS/Core/CGameplayAbilityTypes.h"
 #include "GAS/Core/CHeroAttributeSet.h"
 
@@ -62,11 +64,9 @@ void UAbilityGauge::NativeOnListItemObjectSet(UObject* ListItemObject)
 	AbilityCDO = Cast<UGameplayAbility>(ListItemObject);
 
 	// 获取冷却和消耗
-	// float CoolDownDuration = UCAbilitySystemStatics::GetStaticCooldownDurationForAbility(AbilityCDO);
+	float CoolDownDuration = UCAbilitySystemStatics::GetStaticCooldownDurationForAbility(AbilityCDO);
 	// 带冷却缩减的操作
-	// float CoolDownDuration = UCAbilitySystemStatics::GetStaticCooldownDurationForAbilityHasAttribute(AbilityCDO);
-	// float CoolDownDuration = UCAbilitySystemStatics::GetCooldownDurationFor(AbilityCDO, *OwnerAbilitySystemComponent, 1);
-	float CoolDownDuration = UCAbilitySystemStatics::GetCooldownDurationForMMCCD(AbilityCDO, *OwnerAbilitySystemComponent, 1);
+	// float CoolDownDuration = UCAbilitySystemStatics::GetCooldownDurationForMMCCD(AbilityCDO, *OwnerAbilitySystemComponent, 1);
 	float Cost = UCAbilitySystemStatics::GetStaticCostForAbility(AbilityCDO);
 
 	// 设置冷却和消耗
@@ -107,6 +107,70 @@ void UAbilityGauge::ConfigureWithWidgetData(const FAbilityWidgetData* WidgetData
 	{
 		// 设置图片
 		Icon->GetDynamicMaterial()->SetTextureParameterValue(IconMaterialParamName, WidgetData->Icon.LoadSynchronous());
+		// 创建技能提示
+		CreateToolTipWidget(WidgetData);
+	}
+}
+
+void UAbilityGauge::CreateToolTipWidget(const FAbilityWidgetData* AbilityWidgetData)
+{
+	if (!AbilityWidgetData || !AbilityToolTipClass)
+		return;
+
+	UAbilityToolTip* InstantiatedToolTip = CreateWidget<UAbilityToolTip>(GetOwningPlayer(), AbilityToolTipClass);
+	if (InstantiatedToolTip)
+	{
+		const float CooldownDuration = UCAbilitySystemStatics::GetStaticCooldownDurationForAbility(AbilityCDO);
+		const float Cost = UCAbilitySystemStatics::GetStaticCostForAbility(AbilityCDO);
+		InstantiatedToolTip->SetAbilityInfo(AbilityWidgetData->AbilityName, AbilityWidgetData->Icon.LoadSynchronous(), AbilityWidgetData->Description, CooldownDuration, Cost);
+
+		if (AbilityCDO)
+		{
+			FText Cost_Text;
+			const UGameplayEffect* CostEffect = AbilityCDO->GetCostGameplayEffect();
+			if (CostEffect && CostEffect->Modifiers.Num() > 0)
+			{
+				TArray<FString> CostLevels;
+				float TempCost_1 = 0.f;
+				for (int32 Level = 1; Level <= 5; ++Level)
+				{
+					float TempCost = 0.f;
+					CostEffect->Modifiers[0].ModifierMagnitude.GetStaticMagnitudeIfPossible(Level, TempCost);
+					if (TempCost == TempCost_1) break;
+					TempCost_1 = TempCost;
+					const int32 IntCost = static_cast<int32>(TempCost);
+					CostLevels.Add(FString::Printf(TEXT("%d"), FMath::Abs(IntCost)));
+				}
+				if (CostLevels.Num() > 0)
+				{
+					// 使用斜杠连接所有等级
+					const FString FinalCostString = FString::Join(CostLevels, TEXT("/"));
+					Cost_Text = FText::FromString(FinalCostString);
+				}
+			}
+			FText Cooldown_Text;
+			if (const UCGameplayAbility* CastedAbility = Cast<UCGameplayAbility>(AbilityCDO))
+			{
+				TArray<FString> CooldownLevels;
+				float TempCooldown_1 = 0.f;
+				for (int32 Level = 1; Level <= 5; ++Level)
+				{
+					const float TempCooldown = CastedAbility->CooldownDuration.GetValueAtLevel(Level);
+					if (TempCooldown == TempCooldown_1) break;
+					TempCooldown_1 = TempCooldown;
+					const int32 IntCooldown = static_cast<int32>(TempCooldown);
+					CooldownLevels.Add(FString::Printf(TEXT("%d"), FMath::Abs(IntCooldown)));
+				}
+				if (CooldownLevels.Num() > 0)
+				{
+					// 使用斜杠连接所有等级
+					const FString FinalCooldownString = FString::Join(CooldownLevels, TEXT("/"));
+					Cooldown_Text = FText::FromString(FinalCooldownString);
+				}
+			}
+			InstantiatedToolTip->SetAbilityInfo(AbilityWidgetData->AbilityName, AbilityWidgetData->Icon.LoadSynchronous(), AbilityWidgetData->Description, Cooldown_Text, Cost_Text);
+		}
+		SetToolTip(InstantiatedToolTip);
 	}
 }
 

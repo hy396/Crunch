@@ -36,6 +36,29 @@ void ACGameState::RequestPlayerSelectionChange(const APlayerState* RequestingPla
 	OnPlayerSelectionUpdated.Broadcast(PlayerSelectionArray);
 }
 
+void ACGameState::SetCharacterSelected(const APlayerState* SelectingPlayer,
+	const UPDA_CharacterDefinition* SelectedDefinition)
+{
+	// 检查角色是否已被选择
+	if (IsDefinitionSelected(SelectedDefinition)) return;
+
+	// 查找玩家选择条目
+	FPlayerSelection* FoundPlayerSelection = PlayerSelectionArray.FindByPredicate(
+		[&](const FPlayerSelection& PlayerSelection)
+		{
+			return PlayerSelection.IsForPlayer(SelectingPlayer);
+		}
+	);
+
+	if (FoundPlayerSelection)
+	{
+		// 更新角色定义
+		FoundPlayerSelection->SetCharacterDefinition(SelectedDefinition);
+		// 广播更新
+		OnPlayerSelectionUpdated.Broadcast(PlayerSelectionArray);
+	}
+}
+
 bool ACGameState::IsSlotOccupied(uint8 SlotId) const
 {
 	// 寻找已经选择的玩家数组，查看是否有该插槽，如果找到说明给占了
@@ -50,6 +73,40 @@ bool ACGameState::IsSlotOccupied(uint8 SlotId) const
 	return false;
 }
 
+bool ACGameState::IsDefinitionSelected(const UPDA_CharacterDefinition* Definition) const
+{
+	// 遍历玩家选择数组检查指定角色是否已被选择
+	const FPlayerSelection* FoundPlayerSelection = PlayerSelectionArray.FindByPredicate(
+		[&](const FPlayerSelection& PlayerSelection)
+		{
+			return PlayerSelection.GetCharacterDefinition() == Definition;
+		}
+	);
+
+	return FoundPlayerSelection != nullptr;
+}
+
+void ACGameState::SetCharacterDeselected(const UPDA_CharacterDefinition* DefinitionToDeselect)
+{
+	if (!DefinitionToDeselect) return;
+
+	// 查找对应的角色选择条目
+	FPlayerSelection* FoundPlayerSelection = PlayerSelectionArray.FindByPredicate(
+		[&](const FPlayerSelection& PlayerSelection)
+		{
+			return PlayerSelection.GetCharacterDefinition() == DefinitionToDeselect;
+		}
+	);
+
+	if (FoundPlayerSelection)
+	{
+		// 置空角色定义
+		FoundPlayerSelection->SetCharacterDefinition(nullptr);
+		// 广播更新
+		OnPlayerSelectionUpdated.Broadcast(PlayerSelectionArray);
+	}
+}
+
 const TArray<FPlayerSelection>& ACGameState::GetPlayerSelection() const
 {
 	return PlayerSelectionArray;
@@ -61,18 +118,19 @@ bool ACGameState::CanStartHeroSelection() const
 	return PlayerSelectionArray.Num() == PlayerArray.Num();
 }
 
-// bool ACGameState::CanStartMatch() const
-// {
-// 	for (const FPlayerSelection& PlayerSelection : PlayerSelectionArray)
-// 	{
-// 		if (PlayerSelection.GetCharacterDefination() == nullptr)
-// 		{
-// 			return false;
-// 		}
-// 	}
-//
-// 	return true;
-// }
+bool ACGameState::CanStartMatch() const
+{
+	// 遍历玩家选择数组，检查每个玩家是否已选择角色
+	for (const FPlayerSelection& PlayerSelection : PlayerSelectionArray)
+	{
+		if (PlayerSelection.GetCharacterDefinition() == nullptr)
+		{
+			return false;
+		}
+	}
+
+	return true;
+}
 
 void ACGameState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {

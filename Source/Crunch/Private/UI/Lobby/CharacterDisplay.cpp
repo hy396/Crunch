@@ -39,14 +39,14 @@ void ACharacterDisplay::ConfigureWithCharacterDefinition(const UPDA_CharacterDef
 	// 加载并设置展示动画蓝图
 	MeshComponent->SetAnimClass(CharacterDefinition->LoadDisplayAnimationBP());
 	
-	if (UAnimMontage* IntroAnimation = CharacterDefinition->LoadCharacterIntroAnimation())
-	{
-		UAnimInstance* OwnerAnimInst = MeshComponent->GetAnimInstance();
-		if (OwnerAnimInst && !OwnerAnimInst->Montage_IsPlaying(IntroAnimation))
-		{
-			OwnerAnimInst->Montage_Play(IntroAnimation);
-		}
-	}
+	//if (UAnimMontage* IntroAnimation = CharacterDefinition->LoadCharacterIntroAnimation())
+	//{
+	//	UAnimInstance* OwnerAnimInst = MeshComponent->GetAnimInstance();
+	//	if (OwnerAnimInst && !OwnerAnimInst->Montage_IsPlaying(IntroAnimation))
+	//	{
+	//		OwnerAnimInst->Montage_Play(IntroAnimation);
+	//	}
+	//}
 
 }
 

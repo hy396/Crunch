@@ -13,7 +13,8 @@ public class Crunch : ModuleRules
 			"Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput",
 			"GameplayAbilities", "GameplayTags", "GameplayTasks",
 			"UMG", "Slate", "SlateCore",
-			"AIModule" , "ModularGameplay", "NavigationSystem", "Niagara"
+			"AIModule" , "ModularGameplay", "NavigationSystem", "Niagara",
+			"OnlineSubsystem","OnlineSubsystemEOS","OnlineSubsystemUtils","Networking","HTTP","Json"
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });

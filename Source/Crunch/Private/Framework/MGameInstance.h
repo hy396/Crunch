@@ -21,6 +21,42 @@ class CRUNCH_API UMGameInstance : public UGameInstance
 public:
 	// 开始匹配（服务器端调用）
 	void StartMatch();
+	// 游戏实例初始化
+	virtual void Init() override;
+	/*************************************/
+	/*           会话服务器功能			 */
+	/*************************************/
+public:
+	// 玩家加入会话（服务器端调用）
+	void PlayerJoined(const FUniqueNetIdRepl& UniqueId);
+	
+	// 玩家离开会话（服务器端调用）
+	void PlayerLeft(const FUniqueNetIdRepl& UniqueId);
+private:
+	// 创建会话
+	void CreateSession();
+	// 当会话创建完成时触发
+	void OnSessionCreated(FName SessionName, bool bWasSuccessful);
+	// 当会话结束完成时回调
+	void EndSessionCompleted(FName SessionName, bool bWasSuccessful);
+	// 服务器会话名称
+	FString ServerSessionName;
+	// 会话服务器端口
+	int32 SessionServerPort;
+	// 终止会话服务器
+	void TerminateSessionServer();
+	
+	// 等待玩家加入的超时计时器句柄
+	FTimerHandle WaitPlayerJoinTimeoutHandle;
+
+	// 等待玩家加入的超时时间（默认60秒）
+	UPROPERTY(EditDefaultsOnly, Category = "Session")
+	float WaitPlayerJoinTimeOutDuration = 60.f;
+	// 玩家超时未加入时触发
+	void WaitPlayerJoinTimeoutReached();
+	
+	// 玩家记录集合
+	TSet<FUniqueNetIdRepl> PlayerRecord;
 private:	
 	// 主菜单关卡引用
 	UPROPERTY(EditDefaultsOnly, Category = "Map")

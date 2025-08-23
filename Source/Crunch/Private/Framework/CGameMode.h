@@ -15,6 +15,8 @@ class ACGameMode : public AGameModeBase
 {
 	GENERATED_BODY()
 public:
+	ACGameMode();
+	
 	virtual APlayerController* SpawnPlayerController(ENetRole InRemoteRole, const FString& Options) override;
 
 	// 游戏开始时调用

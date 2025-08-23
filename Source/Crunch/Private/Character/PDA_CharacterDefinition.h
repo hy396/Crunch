@@ -32,8 +32,8 @@ public:
 	TSubclassOf<UAnimInstance> LoadDisplayAnimationBP() const;
 	// 加载显示用的骨骼网格
 	class USkeletalMesh* LoadDisplayMesh() const;
-	// 加载角色入场动画
-	UAnimMontage* LoadCharacterIntroAnimation() const;
+	//// 加载角色入场动画
+	//UAnimMontage* LoadCharacterIntroAnimation() const;
 	// 获取能力映射表（输入ID到技能类的映射）
 	const TMap<ECAbilityInputID, TSubclassOf<UGameplayAbility>>* GetAbilities() const;
 
@@ -46,9 +46,9 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "Character", meta = (DisplayName = "角色图像"))
 	TSoftObjectPtr<UTexture2D> CharacterIcon;
 
-	// 角色入场动画
-	UPROPERTY(EditDefaultsOnly, Category = "Character", meta = (DisplayName = "入场动画"))
-	TSoftObjectPtr<UAnimMontage> CharacterIntroAnimation;
+	//// 角色入场动画
+	//UPROPERTY(EditDefaultsOnly, Category = "Character", meta = (DisplayName = "入场动画"))
+	//TSoftObjectPtr<UAnimMontage> CharacterIntroAnimation;
 
 	// 角色蓝图类
 	UPROPERTY(EditDefaultsOnly, Category = "Character")

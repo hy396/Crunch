@@ -50,7 +50,7 @@ bool FPlayerSelection::IsValid() const
 		return false;
 
 	// 检查槽位是否超出双队列限制
-	if (Slot >= UCNetStatics::GetPlayerCountPerTeam() * 2)
+	if (Slot >= UTNetStatics::GetPlayerCountPerTeam() * 2)
 		return false;
 
 	return true;

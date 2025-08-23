@@ -54,9 +54,10 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+#if WITH_EDITOR
 	// 编辑器属性变更回调
 	virtual void PostEditChangeProperty(struct FPropertyChangedEvent& PropertyChangedEvent) override;
-
+#endif
 private:
 	// 扩张动画
 	UPROPERTY(EditDefaultsOnly, Category = "Move")

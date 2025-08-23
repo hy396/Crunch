@@ -6,8 +6,15 @@
 #include "EngineUtils.h"
 #include "StormCore.h"
 #include "GameFramework/PlayerStart.h"
+#include "Network/TGameSession.h"
 #include "Player/CPlayerController.h"
 #include "Player/MPlayerState.h"
+
+ACGameMode::ACGameMode()
+{
+	// 创建游戏会话类
+	GameSessionClass = ATGameSession::StaticClass();
+}
 
 APlayerController* ACGameMode::SpawnPlayerController(ENetRole InRemoteRole, const FString& Options)
 {

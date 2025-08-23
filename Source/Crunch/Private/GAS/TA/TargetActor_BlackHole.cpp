@@ -69,7 +69,7 @@ void ATargetActor_BlackHole::GetLifetimeReplicatedProps(TArray<FLifetimeProperty
 void ATargetActor_BlackHole::StartTargeting(class UGameplayAbility* Ability)
 {
 	Super::StartTargeting(Ability);
-	UE_LOG(LogTemp, Warning, TEXT("Actor的位置%s"),*GetActorLocation().ToString())
+	// UE_LOG(LogTemp, Warning, TEXT("Actor的位置%s"),*GetActorLocation().ToString())
 	// 设置黑洞持续时间，时间结束后结束黑洞
 	if (const UWorld* World = GetWorld())
 	{

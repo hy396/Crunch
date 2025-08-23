@@ -3,9 +3,10 @@
 
 #include "LobbyGameMode.h"
 
+#include "Network/TGameSession.h"
+
 ALobbyGameMode::ALobbyGameMode()
 {
 	bUseSeamlessTravel = true;
-	
-// 	GameSessionClass = ACGameSession::StaticClass();
+// 	GameSessionClass = ATGameSession::StaticClass();
 }

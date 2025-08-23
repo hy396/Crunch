@@ -60,10 +60,10 @@ class USkeletalMesh* UPDA_CharacterDefinition::LoadDisplayMesh() const
 	return Character->GetMesh()->GetSkeletalMeshAsset();
 }
 
-UAnimMontage* UPDA_CharacterDefinition::LoadCharacterIntroAnimation() const
-{
-	return CharacterIntroAnimation.LoadSynchronous();
-}
+//UAnimMontage* UPDA_CharacterDefinition::LoadCharacterIntroAnimation() const
+//{
+//	return CharacterIntroAnimation.LoadSynchronous();
+//}
 
 const TMap<ECAbilityInputID, TSubclassOf<UGameplayAbility>>* UPDA_CharacterDefinition::GetAbilities() const
 {

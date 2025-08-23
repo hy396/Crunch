@@ -5,8 +5,11 @@
 #include "CoreMinimal.h"
 #include "GenericTeamAgentInterface.h"
 #include "Minion.h"
+#include "GameFramework/PlayerStart.h"
 #include "GameFramework/Actor.h"
 #include "MinionBarrack.generated.h"
+
+// class APlayerStart;
 
 /**
  * 小兵兵营类，负责批量生成和管理小兵

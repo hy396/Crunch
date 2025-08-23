@@ -97,6 +97,7 @@ void AStormCore::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 }
 
+#if WITH_EDITOR
 void AStormCore::PostEditChangeProperty(struct FPropertyChangedEvent& PropertyChangedEvent)
 {
 	Super::PostEditChangeProperty(PropertyChangedEvent);
@@ -111,6 +112,7 @@ void AStormCore::PostEditChangeProperty(struct FPropertyChangedEvent& PropertyCh
 		GroundDecalComponent->DecalSize = FVector{DecalSize.X, InfluenceRadius, InfluenceRadius}; // 更新贴花大小
 	}
 }
+#endif
 
 void AStormCore::NewInfluencerInRange(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
                                       UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
@@ -173,7 +175,7 @@ void AStormCore::UpdateTeamWeight()
 	}
 	
 	UpdateGoal(); // 根据新权重更新目标
-	UE_LOG(LogTemp, Warning, TEXT("队伍一的数量: %d, 队伍二的数量: %d, Weight: %f"), TeamOneInfluencerCount, TeamTwoInfluencerCount, TeamWeight);
+	// UE_LOG(LogTemp, Warning, TEXT("队伍一的数量: %d, 队伍二的数量: %d, Weight: %f"), TeamOneInfluencerCount, TeamTwoInfluencerCount, TeamWeight);
 }
 
 void AStormCore::UpdateGoal()
@@ -185,18 +187,18 @@ void AStormCore::UpdateGoal()
 	if (TeamWeight > 0) 
 	{
 		OwnerAIC->MoveToActor(TeamOneGoal); // 向队伍1的目标移动
-		UE_LOG(LogTemp, Warning, TEXT("向队伍1的目标移动"))
+		// UE_LOG(LogTemp, Warning, TEXT("向队伍1的目标移动"))
 	}
 	else 
 	{
 		OwnerAIC->MoveToActor(TeamTwoGoal); // 向队伍2的目标移动
-		UE_LOG(LogTemp, Warning, TEXT("向队伍2的目标移动"))
+		// UE_LOG(LogTemp, Warning, TEXT("向队伍2的目标移动"))
 	}
 
 	// 根据权重绝对值调整移动速度
 	float Speed = MaxMoveSpeed * FMath::Abs(TeamWeight);
 	GetCharacterMovement()->MaxWalkSpeed = Speed;
-	UE_LOG(LogTemp, Warning, TEXT("移动速度为: %f"), Speed);
+	// UE_LOG(LogTemp, Warning, TEXT("移动速度为: %f"), Speed);
 }
 
 void AStormCore::OnRep_CoreToCapture()

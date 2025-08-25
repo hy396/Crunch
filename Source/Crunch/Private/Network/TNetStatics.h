@@ -103,7 +103,23 @@ public:
 	 */
 	static FName GetPortKey();
 
-	
+	/**
+	 * 获取协调器URL键值
+	 * @return 协调器服务URL的FName键
+	 */
+	static FName GetCoordinatorURLKey();
+
+	/**
+	 * 获取协调器URL地址
+	 * @return 协调器服务地址字符串
+	 */
+	static FString GetCoordinatorURL();
+
+	/**
+	 * 获取默认协调器URL
+	 * @return 默认的协调器服务地址
+	 */
+	static FString GetDefaultCoordinatorURL();
 	
 	/**
 	 * 从命令行参数中获取指定名称的字符串值

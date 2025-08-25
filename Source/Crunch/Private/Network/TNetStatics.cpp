@@ -135,6 +135,42 @@ FName UTNetStatics::GetPortKey()
 	return FName("PORT");
 }
 
+FName UTNetStatics::GetCoordinatorURLKey()
+{
+	// 返回用于解析命令行参数的键值（这里是固定字符串 "COORDINATOR_URL"）
+	return FName("COORDINATOR_URL");
+}
+
+FString UTNetStatics::GetCoordinatorURL()
+{
+	// 优先从命令行中获取 Coordinator URL
+	FString CoordinatorURL = GetCommandlineArgAsString(GetCoordinatorURLKey());
+	if (CoordinatorURL != "")
+	{
+		// 如果命令行中有值，则直接返回
+		return CoordinatorURL;
+	}
+
+	// 如果命令行参数为空，则使用配置文件中的默认值
+	return GetDefaultCoordinatorURL();
+}
+
+FString UTNetStatics::GetDefaultCoordinatorURL()
+{
+	FString CoordinatorURL = "";
+
+	// TODO:更改项目名称的时候这里要记得更改，此乃CSDN的54期
+	// 从配置文件 [Crunch.Net] 节点中读取键 "CoordinatorURL"
+	// 目标配置文件为 DefaultGame.ini
+	GConfig->GetString(TEXT("Crunch.Net"), TEXT("CoordinatorURL"), CoordinatorURL, GGameIni);
+
+	// 打印日志，方便调试，输出获取到的默认 URL
+	UE_LOG(LogTemp, Warning, TEXT("Getting Default Coordinator URL as: %s"), *CoordinatorURL)
+
+	// 返回默认配置中的 URL
+	return CoordinatorURL;
+}
+
 FString UTNetStatics::GetCommandlineArgAsString(const FName& ParamName)
 {
 	FString OutVal = "";

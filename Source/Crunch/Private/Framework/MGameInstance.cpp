@@ -3,6 +3,7 @@
 
 #include "MGameInstance.h"
 
+#include "HttpModule.h"
 #include "Network/TNetStatics.h"
 #include "Interfaces/OnlineSessionInterface.h"
 #include "Interfaces/OnlineIdentityInterface.h"
@@ -28,6 +29,149 @@ void UMGameInstance::Init()
 	{
 		CreateSession();
 	}
+}
+
+bool UMGameInstance::IsLoggedIn() const
+{
+	if (IOnlineIdentityPtr IdentityPtr = UTNetStatics::GetIdentityPtr())
+	{
+		// 查询本地玩家0的登录状态，是否为已登录
+		return IdentityPtr->GetLoginStatus(0) == ELoginStatus::LoggedIn;
+	}
+	// 如果IdentityPtr无效，则默认未登录
+	return false;
+}
+
+bool UMGameInstance::IsLoggingIn() const
+{
+	// 如果登录委托句柄有效，说明还在等待登录回调
+	return LoggingInDelegateHandle.IsValid();
+}
+
+void UMGameInstance::ClientAccountPortalLogin()
+{
+	// 调用统一的ClientLogin接口，使用AccountPortal方式
+	ClientLogin("AccountPortal", "", "");
+}
+
+void UMGameInstance::ClientLogin(const FString& Type, const FString& Id, const FString& Token)
+{
+	if (IOnlineIdentityPtr IdentityPtr = UTNetStatics::GetIdentityPtr())
+	{
+		// 如果已经有一个登录委托在监听，先移除它，避免重复绑定
+		if (LoggingInDelegateHandle.IsValid())
+		{
+			IdentityPtr->OnLoginCompleteDelegates->Remove(LoggingInDelegateHandle);
+			LoggingInDelegateHandle.Reset();
+		}
+		// 绑定登录完成回调
+		LoggingInDelegateHandle = IdentityPtr->OnLoginCompleteDelegates->AddUObject(this, &UMGameInstance::LoginCompleted);
+		
+		// 调用OnlineSubsystem的登录函数（异步）
+		if (!IdentityPtr->Login(0,FOnlineAccountCredentials(Type, Id, Token)))
+		{
+			UE_LOG(LogTemp, Warning, TEXT("登录失败!"))
+
+			if (LoggingInDelegateHandle.IsValid())
+			{
+				IdentityPtr->OnLoginCompleteDelegates->Remove(LoggingInDelegateHandle);
+				LoggingInDelegateHandle.Reset();
+			}
+			// 通知外部,登录失败
+			OnLoginCompleted.Broadcast(false, "", TEXT("登录失败!"));
+		}
+	}
+}
+
+void UMGameInstance::LoginCompleted(int32 NumOfLocalPlayer, bool bWasSuccessful, const FUniqueNetId& UserId,
+	const FString& Error)
+{
+	if (IOnlineIdentityPtr IdentityPtr = UTNetStatics::GetIdentityPtr())
+	{
+		// 移除登录完成委托
+		if (LoggingInDelegateHandle.IsValid())
+		{
+			IdentityPtr->OnLoginCompleteDelegates->Remove(LoggingInDelegateHandle);
+			LoggingInDelegateHandle.Reset();
+		}
+
+		FString PlayerNickname = "";
+		if (bWasSuccessful)
+		{
+			// 获取玩家昵称
+			PlayerNickname = IdentityPtr->GetPlayerNickname(UserId);
+			UE_LOG(LogTemp, Warning, TEXT("登录成功: %s"), *(PlayerNickname))
+		}
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("登录失败: %s"), *(Error))
+		}
+		
+		OnLoginCompleted.Broadcast(bWasSuccessful, PlayerNickname, Error);
+	}else
+	{
+		OnLoginCompleted.Broadcast(false, "", TEXT("无法找到身份指针"));
+	}
+}
+
+void UMGameInstance::RequestCreateAndJoinSession(const FName& NewSessionName)
+{
+	UE_LOG(LogTemp, Warning, TEXT("请求创建并加入会话: %s"), *(NewSessionName.ToString()))
+	
+	// 创建HTTP请求对象，准备向协调器发起会话创建请求
+	FHttpRequestRef Request = FHttpModule::Get().CreateRequest();
+	// 生成唯一会话搜索ID用于后续查询
+	FGuid SessionSearchId = FGuid::NewGuid();
+	// 获取协调器服务的基础URL地址
+	FString CoordinatorURL  = UTNetStatics::GetCoordinatorURL();
+
+	// 拼接目标 API 地址：<CoordinatorURL>/Sessions
+	FString URL = FString::Printf(TEXT("%s/Sessions"), *CoordinatorURL);
+	UE_LOG(LogTemp, Warning, TEXT("发送会话创建请求到 URL：%s"), *URL)
+	
+	// 配置 HTTP 请求：目标地址 + 请求方式 POST
+	Request->SetURL(URL);
+	Request->SetVerb("POST");
+
+	// 设置 HTTP 请求头，指定请求体为 JSON 格式
+	Request->SetHeader(TEXT("Content-Type"), TEXT("application/json"));
+
+	// 构造 JSON 请求体，包含 SessionName 和 SessionSearchId
+	TSharedPtr<FJsonObject> JsonObject = MakeShareable(new FJsonObject);
+	JsonObject->SetStringField(UTNetStatics::GetSessionNameKey().ToString(), NewSessionName.ToString());
+	JsonObject->SetStringField(UTNetStatics::GetSessionSearchIdKey().ToString(), SessionSearchId.ToString());
+
+	// 将 JSON 对象转换为字符串
+	FString RequestBody;
+	TSharedRef<TJsonWriter<>> Writer = TJsonWriterFactory<>::Create(&RequestBody);
+	FJsonSerializer::Serialize(JsonObject.ToSharedRef(), Writer);
+
+	// 设置 HTTP 请求体
+	Request->SetContentAsString(RequestBody);
+	// 绑定会话创建完成回调
+	Request->OnProcessRequestComplete().BindUObject(this, &UMGameInstance::SessionCreationRequestCompleted, SessionSearchId);
+
+	if (!Request->ProcessRequest())
+	{
+		UE_LOG(LogTemp, Warning, TEXT("会话创建请求失败"))
+	}
+}
+
+void UMGameInstance::CancelSessionCreation()
+{
+	UE_LOG(LogTemp, Warning, TEXT("取消会话创建"))
+}
+
+void UMGameInstance::SessionCreationRequestCompleted(FHttpRequestPtr Request, FHttpResponsePtr Response,
+	bool bConnectedSuccessfully, FGuid SessionSearchId)
+{
+	if (!bConnectedSuccessfully)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("连接协调服务器失败，网络连接未成功!"))
+		return;
+	}
+
+	UE_LOG(LogTemp, Warning, TEXT("连接协调服务器成功!"))
 }
 
 void UMGameInstance::PlayerJoined(const FUniqueNetIdRepl& UniqueId)

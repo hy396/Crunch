@@ -4,7 +4,19 @@
 
 #include "CoreMinimal.h"
 #include "Engine/GameInstance.h"
+#include "Interfaces/IHttpResponse.h"
+#include "Interfaces/IHttpRequest.h"
 #include "MGameInstance.generated.h"
+
+
+/**
+ * 登录完成委托
+ * 参数：
+ *   - bWasSuccessful：登录是否成功
+ *   - PlayerNickName：玩家昵称
+ *   - ErrorMsg：错误信息
+ */
+DECLARE_MULTICAST_DELEGATE_ThreeParams(FOnLoginCompleted, bool /*bWasSuccessful*/, const FString& /*PlayerNickName*/, const FString& /*ErrorMsg*/);
 
 /**
  * 自定义游戏实例类 - 管理游戏全局状态和在线服务
@@ -23,6 +35,45 @@ public:
 	void StartMatch();
 	// 游戏实例初始化
 	virtual void Init() override;
+
+	/*************************************/
+	/*             登录功能              */
+	/*************************************/
+public:
+	// 检查是否已登录
+	bool IsLoggedIn() const;
+	
+	// 检查是否正在登录中
+	bool IsLoggingIn() const;
+	
+	// 客户端通过账户门户登录
+	void ClientAccountPortalLogin();
+	
+	// 登录完成委托
+	FOnLoginCompleted OnLoginCompleted;
+	
+private:
+	// 客户端登录实现
+	void ClientLogin(const FString& Type, const FString& Id, const FString& Token);
+	
+	// 登录完成回调
+	void LoginCompleted(int32 NumOfLocalPlayer, bool bWasSuccessful, const FUniqueNetId& UserId, const FString& Error);
+
+	// 登录委托句柄
+	FDelegateHandle LoggingInDelegateHandle;
+	/*************************************/
+	/*      客户端会话创建和搜索			 */
+	/*************************************/
+public:
+	// 请求创建并加入新会话
+	void RequestCreateAndJoinSession(const FName& NewSessionName);
+	
+	// 取消会话创建
+	void CancelSessionCreation();
+
+private:
+	// 会话创建请求完成回调
+	void SessionCreationRequestCompleted(FHttpRequestPtr Request, FHttpResponsePtr Response, bool bConnectedSuccessfully, FGuid SessionSearchId);
 	/*************************************/
 	/*           会话服务器功能			 */
 	/*************************************/

@@ -4,8 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "WaitingWidget.h"
+#include "OnlineSessionSettings.h"
 #include "Blueprint/UserWidget.h"
 #include "Components/EditableText.h"
+#include "Components/ScrollBox.h"
 #include "Components/WidgetSwitcher.h"
 #include "Framework/MGameInstance.h"
 #include "MainMenuWidget.generated.h"
@@ -44,7 +46,7 @@ private:
 	UPROPERTY(meta=(BindWidget))
 	TObjectPtr<UButton> CreateSessionButton;
 
-	// 输入房间的名称的文本框
+	// 输入房间(会话)的名称的文本框
 	UPROPERTY(meta=(BindWidget))
 	TObjectPtr<UEditableText> NewSessionNameText;
 
@@ -60,7 +62,34 @@ private:
 	UFUNCTION()
 	void NewSessionNameTextChanged(const FText& NewText);
 
-	
+	// 加入房间(会话)失败时调用
+	void JoinSessionFailed();
+
+	// 更新房间列表
+	void UpdateLobbyList(const TArray<FOnlineSessionSearchResult>& SearchResults);
+
+	// 房间列表容器
+	UPROPERTY(meta=(BindWidget))
+	TObjectPtr<UScrollBox> SessionScrollBox;
+
+	// 加入房间(会话)按钮
+	UPROPERTY(meta=(BindWidget))
+	TObjectPtr<UButton> JoinSessionBtn;
+
+	// 会话条目小部件类
+	UPROPERTY(EditDefaultsOnly, Category = "Session")
+	TSubclassOf<class USessionEntryWidget> SessionEntryWidgetClass;
+
+	// 当前选中的会话条目ID
+	FString CurrentSelectedSessionId = "";
+
+	// 点击“加入房间(会话)”按钮时调用
+	UFUNCTION()
+	void JoinSessionBtnClicked();
+
+	// 会话条目被选中时调用
+	void SessionEntrySelected(const FString& SelectedEntryIdStr);
+
 	/******************************/	
 	/*           Login            */
 	/******************************/

@@ -125,7 +125,7 @@ void UMGameInstance::RequestCreateAndJoinSession(const FName& NewSessionName)
 	// 获取协调器服务的基础URL地址
 	FString CoordinatorURL  = UTNetStatics::GetCoordinatorURL();
 
-	// 拼接目标 API 地址：<CoordinatorURL>/Sessions
+	// 拼接目标 API 地址：<CoordinatorURL>/Sessions  
 	FString URL = FString::Printf(TEXT("%s/Sessions"), *CoordinatorURL);
 	UE_LOG(LogTemp, Warning, TEXT("发送会话创建请求到 URL：%s"), *URL)
 	
@@ -151,6 +151,7 @@ void UMGameInstance::RequestCreateAndJoinSession(const FName& NewSessionName)
 	// 绑定会话创建完成回调
 	Request->OnProcessRequestComplete().BindUObject(this, &UMGameInstance::SessionCreationRequestCompleted, SessionSearchId);
 
+	// 发送 HTTP 请求,测试中在python中编写代码接收请求信息
 	if (!Request->ProcessRequest())
 	{
 		UE_LOG(LogTemp, Warning, TEXT("会话创建请求失败"))
@@ -160,6 +161,65 @@ void UMGameInstance::RequestCreateAndJoinSession(const FName& NewSessionName)
 void UMGameInstance::CancelSessionCreation()
 {
 	UE_LOG(LogTemp, Warning, TEXT("取消会话创建"))
+	// 停止所有会话查找
+	StopAllSessionFindings();
+
+	// 清理会话委托
+	if (IOnlineSessionPtr SessionPtr = UTNetStatics::GetSessionPtr())
+	{
+		SessionPtr->OnFindSessionsCompleteDelegates.RemoveAll(this);
+		SessionPtr->OnJoinSessionCompleteDelegates.RemoveAll(this);
+	}
+
+	// 重新开始全局会话搜索
+	StartGlobalSessionSearch();
+}
+
+void UMGameInstance::StartGlobalSessionSearch()
+{
+	UE_LOG(LogTemp, Warning, TEXT("开始全局会话搜索"))
+	
+	// 设置定时器定期搜索会话
+	GetWorld()->GetTimerManager().SetTimer(
+		GlobalSessionSearchTimerHandle, 
+		this, 
+		&UMGameInstance::FindGlobalSessions, 
+		GlobalSessionSearchInterval, 
+		true, 
+		0.f
+	);
+}
+
+/**
+ * 尝试通过 SessionId 加入会话
+ * @param SessionIdStr 目标会话的唯一 SessionId 字符串
+ * @return 是否成功找到对应的会话并发起加入
+ */
+bool UMGameInstance::JoinSessionWithId(const FString& SessionIdStr)
+{
+	// 确认当前是否已经有一次有效会话搜索结果（SessionSearch 保存了上次搜索的数据）
+	if (SessionSearch.IsValid())
+	{
+		// 在搜索结果中查找是否存在与传入的 SessionIdStr 匹配的会话
+		const FOnlineSessionSearchResult* SessionSearchResult = SessionSearch->SearchResults.FindByPredicate(
+			[=](const FOnlineSessionSearchResult& Result)
+			{
+				// 比较搜索结果中的 SessionId 与目标 Id 是否相同
+				return Result.GetSessionIdStr() == SessionIdStr;
+			}
+		);
+
+		// 如果找到了匹配的会话
+		if (SessionSearchResult)
+		{
+			// 调用已有的函数，使用搜索结果尝试加入该会话
+			JoinSessionWithSearchResult(*SessionSearchResult);
+			return true; // 返回 true 表示找到了并已开始加入流程
+		}
+	}
+
+	// 如果搜索无效，或者没找到对应 SessionId 的会话，则返回 false
+	return false;
 }
 
 void UMGameInstance::SessionCreationRequestCompleted(FHttpRequestPtr Request, FHttpResponsePtr Response,
@@ -172,6 +232,307 @@ void UMGameInstance::SessionCreationRequestCompleted(FHttpRequestPtr Request, FH
 	}
 
 	UE_LOG(LogTemp, Warning, TEXT("连接协调服务器成功!"))
+
+	// 获取 HTTP 响应状态码
+	int32 ResponseCode = Response->GetResponseCode();
+	if (ResponseCode != 200)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("会话创建失败，服务器返回错误的状态码: %d"), ResponseCode)
+		return;
+	}
+	// 获取 HTTP 响应内容
+	FString ResponseContent = Response->GetContentAsString();
+
+	// 解析响应内容(JSON)
+	TSharedPtr<FJsonObject> JsonObject;
+	TSharedRef<TJsonReader<>> Reader = TJsonReaderFactory<>::Create(ResponseContent);
+	int32 Port = 0;
+	// 如果成功解析，则获取端口号
+	if (FJsonSerializer::Deserialize(Reader, JsonObject) && JsonObject.IsValid())
+	{
+		// 获取端口号字段（Key 从 UCNetStatics 获取，确保与服务端一致）
+		// Port = JsonObject->GetIntegerField(*(UTNetStatics::GetPortKey().ToString()));
+		if (JsonObject->TryGetNumberField(UTNetStatics::GetPortKey().ToString(), Port))
+		{
+			UE_LOG(LogTemp, Warning, TEXT("连接协调服务器成功，新创建的会话端口为: %d"), Port)
+		}else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("会话创建成功，但未找到端口号字段"))
+		}
+	}
+
+	// 开始查找并加入刚刚创建的会话
+	StartFindingCreatedSession(SessionSearchId);
+}
+
+void UMGameInstance::StartFindingCreatedSession(const FGuid& SessionSearchId)
+{
+	if (!SessionSearchId.IsValid())
+	{
+		UE_LOG(LogTemp, Warning, TEXT("会话搜索ID无效，无法开始查找！"))
+		return;
+	}
+	// 停止所有查找
+	StopAllSessionFindings();
+
+	UE_LOG(LogTemp, Warning, TEXT("开始查找新创建的会话，ID: %s"), *(SessionSearchId.ToString()))
+
+	// 创建一个定时器，用于定期查找已创建的会话
+	GetWorld()->GetTimerManager().SetTimer(
+		FindCreatedSessionTimerHandle,
+		FTimerDelegate::CreateUObject(this, &UMGameInstance::FindCreatedSession, SessionSearchId),
+		FindCreatedSessionSearchInterval,
+		true, 0.f
+		);
+
+	// 超时定时器
+	GetWorld()->GetTimerManager().SetTimer(
+		FindCreatedSessionTimeoutTimerHandle,
+		this,
+		&UMGameInstance::FindCreatedSessionTimeout,
+		FindCreatedSessionTimeoutDuration
+		);
+}
+
+void UMGameInstance::StopAllSessionFindings()
+{
+	UE_LOG(LogTemp, Warning, TEXT("停止所有会话查找"))
+	StopFindingCreatedSession();
+	StopGlobalSessionSearch();
+}
+
+void UMGameInstance::StopFindingCreatedSession()
+{
+	UE_LOG(LogTemp, Warning, TEXT("停止查找已创建的会话"))
+
+	GetWorld()->GetTimerManager().ClearTimer(FindCreatedSessionTimerHandle);
+	GetWorld()->GetTimerManager().ClearTimer(FindCreatedSessionTimeoutTimerHandle);
+
+	// 清理会话委托
+	if (IOnlineSessionPtr SessionPtr = UTNetStatics::GetSessionPtr())
+	{
+		// 移除查找会话完成委托
+		SessionPtr->OnFindSessionsCompleteDelegates.RemoveAll(this);
+		// 移除加入会话完成委托
+		SessionPtr->OnJoinSessionCompleteDelegates.RemoveAll(this);
+	}
+}
+
+void UMGameInstance::StopGlobalSessionSearch()
+{
+	UE_LOG(LogTemp, Warning, TEXT("停止全局会话查找"))
+	// 停止全局会话查找定时器
+	if (GlobalSessionSearchTimerHandle.IsValid())
+	{
+		GetWorld()->GetTimerManager().ClearTimer(GlobalSessionSearchTimerHandle);
+	}
+
+	// 清理会话搜索完成的回调委托
+	if (IOnlineSessionPtr SessionPtr = UTNetStatics::GetSessionPtr())
+	{
+		SessionPtr->OnFindSessionsCompleteDelegates.RemoveAll(this);
+	}
+}
+
+void UMGameInstance::FindGlobalSessions()
+{
+	UE_LOG(LogTemp, Warning, TEXT("----- 重试全局会话查找 -----"))
+	IOnlineSessionPtr SessionPtr = UTNetStatics::GetSessionPtr();
+	if (!SessionPtr)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("无法找到Session接口，等待下一次全局会话查找"))
+		return;
+	}
+
+	// 创建会话搜索对象
+	SessionSearch = MakeShareable(new FOnlineSessionSearch);
+	SessionSearch->bIsLanQuery = false;		// 设置为非局域网查询
+	SessionSearch->MaxSearchResults = 100;	// 最多搜索100个结果
+
+	// 重新添加会话搜索完成委托
+	SessionPtr->OnFindSessionsCompleteDelegates.RemoveAll(this);
+	SessionPtr->OnFindSessionsCompleteDelegates.AddUObject(
+		this, 
+		&UMGameInstance::GlobalSessionSearchCompleted
+	);
+	// 搜索会话
+	if (!SessionPtr->FindSessions(0, SessionSearch.ToSharedRef()))
+	{
+		UE_LOG(LogTemp, Warning, TEXT("全局会话搜索失败！"))
+		SessionPtr->OnFindSessionsCompleteDelegates.RemoveAll(this);
+	}
+}
+
+void UMGameInstance::GlobalSessionSearchCompleted(bool bWasSuccessful)
+{
+	if (bWasSuccessful)
+	{
+		// 搜索成功，广播会话搜索结果
+		OnGlobalSessionSearchCompleted.Broadcast(SessionSearch->SearchResults);
+		// 遍历搜索会话名称
+		for (const FOnlineSessionSearchResult& OnlineSessionSearchResult : SessionSearch->SearchResults)
+		{
+			FString SessionName = "Name_None";
+			OnlineSessionSearchResult.Session.SessionSettings.Get<FString>(UTNetStatics::GetSessionNameKey(), SessionName);
+
+			UE_LOG(LogTemp, Warning, TEXT("发现会话: %s (全局搜索结果)"), *SessionName)
+		}
+	}else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("全局会话搜索失败！"))
+	}
+	// 搜索完成移除会话搜索完成委托
+	if (IOnlineSessionPtr SessionPtr = UTNetStatics::GetSessionPtr())
+	{
+		SessionPtr->OnFindSessionsCompleteDelegates.RemoveAll(this);
+	}
+}
+
+void UMGameInstance::FindCreatedSession(FGuid SessionSearchId)
+{
+	UE_LOG(LogTemp, Warning, TEXT("尝试查找已创建的会话"))
+	
+	// 获取在线子系统的 Session 接口指针
+	IOnlineSessionPtr SessionPtr = UTNetStatics::GetSessionPtr();
+	if (!SessionPtr.IsValid())
+	{
+		UE_LOG(LogTemp, Warning, TEXT("会话接口无效，无法查找已创建的会话"))
+		return;
+	}
+	// 创建会话搜索对象
+	SessionSearch = MakeShareable(new FOnlineSessionSearch);
+	if (!SessionSearch.IsValid())
+	{
+		UE_LOG(LogTemp, Warning, TEXT("无法创建会话搜索对象，取消查找"))
+		return;
+	}
+	// 配置搜索参数
+	SessionSearch->bIsLanQuery = false;		// 设置为非局域网查询(搜索在线会话)
+	SessionSearch->MaxSearchResults = 1;	// 只搜索一个结果
+	// 设置搜索条件: 匹配 SessionSearchId
+	SessionSearch->QuerySettings.Set(
+		UTNetStatics::GetSessionSearchIdKey(), // 键名（和创建时保持一致）
+		SessionSearchId.ToString(),            // 转换成字符串存储
+		EOnlineComparisonOp::Equals            // 等于匹配
+	);
+
+	// 清理并重新绑定会话搜索结果回调
+	SessionPtr->OnFindSessionsCompleteDelegates.RemoveAll(this);
+	SessionPtr->OnFindSessionsCompleteDelegates.AddUObject(this,
+		&UMGameInstance::FindCreateSessionCompleted);
+
+	// 开始查找会话
+	if (!SessionPtr->FindSessions(0, SessionSearch.ToSharedRef()))
+	{
+		UE_LOG(LogTemp, Warning, TEXT("查找已创建的会话失败"))
+		// 移除回调
+		SessionPtr->OnFindSessionsCompleteDelegates.RemoveAll(this);
+	}
+}
+
+void UMGameInstance::FindCreatedSessionTimeout()
+{
+	UE_LOG(LogTemp, Warning, TEXT("查找已创建会话超时"))
+	StopFindingCreatedSession();
+}
+
+void UMGameInstance::FindCreateSessionCompleted(bool bWasSuccessful)
+{
+	if (!bWasSuccessful || SessionSearch->SearchResults.Num() == 0)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("未找到已创建的会话"))
+		return;
+	}
+	// 停止查找
+	StopFindingCreatedSession();
+	// 加入已创建的会话
+	JoinSessionWithSearchResult(SessionSearch->SearchResults[0]);
+}
+
+void UMGameInstance::JoinSessionWithSearchResult(const class FOnlineSessionSearchResult& SearchResult)
+{
+	UE_LOG(LogTemp, Warning, TEXT("尝试加入会话..."))
+
+	// 获取会话接口
+	IOnlineSessionPtr SessionPtr = UTNetStatics::GetSessionPtr();
+	if (!SessionPtr.IsValid())
+	{
+		UE_LOG(LogTemp, Warning, TEXT("会话接口无效，无法加入会话"))
+		return;
+	}
+
+	// 从搜索结果中获取会话名称
+	FString SessionName = "";
+	SearchResult.Session.SessionSettings.Get<FString>(UTNetStatics::GetSessionNameKey(), SessionName);
+
+	// 从搜索结果中提取端口号(端口号默认为:7777)
+	const FOnlineSessionSetting* PortSetting = SearchResult.Session.SessionSettings.Settings.Find(UTNetStatics::GetPortKey());
+	int64 Port = 7777;
+	if (PortSetting)
+	{
+		PortSetting->Data.GetValue(Port);
+	}
+	UE_LOG(LogTemp, Warning, TEXT("尝试加入会话: %s，端口: %lld"), *(SessionName), Port)
+
+	// 清理旧加入会话委托
+	SessionPtr->OnJoinSessionCompleteDelegates.RemoveAll(this);
+	SessionPtr->OnJoinSessionCompleteDelegates.AddUObject(this, &UMGameInstance::JoinSessionCompleted, Port);
+
+	// 尝试正式加入会话
+	if (!SessionPtr->JoinSession(0, FName(SessionName), SearchResult))
+	{
+		// 如果加入会话失败，打印错误并广播失败事件
+		UE_LOG(LogTemp, Warning, TEXT("加入会话失败！"))
+		SessionPtr->OnJoinSessionCompleteDelegates.RemoveAll(this);
+		OnJoinSessionFailed.Broadcast();
+	}
+}
+
+void UMGameInstance::JoinSessionCompleted(FName SessionName, EOnJoinSessionCompleteResult::Type JoinResult, int64 Port)
+{
+	IOnlineSessionPtr SessionPtr = UTNetStatics::GetSessionPtr();
+	if (!SessionPtr)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("加入会话完成,但未找到会话接口"))
+		OnJoinSessionFailed.Broadcast();
+		return;
+	}
+	// 加入会话的结果类型是否为加入成功的类型
+	if (JoinResult == EOnJoinSessionCompleteResult::Success)
+	{
+		// 停止所有查找
+		StopAllSessionFindings();
+		UE_LOG(LogTemp, Warning, TEXT("成功加入会话: %s,端口: %d"), *(SessionName.ToString()), Port)
+
+		// 获取服务器连接字符串
+		FString TravelURL = "";
+		SessionPtr->GetResolvedConnectString(SessionName, TravelURL);
+
+#if WITH_EDITOR
+		// 在编辑器模式下，允许测试用 URL 覆盖
+		FString TestingURL = UTNetStatics::GetTestingURL();
+		if (!TestingURL.IsEmpty())
+		{
+			TravelURL = TestingURL;
+			UE_LOG(LogTemp, Warning, TEXT("使用测试URL覆盖: %s | Using testing URL override: %s"), *TravelURL, *TravelURL);
+		}
+#endif
+
+		// 实际的 URL
+		UTNetStatics::ReplacePort(TravelURL, Port);
+
+		UE_LOG(LogTemp, Warning, TEXT("跳转到会话地址: %s"), *TravelURL)
+
+		// 客户端执行跳转，进入目标会话地图
+		GetFirstLocalPlayerController(GetWorld())->ClientTravel(TravelURL, ETravelType::TRAVEL_Absolute);
+
+	}else
+	{
+		// 广播失败事件
+		OnJoinSessionFailed.Broadcast();
+	}
+
+	SessionPtr->OnJoinSessionCompleteDelegates.RemoveAll(this);
 }
 
 void UMGameInstance::PlayerJoined(const FUniqueNetIdRepl& UniqueId)

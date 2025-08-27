@@ -144,4 +144,24 @@ public:
 	 * 调用 GetCommandlineArgAsInt(TEXT("port")) 将返回 8080
 	 */
 	static int GetCommandlineArgAsInt(const FName& ParamName);
+
+	/**
+	 * 获取测试用URL地址
+	 * @return 测试环境的服务URL
+	 */
+	static FString GetTestingURL();
+
+	/**
+	 * 获取测试URL键值
+	 * @return 测试URL的FName键
+	 */
+	static FName GetTestingURLKey();
+
+	/**
+	 * 替换URL中的端口号
+	 * @param OutURLStr 输入输出的URL字符串
+	 * @param NewPort 新的端口号
+	 */
+	static void ReplacePort(FString& OutURLStr, int NewPort);
+	
 };

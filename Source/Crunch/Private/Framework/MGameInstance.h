@@ -6,6 +6,8 @@
 #include "Engine/GameInstance.h"
 #include "Interfaces/IHttpResponse.h"
 #include "Interfaces/IHttpRequest.h"
+#include "OnlineSessionSettings.h"
+#include "Interfaces/OnlineSessionInterface.h"
 #include "MGameInstance.generated.h"
 
 
@@ -18,6 +20,11 @@
  */
 DECLARE_MULTICAST_DELEGATE_ThreeParams(FOnLoginCompleted, bool /*bWasSuccessful*/, const FString& /*PlayerNickName*/, const FString& /*ErrorMsg*/);
 
+// 全局会话搜索完成委托
+DECLARE_MULTICAST_DELEGATE_OneParam(FOnGlobalSessionSearchCompleted, const TArray<FOnlineSessionSearchResult>& /*SearchResults*/)
+
+// 加入会话失败委托
+DECLARE_MULTICAST_DELEGATE(FOnJoinSesisonFailed);
 /**
  * 自定义游戏实例类 - 管理游戏全局状态和在线服务
  * 功能：
@@ -71,9 +78,81 @@ public:
 	// 取消会话创建
 	void CancelSessionCreation();
 
+	// 开始全局会话搜索
+	void StartGlobalSessionSearch();
+	
+	// 通过会话ID加入会话
+	bool JoinSessionWithId(const FString& SessionIdStr);
+	
+	// 加入会话失败委托
+	FOnJoinSesisonFailed OnJoinSessionFailed;
+	
+	// 全局会话搜索完成委托
+	FOnGlobalSessionSearchCompleted OnGlobalSessionSearchCompleted;
+
 private:
 	// 会话创建请求完成回调
 	void SessionCreationRequestCompleted(FHttpRequestPtr Request, FHttpResponsePtr Response, bool bConnectedSuccessfully, FGuid SessionSearchId);
+
+	// 开始查找已创建的会话
+	void StartFindingCreatedSession(const FGuid& SessionSearchId);
+	
+	// 停止所有会话查找
+	void StopAllSessionFindings();
+	
+	// 停止查找已创建的会话
+	void StopFindingCreatedSession();
+	
+	// 停止全局会话搜索
+	void StopGlobalSessionSearch();
+
+	// 查找全局会话
+	void FindGlobalSessions();
+	
+	// 全局会话搜索完成回调
+	void GlobalSessionSearchCompleted(bool bWasSuccessful);
+
+	// 定时器句柄：查找已创建会话
+	FTimerHandle FindCreatedSessionTimerHandle;
+	
+	// 定时器句柄：查找已创建会话超时
+	FTimerHandle FindCreatedSessionTimeoutTimerHandle;
+
+	// 定时器句柄：全局会话搜索
+	FTimerHandle GlobalSessionSearchTimerHandle;
+	
+	// 全局会话搜索间隔
+	UPROPERTY(EditDefaultsOnly, Category = "Session Search")
+	float GlobalSessionSearchInterval = 2.f;
+
+	// 查找已创建会话间隔
+	UPROPERTY(EditDefaultsOnly, Category = "Session Search")
+	float FindCreatedSessionSearchInterval = 1.f;
+
+	// 查找已创建会话超时时间
+	UPROPERTY(EditDefaultsOnly, Category = "Session Search")
+	float FindCreatedSessionTimeoutDuration = 60.f;
+
+	// 查找已创建会话
+	void FindCreatedSession(FGuid SessionSearchId);
+	
+	// 查找已创建会话超时
+	void FindCreatedSessionTimeout();
+	
+	// 查找已创建会话完成回调
+	void FindCreateSessionCompleted(bool bWasSuccessful);
+	
+	// 通过搜索结果加入会话
+	void JoinSessionWithSearchResult(const class FOnlineSessionSearchResult& SearchResult);
+
+	// 加入会话完成回调
+	void JoinSessionCompleted(FName SessionName, EOnJoinSessionCompleteResult::Type JoinResult, int64 Port);
+	
+	// 会话搜索对象
+	TSharedPtr<class FOnlineSessionSearch> SessionSearch;
+
+
+
 	/*************************************/
 	/*           会话服务器功能			 */
 	/*************************************/

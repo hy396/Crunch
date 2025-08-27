@@ -186,3 +186,28 @@ int32 UTNetStatics::GetCommandlineArgAsInt(const FName& ParamName)
 	FParse::Value(FCommandLine::Get(), *CommandLineArg, OutVal);
 	return OutVal;
 }
+
+FString UTNetStatics::GetTestingURL()
+{
+	FString TestURL = GetCommandlineArgAsString(GetTestingURLKey());
+	UE_LOG(LogTemp, Warning, TEXT("获取测试的 URL: %s"), *TestURL)
+	return TestURL;
+}
+
+FName UTNetStatics::GetTestingURLKey()
+{
+	return FName("TESTING_URL");
+}
+
+void UTNetStatics::ReplacePort(FString& OutURLStr, int NewPort)
+{
+	// 用现有的字符串构造一个 FURL 对象
+	// FURL 是 UE 内部的 “统一资源定位符”，专门用于网络连接/关卡跳转
+	FURL URL(nullptr, *OutURLStr, ETravelType::TRAVEL_Absolute);
+
+	// 把 FURL 里的端口号改掉
+	URL.Port = NewPort;
+
+	// 再转回字符串，覆盖原来的 URL
+	OutURLStr = URL.ToString();
+}

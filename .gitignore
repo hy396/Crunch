@@ -75,6 +75,9 @@ Plugins/**/Intermediate/*
 # Cache files for the editor to use
 DerivedDataCache/*
 
+# 忽略服务器部署文件
+ServerDeploy/server/server/*
+
 ###########################################################
 #                        PYTHON                           #
 ###########################################################

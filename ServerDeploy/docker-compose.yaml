@@ -1,0 +1,23 @@
+# 定义服务配置
+services:
+  # 主服务容器
+  server:
+    # 使用当前目录下的Dockerfile构建镜像
+    build: ./server
+    # 镜像名称
+    image: server
+
+  # 协调服务容器
+  coordinator:
+    # 使用coordinator子目录的Dockerfile构建
+    build: ./coordinator
+    # 镜像名称
+    image: coordinator
+    # 自定义容器名称
+    container_name: servercoordinator
+    # 挂载Docker套接字实现容器管理
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    # 映射80端口供外部访问
+    ports:
+      - '80:80'

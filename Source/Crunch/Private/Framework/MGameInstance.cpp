@@ -251,14 +251,14 @@ void UMGameInstance::SessionCreationRequestCompleted(FHttpRequestPtr Request, FH
 	if (FJsonSerializer::Deserialize(Reader, JsonObject) && JsonObject.IsValid())
 	{
 		// 获取端口号字段（Key 从 UCNetStatics 获取，确保与服务端一致）
-		// Port = JsonObject->GetIntegerField(*(UTNetStatics::GetPortKey().ToString()));
-		if (JsonObject->TryGetNumberField(UTNetStatics::GetPortKey().ToString(), Port))
-		{
-			UE_LOG(LogTemp, Warning, TEXT("连接协调服务器成功，新创建的会话端口为: %d"), Port)
-		}else
-		{
-			UE_LOG(LogTemp, Warning, TEXT("会话创建成功，但未找到端口号字段"))
-		}
+		Port = JsonObject->GetIntegerField(*(UTNetStatics::GetPortKey().ToString()));
+		// if (JsonObject->TryGetNumberField(UTNetStatics::GetPortKey().ToString(), Port))
+		// {
+		// 	UE_LOG(LogTemp, Warning, TEXT("连接协调服务器成功，新创建的会话端口为: %d"), Port)
+		// }else
+		// {
+		// 	UE_LOG(LogTemp, Warning, TEXT("会话创建成功，但未找到端口号字段"))
+		// }
 	}
 
 	// 开始查找并加入刚刚创建的会话
@@ -508,7 +508,7 @@ void UMGameInstance::JoinSessionCompleted(FName SessionName, EOnJoinSessionCompl
 		FString TravelURL = "";
 		SessionPtr->GetResolvedConnectString(SessionName, TravelURL);
 
-#if WITH_EDITOR
+// #if WITH_EDITOR
 		// 在编辑器模式下，允许测试用 URL 覆盖
 		FString TestingURL = UTNetStatics::GetTestingURL();
 		if (!TestingURL.IsEmpty())
@@ -516,7 +516,7 @@ void UMGameInstance::JoinSessionCompleted(FName SessionName, EOnJoinSessionCompl
 			TravelURL = TestingURL;
 			UE_LOG(LogTemp, Warning, TEXT("使用测试URL覆盖: %s | Using testing URL override: %s"), *TravelURL, *TravelURL);
 		}
-#endif
+// #endif
 
 		// 实际的 URL
 		UTNetStatics::ReplacePort(TravelURL, Port);

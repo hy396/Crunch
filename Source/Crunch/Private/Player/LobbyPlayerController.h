@@ -4,6 +4,9 @@
 
 #include "CoreMinimal.h"
 #include "MenuPlayerController.h"
+#include "UI/Gameplay/Chat/Interface/ChatInterface.h"	// 聊天接口
+#include "UI/Gameplay/Chat/ChatWidget.h"
+#include "UI/Lobby/LobbyWidget.h"
 #include "LobbyPlayerController.generated.h"
 
 /**
@@ -18,11 +21,17 @@ DECLARE_DELEGATE(FOnSwitchToHeroSelection);
  * 负责协调玩家槽位选择、英雄选择和比赛启动流程
  */
 UCLASS()
-class CRUNCH_API ALobbyPlayerController : public AMenuPlayerController
+class CRUNCH_API ALobbyPlayerController : public AMenuPlayerController, public IChatInterface
 {
 	GENERATED_BODY()
 public:
 	ALobbyPlayerController();
+
+	// 输入组件初始化
+	virtual void SetupInputComponent() override;
+
+	// UI组件初始化
+	virtual void BeginPlay() override;
 
 	/**
 	 * 切换到英雄选择界面的委托实例
@@ -60,4 +69,32 @@ public:
 	 */
 	UFUNCTION(Client, Reliable)
 	void Client_StartHeroSelection();
+
+	// 聊天系统相关函数
+	/**
+	 * 服务器端处理聊天消息发送请求
+	 * @param Message 消息内容
+	 * @param ChannelType 聊天频道类型
+	 */
+	UFUNCTION(Server, Reliable, WithValidation)
+	void Server_SendChatMessage(const FString& Message, EChatChannelType ChannelType);
+
+	/**
+	 * 客户端接收聊天消息
+	 * @param Message 聊天消息
+	 */
+	UFUNCTION(Client, Reliable)
+	void Client_ReceiveChatMessage(const FChatMessage& Message);
+
+	// IChatInterface 接口实现
+	virtual void SendChatMessageToServer(const FString& Message, EChatChannelType ChannelType) override;
+	virtual void ReceiveChatMessageFromServer(const FChatMessage& Message) override;
+
+private:
+	// 缓存的大厅UI组件
+	UPROPERTY()
+	TObjectPtr<ULobbyWidget> CachedLobbyWidget;
+
+	// 获取大厅UI组件
+	ULobbyWidget* GetLobbyWidget();
 };

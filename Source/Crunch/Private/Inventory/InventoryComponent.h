@@ -47,6 +47,8 @@ public:
 	void TryActivateItem(const FInventoryItemHandle& ItemHandle);
 	// 尝试购买商店物品
 	void TryPurchase(const UPDA_ShopItem* ItemToPurchase);
+	//	// 尝试购买商店物品(附带出售版)
+	//	void TryPurchase(const UPDA_ShopItem* ItemToPurchase,TArray<FInventoryItemHandle> RemoveHandles);
 	// 出售指定物品
 	void SellItem(const FInventoryItemHandle& ItemHandle);
 	// 获取当前金币数量
@@ -129,6 +131,10 @@ private:
 	/** 服务器端：处理购买请求 */
 	UFUNCTION(Server, Reliable, WithValidation)
 	void Server_Purchase(const UPDA_ShopItem* ItemToPurchase);
+
+	/** 服务器端：处理购买请求，顺便卖出处理 */
+	UFUNCTION(Server, Reliable, WithValidation)
+	void Server_PurchaseItem(const UPDA_ShopItem* ItemToPurchase,const TArray<FInventoryItemHandle>& RemoveHandles);
 
 	/** 服务器端：处理物品激活请求 */
 	UFUNCTION(Server, Reliable, WithValidation)

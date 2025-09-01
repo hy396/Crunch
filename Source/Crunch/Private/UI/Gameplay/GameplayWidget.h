@@ -7,6 +7,7 @@
 #include "ValueGauge.h"
 #include "Abilities/AbilityListView.h"
 #include "Blueprint/UserWidget.h"
+#include "Chat/ChatWidget.h"
 #include "GAS/Core/CGameplayAbilityTypes.h"
 #include "Inventory/InventoryWidget.h"
 #include "Shop/ShopWidget.h"
@@ -43,6 +44,27 @@ public:
 
 	// 设置游戏菜单标题文本
 	void SetGameplayMenuTitle(const FString& NewTitle);
+
+	// 聊天系统相关函数
+	// 智能切换聊天：在临时模式下直接进入正常聊天，否则正常切换
+	void SmartToggleChat();
+
+	// 显示聊天窗口
+	void ShowChat();
+
+	// 隐藏聊天窗口
+	void HideChat();
+
+	// 显示临时聊天消息
+	void ShowTemporaryChatMessage(const FChatMessage& Message, bool bIsSelf, bool bIsTeammate);
+
+	// 显示弹幕消息
+	void ShowBarrageMessage(const FChatMessage& Message, bool bIsSelf, bool bIsTeammate);
+
+	// // 接收聊天消息（添加到聊天记录）
+	// void ReceiveChatMessage(const FChatMessage& Message);
+
+	
 private:
 	// 生命进度条
 	UPROPERTY(meta = (BindWidget))
@@ -111,6 +133,10 @@ private:
 	// 准星UI
 	UPROPERTY(meta=(BindWidget))
 	TObjectPtr<UCrosshairWidget> CrosshairWidget;
+
+	// 聊天UI
+	UPROPERTY(meta=(BindWidget))
+	TObjectPtr<UChatWidget> ChatWidget;
 	
 	// 商店弹出动画
 	UPROPERTY(Transient, meta=(BindWidgetAnim))
@@ -129,4 +155,8 @@ private:
 
 	UPROPERTY()
 	TObjectPtr<UAbilitySystemComponent> OwnerAbilitySystemComponent;
+
+	// 聊天消息项控件类
+	UPROPERTY(EditDefaultsOnly, Category = "Chat")
+	TSubclassOf<UUserWidget> ChatMessageItemClass;
 };

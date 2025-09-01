@@ -22,7 +22,7 @@ class UMGameInstance : public UGameInstance
 class ACrunchGameMode : public AGameModeBase
 
 // 玩家控制器 - 处理玩家输入和网络通信
-class ACrunchPlayerController : public APlayerController
+class ACPlayerController : public APlayerController
 ```
 
 ### 2. 角色系统 (Character)
@@ -39,7 +39,7 @@ UCLASS(BlueprintType)
 class UPDA_CharacterDefinition : public UPrimaryDataAsset
 
 // 角色基类
-class ACrunchCharacter : public ACharacter
+class ACCharacter : public ACharacter
 
 // 角色组件系统
 class UCharacterComponent : public UActorComponent
@@ -157,6 +157,64 @@ class ARenderActor : public AActor
 - **可靠传输**: 重要游戏事件确保送达
 - **不可靠传输**: 位置更新等高频数据
 
+### 8. 聊天系统 (Chat System)
+
+#### 设计理念
+- 实时多人游戏聊天功能
+- 支持多频道和发送者类型识别
+- 网络同步和丰富的UI交互
+
+#### 核心组件
+```cpp
+// 聊天数据结构
+USTRUCT(BlueprintType)
+struct FChatMessage
+{
+    FString SenderName;
+    FString MessageContent; 
+    EChatChannelType ChannelType;
+    FGenericTeamId SenderTeamId;
+    FDateTime Timestamp;
+};
+
+// 聊天界面主控件
+class UChatWidget : public UUserWidget
+
+// 消息项显示控件
+class UChatMessageItemWidget : public UUserWidget
+
+// 聊天接口
+class IChatInterface
+```
+
+#### 功能特性
+- **多频道支持**: 队伍聊天和全体聊天
+- **发送者识别**: 自己/队友/对手三种类型
+- **富文本显示**: 支持颜色和格式化
+- **弹幕模式**: 实时滚动显示
+- **临时消息**: 10秒自动隐藏的快速显示
+- **永久记录**: 支持聊天历史查看
+
+#### 网络同步策略
+- **可靠传输**: 聊天消息使用可靠RPC
+- **多播机制**: 服务器统一广播消息
+- **团队识别**: 基于GenericTeamId系统
+- **频道过滤**: 服务器端进行消息路由
+
+#### UI分层设计
+```
+聊天UI层级结构:
+├── ChatWidget (主聊天界面)
+│   ├── ChatScrollBox (消息列表)
+│   │   └── ChatMessageItemWidget (单条消息)
+│   ├── ChatInputBox (输入框)
+│   ├── ChannelComboBox (频道选择)
+│   └── SendButton (发送按钮)
+└── Barrage System (弹幕系统)
+    └── BarrageCanvas (弹幕容器)
+        └── ChatMessageItemWidget (弹幕消息项)
+```
+
 ### 7. AI系统 (Artificial Intelligence)
 
 #### AI架构层次
@@ -243,6 +301,7 @@ graph TB
     Framework[Framework] --> Character[Character]
     Framework --> Network[Network]
     Framework --> UI[UI System]
+    Framework --> Chat[Chat System]
     
     Character --> GAS[GAS System]
     Character --> AI[AI System]
@@ -251,6 +310,11 @@ graph TB
     UI --> Inventory
     UI --> GAS
     UI --> Network
+    UI --> Chat
+    
+    Chat --> Network
+    Chat --> UI
+    Chat --> Framework
     
     Inventory --> GAS
     AI --> GAS

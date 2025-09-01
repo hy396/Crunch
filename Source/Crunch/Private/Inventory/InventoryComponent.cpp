@@ -33,9 +33,21 @@ void UInventoryComponent::TryPurchase(const UPDA_ShopItem* ItemToPurchase)
 {
 	if (!OwnerAbilitySystemComponent) return;
 
+	// 自动计算需要移除的物品（合成材料）
+    TArray<FInventoryItemHandle> RemoveHandles;
+    GetPurchasePrice(ItemToPurchase, RemoveHandles);
+
 	// 在服务器中进行购买
-	Server_Purchase(ItemToPurchase);
+	Server_PurchaseItem(ItemToPurchase, RemoveHandles);
 }
+
+// void UInventoryComponent::TryPurchase(const UPDA_ShopItem* ItemToPurchase,TArray<FInventoryItemHandle> RemoveHandles)
+// {
+// 	if (!OwnerAbilitySystemComponent) return;
+
+// 	// 在服务器中执行购买
+// 	Server_Purchase(ItemToPurchase, RemoveHandles);
+// }
 
 void UInventoryComponent::SellItem(const FInventoryItemHandle& ItemHandle)
 {
@@ -612,3 +624,54 @@ bool UInventoryComponent::Server_Purchase_Validate(const UPDA_ShopItem* ItemToPu
 	return true;
 }
 
+void UInventoryComponent::Server_PurchaseItem_Implementation(const UPDA_ShopItem* ItemToPurchase,const TArray<FInventoryItemHandle>& RemoveHandles)
+{
+	if (!ItemToPurchase) return;
+
+	// 购买物品的金额
+    // 计算基础购买价格
+    float PurchasePrice = ItemToPurchase->GetPrice();
+    
+    // 减去需要移除的物品价格（用作材料或出售）
+    for (const FInventoryItemHandle& Handle : RemoveHandles)
+    {
+        if (UInventoryItem* FoundItem = GetInventoryItemByHandle(Handle))
+        {
+            // 减去该物品的价格
+            float ItemPrice = FoundItem->GetShopItem()->GetPrice();
+            PurchasePrice -= ItemPrice;
+            UE_LOG(LogTemp, Log, TEXT("移除物品: %s, 价格: %.2f"), 
+                *FoundItem->GetShopItem()->GetItemName().ToString(), ItemPrice);
+        }
+    }
+
+	// 金币不够无法购买(理论上金币是够的)(新添加了双击购买，理论失败，退回了右键购买，理论失败)
+	if (GetGold() < PurchasePrice) 
+    {
+        UE_LOG(LogTemp, Warning, TEXT("金币不足! 需要: %.2f, 拥有: %.2f"), PurchasePrice, GetGold());
+        return;
+    }
+	
+	// TODO:25/08/04修改的堆叠以及自动合成机制，不知是否有BUG先todo一手
+	// 物品可以堆叠，并且有位置放
+	if (GetAvailableStackForItem(ItemToPurchase))
+	{
+		// 扣掉金币
+		OwnerAbilitySystemComponent->ApplyModToAttribute(UCHeroAttributeSet::GetGoldAttribute(), EGameplayModOp::Additive, -PurchasePrice);
+		GrantItem(ItemToPurchase, PurchasePrice, RemoveHandles);
+		return;
+	}
+	UE_LOG(LogTemp, Warning, TEXT("移除的数量: %d，背包格子：%d"), RemoveHandles.Num(),InventoryMap.Num())
+	// 不可堆叠物,计算参与合成后的位置
+	// 计算格子
+	if (InventoryMap.Num() - RemoveHandles.Num() + 1 > GetCapacity()) return;
+	// 格子足够，直接购买
+	// 扣掉金币
+	OwnerAbilitySystemComponent->ApplyModToAttribute(UCHeroAttributeSet::GetGoldAttribute(), EGameplayModOp::Additive, -PurchasePrice);
+	GrantItem(ItemToPurchase, PurchasePrice, RemoveHandles);
+}
+
+bool UInventoryComponent::Server_PurchaseItem_Validate(const UPDA_ShopItem* ItemToPurchase,const TArray<FInventoryItemHandle>& RemoveHandles)
+{
+	return true;
+}

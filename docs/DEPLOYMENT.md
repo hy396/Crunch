@@ -34,10 +34,7 @@ docker build -t crunch-coordinator:latest .
 
 3. **使用Docker Compose启动**
 ```bash
-# 回到项目根目录
-cd ../..
-
-# 启动所有服务
+# 启动服务
 docker-compose up -d
 ```
 
@@ -52,9 +49,9 @@ services:
   coordinator:
     image: crunch-coordinator:latest
     ports:
-      - "8080:8080"
+      - "80:80"
     environment:
-      - COORDINATOR_PORT=8080
+      - COORDINATOR_PORT=80
       - MAX_SERVERS=10
     volumes:
       - ./logs:/app/logs
@@ -70,7 +67,7 @@ services:
     environment:
       - SERVER_NAME=CrunchServer1
       - MAX_PLAYERS=16
-      - COORDINATOR_URL=http://coordinator:8080
+      - COORDINATOR_URL=http://coordinator:80
     depends_on:
       - coordinator
     volumes:
@@ -87,7 +84,7 @@ services:
     environment:
       - SERVER_NAME=CrunchServer2
       - MAX_PLAYERS=16
-      - COORDINATOR_URL=http://coordinator:8080
+      - COORDINATOR_URL=http://coordinator:80
     depends_on:
       - coordinator
     volumes:
@@ -125,7 +122,7 @@ RUN apt-get update && apt-get install -y \
 WORKDIR /app
 
 # 复制游戏服务器文件
-COPY ./CrunchServer /app/CrunchServer
+COPY ./Crunch/Binaries/Linux/CrunchServer /app/CrunchServer
 COPY ./Content /app/Content
 COPY ./Config /app/Config
 
@@ -136,7 +133,7 @@ RUN chmod +x /app/CrunchServer
 EXPOSE 7777/udp 7778/tcp
 
 # 启动命令
-CMD ["./CrunchServer", "-log"]
+CMD ["./CrunchServer", "Crunch", "-log"]
 ```
 
 #### 协调器 Dockerfile
@@ -145,23 +142,14 @@ CMD ["./CrunchServer", "-log"]
 # ServerDeploy/coordinator/Dockerfile
 FROM python:3.9-slim
 
-# 设置工作目录
-WORKDIR /app
+# 设置容器的工作目录为 /coordinator
+WORKDIR /coordinator
 
-# 复制requirements文件
-COPY requirements.txt .
+# 安装 Flask Web 框架 (用于运行 Python Web 服务)
+RUN pip3 install flask
 
-# 安装Python依赖
-RUN pip install --no-cache-dir -r requirements.txt
-
-# 复制应用代码
-COPY ./coordinator ./coordinator
-
-# 暴露端口
-EXPOSE 8080
-
-# 启动命令
-CMD ["python", "-m", "coordinator.coordinator"]
+# 设置容器启动命令，运行 coordinator.py
+ENTRYPOINT [ "python", "coordinator.py"]
 ```
 
 ## 🖥️ 传统服务器部署
@@ -205,15 +193,15 @@ New-NetFirewallRule -DisplayName "Crunch Query Port" -Direction Inbound -Protoco
 ```batch
 @echo off
 cd /d "C:\CrunchServer"
-CrunchServer.exe -log -stdout
+Crunch\Binaries\Win64\CrunchServer.exe Crunch -log -stdout
 pause
 ```
 
 5. **创建Windows服务**
 ```powershell
 # 使用NSSM创建服务
-nssm install CrunchGameServer "C:\CrunchServer\CrunchServer.exe"
-nssm set CrunchGameServer Parameters "-log -stdout"
+nssm install CrunchGameServer "C:\CrunchServer\Crunch\Binaries\Win64\CrunchServer.exe"
+nssm set CrunchGameServer Parameters "Crunch -log -stdout"
 nssm set CrunchGameServer Start SERVICE_AUTO_START
 ```
 
@@ -251,7 +239,7 @@ sudo su - crunchgame
 # 解压游戏文件
 cd /opt/crunchserver
 unzip CrunchServer-Linux.zip
-chmod +x CrunchServer
+chmod +x Crunch/Binaries/Linux/CrunchServer
 ```
 
 4. **创建systemd服务**
@@ -266,7 +254,7 @@ After=network.target
 Type=simple
 User=crunchgame
 WorkingDirectory=/opt/crunchserver
-ExecStart=/opt/crunchserver/CrunchServer -log
+ExecStart=/opt/crunchserver/Crunch/Binaries/Linux/CrunchServer Crunch -log
 Restart=always
 RestartSec=10
 

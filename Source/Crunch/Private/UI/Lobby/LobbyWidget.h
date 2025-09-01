@@ -6,6 +6,8 @@
 #include "Blueprint/UserWidget.h"
 #include "UI/Gameplay/Abilities/AbilityListView.h"
 #include "Player/PlayerInfoTypes.h"
+#include "UI/Gameplay/Chat/ChatWidget.h"
+#include "Components/CanvasPanel.h"
 #include "LobbyWidget.generated.h"
 
 class UPlayerTeamLayoutWidget;
@@ -19,6 +21,7 @@ class UTeamSelectionWidget;
 class UUniformGridPanel;
 class UButton;
 class UWidgetSwitcher;
+class UChatWidget;
 /**
  * 
  */
@@ -61,9 +64,9 @@ private:
 	 */
 	void SlotSelected(uint8 NewSlotID);
 
-	// 英雄选择根节点
+	// 英雄选择根节点（用于显示弹幕）
 	UPROPERTY(meta=(BindWidget))	
-	TObjectPtr<UWidget> HeroSelectionRoot;
+	TObjectPtr<UCanvasPanel> HeroSelectionRoot;
 
 	// 角色选择列表
 	UPROPERTY(meta=(BindWidget))	
@@ -132,4 +135,27 @@ private:
 	// 启动游戏按钮点击事件处理
 	UFUNCTION()
 	void StartMatchButtonClicked();
+
+private:
+	// 聊天消息项控件类（用于弹幕）
+	UPROPERTY(EditDefaultsOnly, Category = "Chat")
+	TSubclassOf<UUserWidget> ChatMessageItemClass;
+
+	// 聊天组件
+	UPROPERTY(meta=(BindWidget))
+	TObjectPtr<UChatWidget> ChatWidget;
+public:
+	// 聊天相关函数
+	// 设置聊天输入焦点（用于回车键直接输入）
+	UFUNCTION(BlueprintCallable)
+	void FocusChatInput();
+
+	// 显示弹幕消息（大厅弹幕效果）
+	UFUNCTION(BlueprintCallable)
+	void ShowBarrageMessage(const FChatMessage& Message, bool bIsSelf, bool bIsTeammate);
+
+	UChatWidget* GetChatWidget(){ return ChatWidget;};
+private:
+	// 配置大厅模式的聊天频道（移除全体聊天选项）
+	void ConfigureLobbyModeChat();
 };

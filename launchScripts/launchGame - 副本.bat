@@ -3,4 +3,5 @@
 -game ^
 -log ^
 -epicapp="GameClient" ^
--TESTING_URL="127.0.0.1:7779"
+-COORDINATOR_URL="172.26.148.175" ^
+-TESTING_URL="172.26.148.175:7777"

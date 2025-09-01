@@ -21,6 +21,11 @@
 #include "Player/LobbyPlayerController.h"
 #include "Player/MPlayerState.h"
 #include "UI/Gameplay/Abilities/AbilityListView.h"
+#include "UI/Gameplay/Chat/ChatWidget.h"
+#include "UI/Gameplay/Chat/ChatMessageItemWidget.h"
+#include "Components/CanvasPanel.h"
+#include "Components/CanvasPanelSlot.h"
+#include "Blueprint/WidgetLayoutLibrary.h"
 
 void ULobbyWidget::NativeConstruct()
 {
@@ -53,6 +58,20 @@ void ULobbyWidget::NativeConstruct()
 	}
 	
 	SpawnCharacterDisplay(); // 生成角色预览Actor
+
+	// 配置聊天组件
+	if (ChatWidget)
+	{
+		// 大厅聊天框一直显示，不需要隐藏
+		ChatWidget->SetVisibility(ESlateVisibility::Visible);
+		// 配置大厅模式的聊天频道（移除全体聊天）
+		ConfigureLobbyModeChat();
+		UE_LOG(LogTemp, Warning, TEXT("大厅聊天组件初始化完成"));
+	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("ChatWidget为空，无法初始化聊天功能"));
+	}
 }
 
 void ULobbyWidget::ClearAndPopulateTeamSelectionSlots()
@@ -267,4 +286,105 @@ void ULobbyWidget::StartMatchButtonClicked()
 		// 请求服务器开始比赛
 		LobbyPlayerController->Server_RequestStartMatch();
 	}
+}
+
+void ULobbyWidget::FocusChatInput()
+{
+	if (ChatWidget)
+	{
+		ChatWidget->FocusChatInput();
+	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("ChatWidget为空，无法设置输入焦点"));
+	}
+}
+
+void ULobbyWidget::ShowBarrageMessage(const FChatMessage& Message, bool bIsSelf, bool bIsTeammate)
+{
+	UE_LOG(LogTemp, Warning, TEXT("大厅弹幕 - 显示弹幕消息：%s"), *Message.MessageContent);
+	
+	if (!HeroSelectionRoot || !ChatMessageItemClass)
+	{
+		UE_LOG(LogTemp, Error, TEXT("HeroSelectionRoot或ChatMessageItemClass为空，无法显示弹幕"));
+		return;
+	}
+	
+	// 获取实际屏幕大小
+	FVector2D ViewportSize = UWidgetLayoutLibrary::GetViewportSize(this);
+	if (ViewportSize.X <= 0 || ViewportSize.Y <= 0)
+	{
+		// 如果获取失败，使用默认值
+		ViewportSize = FVector2D(1920.0f, 1080.0f);
+		UE_LOG(LogTemp, Warning, TEXT("无法获取屏幕大小，使用默认值"));
+	}
+	
+	// 创建弹幕消息项
+	UChatMessageItemWidget* BarrageItem = CreateWidget<UChatMessageItemWidget>(this, ChatMessageItemClass);
+	if (BarrageItem)
+	{
+		// 将弹幕添加到英雄选择根面板
+		UCanvasPanelSlot* CanvasSlot = HeroSelectionRoot->AddChildToCanvas(BarrageItem);
+		if (CanvasSlot)
+		{
+			// 计算弹幕位置（居中区域 + 随机浮动）
+			float CenterY = ViewportSize.Y * 0.5f; // 屏幕中心
+			float FloatRange = ViewportSize.Y * 0.3f; // 上下浮动范围（屏幕高度的30%）
+			
+			// 使用随机数生成Y位置
+			float RandomOffset = FMath::RandRange(-FloatRange * 0.5f, FloatRange * 0.5f);
+			float BarrageY = CenterY + RandomOffset;
+			
+			// 确保弹幕不会超出屏幕边界
+			float MinY = ViewportSize.Y * 0.1f; // 距离顶部10%
+			float MaxY = ViewportSize.Y * 0.9f; // 距离底部10%
+			BarrageY = FMath::Clamp(BarrageY, MinY, MaxY);
+			
+			// 设置初始位置（屏幕右侧外更远，符合弹幕风格）和大小
+			float StartX = ViewportSize.X + 200.0f; // 屏幕外侧200像素
+			CanvasSlot->SetPosition(FVector2D(StartX, BarrageY));
+			CanvasSlot->SetSize(FVector2D(400.0f, 30.0f));
+			
+			// 设置为弹幕模式
+			BarrageItem->SetAsBarrageMode(Message, bIsSelf, bIsTeammate, HeroSelectionRoot);
+			
+			UE_LOG(LogTemp, Warning, TEXT("大厅弹幕消息创建成功，屏幕大小：(%.2f, %.2f)，弹幕位置：(%.2f, %.2f)"), 
+			       ViewportSize.X, ViewportSize.Y, StartX, BarrageY);
+		}
+	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("大厅弹幕消息项创建失败"));
+	}
+}
+
+void ULobbyWidget::ConfigureLobbyModeChat()
+{
+	if (!ChatWidget)
+	{
+		UE_LOG(LogTemp, Error, TEXT("ChatWidget为空，无法配置大厅模式聊天"));
+		return;
+	}
+	
+	// 获取聊天频道下拉框
+	UComboBoxString* ChannelComboBox = ChatWidget->GetChannelComboBox();
+	if (!ChannelComboBox)
+	{
+		UE_LOG(LogTemp, Error, TEXT("无法获取ChannelComboBox，无法配置大厅模式聊天"));
+		return;
+	}
+	
+	// 清除所有选项
+	ChannelComboBox->ClearOptions();
+	
+	// 只添加队伍聊天选项
+	ChannelComboBox->AddOption(TEXT("队伍聊天"));
+	
+	// 设置默认选中队伍聊天
+	ChannelComboBox->SetSelectedOption(TEXT("队伍聊天"));
+	
+	// 设置大厅模式：发送消息后不自动隐藏聊天框
+	ChatWidget->SetAutoHideAfterSend(false);
+	
+	UE_LOG(LogTemp, Warning, TEXT("大厅模式聊天配置完成，已移除全体聊天选项，只保留队伍聊天，且发送后不隐藏"));
 }

@@ -10,6 +10,8 @@
 
 ### 🏗️ 架构与设计
 - **[项目架构 (ARCHITECTURE.md)](./ARCHITECTURE.md)** - 完整的系统架构和设计模式说明
+- **[GAS系统文档 (GAS_SYSTEM.md)](./GAS_SYSTEM.md)** - 基于UE5 GAS的完整技能系统详细文档
+- **[聊天系统文档 (CHAT_SYSTEM.md)](./CHAT_SYSTEM.md)** - 实时多人游戏聊天系统详细文档
 - **[API文档 (API.md)](./API.md)** - 核心类和接口的详细API说明
 
 ### 🚢 部署与运维
@@ -41,6 +43,15 @@
 - 库存管理 (UInventoryComponent)
 ```
 
+### 聊天系统
+```
+实时多人游戏聊天系统：
+- 多频道支持（队伍/全体聊天）
+- 发送者类型识别（自己/队友/对手）
+- 弹幕模式和临时消息
+- 富文本显示和网络同步
+```
+
 ### 网络架构
 ```
 多人游戏网络解决方案：
@@ -63,10 +74,12 @@
 
 | 模块 | 文档链接 | 核心类 |
 |------|----------|--------|
-| 游戏框架 | [Framework模块](./ARCHITECTURE.md#游戏框架模块) | `UMGameInstance`, `ACrunchPlayerController` |
-| 角色系统 | [Character模块](./ARCHITECTURE.md#角色系统) | `ACrunchCharacter`, `UPDA_CharacterDefinition` |
-| 技能系统 | [GAS集成](./ARCHITECTURE.md#技能系统) | `UCAttributeSet`, `UGameplayAbility_Base` |
+| 游戏框架 | [Framework模块](./ARCHITECTURE.md#游戏框架模块) | `UMGameInstance`, `ACPlayerController` |
+| 角色系统 | [Character模块](./ARCHITECTURE.md#角色系统) | `ACCharacter`, `UPDA_CharacterDefinition` |
+| 技能系统 | [GAS系统详解](./GAS_SYSTEM.md) | `UCAbilitySystemComponent`, `UCGameplayAbility` |
 | UI系统 | [UI架构](./ARCHITECTURE.md#ui系统架构) | `UShopWidget`, `UAbilityGauge` |
+| 技能系统 | [GAS系统](./GAS_SYSTEM.md) | `UCAbilitySystemComponent`, `UCGameplayAbility` |
+| 聊天系统 | [聊天架构](./CHAT_SYSTEM.md) | `UChatWidget`, `UChatMessageItemWidget` |
 | 网络系统 | [网络架构](./ARCHITECTURE.md#网络架构) | `FPlayerSelection`, RPC函数 |
 
 ### 📚 API参考
@@ -75,9 +88,10 @@
 |------|--------|-------------|
 | 游戏实例 | `UMGameInstance` | [游戏框架API](./API.md#核心游戏框架) |
 | 角色定义 | `UPDA_CharacterDefinition` | [角色系统API](./API.md#角色系统) |
-| 属性系统 | `UCAttributeSet` | [技能系统API](./API.md#技能系统-gas) |
+| GAS技能 | `UCAbilitySystemComponent` | [GAS系统文档](./GAS_SYSTEM.md) |
 | 库存管理 | `UInventoryComponent` | [库存系统API](./API.md#库存系统) |
 | UI控件 | `UShopWidget`, `UAbilityGauge` | [UI系统API](./API.md#ui系统) |
+| 聊天系统 | `UChatWidget`, `IChatInterface` | [聊天系统文档](./CHAT_SYSTEM.md) |
 
 ### 🚀 部署指南
 
@@ -112,6 +126,15 @@ class CRUNCH_API UNewWidget : public UUserWidget
 };
 ```
 
+#### 创建聊天系统
+```
+// 参考：DEVELOPMENT.md#聊天系统开发
+class CRUNCH_API ACPlayerController : public APlayerController, public IChatInterface
+{
+    // 实现接口...
+};
+```
+
 #### 网络函数实现
 ```
 // 参考：DEVELOPMENT.md#网络开发
@@ -126,6 +149,7 @@ void Server_TakeDamage(int32 Damage);
 | 游戏设置 | `Config/DefaultGame.ini` | 游戏基础配置 |
 | 引擎设置 | `Config/DefaultEngine.ini` | 引擎和渲染配置 |
 | 输入映射 | `Config/DefaultInput.ini` | 输入绑定配置 |
+| GAS标签 | `Config/DefaultGameplayTags.ini` | GAS系统GameplayCue和技能标签配置 |
 | Docker配置 | `docker-compose.yml` | 容器部署配置 |
 
 ### 重要目录结构
@@ -138,6 +162,7 @@ Crunch/
 │   │   ├── 📁 GAS/          # 技能系统
 │   │   ├── 📁 Inventory/    # 库存系统
 │   │   ├── 📁 UI/           # 用户界面
+│   │   │   └── 📁 Chat/     # 聊天系统
 │   │   └── 📁 Network/      # 网络系统
 │   └── 📁 Public/           # 头文件
 ├── 📁 Config/               # 配置文件
@@ -152,7 +177,8 @@ Crunch/
 1. 📖 阅读 [项目简介](../README.md)
 2. 🛠️ 按照 [开发环境搭建](./DEVELOPMENT.md#开发环境搭建) 配置环境
 3. 🎮 了解 [核心系统](./ARCHITECTURE.md#核心模块详解)
-4. 💻 练习 [代码示例](./DEVELOPMENT.md#核心系统开发)
+4. 💬 学习 [聊天系统](./CHAT_SYSTEM.md)
+5. 💻 练习 [代码示例](./DEVELOPMENT.md#核心系统开发)
 
 ### 有经验的开发者
 1. 🏗️ 深入理解 [项目架构](./ARCHITECTURE.md)

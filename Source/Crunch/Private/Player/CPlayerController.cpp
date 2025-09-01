@@ -4,12 +4,15 @@
 #include "Crunch/Private/Player/CPlayerController.h"
 
 #include "CPlayerCharacter.h"
+#include "EngineUtils.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "Blueprint/UserWidget.h"
 #include "Components/CapsuleComponent.h"
+#include "GameFramework/PlayerState.h"
 #include "Net/UnrealNetwork.h"
 #include "UI/Gameplay/GameplayWidget.h"
+#include "UI/Gameplay/Chat/ChatWidget.h"
 
 ACPlayerController::ACPlayerController()
 {
@@ -67,6 +70,9 @@ void ACPlayerController::SetupInputComponent()
 		);
 		// 绑定游戏菜单切换输入动作
 		EnhancedInputComponent->BindAction(ToggleGameplayMenuAction, ETriggerEvent::Triggered, this, &ACPlayerController::ToggleGameplayMenu);
+
+		// 绑定聊天切换输入动作
+		EnhancedInputComponent->BindAction(ToggleChatInputAction, ETriggerEvent::Triggered, this, &ACPlayerController::ToggleChat);
 	}
 }
 
@@ -97,6 +103,103 @@ void ACPlayerController::MatchFinished(AActor* ViewTarget, int WiningTeam)
 	
 	// 调用客户端RPC同步比赛结束状态
 	Client_MatchFinished(ViewTarget, WiningTeam);
+}
+
+void ACPlayerController::Server_SendChatMessage_Implementation(const FString& Message, EChatChannelType ChannelType)
+{
+	// 验证消息不为空
+	if (Message.IsEmpty() || Message.Len() > 100) // 限制消息长度
+	{
+		UE_LOG(LogTemp, Warning, TEXT("聘天消息为空或超长，已拒绝发送"));
+		return;
+	}
+
+	// 获取发送者名称
+	FString SenderName = GetPlayerState<APlayerState>()->GetPlayerName();
+	if (SenderName.IsEmpty())
+	{
+		SenderName = TEXT("Unknown Player");
+	}
+
+	UE_LOG(LogTemp, Warning, TEXT("服务器接收到聊天消息：%s 发送者：%s 频道：%d"), *Message, *SenderName, (int32)ChannelType);
+
+	// 创建聊天消息
+	FChatMessage ChatMessage(SenderName, Message, ChannelType, GetGenericTeamId());
+
+	// 根据频道类型决定发送范围
+	UWorld* World = GetWorld();
+	if (!World) return;
+
+	int32 ReceiverCount = 0;
+	for (TActorIterator<ACPlayerController> It(World); It; ++It)
+	{
+		ACPlayerController* PlayerController = *It;
+		if (!PlayerController) continue;
+
+		// 全体聊天：发送给所有玩家
+		if (ChannelType == EChatChannelType::All)
+		{
+			PlayerController->Client_ReceiveChatMessage(ChatMessage);
+			ReceiverCount++;
+		}
+		// 队友聊天：只发送给同队伍玩家
+		else if (ChannelType == EChatChannelType::Team)
+		{
+			if (PlayerController->GetGenericTeamId() == GetGenericTeamId())
+			{
+				PlayerController->Client_ReceiveChatMessage(ChatMessage);
+				ReceiverCount++;
+			}
+		}
+	}
+
+	UE_LOG(LogTemp, Warning, TEXT("聊天消息已发送给 %d 个玩家"), ReceiverCount);
+}
+
+bool ACPlayerController::Server_SendChatMessage_Validate(const FString& Message, EChatChannelType ChannelType)
+{
+	// 基本验证
+	return !Message.IsEmpty() && Message.Len() <= 100;
+}
+
+void ACPlayerController::Client_ReceiveChatMessage_Implementation(const FChatMessage& Message)
+{
+	UE_LOG(LogTemp, Warning, TEXT("客户端接收到聊天消息：%s 发送者：%s"), *Message.MessageContent, *Message.SenderName);
+	
+	if (GameplayWidget)
+	{
+		// 判断发送者类型
+		bool bIsSelf = false;
+		bool bIsTeammate = false;
+		
+		// 判断是否是自己发送的消息
+		if (GetPlayerState<APlayerState>())
+		{
+			FString MyPlayerName = GetPlayerState<APlayerState>()->GetPlayerName();
+			bIsSelf = (MyPlayerName == Message.SenderName);
+		}
+		
+		// 如果不是自己，判断是否是队友
+		if (!bIsSelf)
+		{
+			bIsTeammate = (GetGenericTeamId() == Message.SenderTeamId);
+		}
+		
+		UE_LOG(LogTemp, Warning, TEXT("发送者类型判断：自己=%s 队友=%s"), 
+		       bIsSelf ? TEXT("true") : TEXT("false"), 
+		       bIsTeammate ? TEXT("true") : TEXT("false"));
+		
+		// 同时显示临时消息和添加到聊天列表
+		GameplayWidget->ShowTemporaryChatMessage(Message, bIsSelf, bIsTeammate);
+		// 显示弹幕消息
+		GameplayWidget->ShowBarrageMessage(Message, bIsSelf, bIsTeammate);
+		
+		UE_LOG(LogTemp, Warning, TEXT("将消息传递给GameplayWidget"));
+	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("GameplayWidget为空，无法显示聊天消息"));
+	}
 }
 
 void ACPlayerController::Client_MatchFinished_Implementation(AActor* ViewTarget, int WiningTeam)
@@ -269,6 +372,15 @@ void ACPlayerController::ToggleGameplayMenu()
 	}
 }
 
+void ACPlayerController::ToggleChat()
+{
+	if (GameplayWidget)
+	{
+		// 使用智能切换：在临时模式下直接进入正常聊天，否则正常切换
+		GameplayWidget->SmartToggleChat();
+	}
+}
+
 void ACPlayerController::ShowWinLoseState()
 {
 	if (GameplayWidget)
@@ -296,3 +408,16 @@ void ACPlayerController::ShowWinLoseState()
 //     
 // 	Super::BeginDestroy();
 // }
+
+// IChatInterface 接口实现
+void ACPlayerController::SendChatMessageToServer(const FString& Message, EChatChannelType ChannelType)
+{
+	// 调用实际的RPC函数
+	Server_SendChatMessage(Message, ChannelType);
+}
+
+void ACPlayerController::ReceiveChatMessageFromServer(const FChatMessage& Message)
+{
+	// 调用实际的RPC函数
+	Client_ReceiveChatMessage(Message);
+}

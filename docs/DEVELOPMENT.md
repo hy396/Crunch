@@ -271,6 +271,152 @@ void BadExample()
 }
 ```
 
+### 聊天系统开发
+
+#### 创建聊天消息处理
+1. **实现聊天接口**
+```cpp
+// 在PlayerController中实现IChatInterface
+class CRUNCH_API ACPlayerController : public APlayerController, public IChatInterface
+{
+public:
+    // 实现接口方法
+    virtual void ReceiveChatMessageFromServer(const FChatMessage& Message) override;
+    virtual void SendChatMessageToServer(const FString& Message, EChatChannelType ChannelType) override;
+
+    // 网络RPC函数
+    UFUNCTION(Server, Reliable, WithValidation)
+    void Server_SendChatMessage(const FString& Message, EChatChannelType ChannelType);
+
+    UFUNCTION(Client, Reliable)
+    void Client_ReceiveChatMessage(const FChatMessage& Message);
+};
+```
+
+2. **实现网络RPC函数**
+```cpp
+void ACPlayerController::Server_SendChatMessage_Implementation(
+    const FString& Message, EChatChannelType ChannelType)
+{
+    // 验证消息内容
+    if (Message.IsEmpty() || Message.Len() > 256)
+    {
+        return;
+    }
+
+    // 获取发送者名称
+    FString SenderName = GetPlayerState<APlayerState>()->GetPlayerName();
+    if (SenderName.IsEmpty())
+    {
+        SenderName = TEXT("Unknown Player");
+    }
+
+    // 创建消息对象
+    FChatMessage ChatMessage(SenderName, Message, ChannelType, GetGenericTeamId());
+
+    // 根据频道类型决定发送范围
+    UWorld* World = GetWorld();
+    if (!World) return;
+
+    for (TActorIterator<ACPlayerController> It(World); It; ++It)
+    {
+        ACPlayerController* PlayerController = *It;
+        if (!PlayerController) continue;
+
+        // 全体聊天：发送给所有玩家
+        if (ChannelType == EChatChannelType::All)
+        {
+            PlayerController->Client_ReceiveChatMessage(ChatMessage);
+        }
+        // 队友聊天：只发送给同队伍玩家
+        else if (ChannelType == EChatChannelType::Team)
+        {
+            if (PlayerController->GetGenericTeamId() == GetGenericTeamId())
+            {
+                PlayerController->Client_ReceiveChatMessage(ChatMessage);
+            }
+        }
+    }
+}
+
+bool ACPlayerController::Server_SendChatMessage_Validate(
+    const FString& Message, EChatChannelType ChannelType)
+{
+    return !Message.IsEmpty() && Message.Len() <= 256;
+}
+```
+
+#### 聊天UI开发
+1. **创建聊天控件**
+```cpp
+// 创建新的聊天控件
+UCLASS()
+class CRUNCH_API UMyChatWidget : public UChatWidget
+{
+    GENERATED_BODY()
+
+public:
+    virtual void NativeConstruct() override;
+
+    // 自定义消息处理
+    UFUNCTION(BlueprintCallable)
+    void CustomMessageHandler(const FChatMessage& Message);
+
+protected:
+    // 添加自定义UI元素
+    UPROPERTY(meta = (BindWidget))
+    TObjectPtr<UButton> EmojiButton;
+
+    UFUNCTION()
+    void OnEmojiButtonClicked();
+};
+```
+
+2. **集成到游戏中**
+```cpp
+// 在适当的地方显示ChatWidget
+void ACPlayerController::ToggleChat()
+{
+    if (GameplayWidget)
+    {
+        // 使用智能切换：在临时模式下直接进入正常聊天，否则正常切换
+        GameplayWidget->SmartToggleChat();
+    }
+}
+
+// 设置输入绑定
+void ACPlayerController::SetupInputComponent()
+{
+    Super::SetupInputComponent();
+    
+    // 绑定聊天快捷键
+    InputComponent->BindAction("OpenChat", IE_Pressed, this, &ACPlayerController::ToggleChat);
+}
+```
+
+#### 弹幕系统开发
+```cpp
+// 创建弹幕消息
+void UGameplayWidget::ShowBarrageMessage(const FChatMessage& Message, bool bIsSelf, bool bIsTeammate)
+{
+    if (!GameplayWidgetRootPanel || !ChatMessageItemClass)
+    {
+        return;
+    }
+
+    // 创建弹幕消息控件
+    auto BarrageWidget = CreateWidget<UChatMessageItemWidget>(this, ChatMessageItemClass);
+    if (!BarrageWidget)
+    {
+        return;
+    }
+
+    // 设置弹幕位置和动画
+    GameplayWidgetRootPanel->AddChild(BarrageWidget);
+    BarrageWidget->SetAsBarrageMode(Message, bIsSelf, bIsTeammate, GameplayWidgetRootPanel);
+}
+```
+
 ### 网络开发
 
 #### 创建可复制的Actor

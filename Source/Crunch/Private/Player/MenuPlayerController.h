@@ -21,6 +21,9 @@ public:
 	// 玩家状态同步时调用
 	virtual void OnRep_PlayerState() override;
 
+	// 获取菜单Widget
+	UUserWidget* GetMenuWidget() const { return MenuWidget; }
+
 private:
 	// 菜单界面类
 	UPROPERTY(EditDefaultsOnly, Category = "Menu")

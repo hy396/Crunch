@@ -85,13 +85,12 @@ void UMainMenuWidget::JoinSessionFailed()
 
 void UMainMenuWidget::UpdateLobbyList(const TArray<FOnlineSessionSearchResult>& SearchResults)
 {
-	UE_LOG(LogTemp, Warning, TEXT("更新会话列表"))
+	UE_LOG(LogTemp, Warning, TEXT("更新会话列表 - 找到 %d 个会话"), SearchResults.Num());
 
 	// 清理列表，重新加载
 	SessionScrollBox->ClearChildren();
 
 	bool bCurrentSelectedSessionValid = false;
-
 	for (const FOnlineSessionSearchResult& SearchResult : SearchResults)
 	{
 		// 创建会话条目
@@ -101,17 +100,58 @@ void UMainMenuWidget::UpdateLobbyList(const TArray<FOnlineSessionSearchResult>& 
 			// 获取会话名称
 			FString SessionName = "Name_None";
 			SearchResult.Session.SessionSettings.Get<FString>(UTNetStatics::GetSessionNameKey(), SessionName);
-
+			
 			// 获取会话ID
 			FString SessionIdStr = SearchResult.Session.GetSessionIdStr();
-			// 初始化会话条目,绑定按钮点击事件
-			NewSessionWidget->InitializeEntry(SessionName, SessionIdStr);
+			
+			// 获取房间人数信息
+			// NumPublicConnections: 房间最大公共容纳人数
+			// NumPrivateConnections: 房间最大私有容纳人数
+			int32 MaxPublicPlayers = SearchResult.Session.SessionSettings.NumPublicConnections;
+			int32 MaxPrivatePlayers = SearchResult.Session.SessionSettings.NumPrivateConnections;
+			int32 MaxPlayers = MaxPublicPlayers + MaxPrivatePlayers;
+			
+			// 获取房间剩余可用连接数
+			int32 NumOpenPublicConnections = SearchResult.Session.NumOpenPublicConnections;
+			int32 NumOpenPrivateConnections = SearchResult.Session.NumOpenPrivateConnections;
+
+			// 计算当前房间的人数
+			int32 CurrentPlayers = MaxPlayers - NumOpenPublicConnections - NumOpenPrivateConnections;
+
+			int32 PlayCounts = 100;
+			// 获取玩家数量
+			SearchResult.Session.SessionSettings.Get<int>(UTNetStatics::GetPlayerCountKey(), PlayCounts);
+
+			// // 详细调试日志 - 输出所有原始数据
+			// UE_LOG(LogTemp, Warning, TEXT("=== 房间调试信息 ==="));
+			// UE_LOG(LogTemp, Warning, TEXT("房间名: %s"), *SessionName);
+			// UE_LOG(LogTemp, Warning, TEXT("SessionID: %s"), *SessionIdStr);
+			// UE_LOG(LogTemp, Warning, TEXT("PlayCounts: %d"), PlayCounts);
+			// UE_LOG(LogTemp, Warning, TEXT("房间总容量: %d (公共:%d + 私有:%d)"), MaxPlayers, MaxPublicPlayers, MaxPrivatePlayers);
+			// UE_LOG(LogTemp, Warning, TEXT("房间公共位置: %d"), SearchResult.Session.NumOpenPublicConnections);
+			// UE_LOG(LogTemp, Warning, TEXT("房间私有位置: %d"), SearchResult.Session.NumOpenPrivateConnections);
+			// UE_LOG(LogTemp, Warning, TEXT("计算结果 - 房间容量: %d, 房间的玩家人数: %d"), MaxPlayers, CurrentPlayers);
+			// UE_LOG(LogTemp, Warning, TEXT("显示文本应该是: %s (%d/%d)"), *SessionName, CurrentPlayers, MaxPlayers);
+			// UE_LOG(LogTemp, Warning, TEXT("房间状态: %s"), (CurrentPlayers >= MaxPlayers) ? TEXT("满员") : TEXT("有空位"));
+			// UE_LOG(LogTemp, Warning, TEXT("==================="));
+			//
+			// // 添加更多调试信息
+			// UE_LOG(LogTemp, Warning, TEXT("[客户端] 会话搜索结果 - 公共连接:%d/%d, 私有连接:%d/%d"), 
+			// 	SearchResult.Session.NumOpenPublicConnections, SearchResult.Session.SessionSettings.NumPublicConnections,
+			// 	SearchResult.Session.NumOpenPrivateConnections, SearchResult.Session.SessionSettings.NumPrivateConnections);
+
+			// TODO: 服务器中获取房间人数信息然后给客户端创建？？？？？这样可以吗25/09/03创建备注
+			// 初始化会话条目,绑定按钮点击事件（包含房间人数信息）
+			NewSessionWidget->InitializeEntry(SessionName, SessionIdStr, CurrentPlayers, MaxPlayers);
 			NewSessionWidget->OnSessionEntrySelected.AddUObject(this, &UMainMenuWidget::SessionEntrySelected);
 			SessionScrollBox->AddChild(NewSessionWidget);
 
-			// 检查之前选中的会话 ID 是否仍然存在
+			// 检查之前选中的会话 ID 是否仍然存在且房间未满
 			if (CurrentSelectedSessionId == SessionIdStr)
 			{
+				// 只有在房间未满的情况下才认为选中的会话有效
+				// bCurrentSelectedSessionValid = !NewSessionWidget->IsRoomFull();
+				// TODO:暂时还原
 				bCurrentSelectedSessionValid = true;
 			}
 		}
@@ -119,7 +159,7 @@ void UMainMenuWidget::UpdateLobbyList(const TArray<FOnlineSessionSearchResult>& 
 	// 如果之前的选择的会话无效了,则清空
 	CurrentSelectedSessionId = bCurrentSelectedSessionValid ? CurrentSelectedSessionId : "";
 
-	// 更新“加入会话”按钮是否可用
+	// 更新"加入会话"按钮是否可用
 	JoinSessionBtn->SetIsEnabled(bCurrentSelectedSessionValid);	
 }
 
@@ -144,6 +184,23 @@ void UMainMenuWidget::JoinSessionBtnClicked()
 void UMainMenuWidget::SessionEntrySelected(const FString& SelectedEntryIdStr)
 {
 	CurrentSelectedSessionId = SelectedEntryIdStr;
+	
+	// 查找选中的会话条目并检查房间状态
+	bool bCanJoin = true;
+	for (int32 i = 0; i < SessionScrollBox->GetChildrenCount(); ++i)
+	{
+		if (USessionEntryWidget* SessionEntry = Cast<USessionEntryWidget>(SessionScrollBox->GetChildAt(i)))
+		{
+			if (SessionEntry->GetCachedSessionIdStr() == SelectedEntryIdStr)
+			{
+				bCanJoin = !SessionEntry->IsRoomFull();
+				break;
+			}
+		}
+	}
+	
+	// 更新加入按钮状态
+	JoinSessionBtn->SetIsEnabled(bCanJoin);
 }
 
 void UMainMenuWidget::OnLoginButtonClicked()

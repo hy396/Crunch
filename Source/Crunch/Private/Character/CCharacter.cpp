@@ -7,6 +7,7 @@
 #include "Components/SkeletalMeshComponent.h"
 #include "Crunch/Crunch.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "GameFramework/PlayerState.h"
 #include "GAS/Core/TGameplayTags.h"
 #include "Kismet/GameplayStatics.h"
 #include "Net/UnrealNetwork.h"
@@ -279,6 +280,12 @@ void ACCharacter::OnRecoverFromStun()
 
 void ACCharacter::ConfigureOverHeadStatusWidget()
 {
+	// 只在客户端执行，服务器端不需要处理UI
+	if (HasAuthority())
+	{
+		return;
+	}
+	
 	// 检查头顶UI组件是否存在，如果不存在则直接返回
 	if (!OverHeadWidgetComponent)
 	{
@@ -294,11 +301,30 @@ void ACCharacter::ConfigureOverHeadStatusWidget()
 	}
 	
 	// 将头顶UI组件的用户控件对象转换为UOverHeadStatsGauge类型
-	UOverHeadStatsGauge* OverheadStatsGuage = Cast<UOverHeadStatsGauge>(OverHeadWidgetComponent->GetUserWidgetObject());
-	if (OverheadStatsGuage)
+	UOverHeadStatsGauge* OverheadStatsGauge = Cast<UOverHeadStatsGauge>(OverHeadWidgetComponent->GetUserWidgetObject());
+	if (OverheadStatsGauge)
 	{
 		// 使用能力系统组件配置头顶统计量表
-		OverheadStatsGuage->ConfigureWithASC(GetAbilitySystemComponent());
+		OverheadStatsGauge->ConfigureWithASC(GetAbilitySystemComponent());
+		
+		// 尝试获取玩家状态来设置玩家名称
+		if (!TrySetPlayerName(OverheadStatsGauge))
+		{
+			// 如果未能成功设置玩家名称，启动定时器定期尝试
+			GetWorldTimerManager().SetTimer(
+				PlayerNameUpdateTimerHandle,     // 定时器句柄
+				[this, OverheadStatsGauge]() {   // Lambda表达式捕获this和OverheadStatsGauge
+					if (TrySetPlayerName(OverheadStatsGauge))
+					{
+						// 如果成功设置玩家名称，清除定时器
+						GetWorldTimerManager().ClearTimer(PlayerNameUpdateTimerHandle);
+					}
+				},
+				1.0f,    // 每秒执行一次
+				true     // 循环执行
+			);
+		}
+		
 		// TODO: 获取本地玩家角色
 		//if (!HasAuthority()) 
 		//{
@@ -311,9 +337,10 @@ void ACCharacter::ConfigureOverHeadStatusWidget()
 				if (LocalTeamInterface)
 				{
 					// 设置头顶UI组件的血条颜色
-					OverheadStatsGuage->SetHealthBarColor(GetTeamAttitudeTowards(*LocalPlayerPawn));
+					OverheadStatsGauge->SetHealthBarColor(GetTeamAttitudeTowards(*LocalPlayerPawn));
 				}
 			}
+		//}
 		// 设置头顶UI颜色
 		//	SetOverHeadWidgetColor();
 		//}
@@ -515,4 +542,38 @@ void ACCharacter::SetAIPerceptionStimuliSourceEnabled(bool bIsEnabled)
 		// 禁用感知源
 		PerceptionStimuliSourceComponent->UnregisterFromPerceptionSystem();
 	}
+}
+
+// 新增辅助函数：尝试设置玩家名称
+bool ACCharacter::TrySetPlayerName(UOverHeadStatsGauge* OverheadStatsGauge)
+{
+	if (!OverheadStatsGauge)
+	{
+		return false;
+	}
+
+	// 检查玩家名称是否已经设置
+	if (OverheadStatsGauge->GetPlayerNameIsSet())
+	{
+		return true;
+	}
+
+	// 获取玩家状态来获取玩家名称
+	// 首先尝试直接获取PlayerState（在某些情况下可能有效）
+	if (APlayerState* MPlayerState = GetPlayerState<APlayerState>())
+	{
+		OverheadStatsGauge->SetPlayerNameFromPlayerState(MPlayerState);
+		return true;
+	}
+	
+	// 如果直接获取失败，尝试通过控制器获取PlayerState
+	if (GetController())
+	{
+		if (APlayerState* MyPlayerState = GetController()->GetPlayerState<APlayerState>())
+		{
+			OverheadStatsGauge->SetPlayerNameFromPlayerState(MyPlayerState);
+			return true;
+		}
+	}
+	return false;
 }

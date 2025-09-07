@@ -22,6 +22,12 @@ public:
 
 	// 设置血条颜色
 	void SetHealthBarColor(ETeamAttitude::Type TargetTeam);
+
+	// 设置玩家名称
+	void SetPlayerNameFromPlayerState(APlayerState* PlayerState);
+
+	bool GetPlayerNameIsSet() const{ return bPlayerNameSet; }
+	
 private:
 	// 我方血条颜色
 	UPROPERTY(EditAnywhere, Category = "Visual")
@@ -29,6 +35,17 @@ private:
 	// 敌方血条颜色
 	UPROPERTY(EditAnywhere, Category = "Visual")
 	FLinearColor HostileColor;
+
+	// 是否显示玩家ID文本
+	UPROPERTY(EditAnywhere, Category = "Visual")
+	bool bPlayerNameTextVisible = true;
+
+	// 是否设置玩家名称成功
+	bool bPlayerNameSet = false;
+
+	// 玩家ID
+	UPROPERTY(meta = (BindWidget))
+	TObjectPtr<UTextBlock> PlayerNameText;
 	
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UValueGauge> HealthBar;

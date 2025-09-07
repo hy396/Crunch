@@ -5,10 +5,12 @@
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
 #include "Components/Button.h"
+#include "Components/ComboBoxString.h"
 #include "GameplayMenu.generated.h"
 
 class UButton;
 class UTextBlock;
+class UComboBoxString;
 class FOnButtonClickedEvent;
 /**
  * 游戏内菜单控件
@@ -45,6 +47,10 @@ private:
 	UPROPERTY(meta=(BindWidget))
 	TObjectPtr<UButton> QuitGameBtn;
 
+	// 窗口模式选择下拉框
+	UPROPERTY(meta=(BindWidget))
+	TObjectPtr<UComboBoxString> WindowModeComboBox;
+
 	// TODO:退出游戏有点抽象，不如返回菜单或返回房间
 	// 返回主菜单回调
 	UFUNCTION()
@@ -53,5 +59,15 @@ private:
 	// 退出游戏的回调
 	UFUNCTION()
 	void QuitGame();
+
+	// 窗口模式选择变化回调
+	UFUNCTION()
+	void OnWindowModeSelectionChanged(FString SelectedItem, ESelectInfo::Type SelectionType);
+
+	// 初始化窗口模式选项
+	void InitializeWindowModeOptions();
+
+	// 应用窗口模式设置
+	void ApplyWindowMode(const FString& WindowModeString);
 };
 

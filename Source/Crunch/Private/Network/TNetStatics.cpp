@@ -21,7 +21,7 @@ FOnlineSessionSettings UTNetStatics::GenerateOnlineSessionSettings(const FName& 
 
 	// 是否使用在线状态（Presence，如好友在线显示）功能,(这是服务器没有登录用户)
 	OnlineSessionSettings.bUsesPresence = false;
-
+	
 	// 是否允许通过在线状态直接加入
 	OnlineSessionSettings.bAllowJoinViaPresence = false;
 
@@ -47,6 +47,7 @@ FOnlineSessionSettings UTNetStatics::GenerateOnlineSessionSettings(const FName& 
 	OnlineSessionSettings.Set(GetSessionNameKey(), SessionName.ToString(), EOnlineDataAdvertisementType::ViaOnlineServiceAndPing);
 	OnlineSessionSettings.Set(GetSessionSearchIdKey(), SessionSearchId, EOnlineDataAdvertisementType::ViaOnlineServiceAndPing);
 	OnlineSessionSettings.Set(GetPortKey(), Port, EOnlineDataAdvertisementType::ViaOnlineServiceAndPing);
+	OnlineSessionSettings.Set(GetPlayerCountKey(), 0, EOnlineDataAdvertisementType::ViaOnlineService);
 
 	return OnlineSessionSettings;
 }
@@ -133,6 +134,16 @@ int UTNetStatics::GetSessionPort()
 FName UTNetStatics::GetPortKey()
 {
 	return FName("PORT");
+}
+
+int UTNetStatics::GetPlayerCount()
+{
+	return GetCommandlineArgAsInt(GetPlayerCountKey());
+}
+
+FName UTNetStatics::GetPlayerCountKey()
+{
+	return FName("PLAYER_COUNT");
 }
 
 FName UTNetStatics::GetCoordinatorURLKey()

@@ -4,7 +4,10 @@
 #include "UI/Gameplay/OverHeadStatsGauge.h"
 
 #include "GenericTeamAgentInterface.h"
+#include "Character/CCharacter.h"
 #include "GAS/Core/CAttributeSet.h"
+#include "GameFramework/Actor.h"
+#include "GameFramework/PlayerState.h"
 
 void UOverHeadStatsGauge::ConfigureWithASC(UAbilitySystemComponent* AbilitySystemComponent)
 {
@@ -12,7 +15,19 @@ void UOverHeadStatsGauge::ConfigureWithASC(UAbilitySystemComponent* AbilitySyste
 	{
 		HealthBar->SetAndBoundToGameplayAttribute(AbilitySystemComponent, UCAttributeSet::GetHealthAttribute(), UCAttributeSet::GetMaxHealthAttribute());
 		ManaBar->SetAndBoundToGameplayAttribute(AbilitySystemComponent, UCAttributeSet::GetManaAttribute(), UCAttributeSet::GetMaxManaAttribute());
+		if(!bPlayerNameTextVisible){
+			bPlayerNameSet = true;
+		}
 	}
+}
+
+void UOverHeadStatsGauge::SetPlayerNameFromPlayerState(APlayerState* PlayerState)
+{
+	if (!bPlayerNameTextVisible) return;
+	if (!PlayerNameText || !PlayerState) return;
+	FString PlayerName = PlayerState->GetPlayerName();
+	PlayerNameText->SetText(FText::FromString(PlayerName));
+	bPlayerNameSet = true;
 }
 
 void UOverHeadStatsGauge::SetHealthBarColor(ETeamAttitude::Type TargetTeam)
@@ -23,15 +38,26 @@ void UOverHeadStatsGauge::SetHealthBarColor(ETeamAttitude::Type TargetTeam)
 		{
 			case ETeamAttitude::Friendly:
 				// 队友就不用管了，本来就绿绿的（本来我不想管的，后来AI不稳定）
-				HealthBar->SetBarColor(FriendlyColor);
+				{
+					HealthBar->SetBarColor(FriendlyColor);
+					// 换成一种浅蓝色
+					PlayerNameText->SetColorAndOpacity(FSlateColor(FLinearColor(0.5f, 0.5f, 1.0f)));
+				}
 				//HealthBar->SetBarColor(HealthBar->FriendlyColor);
 				break;
 			case ETeamAttitude::Hostile:
-				HealthBar->SetBarColor(HostileColor);
+				{
+					HealthBar->SetBarColor(HostileColor);
+					PlayerNameText->SetColorAndOpacity(HostileColor);
+				}
 				//HealthBar->SetBarColor(HealthBar->HostileColor);
 				break;
 			default:
-				HealthBar->SetBarColor(FLinearColor::Yellow);
+				{
+					HealthBar->SetBarColor(FLinearColor(1.0f, 0.8f, 0.2f));
+					// 默认要什么颜色好呢 - 现在是偏橙色的黄色
+					PlayerNameText->SetColorAndOpacity(FSlateColor(FLinearColor(1.0f, 0.8f, 0.2f)));
+				}
 				break;
 		}
 	}

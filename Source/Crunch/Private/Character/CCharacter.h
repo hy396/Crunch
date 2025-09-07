@@ -14,6 +14,7 @@
 #include "Perception/AIPerceptionStimuliSourceComponent.h"
 #include "Player/NumberPopComponent_NiagaraText.h"
 #include "UI/Common/Rendering/RenderActorTargetInterface.h"
+#include "UI/Gameplay/OverHeadStatsGauge.h"
 #include "CCharacter.generated.h"
 
 UCLASS()
@@ -111,6 +112,9 @@ private:
 	UPROPERTY(VisibleDefaultsOnly, Category = "UI")
 	TObjectPtr<UWidgetComponent> OverHeadWidgetComponent;
 	void ConfigureOverHeadStatusWidget();
+	
+	// 尝试设置玩家名称
+	bool TrySetPlayerName(UOverHeadStatsGauge* OverheadStatsGauge);
 
 	/**
 	 * @brief 头顶状态条更新间隔时间（秒）\n
@@ -129,6 +133,9 @@ private:
 	
 	// 用于控制头顶状态条可见性更新的定时器句柄
 	FTimerHandle HeadStatGaugeVisibilityUpdateTimerHandle;
+
+	// 玩家名称更新间隔时间（秒）
+	FTimerHandle PlayerNameUpdateTimerHandle;
 
 	/**
 	 * @brief 更新头顶状态条可见性\n

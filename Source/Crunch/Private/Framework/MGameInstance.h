@@ -163,6 +163,8 @@ public:
 	// 玩家离开会话（服务器端调用）
 	void PlayerLeft(const FUniqueNetIdRepl& UniqueId);
 private:
+	// 更新会话设置以同步当前玩家数量到在线子系统
+	void UpdateSessionSettings();
 	// 创建会话
 	void CreateSession();
 	// 当会话创建完成时触发

@@ -5,6 +5,7 @@
 
 #include "HttpModule.h"
 #include "Network/TNetStatics.h"
+#include "OnlineSubsystemTypes.h"
 #include "Interfaces/OnlineSessionInterface.h"
 #include "Interfaces/OnlineIdentityInterface.h"
 
@@ -347,7 +348,7 @@ void UMGameInstance::FindGlobalSessions()
 	// 创建会话搜索对象
 	SessionSearch = MakeShareable(new FOnlineSessionSearch);
 	SessionSearch->bIsLanQuery = false;		// 设置为非局域网查询
-	SessionSearch->MaxSearchResults = 100;	// 最多搜索100个结果
+	SessionSearch->MaxSearchResults = 20;	// 最多搜索20个结果
 
 	// 重新添加会话搜索完成委托
 	SessionPtr->OnFindSessionsCompleteDelegates.RemoveAll(this);
@@ -367,20 +368,29 @@ void UMGameInstance::GlobalSessionSearchCompleted(bool bWasSuccessful)
 {
 	if (bWasSuccessful)
 	{
-		// 搜索成功，广播会话搜索结果
+		// 广播会话搜索结果
 		OnGlobalSessionSearchCompleted.Broadcast(SessionSearch->SearchResults);
 		// 遍历搜索会话名称
 		for (const FOnlineSessionSearchResult& OnlineSessionSearchResult : SessionSearch->SearchResults)
 		{
 			FString SessionName = "Name_None";
 			OnlineSessionSearchResult.Session.SessionSettings.Get<FString>(UTNetStatics::GetSessionNameKey(), SessionName);
+        	// 总人数（可公开连接数）
+        	int32 MaxPlayers = OnlineSessionSearchResult.Session.SessionSettings.NumPublicConnections;
 
-			UE_LOG(LogTemp, Warning, TEXT("发现会话: %s (全局搜索结果)"), *SessionName)
+        	// 当前已加入人数
+        	int32 CurrentPlayers = MaxPlayers - OnlineSessionSearchResult.Session.NumOpenPublicConnections;
+
+        	// 输出日志
+        	UE_LOG(LogTemp, Warning, TEXT("发现会话[%s] 人数: %d / %d(全局搜索结果)"),
+            *SessionName, CurrentPlayers, MaxPlayers);
 		}
-	}else
+	}
+	else
 	{
 		UE_LOG(LogTemp, Warning, TEXT("全局会话搜索失败！"))
 	}
+	
 	// 搜索完成移除会话搜索完成委托
 	if (IOnlineSessionPtr SessionPtr = UTNetStatics::GetSessionPtr())
 	{
@@ -502,7 +512,7 @@ void UMGameInstance::JoinSessionCompleted(FName SessionName, EOnJoinSessionCompl
 	{
 		// 停止所有查找
 		StopAllSessionFindings();
-		UE_LOG(LogTemp, Warning, TEXT("成功加入会话: %s,端口: %d"), *(SessionName.ToString()), Port)
+		UE_LOG(LogTemp, Warning, TEXT("成功加入会话: %s,端口: %lld"), *(SessionName.ToString()), Port)
 
 		// 获取服务器连接字符串
 		FString TravelURL = "";
@@ -544,12 +554,26 @@ void UMGameInstance::PlayerJoined(const FUniqueNetIdRepl& UniqueId)
 	}
 	// 记录玩家
 	PlayerRecord.Add(UniqueId);
+	
+	UE_LOG(LogTemp, Warning, TEXT("[服务器] 玩家加入，当前玩家数：%d"), PlayerRecord.Num());
+	
+	// 更新会话设置以同步当前玩家数量到在线子系统
+	UpdateSessionSettings();
+	
+	// 注意：不再直接调用Server_PushSessionUpdate()，因为UpdateSessionSettings()会在更新成功后自动调用
 }
 
 void UMGameInstance::PlayerLeft(const FUniqueNetIdRepl& UniqueId)
 {
 	// 移除玩家记录
 	PlayerRecord.Remove(UniqueId);
+	
+	UE_LOG(LogTemp, Warning, TEXT("[服务器] 玩家离开，当前玩家数：%d"), PlayerRecord.Num());
+	
+	// 更新会话设置以同步当前玩家数量到在线子系统
+	UpdateSessionSettings();
+	
+	// 注意：不再直接调用Server_PushSessionUpdate()，因为UpdateSessionSettings()会在更新成功后自动调用
 	
 	// 如果所有玩家都离开，终止会话服务器
 	if (PlayerRecord.Num() == 0)
@@ -559,11 +583,75 @@ void UMGameInstance::PlayerLeft(const FUniqueNetIdRepl& UniqueId)
 	}
 }
 
+void UMGameInstance::UpdateSessionSettings()
+{
+	// 获取会话接口和当前会话
+	IOnlineSessionPtr SessionPtr = UTNetStatics::GetSessionPtr(this);
+	if (!SessionPtr.IsValid())
+	{
+		UE_LOG(LogTemp, Error, TEXT("无法获取会话接口"));
+		return;
+	}
+
+	FNamedOnlineSession* CurrentSession = SessionPtr->GetNamedSession(FName(ServerSessionName));
+	if (!CurrentSession)
+	{
+		UE_LOG(LogTemp, Error, TEXT("无法获取当前会话"));
+		return;
+	}
+
+	// 记录更新前的状态
+	UE_LOG(LogTemp, Warning, TEXT("[服务器] 更新前状态 - 公共位置:%d, 私有位置:%d"), 
+		CurrentSession->NumOpenPublicConnections, CurrentSession->NumOpenPrivateConnections);
+
+	// 计算当前玩家数和可用连接数
+	int32 CurrentPlayers = PlayerRecord.Num();
+	int32 MaxPublicConnections = CurrentSession->SessionSettings.NumPublicConnections;
+	int32 MaxPrivateConnections = CurrentSession->SessionSettings.NumPrivateConnections;
+	int32 MaxPlayers = MaxPublicConnections + MaxPrivateConnections;
+	int32 AvailableConnections = FMath::Max(0, MaxPlayers - CurrentPlayers);
+	// 设置会话玩家数量
+	CurrentSession->SessionSettings.Set(UTNetStatics::GetPlayerCountKey(), 
+										CurrentPlayers, 
+										EOnlineDataAdvertisementType::ViaOnlineService);
+	UE_LOG(LogTemp, Warning, TEXT("[服务器] 计算参数 - 最大玩家数:%d, 当前玩家数:%d, 可用连接数:%d"), 
+		MaxPlayers, CurrentPlayers, AvailableConnections);
+
+	// 更新NumOpenPublicConnections和NumOpenPrivateConnections
+	if (MaxPublicConnections > 0)
+	{
+		// 优先填充公共连接
+		CurrentSession->NumOpenPublicConnections = FMath::Min(AvailableConnections, MaxPublicConnections);
+		CurrentSession->NumOpenPrivateConnections = FMath::Max(0, AvailableConnections - MaxPublicConnections);
+		UE_LOG(LogTemp, Warning, TEXT("[服务器] 更新策略 - 公共连接优先, 公共位置:%d, 私有位置:%d"), 
+			CurrentSession->NumOpenPublicConnections, CurrentSession->NumOpenPrivateConnections);
+	}
+	else
+	{
+		// 如果没有公共连接，则全部为私有连接
+		CurrentSession->NumOpenPrivateConnections = AvailableConnections;
+		CurrentSession->NumOpenPublicConnections = 0;
+		UE_LOG(LogTemp, Warning, TEXT("[服务器] 更新策略 - 私有连接优先, 公共位置:%d, 私有位置:%d"), 
+			CurrentSession->NumOpenPublicConnections, CurrentSession->NumOpenPrivateConnections);
+	}
+	// 调用UpdateSession更新在线子系统
+	UE_LOG(LogTemp, Warning, TEXT("[服务器] 调用UpdateSession - 会话名:%s, 强制更新:true"), *ServerSessionName);
+	bool bUpdateResult = SessionPtr->UpdateSession(FName(ServerSessionName), CurrentSession->SessionSettings, true);
+
+	UE_LOG(LogTemp, Warning, TEXT("[服务器] 更新会话状态：最大玩家数=%d，当前玩家数=%d，可用连接数=%d (原值=%d)"), 
+		MaxPlayers, CurrentPlayers, AvailableConnections, MaxPlayers);
+	
+	UE_LOG(LogTemp, Warning, TEXT("[服务器] 更新后 - 公共位置:%d, 私有位置:%d, 更新调用结果:%s"), 
+		CurrentSession->NumOpenPublicConnections, CurrentSession->NumOpenPrivateConnections, 
+		bUpdateResult ? TEXT("成功") : TEXT("失败"));
+	
+}
+
 void UMGameInstance::CreateSession()
 {
 	// 获取 Session 接口（这里用全局版，单机/单实例下没问题；多人 PIE 推荐上下文版）
 	//IOnlineSessionPtr SessionPtr = UTNetStatics::GetSessionPtr();
-	IOnlineSessionPtr SessionPtr = UTNetStatics::GetSessionPtr(this);
+	IOnlineSessionPtr SessionPtr = UTNetStatics::GetSessionPtr();
 	if (SessionPtr)
 	{
 		// 获取会话名称、搜索ID、会话端口
@@ -677,3 +765,4 @@ void UMGameInstance::LoadLevelAndListen(TSoftObjectPtr<UWorld> Level)
 		// GetWorld()->ServerTravel(LevelURL.ToString() + "?listen");
 	}
 }
+

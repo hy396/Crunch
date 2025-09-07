@@ -103,6 +103,11 @@ public:
 	 */
 	static FName GetPortKey();
 
+	// 玩家数量
+	static int GetPlayerCount();
+	// 玩家数量键值
+	static FName GetPlayerCountKey();
+
 	/**
 	 * 获取协调器URL键值
 	 * @return 协调器服务URL的FName键

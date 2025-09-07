@@ -26,23 +26,40 @@ public:
 	// 点击时对外广播的事件
 	FOnSessionEntrySelected OnSessionEntrySelected;
 
-	// 用于初始化显示的内容（会话名称和 ID）
-	void InitializeEntry(const FString& Name, const FString& SessionIdStr);
+	// 用于初始化显示的内容（会话名称、ID 和人数信息）
+	void InitializeEntry(const FString& Name, const FString& SessionIdStr, int32 CurrentPlayers = 0, int32 MaxPlayers = 0);
+
+	// 根据房间状态更新颜色
+	void UpdateRoomStatusColor();
 
 	// 获取缓存的 SessionId
 	FORCEINLINE FString GetCachedSessionIdStr() const { return CachedSessionIdStr; }
+
+	// 获取当前人数信息
+	FORCEINLINE int32 GetCurrentPlayers() const { return CachedCurrentPlayers; }
+	FORCEINLINE int32 GetMaxPlayers() const { return CachedMaxPlayers; }
+	
+	// 检查房间是否已满
+	FORCEINLINE bool IsRoomFull() const { return CachedCurrentPlayers >= CachedMaxPlayers; }
+	
+	// 检查房间是否接近满员（80%以上）
+	FORCEINLINE bool IsRoomNearlyFull() const { return CachedCurrentPlayers >= CachedMaxPlayers * 0.8f; }
 
 private:
 	// 会话按钮
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UButton> SessionButton;
 
-	// 会话名称
+	// 会话名称和人数信息显示（合并）
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UTextBlock> SessionNameText;
 
 	// 缓存的 SessionId
 	FString CachedSessionIdStr;
+
+	// 缓存的房间人数信息（用于状态判断）
+	int32 CachedCurrentPlayers;
+	int32 CachedMaxPlayers;
 
 	// 会话按钮点击时调用
 	UFUNCTION()

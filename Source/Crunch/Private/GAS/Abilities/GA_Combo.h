@@ -48,17 +48,17 @@ private:
 
 	// 默认伤害效果类
 	UPROPERTY(EditDefaultsOnly, Category = "Gameplay Effect")
-	TSubclassOf<UGameplayEffect> DefaultDamageEffect;
+	FGenericDamageEffectDef DefaultDamageEffect;
 	
 	UPROPERTY(EditDefaultsOnly, Category = "Gameplay Effect")
-	TMap<FName, TSubclassOf<UGameplayEffect>> DamageEffectMap;
+	TMap<FName, FGenericDamageEffectDef> DamageEffectMap;
 	
 	// 蒙太奇
 	UPROPERTY(EditDefaultsOnly, Category = "Animation")
 	TObjectPtr<UAnimMontage> ComboMontage;
 
 	// 获取当前连击的伤害效果
-	TSubclassOf<UGameplayEffect> GetDamageEffectForCurrentCombo() const;
+	const FGenericDamageEffectDef* GetDamageEffectForCurrentCombo() const;
 	
 	// Tag传入事件绑定
 	UFUNCTION()

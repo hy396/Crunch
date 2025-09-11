@@ -16,6 +16,7 @@ namespace TGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Ability_Combo_Change_Combo02, "Ability.Combo.Change.Combo02", "连击切换连段2")
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Ability_Combo_Change_Combo03, "Ability.Combo.Change.Combo03", "连击切换连段3")
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Ability_Combo_Change_Combo04, "Ability.Combo.Change.Combo04", "连击切换连段4")
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Ability_Combo_Change_CycloneSlashHold, "Ability.Combo.Change.CycloneSlashHold", "空中持续释放旋风斩")
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Ability_Combo_Change_End, "Ability.Combo.Change.End", "连击切换结束")
 	
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Ability_Combo_Damage, "Ability.Combo.Damage", "连击伤害")
@@ -60,6 +61,10 @@ namespace TGameplayTags
 
 	// 聚焦
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Stats_Focus, "Stats.Focus", "聚焦")
+	// 状态效果
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Stats_Debuff, "Stats.Debuff", "负面状态效果")
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Stats_Buff, "Stats.Buff", "正面状态效果")
+	
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Stats_Health_Full, "Stats.Health.Full", "生命值满")
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Stats_Mana_Full, "Stats.Mana.Full", "法术值满")
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Stats_Health_Empty, "Stats.Health.Empty", "生命值空")

@@ -19,8 +19,7 @@ class UWidgetSwitcher;
 class UGameplayMenu;
 class UMatchStatWidget;
 class USkeletalMeshRenderWidget;
-class UDebuffWidget;
-class UDataTable;
+class UStatusEffectWidget;
 
 /**
  * 
@@ -77,13 +76,9 @@ private:
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UValueGauge> ManaBar;
 
-	// Debuff显示控件
+	// 状态效果显示控件
 	UPROPERTY(meta = (BindWidget))
-	TObjectPtr<UDebuffWidget> DebuffWidget;
-
-	// Debuff数据表
-	UPROPERTY(EditDefaultsOnly, Category = "Debuff")
-	TObjectPtr<UDataTable> DebuffDataTable;
+	TObjectPtr<UStatusEffectWidget> StatusEffectWidget;
 
 	// 技能列表
 	UPROPERTY(meta=(BindWidget))

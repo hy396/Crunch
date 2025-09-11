@@ -6,12 +6,28 @@
 #include "AbilitySystemBlueprintLibrary.h"
 #include "Abilities/Tasks/AbilityTask_PlayMontageAndWait.h"
 #include "Abilities/Tasks/AbilityTask_WaitGameplayEvent.h"
+#include "GameFramework/Character.h"
 #include "GAS/Core/TGameplayTags.h"
 
 UUpperCut::UUpperCut()
 {
 	// 阻止带有Ability_BasicAttack标签的技能激活
 	BlockAbilitiesWithTag.AddTag(TGameplayTags::Ability_BasicAttack);
+}
+
+void UUpperCut::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
+	const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled)
+{
+	// 清理着陆事件绑定
+	if (ActorInfo)
+	{
+		if (ACharacter* Character = Cast<ACharacter>(ActorInfo->AvatarActor.Get()))
+		{
+			// 直接移除委托，不需要使用句柄
+			Character->LandedDelegate.RemoveDynamic(this, &UUpperCut::OnCharacterLanded);
+		}
+	}
+	Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
 }
 
 void UUpperCut::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
@@ -73,8 +89,12 @@ void UUpperCut::StartLaunching(FGameplayEventData EventData)
 		{
 			FHitResult HitResult = UAbilitySystemBlueprintLibrary::GetHitResultFromTargetData(EventData.TargetData, i);
 			PushTarget(HitResult.GetActor(), FVector::UpVector * UpperCutLaunchSpeed);
-			ApplyGameplayEffectToHitResultActor(HitResult, LaunchDamageEffect, GetAbilityLevel(CurrentSpecHandle, CurrentActorInfo));
+			// ApplyGameplayEffectToHitResultActor(HitResult, LaunchDamageEffect, GetAbilityLevel(CurrentSpecHandle, CurrentActorInfo));
 		}
+		// 获取目标数据
+		FGameplayAbilityTargetDataHandle TargetDataHandle = EventData.TargetData;
+		// 应用伤害
+		ApplyDamageToTargetDataHandle(TargetDataHandle, LaunchDamageEffect, GetAbilityLevel(CurrentSpecHandle, CurrentActorInfo));
 	}
 
 	// 监听连招切换、提交、伤害等事件
@@ -120,6 +140,17 @@ void UUpperCut::HandleComboCommitEvent(FGameplayEventData EventData)
 	UAnimInstance* OwnerAnimInstance = GetOwnerAnimInstance();
 	if (!OwnerAnimInstance) return;
 
+    // 检查是否需要在落地时结束技能
+    if (bEndAbilityOnLand && NextComboName == CycloneSlashHoldTagName)
+    {
+    	// 绑定角色着陆事件，先检查是否已绑定，避免重复绑定
+    	if (ACharacter* Character = Cast<ACharacter>(CurrentActorInfo->AvatarActor.Get()))
+    	{
+    		// 先移除可能已存在的委托，再添加，确保不会重复添加
+    		Character->LandedDelegate.RemoveDynamic(this, &UUpperCut::OnCharacterLanded);
+    		Character->LandedDelegate.AddDynamic(this, &UUpperCut::OnCharacterLanded);
+    	}
+    }
 	OwnerAnimInstance->Montage_SetNextSection(OwnerAnimInstance->Montage_GetCurrentSection(UpperCutMontage), NextComboName, UpperCutMontage);
 	UE_LOG(LogTemp, Warning, TEXT("触发连招：%s"), *NextComboName.ToString())
 }
@@ -151,7 +182,18 @@ void UUpperCut::HandleComboDamageEvent(FGameplayEventData EventData)
 			PushTarget(HitResult.GetActor(), PushVel);
 
 			// 对目标应用伤害效果
-			ApplyGameplayEffectToHitResultActor(HitResult, EffectDef->DamageEffect, GetAbilityLevel(CurrentSpecHandle, CurrentActorInfo));
+			// ApplyGameplayEffectToHitResultActor(HitResult, EffectDef->DamageEffect, GetAbilityLevel(CurrentSpecHandle, CurrentActorInfo));
 		}
+
+		// 获取目标数据
+		FGameplayAbilityTargetDataHandle TargetDataHandle = EventData.TargetData;
+		// 应用伤害
+		ApplyDamageToTargetDataHandle(TargetDataHandle, *EffectDef, GetAbilityLevel(CurrentSpecHandle, CurrentActorInfo));
 	}
+}
+
+void UUpperCut::OnCharacterLanded(const FHitResult& Hit)
+{
+    // 角色着陆时结束技能
+    K2_EndAbility();
 }

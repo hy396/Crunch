@@ -13,6 +13,7 @@
 #include "GAS/Core/CAttributeSet.h"
 #include "GAS/Core/CHeroAttributeSet.h"
 #include "UI/Gameplay/Chat/ChatMessageItemWidget.h"
+#include "UI/Gameplay/StatusEffect/StatusEffectWidget.h"
 
 
 void UGameplayWidget::NativeConstruct()
@@ -28,6 +29,12 @@ void UGameplayWidget::NativeConstruct()
 		// 绑定每秒回复的属性
 		HealthBar->SetRegenValueTextToGameplayAttribute(OwnerAbilitySystemComponent, UCHeroAttributeSet::GetHealthRegenAttribute());
 		ManaBar->SetRegenValueTextToGameplayAttribute(OwnerAbilitySystemComponent, UCHeroAttributeSet::GetManaRegenAttribute());
+
+		// 配置状态效果显示
+		if (StatusEffectWidget)
+		{
+			StatusEffectWidget->ConfigureWithASC(OwnerAbilitySystemComponent);
+		}
 	}
 
 	// 初始设置：隐藏鼠标，只允许游戏输入

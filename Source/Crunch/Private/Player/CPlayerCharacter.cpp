@@ -28,6 +28,8 @@ ACPlayerCharacter::ACPlayerCharacter()
 	ViewCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("ViewCamera"));
 	ViewCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName); // 将视角摄像机附加到弹簧臂组件的指定插槽
 
+	MotionWarping = CreateDefaultSubobject<UMotionWarpingComponent>(TEXT("MotionWarping"));
+
 	// 设置角色旋转行为
 	bUseControllerRotationYaw = false; // 禁用控制器的Yaw旋转
 	GetCharacterMovement()->bOrientRotationToMovement = true; // 旋转角色以匹配移动方向
@@ -36,6 +38,8 @@ ACPlayerCharacter::ACPlayerCharacter()
 	HeroAttributeSet = CreateDefaultSubobject<UCHeroAttributeSet>(TEXT("HeroAttributeSet"));
 
 	InventoryComponent = CreateDefaultSubobject<UInventoryComponent>("Inventory Component");
+
+	
 }
 
 void ACPlayerCharacter::PawnClientRestart()
@@ -93,6 +97,14 @@ void ACPlayerCharacter::GetActorEyesViewPoint(FVector& OutLocation, FRotator& Ou
 	// 获取视角摄像机的位置和角色基础瞄准方向
 	OutLocation = ViewCamera->GetComponentLocation();
 	OutRotation = GetBaseAimRotation();
+}
+
+void ACPlayerCharacter::AddOrUpdateWarpTargetFromLocation_Implementation(const FVector& TargetLocation)
+{
+	if (MotionWarping)
+	{
+		MotionWarping->AddOrUpdateWarpTargetFromLocation(WarpTargetName, TargetLocation);
+	}
 }
 
 void ACPlayerCharacter::HandleLookInput(const FInputActionValue& InputActionValue)

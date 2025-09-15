@@ -64,7 +64,7 @@ class CRUNCH_API UInventoryItem : public UObject
 	GENERATED_BODY()
 public:
 	// 当物品授予的能力可释放状态变更时广播的委托
-	FOnAbilityCanCastUpdatedDelegate OnAbilityCanCastUpdated;
+//	FOnAbilityCanCastUpdatedDelegate OnAbilityCanCastUpdated;
 	
 	UInventoryItem();
 	// 检查物品是否有效初始化
@@ -137,10 +137,10 @@ public:
 
 	// TODO:没必要，等着我删吧
 	// 获取能力法力消耗
-	float GetAbilityManaCost() const;
+	// float GetAbilityManaCost() const;
 	
-	// 检查能力当前是否可施放
-	bool CanCastAbility() const;
+	// // 检查能力当前是否可施放
+	// bool CanCastAbility() const;
 	
 	// 获取授予的能力规格句柄
 	FGameplayAbilitySpecHandle GetGrantedAbilitySpecHandle() const { return GrantedAbilitySpecHandle; }
@@ -156,9 +156,9 @@ private:
 	UPROPERTY()
 	TObjectPtr<UAbilitySystemComponent> OwnerAbilitySystemComponent;
 
-	// TODO:坐等删除
+	// TODO:已移除法力更新监听
 	// 法力更新
-	void ManaUpdated(const FOnAttributeChangeData& ChangeData);
+	// void ManaUpdated(const FOnAttributeChangeData& ChangeData);
 	
 	// 关联的商店物品资产
 	UPROPERTY()
@@ -173,7 +173,7 @@ private:
 	int32 Slot;
 
 	// 应用的装备效果句柄
-	FActiveGameplayEffectHandle AppliedEquipedEffectHandle;
+	TArray<FActiveGameplayEffectHandle> AppliedEquippedEffectHandles;
 	
 	// 授予的能力规格句柄
 	FGameplayAbilitySpecHandle GrantedAbilitySpecHandle;

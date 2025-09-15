@@ -72,7 +72,7 @@ void UCAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackD
 		SetAttackDamage(0.f);
 		if (NewDamage > 0.f)
 		{
-			UE_LOG(LogTemp, Warning, TEXT("物理: %f"), NewDamage)
+			// UE_LOG(LogTemp, Warning, TEXT("物理: %f"), NewDamage)
 			Damage(Props, TGameplayTags::DamageType_AttackDamage, NewDamage);
 		}
 	}
@@ -84,7 +84,7 @@ void UCAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackD
 		SetMagicDamage(0.f);
 		if (NewDamage > 0.f)
 		{
-			UE_LOG(LogTemp, Warning, TEXT("魔法伤害: %f"), NewDamage)
+			// UE_LOG(LogTemp, Warning, TEXT("魔法伤害: %f"), NewDamage)
 			Damage(Props,TGameplayTags::DamageType_MagicDamage, NewDamage);
 		}
 	}
@@ -96,7 +96,7 @@ void UCAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackD
 		SetTrueDamage(0.f);
 		if (NewDamage > 0.f)
 		{
-			UE_LOG(LogTemp, Warning, TEXT("真实伤害: %f"), NewDamage)
+			// UE_LOG(LogTemp, Warning, TEXT("真实伤害: %f"), NewDamage)
 			Damage(Props,TGameplayTags::DamageType_TrueDamage, NewDamage);
 		}
 	}

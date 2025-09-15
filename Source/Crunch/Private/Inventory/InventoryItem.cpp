@@ -59,7 +59,8 @@ uint32 GetTypeHash(const FInventoryItemHandle& Key)
 }
 
 UInventoryItem::UInventoryItem()
-	: StackCount{1} // 默认堆叠数为1
+	: StackCount{1}, Slot(0)
+// 默认堆叠数为1
 {
 }
 
@@ -195,33 +196,33 @@ float UInventoryItem::GetAbilityCooldownDuration() const
 	);
 }
 
-float UInventoryItem::GetAbilityManaCost() const
-{
-	if (!IsGrantingAnyAbility() || !OwnerAbilitySystemComponent) return 0.f;
-	
-	return UCAbilitySystemStatics::GetManaCostFor(
-		GetShopItem()->GetGrantedAbilityCDO(), 
-		*OwnerAbilitySystemComponent, 
-		1 // 默认能力等级
-	);
-}
+// float UInventoryItem::GetAbilityManaCost() const
+// {
+// 	if (!IsGrantingAnyAbility() || !OwnerAbilitySystemComponent) return 0.f;
+// 	
+// 	return UCAbilitySystemStatics::GetManaCostFor(
+// 		GetShopItem()->GetGrantedAbilityCDO(), 
+// 		*OwnerAbilitySystemComponent, 
+// 		1 // 默认能力等级
+// 	);
+// }
 
-bool UInventoryItem::CanCastAbility() const
-{
-	if (!IsGrantingAnyAbility() || !OwnerAbilitySystemComponent) return false;
-	
-	// 优先通过能力规格检查
-	if (FGameplayAbilitySpec* Spec = OwnerAbilitySystemComponent->FindAbilitySpecFromHandle(GrantedAbilitySpecHandle))
-	{
-		return UCAbilitySystemStatics::CheckAbilityCost(*Spec, *OwnerAbilitySystemComponent);
-	}
-	
-	// 回退到通过CDO静态检查
-	return UCAbilitySystemStatics::CheckAbilityCostStatic(
-		GetShopItem()->GetGrantedAbilityCDO(), 
-		*OwnerAbilitySystemComponent
-	);
-}
+// bool UInventoryItem::CanCastAbility() const
+// {
+// 	if (!IsGrantingAnyAbility() || !OwnerAbilitySystemComponent) return false;
+// 	
+// 	// 优先通过能力规格检查
+// 	if (FGameplayAbilitySpec* Spec = OwnerAbilitySystemComponent->FindAbilitySpecFromHandle(GrantedAbilitySpecHandle))
+// 	{
+// 		return UCAbilitySystemStatics::CheckAbilityCost(*Spec, *OwnerAbilitySystemComponent);
+// 	}
+// 	
+// 	// 回退到通过CDO静态检查
+// 	return UCAbilitySystemStatics::CheckAbilityCostStatic(
+// 		GetShopItem()->GetGrantedAbilityCDO(), 
+// 		*OwnerAbilitySystemComponent
+// 	);
+// }
 
 void UInventoryItem::InitItem(const FInventoryItemHandle& NewHandle, const UPDA_ShopItem* NewShopItem,
                               UAbilitySystemComponent* AbilitySystemComponent)
@@ -232,13 +233,14 @@ void UInventoryItem::InitItem(const FInventoryItemHandle& NewHandle, const UPDA_
 	// 设置能力系统组件并绑定属性变化委托
 	OwnerAbilitySystemComponent = AbilitySystemComponent;
 
-	if (OwnerAbilitySystemComponent)
-	{
-		// 绑定法力变化
-		OwnerAbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(
-			UCAttributeSet::GetManaAttribute()
-		).AddUObject(this, &UInventoryItem::ManaUpdated);
-	}
+	// TODO:移除法力变换
+	// if (OwnerAbilitySystemComponent)
+	// {
+	// 	// 绑定法力变化
+	// 	OwnerAbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(
+	// 		UCAttributeSet::GetManaAttribute()
+	// 	).AddUObject(this, &UInventoryItem::ManaUpdated);
+	// }
 	
 	// 应用GAS修改
 	ApplyGASModifications();
@@ -257,15 +259,19 @@ void UInventoryItem::ApplyConsumeEffect()
 {
 	if (!ShopItem) return;
 
-	TSubclassOf<UGameplayEffect> ConsumeEffect = GetShopItem()->GetConsumeEffect();
-	if (ConsumeEffect) return;
-	
+	TArray<TSubclassOf<UGameplayEffect>> ConsumeEffects = GetShopItem()->GetConsumeEffects();
 	// 应用消耗效果
-	OwnerAbilitySystemComponent->BP_ApplyGameplayEffectToSelf(
-		ConsumeEffect,
-		1,
-		OwnerAbilitySystemComponent->MakeEffectContext()
-		);
+	for (const TSubclassOf<UGameplayEffect>& ConsumeEffect : ConsumeEffects)
+	{
+		if (ConsumeEffect)
+		{
+			OwnerAbilitySystemComponent->BP_ApplyGameplayEffectToSelf(
+				ConsumeEffect,
+				1,
+				OwnerAbilitySystemComponent->MakeEffectContext()
+				);
+		}
+	}
 }
 
 void UInventoryItem::RemoveGASModifications()
@@ -281,12 +287,16 @@ void UInventoryItem::RemoveGASModifications()
 	// 服务器端执行
 	if (OwnerAbilitySystemComponent->GetOwner()->HasAuthority())
 	{
-		// TODO:添加更多的GE的时候也需要在这里添加GE的移除效果
 		// 移除装备效果
-		if (AppliedEquipedEffectHandle.IsValid())
+		for (const FActiveGameplayEffectHandle& AppliedEquippedEffectHandle : AppliedEquippedEffectHandles)
 		{
-			OwnerAbilitySystemComponent->RemoveActiveGameplayEffect(AppliedEquipedEffectHandle);
+			if (AppliedEquippedEffectHandle.IsValid())
+			{
+				OwnerAbilitySystemComponent->RemoveActiveGameplayEffect(AppliedEquippedEffectHandle);
+			}
 		}
+		// 清空数组
+		AppliedEquippedEffectHandles.Empty();
 
 		// 移除技能
 		if (GrantedAbilitySpecHandle.IsValid())
@@ -301,17 +311,21 @@ void UInventoryItem::ApplyGASModifications()
 	if (!GetShopItem() || !OwnerAbilitySystemComponent) return;
 	// 仅服务器端执行
 	if (!OwnerAbilitySystemComponent->GetOwner()->HasAuthority()) return;
-
-	// TODO:添加唯一被动什么的可以在这里调整，可以将装备效果换成一个数组，同时装备多个不同的效果
+	// 清除数组
+	AppliedEquippedEffectHandles.Empty();
 	// 应用装备效果
-	TSubclassOf<UGameplayEffect> EquipEffect = GetShopItem()->GetEquippedEffect();
-	if (EquipEffect)
+	TArray<TSubclassOf<UGameplayEffect>> EquipEffects = GetShopItem()->GetEquippedEffects();
+	for (TSubclassOf<UGameplayEffect> EquipEffect : EquipEffects)
 	{
-		AppliedEquipedEffectHandle = OwnerAbilitySystemComponent->BP_ApplyGameplayEffectToSelf(
-			EquipEffect,
-			1,
-			OwnerAbilitySystemComponent->MakeEffectContext()
-			);
+		if (EquipEffect)
+		{
+			FActiveGameplayEffectHandle AppliedEquippedEffectHandle = OwnerAbilitySystemComponent->BP_ApplyGameplayEffectToSelf(
+				EquipEffect,
+				1,
+				OwnerAbilitySystemComponent->MakeEffectContext()
+				);
+			AppliedEquippedEffectHandles.Add(AppliedEquippedEffectHandle);
+		}
 	}
 
 	// 授予装备技能
@@ -321,18 +335,11 @@ void UInventoryItem::ApplyGASModifications()
 		GrantedAbilitySpecHandle = OwnerAbilitySystemComponent->GiveAbility(
 			FGameplayAbilitySpec(GrantedAbility)
 			);
-
-		// TODO: 绑定输入按键，等插槽上线，使用枚举的方式来绑定插槽
-		// GrantedAbilitySpecHandle = OwnerAbilitySystemComponent->GiveAbility(
-		// 	FGameplayAbilitySpec(GrantedAbility,
-		// 		1,
-		// 		static_cast<int32>(ECAbilityInputID::BasicAttack),
-		// 		nullptr));
 	}
 }
 
-void UInventoryItem::ManaUpdated(const FOnAttributeChangeData& ChangeData)
-{
-	// 技能可用委托更新
-	OnAbilityCanCastUpdated.Broadcast(CanCastAbility());
-}
+// void UInventoryItem::ManaUpdated(const FOnAttributeChangeData& ChangeData)
+// {
+// 	// 技能可用委托更新
+// 	OnAbilityCanCastUpdated.Broadcast(CanCastAbility());
+// }

@@ -57,6 +57,14 @@ private:
 	// 伤害效果定义
 	UPROPERTY(EditDefaultsOnly, Category = "DamageEffect")
 	FGenericDamageEffectDef DamageEffectDef;
+
+	// 是否根据摄像机方向修正弹道方向
+	UPROPERTY(EditDefaultsOnly, Category = "Projectile", meta = (DisplayName = "是否根据摄像机方向修正弹道方向"))
+	bool bCorrectDirectionByCamera = true;
+
+	// 是否碰撞后自动销毁
+	UPROPERTY(EditDefaultsOnly, Category = "Projectile", meta = (DisplayName = "是否碰撞后自动销毁"))
+	bool bAutoDestroyOnHit = true;
 	
 	// 投射物所属队伍ID（同步属性）
 	UPROPERTY(Replicated)

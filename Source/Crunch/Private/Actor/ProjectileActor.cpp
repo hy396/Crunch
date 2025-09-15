@@ -36,7 +36,7 @@ void AProjectileActor::ShootProjectile(float InSpeed, float InMaxDistance, const
 	SetGenericTeamId(InTeamId);
 
 	// 获取拥有者视角（如有需要可用于弹道修正）
-	if (GetOwner())
+	if (bCorrectDirectionByCamera && GetOwner())
 	{
 		FVector OwnerViewLoc;
 		GetOwner()->GetActorEyesViewPoint(OwnerViewLoc, OwnerViewRot);
@@ -101,7 +101,10 @@ void AProjectileActor::NotifyActorBeginOverlap(AActor* OtherActor)
 				OtherASC->ApplyGameplayEffectSpecToSelf(*EffectSpecHandle.Data.Get());
 			}
 			// OtherASC->ApplyGameplayEffectSpecToSelf(*HitEffectSpecHandle.Data.Get());
-			GetWorldTimerManager().ClearTimer(ShootTimerHandle);
+			if (bAutoDestroyOnHit)
+			{
+				GetWorldTimerManager().ClearTimer(ShootTimerHandle);
+			}
 		}
 
 		// 构造命中结果
@@ -111,12 +114,13 @@ void AProjectileActor::NotifyActorBeginOverlap(AActor* OtherActor)
 		
 		// 发送本地GameplayCue（用于特效、音效等）
 		SendLocalGameplayCue(OtherActor, HitResult);
-		// 生成爆炸
-		// SpawnExplosion();
 
 		// TODO:不销毁的话可以做成子弹对象池
 		// 销毁投射物
-		Destroy();
+		if (bAutoDestroyOnHit)
+		{
+			Destroy();
+		}
 	}
 }
 

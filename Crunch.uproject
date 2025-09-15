@@ -72,6 +72,10 @@
 		{
 			"Name": "SocketSubsystemEOS",
 			"Enabled": true
+		},
+		{
+			"Name": "MotionWarping",
+			"Enabled": true
 		}
 	]
 }

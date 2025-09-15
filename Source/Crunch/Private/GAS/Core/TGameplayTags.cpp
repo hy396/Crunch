@@ -47,6 +47,10 @@ namespace TGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Ability_Freeze_Cooldown, "Ability.Freeze.Cooldown", "冻结技能冷却")
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Ability_Blink_Teleport, "Ability.Blink.Teleport", "闪烁技能")
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Ability_Blink_Cooldown, "Ability.Blink.Cooldown", "闪烁技能冷却")
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Ability_ChainAttack, "Ability.ChainAttack", "连锁攻击技能")
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Ability_ChainAttack_Cooldown, "Ability.ChainAttack.Cooldown", "连锁攻击技能冷却")
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Ability_SwordAura, "Ability.SwordAura", "剑气技能")
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Ability_SwordAura_Cooldown, "Ability.SwordAura.Cooldown", "剑气技能冷却")
 
 	
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Ability_Generic_Damage, "Ability.Generic.Damage", "技能伤害")

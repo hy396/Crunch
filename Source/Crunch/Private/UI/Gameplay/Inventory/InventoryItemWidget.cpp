@@ -16,15 +16,16 @@ bool UInventoryItemWidget::IsEmpty() const
 	return !InventoryItem || !(InventoryItem->IsValid());
 }
 
-void UInventoryItemWidget::SetSlotNumber(int NewSlotNumber)
+void UInventoryItemWidget::SetSlotNumber(int32 NewSlotNumber)
 {
 	SlotNumber = NewSlotNumber;
+	ManaCostText->SetText(FText::AsNumber(NewSlotNumber));
 }
 
 void UInventoryItemWidget::UpdateInventoryItem(const UInventoryItem* Item)
 {
 	// 清理之前的施法状态委托
-	UnBindCanCastAbilityDelegate();
+	// UnBindCanCastAbilityDelegate();
 	
 	InventoryItem = Item;
 	// 如果物品无效或数量为0，清空槽位
@@ -59,7 +60,7 @@ void UInventoryItemWidget::UpdateInventoryItem(const UInventoryItem* Item)
 	{
 		// TODO:这里刚购买物品的时候会产生获取技能等级失败之类的警告，这是正常且必要的
 		// 更新施法状态（是否可施放）
-		UpdateCanCastDisplay(InventoryItem->CanCastAbility());
+		// UpdateCanCastDisplay(InventoryItem->CanCastAbility());
 		
 		// 获取冷却信息
 		float AbilityCooldownRemaining = InventoryItem->GetAbilityCooldownTimeRemaining();
@@ -72,21 +73,21 @@ void UInventoryItemWidget::UpdateInventoryItem(const UInventoryItem* Item)
 
 		// TODO:等着被我删吧，法力显示
 		// 更新法力消耗显示
-		float AbilityCost = InventoryItem->GetAbilityManaCost();
-		ManaCostText->SetVisibility(AbilityCost == 0.f ? ESlateVisibility::Hidden : ESlateVisibility::Visible);
-		ManaCostText->SetText(FText::AsNumber(AbilityCost));
+		// float AbilityCost = InventoryItem->GetAbilityManaCost();
+		// ManaCostText->SetVisibility(AbilityCost == 0.f ? ESlateVisibility::Hidden : ESlateVisibility::Visible);
+		// ManaCostText->SetText(FText::AsNumber(AbilityCost));
 
 		// 更新总冷却时间显示
 		CooldownDurationText->SetVisibility(AbilityCooldownDuration == 0.f? ESlateVisibility::Hidden : ESlateVisibility::Visible);
 		CooldownDurationText->SetText(FText::AsNumber(AbilityCooldownDuration));
 		
 		// 绑定施法状态变化委托
-		BindCanCastAbilityDelegate();
+		// BindCanCastAbilityDelegate();
 	}
 	else // 非能力物品
 	{
 		UpdateCanCastDisplay(true); // 总是显示为可施放状态
-		ManaCostText->SetVisibility(ESlateVisibility::Hidden);
+		// ManaCostText->SetVisibility(ESlateVisibility::Hidden);
 		CooldownDurationText->SetVisibility(ESlateVisibility::Hidden);
 		CooldownCountText->SetVisibility(ESlateVisibility::Hidden);
 	}
@@ -95,7 +96,7 @@ void UInventoryItemWidget::UpdateInventoryItem(const UInventoryItem* Item)
 void UInventoryItemWidget::EmptySlot()
 {
 	ClearCooldown(); // 清除冷却显示
-	UnBindCanCastAbilityDelegate(); // 解绑委托
+	// UnBindCanCastAbilityDelegate(); // 解绑委托
 	
 	// 清空物品
 	InventoryItem = nullptr;
@@ -237,26 +238,26 @@ void UInventoryItemWidget::StartCooldown(float CooldownDuration, float TimeRemai
 	}
 }
 
-void UInventoryItemWidget::BindCanCastAbilityDelegate()
-{
-	if (InventoryItem)
-	{
-		// 通过const_cast移除const修饰以绑定委托
-		const_cast<UInventoryItem*>(InventoryItem)->OnAbilityCanCastUpdated.AddUObject(
-			this, 
-			&UInventoryItemWidget::UpdateCanCastDisplay
-		);
-	}
-}
-
-void UInventoryItemWidget::UnBindCanCastAbilityDelegate()
-{
-	if (InventoryItem)
-	{
-		// 移除所有与当前对象相关的委托绑定
-		const_cast<UInventoryItem*>(InventoryItem)->OnAbilityCanCastUpdated.RemoveAll(this);
-	}
-}
+// void UInventoryItemWidget::BindCanCastAbilityDelegate()
+// {
+// 	if (InventoryItem)
+// 	{
+// 		// 通过const_cast移除const修饰以绑定委托
+// 		const_cast<UInventoryItem*>(InventoryItem)->OnAbilityCanCastUpdated.AddUObject(
+// 			this, 
+// 			&UInventoryItemWidget::UpdateCanCastDisplay
+// 		);
+// 	}
+// }
+//
+// void UInventoryItemWidget::UnBindCanCastAbilityDelegate()
+// {
+// 	if (InventoryItem)
+// 	{
+// 		// 移除所有与当前对象相关的委托绑定
+// 		const_cast<UInventoryItem*>(InventoryItem)->OnAbilityCanCastUpdated.RemoveAll(this);
+// 	}
+// }
 
 void UInventoryItemWidget::CooldownFinished()
 {

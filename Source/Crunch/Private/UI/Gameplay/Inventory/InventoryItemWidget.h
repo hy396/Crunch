@@ -44,7 +44,7 @@ public:
 	// 检查槽位是否为空
 	bool IsEmpty() const;
 	// 设置槽位编号
-	void SetSlotNumber(int NewSlotNumber);
+	void SetSlotNumber(int32 NewSlotNumber);
 	// 更新UI显示指定物品
 	void UpdateInventoryItem(const UInventoryItem* Item);
 	// 清空槽位
@@ -133,12 +133,12 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "Cooldown")
 	float CooldownUpdateInterval = 0.1f;
 
-	// TODO: 移除魔法绑定的时候我就删了他
-	// 绑定施法状态变更委托
-	void BindCanCastAbilityDelegate();
-	
-	// 解绑施法状态变更委托
-	void UnBindCanCastAbilityDelegate();
+	// // TODO: 移除魔法绑定的时候我就删了他
+	// // 绑定施法状态变更委托
+	// void BindCanCastAbilityDelegate();
+	//
+	// // 解绑施法状态变更委托
+	// void UnBindCanCastAbilityDelegate();
 	
 	// 冷却结束处理
 	void CooldownFinished();

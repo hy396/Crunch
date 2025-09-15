@@ -29,4 +29,12 @@ public:
 	// ✅ 修正后的声明：仅保留 Client RPC 和 BlueprintCallable
 	// UFUNCTION(Client, Reliable,BlueprintCallable, Category = "Combat")
 	// virtual void AddNiagaraText(const FNumberPopRequest& Request) = 0;
+
+	/**
+	 * 执行运动扭曲
+	 * @param TargetLocation 目标位置
+	 */
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void AddOrUpdateWarpTargetFromLocation(const FVector& TargetLocation);
+
 };

@@ -56,6 +56,11 @@ void UShopWidget::ShopItemLoadFinished()
 	TArray<const UPDA_ShopItem*> ShopItems;
 	if (UCAssetManager::Get().GetLoadedShopItems(ShopItems))
 	{
+		// 按照价格升序进行排序
+		Algo::Sort(ShopItems, [](const UPDA_ShopItem* A, const UPDA_ShopItem* B)->bool
+		{
+			return A->GetPrice() < B->GetPrice();
+		});
 		// 添加商店物品
 		for (const UPDA_ShopItem* ShopItem : ShopItems)
 		{

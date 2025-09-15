@@ -8,6 +8,8 @@
 #include "GAS/Core/CGameplayAbilityTypes.h"
 #include "GAS/Core/CHeroAttributeSet.h"
 #include "Inventory/InventoryComponent.h"
+#include "MotionWarpingComponent.h"
+#include "Character/Interaction/CombatInterface.h"
 #include "CPlayerCharacter.generated.h"
 
 class UInputAction;
@@ -16,7 +18,7 @@ class UInputAction;
  * 
  */
 UCLASS()
-class ACPlayerCharacter : public ACCharacter
+class ACPlayerCharacter : public ACCharacter, public ICombatInterface
 {
 	GENERATED_BODY()
 public:
@@ -30,10 +32,26 @@ public:
 	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
 	// 获取角色视觉的位置和旋转
 	virtual void GetActorEyesViewPoint(FVector& OutLocation, FRotator& OutRotation) const  override;
+
+	/**
+     * 添加或更新运动扭曲目标
+     * @param TargetLocation 运动扭曲目标位置
+     */
+	virtual void AddOrUpdateWarpTargetFromLocation_Implementation(const FVector& TargetLocation) override;
 private:
+	// 角色运动扭曲组件
+	UPROPERTY(VisibleDefaultsOnly, Category = "Motion Warping")
+	TObjectPtr<UMotionWarpingComponent> MotionWarping;
+
+	// 运动扭曲目标名称
+	UPROPERTY(EditDefaultsOnly, Category = "Motion Warping")
+	FName WarpTargetName = "FacingTarget";
+
+	// 摄像机 SpringArm
 	UPROPERTY(VisibleDefaultsOnly, Category = "View")
 	TObjectPtr<class USpringArmComponent> CameraBoom;
 
+	// 摄像机
 	UPROPERTY(VisibleDefaultsOnly, Category = "View")
 	TObjectPtr<class UCameraComponent> ViewCamera;
 
@@ -58,6 +76,8 @@ private:
 	 * @return FVector 前向移动方向向量
 	 */
 	FVector GetMoveFwdDir() const;
+
+
 #pragma region Gameplay Ability
 private:
 	// 瞄准状态变化时回调

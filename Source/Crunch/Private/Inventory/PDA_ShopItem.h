@@ -76,10 +76,10 @@ public:
 
 	// TODO:可以切换为数组,多个效果，然后有点效果采用堆叠的形式，限制堆叠大小为1
 	// 获取装备时触发的GE
-	TSubclassOf<UGameplayEffect> GetEquippedEffect() const { return EquippedEffect; }
+	TArray<TSubclassOf<UGameplayEffect>> GetEquippedEffects() const { return EquippedEffects; }
 	
 	// 获取使用时触发的GE
-	TSubclassOf<UGameplayEffect> GetConsumeEffect() const { return ConsumeEffect; }
+	TArray<TSubclassOf<UGameplayEffect>> GetConsumeEffects() const { return ConsumeEffects; }
 	
 	// 获取物品授予的GA
 	TSubclassOf<UGameplayAbility> GetGrantedAbility() const { return GrantedAbility; }
@@ -123,12 +123,12 @@ private:
 	// TODO:可以切换为数组,多个效果，然后有点效果采用堆叠的形式，限制堆叠大小为1
 	/** 装备时应用的GameplayEffect */
 	UPROPERTY(EditDefaultsOnly, Category = "ShopItem", meta = (DisplayName = "装备效果"))
-	TSubclassOf<UGameplayEffect> EquippedEffect;
+	TArray<TSubclassOf<UGameplayEffect>> EquippedEffects;
 
 	/** 使用时应用的GameplayEffect */
 	UPROPERTY(EditDefaultsOnly, Category = "ShopItem", meta = (DisplayName = "使用效果"))
-	TSubclassOf<UGameplayEffect> ConsumeEffect;
-
+	TArray<TSubclassOf<UGameplayEffect>> ConsumeEffects;
+	
 	/** 物品授予的GameplayAbility */
 	UPROPERTY(EditDefaultsOnly, Category = "ShopItem", meta = (DisplayName = "授予能力"))
 	TSubclassOf<UGameplayAbility> GrantedAbility;

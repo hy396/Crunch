@@ -202,6 +202,59 @@ void UGA_NewAbility::ActivateAbility(...)
 }
 ```
 
+#### 连锁攻击技能开发
+```cpp
+// 创建连锁攻击技能类
+UCLASS()
+class CRUNCH_API UGA_ChainAttack : public UCGameplayAbility
+{
+    GENERATED_BODY()
+
+public:
+    virtual void ActivateAbility(
+        const FGameplayAbilitySpecHandle Handle,
+        const FGameplayAbilityActorInfo* ActorInfo,
+        const FGameplayAbilityActivationInfo ActivationInfo,
+        const FGameplayEventData* TriggerEventData
+    ) override;
+
+protected:
+    // 蓄力动画蒙太奇
+    UPROPERTY(EditDefaultsOnly, Category = "Chain Attack|Animation")
+    TObjectPtr<UAnimMontage> ChargeMontage;
+    
+    // 目标检测半径
+    UPROPERTY(EditDefaultsOnly, Category = "Targeting")
+    float TargetDetectionRadius = 300.f;
+    
+    // 连锁攻击伤害效果
+    UPROPERTY(EditDefaultsOnly, Category = "Chain Attack|Damage")
+    FGenericDamageEffectDef DamageEffect;
+};
+
+// 实现连锁攻击逻辑
+void UGA_ChainAttack::ActivateAbility(...)
+{
+    // 播放蓄力动画
+    UAbilityTask_PlayMontageAndWait* PlayChargeMontage = 
+        UAbilityTask_PlayMontageAndWait::CreatePlayMontageAndWaitProxy(this, NAME_None, ChargeMontage);
+    PlayChargeMontage->ReadyForActivation();
+    
+    // 检测范围内的敌人
+    DetectTargets();
+    
+    // 开始连锁攻击定时器
+    GetWorld()->GetTimerManager().SetTimer(
+        ChainAttackTimerHandle,
+        this,
+        &UGA_ChainAttack::ExecuteSingleAttack,
+        AttackInterval,
+        true,
+        0.0f
+    );
+}
+```
+
 ### UI系统开发
 
 #### 创建新的UI控件
@@ -415,6 +468,50 @@ void UGameplayWidget::ShowBarrageMessage(const FChatMessage& Message, bool bIsSe
     GameplayWidgetRootPanel->AddChild(BarrageWidget);
     BarrageWidget->SetAsBarrageMode(Message, bIsSelf, bIsTeammate, GameplayWidgetRootPanel);
 }
+
+#### 弹幕系统实现
+```cpp
+// 在ChatMessageItemWidget中实现弹幕模式
+void UChatMessageItemWidget::SetAsBarrageMode(const FChatMessage& Message, bool bIsSelf, bool bIsTeammate, UCanvasPanel* BarragePanel)
+{
+    // 设置消息内容
+    SetChatMessageWithColors(Message, bIsSelf, bIsTeammate);
+    
+    // 启动弹幕动画定时器
+    GetWorld()->GetTimerManager().SetTimer(
+        BarrageTimerHandle,
+        this,
+        &UChatMessageItemWidget::UpdateBarragePosition,
+        1.0f / 30.0f, // 30FPS
+        true // 循环
+    );
+    
+    // 设置弹幕结束定时器
+    FTimerHandle FinishTimerHandle;
+    GetWorld()->GetTimerManager().SetTimer(
+        FinishTimerHandle,
+        this,
+        &UChatMessageItemWidget::OnBarrageFinished,
+        BarrageMessageDuration,
+        false
+    );
+}
+
+// 更新弹幕位置
+void UChatMessageItemWidget::UpdateBarragePosition()
+{
+    UCanvasPanelSlot* CanvasSlot = UWidgetLayoutLibrary::SlotAsCanvasSlot(this);
+    if (!CanvasSlot) return;
+
+    // 计算新位置
+    float CurrentTime = GetWorld()->GetTimeSeconds();
+    float ElapsedTime = CurrentTime - BarrageStartTime;
+    float NewX = InitialXPosition - (BarrageMoveSpeed * ElapsedTime);
+
+    // 更新位置
+    CanvasSlot->SetPosition(FVector2D(NewX, CanvasSlot->GetPosition().Y));
+}
+```
 ```
 
 ### 网络开发
@@ -473,6 +570,49 @@ void ANetworkedActor::Server_TakeDamage_Implementation(int32 Damage)
     {
         Client_ShowDamageEffect();
     }
+}
+```
+
+#### 会话管理开发
+```cpp
+// 在MGameInstance中实现会话创建
+void UMGameInstance::RequestCreateAndJoinSession(const FName& NewSessionName)
+{
+    // 向协调器发送创建会话请求
+    FHttpRequestRef Request = FHttpModule::Get().CreateRequest();
+    Request->SetURL(FString::Printf(TEXT("%s/Sessions"), *CoordinatorURL));
+    Request->SetVerb("POST");
+    Request->SetHeader(TEXT("Content-Type"), TEXT("application/json"));
+    
+    // 设置请求体
+    TSharedPtr<FJsonObject> JsonObject = MakeShareable(new FJsonObject);
+    JsonObject->SetStringField("SessionName", NewSessionName.ToString());
+    
+    FString RequestBody;
+    TSharedRef<TJsonWriter<>> Writer = TJsonWriterFactory<>::Create(&RequestBody);
+    FJsonSerializer::Serialize(JsonObject.ToSharedRef(), Writer);
+    
+    Request->SetContentAsString(RequestBody);
+    Request->ProcessRequest();
+}
+
+// 加入会话实现
+bool UMGameInstance::JoinSessionWithId(const FString& SessionIdStr)
+{
+    // 查找匹配的会话并加入
+    const FOnlineSessionSearchResult* SessionSearchResult = SessionSearch->SearchResults.FindByPredicate(
+        [=](const FOnlineSessionSearchResult& Result)
+        {
+            return Result.GetSessionIdStr() == SessionIdStr;
+        }
+    );
+    
+    if (SessionSearchResult)
+    {
+        JoinSessionWithSearchResult(*SessionSearchResult);
+        return true;
+    }
+    return false;
 }
 ```
 

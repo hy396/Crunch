@@ -261,7 +261,7 @@ void UMGameInstance::SessionCreationRequestCompleted(FHttpRequestPtr Request, FH
 		// 	UE_LOG(LogTemp, Warning, TEXT("会话创建成功，但未找到端口号字段"))
 		// }
 	}
-
+	UE_LOG(LogTemp, Warning, TEXT("连接协调服务器成功，新创建的会话端口为: %d"), Port)
 	// 开始查找并加入刚刚创建的会话
 	StartFindingCreatedSession(SessionSearchId);
 }

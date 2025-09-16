@@ -9,6 +9,7 @@
 #include "Blueprint/UserWidget.h"
 #include "Chat/ChatWidget.h"
 #include "GAS/Core/CGameplayAbilityTypes.h"
+#include "Gauge/ValueBar.h"
 #include "Inventory/InventoryWidget.h"
 #include "Shop/ShopWidget.h"
 #include "GameplayWidget.generated.h"
@@ -72,6 +73,14 @@ private:
 	 * TODO: 将GameplayWidget中的生命条以及法力条修改为Lyra的版本（尚未完成）
 	 * 预计创建一个新的进度条UI用于替代
 	 */
+	// 生命进度条
+	UPROPERTY(meta = (BindWidget))
+	TObjectPtr<UValueBar> HealthValueBar;
+
+	// 法力进度条
+	UPROPERTY(meta = (BindWidget))
+	TObjectPtr<UValueBar> ManaValueBar;
+	
 	// 生命进度条
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UValueGauge> HealthBar;

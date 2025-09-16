@@ -109,6 +109,164 @@ private:
      * @param Level 关卡引用
      */
     void LoadLevelAndListen(TSoftObjectPtr<UWorld> Level);
+    
+    /**
+     * 会话创建请求完成回调
+     * @param Request HTTP请求
+     * @param Response HTTP响应
+     * @param bConnectedSuccessfully 是否连接成功
+     * @param SessionSearchId 会话搜索ID
+     */
+    void SessionCreationRequestCompleted(FHttpRequestPtr Request, FHttpResponsePtr Response, bool bConnectedSuccessfully, FGuid SessionSearchId);
+
+    /**
+     * 开始查找已创建的会话
+     * @param SessionSearchId 会话搜索ID
+     */
+    void StartFindingCreatedSession(const FGuid& SessionSearchId);
+    
+    /**
+     * 停止所有会话查找
+     */
+    void StopAllSessionFindings();
+    
+    /**
+     * 停止查找已创建的会话
+     */
+    void StopFindingCreatedSession();
+    
+    /**
+     * 停止全局会话搜索
+     */
+    void StopGlobalSessionSearch();
+
+    /**
+     * 查找全局会话
+     */
+    void FindGlobalSessions();
+    
+    /**
+     * 全局会话搜索完成回调
+     * @param bWasSuccessful 是否成功
+     */
+    void GlobalSessionSearchCompleted(bool bWasSuccessful);
+
+    /** 定时器句柄：查找已创建会话 */
+    FTimerHandle FindCreatedSessionTimerHandle;
+    
+    /** 定时器句柄：查找已创建会话超时 */
+    FTimerHandle FindCreatedSessionTimeoutTimerHandle;
+
+    /** 定时器句柄：全局会话搜索 */
+    FTimerHandle GlobalSessionSearchTimerHandle;
+    
+    /** 全局会话搜索间隔 */
+    UPROPERTY(EditDefaultsOnly, Category = "Session Search")
+    float GlobalSessionSearchInterval = 2.f;
+
+    /** 查找已创建会话间隔 */
+    UPROPERTY(EditDefaultsOnly, Category = "Session Search")
+    float FindCreatedSessionSearchInterval = 1.f;
+
+    /** 查找已创建会话超时时间 */
+    UPROPERTY(EditDefaultsOnly, Category = "Session Search")
+    float FindCreatedSessionTimeoutDuration = 60.f;
+
+    /**
+     * 查找已创建会话
+     * @param SessionSearchId 会话搜索ID
+     */
+    void FindCreatedSession(FGuid SessionSearchId);
+    
+    /**
+     * 查找已创建会话超时
+     */
+    void FindCreatedSessionTimeout();
+    
+    /**
+     * 查找已创建会话完成回调
+     * @param bWasSuccessful 是否成功
+     */
+    void FindCreateSessionCompleted(bool bWasSuccessful);
+    
+    /**
+     * 通过搜索结果加入会话
+     * @param SearchResult 会话搜索结果
+     */
+    void JoinSessionWithSearchResult(const class FOnlineSessionSearchResult& SearchResult);
+
+    /**
+     * 加入会话完成回调
+     * @param SessionName 会话名称
+     * @param JoinResult 加入结果
+     * @param Port 端口
+     */
+    void JoinSessionCompleted(FName SessionName, EOnJoinSessionCompleteResult::Type JoinResult, int64 Port);
+    
+    /** 会话搜索对象 */
+    TSharedPtr<class FOnlineSessionSearch> SessionSearch;
+
+    /**
+     * 更新会话设置以同步当前玩家数量到在线子系统
+     */
+    void UpdateSessionSettings();
+    
+    /**
+     * 创建会话
+     */
+    void CreateSession();
+    
+    /**
+     * 当会话创建完成时触发
+     * @param SessionName 会话名称
+     * @param bWasSuccessful 是否成功
+     */
+    void OnSessionCreated(FName SessionName, bool bWasSuccessful);
+    
+    /**
+     * 当会话结束完成时回调
+     * @param SessionName 会话名称
+     * @param bWasSuccessful 是否成功
+     */
+    void EndSessionCompleted(FName SessionName, bool bWasSuccessful);
+    
+    /** 服务器会话名称 */
+    FString ServerSessionName;
+    
+    /** 会话服务器端口 */
+    int32 SessionServerPort;
+    
+    /**
+     * 终止会话服务器
+     */
+    void TerminateSessionServer();
+    
+    /** 等待玩家加入的超时计时器句柄 */
+    FTimerHandle WaitPlayerJoinTimeoutHandle;
+
+    /** 等待玩家加入的超时时间（默认60秒） */
+    UPROPERTY(EditDefaultsOnly, Category = "Session")
+    float WaitPlayerJoinTimeOutDuration = 60.f;
+    
+    /**
+     * 玩家超时未加入时触发
+     */
+    void WaitPlayerJoinTimeoutReached();
+    
+    /** 玩家记录集合 */
+    TSet<FUniqueNetIdRepl> PlayerRecord;
+
+    /** 主菜单关卡引用 */
+    UPROPERTY(EditDefaultsOnly, Category = "Map")
+    TSoftObjectPtr<UWorld> MainMenuLevel;
+
+    /** 大厅关卡引用 */
+    UPROPERTY(EditDefaultsOnly, Category = "Map")
+    TSoftObjectPtr<UWorld> LobbyLevel;
+
+    /** 游戏关卡引用 */
+    UPROPERTY(EditDefaultsOnly, Category = "Map")
+    TSoftObjectPtr<UWorld> GameLevel;
 };
 ```
 

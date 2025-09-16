@@ -33,6 +33,7 @@
 - 技能升级和管理
 - 属性系统 (UCAttributeSet)
 - 技能UI集成 (UAbilityGauge)
+- 连锁攻击技能 (GA_ChainAttack)
 ```
 
 ### 物品与商店系统
@@ -41,6 +42,7 @@
 - 物品合成树 (ITreeNodeInterface)
 - 动态定价算法
 - 库存管理 (UInventoryComponent)
+- 智能合成系统
 ```
 
 ### 聊天系统
@@ -50,6 +52,7 @@
 - 发送者类型识别（自己/队友/对手）
 - 弹幕模式和临时消息
 - 富文本显示和网络同步
+- 实时滚动弹幕效果
 ```
 
 ### 网络架构
@@ -58,6 +61,7 @@
 - 会话管理和房间系统
 - 状态同步和RPC通信
 - 负载均衡和服务发现
+- 协调器集成
 ```
 
 ## 📖 详细文档导航
@@ -81,6 +85,8 @@
 | 技能系统 | [GAS系统](./GAS_SYSTEM.md) | `UCAbilitySystemComponent`, `UCGameplayAbility` |
 | 聊天系统 | [聊天架构](./CHAT_SYSTEM.md) | `UChatWidget`, `UChatMessageItemWidget` |
 | 网络系统 | [网络架构](./ARCHITECTURE.md#网络架构) | `FPlayerSelection`, RPC函数 |
+| 连锁攻击技能 | [连锁攻击技能](./GAS_SYSTEM.md#连锁攻击技能) | `UGA_ChainAttack` |
+| 弹幕系统 | [弹幕系统](./CHAT_SYSTEM.md#弹幕系统) | `UChatMessageItemWidget` |
 
 ### 📚 API参考
 
@@ -92,6 +98,8 @@
 | 库存管理 | `UInventoryComponent` | [库存系统API](./API.md#库存系统) |
 | UI控件 | `UShopWidget`, `UAbilityGauge` | [UI系统API](./API.md#ui系统) |
 | 聊天系统 | `UChatWidget`, `IChatInterface` | [聊天系统文档](./CHAT_SYSTEM.md) |
+| 连锁攻击技能 | `UGA_ChainAttack` | [连锁攻击技能](./GAS_SYSTEM.md#连锁攻击技能) |
+| 弹幕系统 | `UChatMessageItemWidget` | [弹幕系统API](./CHAT_SYSTEM.md#弹幕系统) |
 
 ### 🚀 部署指南
 

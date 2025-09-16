@@ -189,7 +189,7 @@ private:
 	
 	// 玩家记录集合
 	TSet<FUniqueNetIdRepl> PlayerRecord;
-private:	
+private:
 	// 主菜单关卡引用
 	UPROPERTY(EditDefaultsOnly, Category = "Map")
 	TSoftObjectPtr<UWorld> MainMenuLevel;

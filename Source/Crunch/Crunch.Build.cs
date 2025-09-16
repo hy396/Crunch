@@ -15,7 +15,7 @@ public class Crunch : ModuleRules
 			"UMG", "Slate", "SlateCore",
 			"AIModule" , "ModularGameplay", "NavigationSystem", "Niagara",
 			"OnlineSubsystem","OnlineSubsystemEOS","OnlineSubsystemUtils","Networking","HTTP","Json",
-			"MotionWarping"
+			"MotionWarping","CommonUI"
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });

@@ -12,6 +12,7 @@
 
 class UChatWidget;
 class UGameplayWidget;
+class AActor;
 
 /**
  * 
@@ -125,4 +126,9 @@ private:
 	
 	// 显示游戏结果
 	void ShowWinLoseState();
+
+
+	// 注册单位
+	void RegisterUnitForMinimap(AActor* Unit);
+
 };

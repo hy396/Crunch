@@ -21,7 +21,7 @@ void USessionEntryWidget::InitializeEntry(const FString& Name, const FString& Se
 
 	// TODO：人数信息失败2025/09/03
 	// 直接格式化并设置合并文本：房间名称 + 人数信息
-	//FString CombinedText = FString::Printf(TEXT("%s (%d/%d)"), *Name, CurrentPlayers, MaxPlayers);
+	// FString CombinedText = FString::Printf(TEXT("%s (%d/%d)"), *Name, CurrentPlayers, MaxPlayers);
 	// 展示移除掉人数信息，只保留房间名称
 	FString CombinedText = Name;
 	SessionNameText->SetText(FText::FromString(CombinedText));

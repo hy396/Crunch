@@ -82,6 +82,7 @@ private:
 	UPROPERTY(meta=(BindWidget))
 	TObjectPtr<UTextBlock> CooldownDurationText;
 
+	// 目前用于绑定插槽号 
 	// UI绑定：法力消耗文本
 	UPROPERTY(meta=(BindWidget))
 	TObjectPtr<UTextBlock> ManaCostText;

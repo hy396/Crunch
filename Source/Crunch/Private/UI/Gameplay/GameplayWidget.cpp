@@ -30,13 +30,13 @@ void UGameplayWidget::NativeConstruct()
 		HealthValueBar->SetRegenValueTextToGameplayAttribute(OwnerAbilitySystemComponent, UCHeroAttributeSet::GetHealthRegenAttribute());
 		ManaValueBar->SetRegenValueTextToGameplayAttribute(OwnerAbilitySystemComponent, UCHeroAttributeSet::GetManaRegenAttribute());
 		
-		// 绑定属性回调
-		HealthBar->SetAndBoundToGameplayAttribute(OwnerAbilitySystemComponent, UCAttributeSet::GetHealthAttribute(), UCAttributeSet::GetMaxHealthAttribute());
-		ManaBar->SetAndBoundToGameplayAttribute(OwnerAbilitySystemComponent, UCAttributeSet::GetManaAttribute(), UCAttributeSet::GetMaxManaAttribute());
-
-		// 绑定每秒回复的属性
-		HealthBar->SetRegenValueTextToGameplayAttribute(OwnerAbilitySystemComponent, UCHeroAttributeSet::GetHealthRegenAttribute());
-		ManaBar->SetRegenValueTextToGameplayAttribute(OwnerAbilitySystemComponent, UCHeroAttributeSet::GetManaRegenAttribute());
+		// // 绑定属性回调
+		// HealthBar->SetAndBoundToGameplayAttribute(OwnerAbilitySystemComponent, UCAttributeSet::GetHealthAttribute(), UCAttributeSet::GetMaxHealthAttribute());
+		// ManaBar->SetAndBoundToGameplayAttribute(OwnerAbilitySystemComponent, UCAttributeSet::GetManaAttribute(), UCAttributeSet::GetMaxManaAttribute());
+		//
+		// // 绑定每秒回复的属性
+		// HealthBar->SetRegenValueTextToGameplayAttribute(OwnerAbilitySystemComponent, UCHeroAttributeSet::GetHealthRegenAttribute());
+		// ManaBar->SetRegenValueTextToGameplayAttribute(OwnerAbilitySystemComponent, UCHeroAttributeSet::GetManaRegenAttribute());
 
 		// 配置状态效果显示
 		if (StatusEffectWidget)

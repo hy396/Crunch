@@ -1,7 +1,8 @@
 // 幻雨喜欢小猫咪
 
 
-#include "Crunch/Private/Player/CPlayerController.h"
+#include "CPlayerController.h"
+#include "UI/Gameplay/Minimap/UnitManager.h"
 
 #include "CPlayerCharacter.h"
 #include "EngineUtils.h"
@@ -221,6 +222,20 @@ void ACPlayerController::Client_MatchFinished_Implementation(AActor* ViewTarget,
 	// 延迟一段时间后显示胜负界面
 	FTimerHandle ShowWinLoseStateTimerHandle;
 	GetWorldTimerManager().SetTimer(ShowWinLoseStateTimerHandle, this, &ACPlayerController::ShowWinLoseState, MatchFinishViewBlendTimeDuration);
+}
+
+void ACPlayerController::RegisterUnitForMinimap(AActor* Unit)
+{
+	if (!Unit) return;
+
+	// 获取单位管理器并注册单位
+	if (UWorld* World = GetWorld())
+	{
+		if (UUnitManager* UnitManager = World->GetSubsystem<UUnitManager>())
+		{
+			UnitManager->RegisterUnit(Unit);
+		}
+	}
 }
 
 // void ACPlayerController::ShowDamageNumber_Implementation(float DamageAmount, AActor* TargetActor, bool bCriticalHit)

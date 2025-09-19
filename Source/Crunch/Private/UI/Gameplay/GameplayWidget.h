@@ -12,6 +12,7 @@
 #include "Gauge/ValueBar.h"
 #include "Inventory/InventoryWidget.h"
 #include "Shop/ShopWidget.h"
+#include "Minimap/MinimapWidget.h"
 #include "GameplayWidget.generated.h"
 
 class UCrosshairWidget;
@@ -81,13 +82,13 @@ private:
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UValueBar> ManaValueBar;
 	
-	// 生命进度条
-	UPROPERTY(meta = (BindWidget))
-	TObjectPtr<UValueGauge> HealthBar;
-
-	// 法力进度条
-	UPROPERTY(meta = (BindWidget))
-	TObjectPtr<UValueGauge> ManaBar;
+	// // 生命进度条
+	// UPROPERTY(meta = (BindWidget))
+	// TObjectPtr<UValueGauge> HealthBar;
+	//
+	// // 法力进度条
+	// UPROPERTY(meta = (BindWidget))
+	// TObjectPtr<UValueGauge> ManaBar;
 
 	// 状态效果显示控件
 	UPROPERTY(meta = (BindWidget))

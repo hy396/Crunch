@@ -90,6 +90,7 @@ void UMainMenuWidget::UpdateLobbyList(const TArray<FOnlineSessionSearchResult>& 
 	// 清理列表，重新加载
 	SessionScrollBox->ClearChildren();
 
+	
 	bool bCurrentSelectedSessionValid = false;
 	for (const FOnlineSessionSearchResult& SearchResult : SearchResults)
 	{
@@ -142,7 +143,9 @@ void UMainMenuWidget::UpdateLobbyList(const TArray<FOnlineSessionSearchResult>& 
 
 			// TODO: 服务器中获取房间人数信息然后给客户端创建？？？？？这样可以吗25/09/03创建备注
 			// 初始化会话条目,绑定按钮点击事件（包含房间人数信息）
-			NewSessionWidget->InitializeEntry(SessionName, SessionIdStr, CurrentPlayers, MaxPlayers);
+			// 从会话服务器种获取的
+			// NewSessionWidget->InitializeEntry(SessionName, SessionIdStr, CurrentPlayers, MaxPlayers);
+			NewSessionWidget->InitializeEntry(SessionName, SessionIdStr, PlayCounts, MaxPlayers);
 			NewSessionWidget->OnSessionEntrySelected.AddUObject(this, &UMainMenuWidget::SessionEntrySelected);
 			SessionScrollBox->AddChild(NewSessionWidget);
 

@@ -61,13 +61,19 @@ public:
 	FName NiagaraArrayName;
 
 	UPROPERTY(EditDefaultsOnly, Category="DamagePop")
-	TObjectPtr<UNiagaraSystem> TextNiagara;
+	TObjectPtr<UNiagaraSystem> AttackTextNiagara;
+
+	UPROPERTY(EditDefaultsOnly, Category="DamagePop")
+	TObjectPtr<UNiagaraSystem> MagicTextNiagara;
+
+	UPROPERTY(EditDefaultsOnly, Category="DamagePop")
+	TObjectPtr<UNiagaraSystem> TrueTextNiagara;
 protected:
 	
 	TArray<int32> DamageNumberArray;
 	
 	UPROPERTY(EditDefaultsOnly, Category = "Number Pop|Style")
-	TObjectPtr<UNiagaraComponent> NiagaraComp;
+	TObjectPtr<UNiagaraComponent> AttackNiagaraComp;
 	UPROPERTY(EditDefaultsOnly, Category = "Number Pop|Style")
 	TObjectPtr<UNiagaraComponent> MagicNiagaraComp;
 	UPROPERTY(EditDefaultsOnly, Category = "Number Pop|Style")

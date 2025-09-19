@@ -19,7 +19,7 @@ bool UInventoryItemWidget::IsEmpty() const
 void UInventoryItemWidget::SetSlotNumber(int32 NewSlotNumber)
 {
 	SlotNumber = NewSlotNumber;
-	ManaCostText->SetText(FText::AsNumber(NewSlotNumber));
+	ManaCostText->SetText(FText::AsNumber(NewSlotNumber + 1));
 }
 
 void UInventoryItemWidget::UpdateInventoryItem(const UInventoryItem* Item)
@@ -42,6 +42,8 @@ void UInventoryItemWidget::UpdateInventoryItem(const UInventoryItem* Item)
 	{
 		ToolTip->SetPrice(InventoryItem->GetShopItem()->GetSellPrice());
 	}
+	// 显示插槽号
+	ManaCostText->SetVisibility(ESlateVisibility::Visible);
 
 	// 处理可堆叠物品的显示逻辑
 	if (InventoryItem->GetShopItem()->GetIsStackable())

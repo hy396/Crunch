@@ -36,6 +36,8 @@ public:
 	UFUNCTION(Server, Reliable, WithValidation)
 	void Server_SetSelectedCharacterDefinition(const UPDA_CharacterDefinition* NewDefinition);
 
+	// 获取玩家选择信息
+	FPlayerSelection GetPlayerSelection() const{return PlayerSelection;}
 private:	
 	// 玩家选择信息（角色、槽位等），网络同步
 	UPROPERTY(Replicated)

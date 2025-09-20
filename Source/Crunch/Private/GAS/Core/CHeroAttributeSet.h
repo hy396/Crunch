@@ -25,8 +25,8 @@ class UCHeroAttributeSet : public UAttributeSet
     GENERATED_BODY()
 public:
     // 属性访问器声明（自动生成标准接口）
-    ATTRIBUTE_ACCESSORS(UCHeroAttributeSet, Intelligence)             // 智力
-    ATTRIBUTE_ACCESSORS(UCHeroAttributeSet, Strength)                 // 力量
+    // ATTRIBUTE_ACCESSORS(UCHeroAttributeSet, Intelligence)             // 智力
+    // ATTRIBUTE_ACCESSORS(UCHeroAttributeSet, Strength)                 // 力量
     ATTRIBUTE_ACCESSORS(UCHeroAttributeSet, Experience)               // 当前经验
     ATTRIBUTE_ACCESSORS(UCHeroAttributeSet, PrevLevelExperience)      // 当前等级经验阈值
     ATTRIBUTE_ACCESSORS(UCHeroAttributeSet, NextLevelExperience)      // 下一级经验阈值
@@ -35,8 +35,11 @@ public:
     ATTRIBUTE_ACCESSORS(UCHeroAttributeSet, MaxLevel)                 // 最大等级
     ATTRIBUTE_ACCESSORS(UCHeroAttributeSet, MaxLevelExperience)       // 满级所需经验
     ATTRIBUTE_ACCESSORS(UCHeroAttributeSet, Gold)                     // 金币
-    ATTRIBUTE_ACCESSORS(UCHeroAttributeSet, StrengthGrowthRate)       // 力量成长率
-    ATTRIBUTE_ACCESSORS(UCHeroAttributeSet, IntelligenceGrowthRate)   // 智力成长率
+    ATTRIBUTE_ACCESSORS(UCHeroAttributeSet, Kill)                     // 击杀数
+    ATTRIBUTE_ACCESSORS(UCHeroAttributeSet, Death)                    // 死亡数
+    ATTRIBUTE_ACCESSORS(UCHeroAttributeSet, LastHit)                  // 补兵数
+    // ATTRIBUTE_ACCESSORS(UCHeroAttributeSet, StrengthGrowthRate)       // 力量成长率
+    // ATTRIBUTE_ACCESSORS(UCHeroAttributeSet, IntelligenceGrowthRate)   // 智力成长率
 
     // 英雄的属性配置
     ATTRIBUTE_ACCESSORS(UCHeroAttributeSet, AttackPowerGrowthRate)      // 攻击力成长率（每等级增加的攻击力数值）
@@ -74,25 +77,25 @@ public:
     // 属性同步（网络复制）配置
     virtual void GetLifetimeReplicatedProps( TArray< class FLifetimeProperty > & OutLifetimeProps ) const override;
 // private:
-    // 智力
-    UPROPERTY(ReplicatedUsing = OnRep_Intelligence)
-    FGameplayAttributeData Intelligence;
-
-    // 力量
-    UPROPERTY(ReplicatedUsing = OnRep_Strength)
-    FGameplayAttributeData Strength;
+    // // 智力
+    // UPROPERTY(ReplicatedUsing = OnRep_Intelligence)
+    // FGameplayAttributeData Intelligence;
+    //
+    // // 力量
+    // UPROPERTY(ReplicatedUsing = OnRep_Strength)
+    // FGameplayAttributeData Strength;
     
     // 当前经验
     UPROPERTY(ReplicatedUsing = OnRep_Experience)
     FGameplayAttributeData Experience;
 
-    // 力量成长率
-    UPROPERTY()
-    FGameplayAttributeData StrengthGrowthRate;
+    // // 力量成长率
+    // UPROPERTY()
+    // FGameplayAttributeData StrengthGrowthRate;
     
-    // 智力成长率
-    UPROPERTY()
-    FGameplayAttributeData IntelligenceGrowthRate;
+    // // 智力成长率
+    // UPROPERTY()
+    // FGameplayAttributeData IntelligenceGrowthRate;
 
     /** 攻击力成长率（每等级增加的攻击力数值） */
     UPROPERTY()
@@ -203,12 +206,24 @@ public:
     UPROPERTY(ReplicatedUsing = OnRep_Gold)
     FGameplayAttributeData Gold;
 
-    // 属性同步回调（用于客户端属性变化通知）
-    UFUNCTION()
-    void OnRep_Intelligence(const FGameplayAttributeData& OldValue);
+    // 击杀数
+    UPROPERTY(ReplicatedUsing = OnRep_Kill)
+    FGameplayAttributeData Kill;
 
-    UFUNCTION()
-    void OnRep_Strength(const FGameplayAttributeData& OldValue);
+    // 死亡数
+    UPROPERTY(ReplicatedUsing = OnRep_Death)
+    FGameplayAttributeData Death;
+
+    // 补兵数
+    UPROPERTY(ReplicatedUsing = OnRep_LastHit)
+    FGameplayAttributeData LastHit;
+
+    // 属性同步回调（用于客户端属性变化通知）
+    // UFUNCTION()
+    // void OnRep_Intelligence(const FGameplayAttributeData& OldValue);
+
+    // UFUNCTION()
+    // void OnRep_Strength(const FGameplayAttributeData& OldValue);
 
     UFUNCTION()
     void OnRep_Experience(const FGameplayAttributeData& OldValue);
@@ -233,6 +248,15 @@ public:
 
     UFUNCTION()
     void OnRep_Gold(const FGameplayAttributeData& OldValue);
+
+    UFUNCTION()
+    void OnRep_Kill(const FGameplayAttributeData& OldValue);
+
+    UFUNCTION()
+    void OnRep_Death(const FGameplayAttributeData& OldValue);
+
+    UFUNCTION()
+    void OnRep_LastHit(const FGameplayAttributeData& OldValue);
 
     UFUNCTION()
     void OnRep_HealthRegen(const FGameplayAttributeData& OldValue);

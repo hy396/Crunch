@@ -48,4 +48,16 @@ private:
 	// 奖励GE（用于发放经验、金币等）
 	UPROPERTY(EditDefaultsOnly, Category = "Reward", meta=(DisplayName="奖励效果（GE类）"))
 	TSubclassOf<UGameplayEffect> RewardEffect;
+	
+	// 击杀英雄GE
+	UPROPERTY(EditDefaultsOnly, Category = "Reward", meta=(DisplayName="击杀英雄效果（GE类）"))
+	TSubclassOf<UGameplayEffect> KillHeroEffect;
+	
+	// 死亡GE
+	UPROPERTY(EditDefaultsOnly, Category = "Reward", meta=(DisplayName="死亡效果（GE类）"))
+	TSubclassOf<UGameplayEffect> DeadEffect;
+	
+	// 补兵GE
+	UPROPERTY(EditDefaultsOnly, Category = "Reward", meta=(DisplayName="补兵效果（GE类）"))
+	TSubclassOf<UGameplayEffect> LastHitEffect;
 };

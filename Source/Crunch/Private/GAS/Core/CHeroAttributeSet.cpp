@@ -9,8 +9,8 @@ void UCHeroAttributeSet::GetLifetimeReplicatedProps(TArray<class FLifetimeProper
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
-	DOREPLIFETIME_CONDITION_NOTIFY(UCHeroAttributeSet, Intelligence, COND_None, REPNOTIFY_Always);
-	DOREPLIFETIME_CONDITION_NOTIFY(UCHeroAttributeSet, Strength, COND_None, REPNOTIFY_Always);
+	// DOREPLIFETIME_CONDITION_NOTIFY(UCHeroAttributeSet, Intelligence, COND_None, REPNOTIFY_Always);
+	// DOREPLIFETIME_CONDITION_NOTIFY(UCHeroAttributeSet, Strength, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UCHeroAttributeSet, Experience, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UCHeroAttributeSet, PrevLevelExperience, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UCHeroAttributeSet, NextLevelExperience, COND_None, REPNOTIFY_Always);
@@ -19,6 +19,9 @@ void UCHeroAttributeSet::GetLifetimeReplicatedProps(TArray<class FLifetimeProper
 	DOREPLIFETIME_CONDITION_NOTIFY(UCHeroAttributeSet, MaxLevel, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UCHeroAttributeSet, MaxLevelExperience, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UCHeroAttributeSet, Gold, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UCHeroAttributeSet, Kill, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UCHeroAttributeSet, Death, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UCHeroAttributeSet, LastHit, COND_None, REPNOTIFY_Always);
 
 	// DOREPLIFETIME_CONDITION_NOTIFY(UCHeroAttributeSet, AttackPowerGrowthRate, COND_None, REPNOTIFY_Always)
 	// DOREPLIFETIME_CONDITION_NOTIFY(UCHeroAttributeSet, MagicPowerGrowthRate, COND_None, REPNOTIFY_Always)
@@ -41,15 +44,15 @@ void UCHeroAttributeSet::GetLifetimeReplicatedProps(TArray<class FLifetimeProper
 	DOREPLIFETIME_CONDITION_NOTIFY(UCHeroAttributeSet, DamageReduction, COND_None, REPNOTIFY_Always)
 }
 
-void UCHeroAttributeSet::OnRep_Intelligence(const FGameplayAttributeData& OldValue)
-{
-	GAMEPLAYATTRIBUTE_REPNOTIFY(UCHeroAttributeSet, Intelligence, OldValue);
-}
-
-void UCHeroAttributeSet::OnRep_Strength(const FGameplayAttributeData& OldValue)
-{
-	GAMEPLAYATTRIBUTE_REPNOTIFY(UCHeroAttributeSet, Strength, OldValue);
-}
+// void UCHeroAttributeSet::OnRep_Intelligence(const FGameplayAttributeData& OldValue)
+// {
+// 	GAMEPLAYATTRIBUTE_REPNOTIFY(UCHeroAttributeSet, Intelligence, OldValue);
+// }
+//
+// void UCHeroAttributeSet::OnRep_Strength(const FGameplayAttributeData& OldValue)
+// {
+// 	GAMEPLAYATTRIBUTE_REPNOTIFY(UCHeroAttributeSet, Strength, OldValue);
+// }
 
 void UCHeroAttributeSet::OnRep_Experience(const FGameplayAttributeData& OldValue)
 {
@@ -89,6 +92,21 @@ void UCHeroAttributeSet::OnRep_MaxLevelExperience(const FGameplayAttributeData& 
 void UCHeroAttributeSet::OnRep_Gold(const FGameplayAttributeData& OldValue)
 {
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UCHeroAttributeSet, Gold, OldValue);
+}
+
+void UCHeroAttributeSet::OnRep_Kill(const FGameplayAttributeData& OldValue)
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UCHeroAttributeSet, Kill, OldValue);
+}
+
+void UCHeroAttributeSet::OnRep_Death(const FGameplayAttributeData& OldValue)
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UCHeroAttributeSet, Death, OldValue);
+}
+
+void UCHeroAttributeSet::OnRep_LastHit(const FGameplayAttributeData& OldValue)
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UCHeroAttributeSet, LastHit, OldValue);
 }
 
 void UCHeroAttributeSet::OnRep_HealthRegen(const FGameplayAttributeData& OldValue)

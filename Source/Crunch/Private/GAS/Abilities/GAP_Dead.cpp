@@ -54,6 +54,27 @@ void UGAP_Dead::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const F
 		{
 			Killer = nullptr;
 		}
+
+		// 判断死亡单位是英雄还是小兵
+		AActor* DeadActor = GetAvatarActorFromActorInfo();
+		bool bIsHero = UCAbilitySystemStatics::IsHero(DeadActor);
+		if (bIsHero)
+		{
+			// 被击杀者是英雄单位
+			// 给击杀者赋予击杀英雄GE
+			FGameplayEffectSpecHandle KillHeroEffectSpec = MakeOutgoingGameplayEffectSpec(KillHeroEffect);
+			K2_ApplyGameplayEffectSpecToTarget(KillHeroEffectSpec, UAbilitySystemBlueprintLibrary::AbilityTargetDataFromActor(Killer));
+			// 给被击杀者赋予死亡GE
+			FGameplayEffectSpecHandle DeadEffectSpec = MakeOutgoingGameplayEffectSpec(DeadEffect);
+			K2_ApplyGameplayEffectSpecToTarget(DeadEffectSpec, UAbilitySystemBlueprintLibrary::AbilityTargetDataFromActor(DeadActor));
+		}else{
+			// 被击杀者不是英雄单位（小兵）
+			// 给击杀者赋予补兵GE
+			FGameplayEffectSpecHandle LastHitEffectSpec = MakeOutgoingGameplayEffectSpec(LastHitEffect);
+			K2_ApplyGameplayEffectSpecToTarget(LastHitEffectSpec, UAbilitySystemBlueprintLibrary::AbilityTargetDataFromActor(Killer));
+		}
+
+		
 		// 获取需要奖励的目标
 		TArray<AActor*> RewardTargets = GetRewardTargets();
 		// 如果没有奖励目标又没有击杀者直接结束技能不需要奖励

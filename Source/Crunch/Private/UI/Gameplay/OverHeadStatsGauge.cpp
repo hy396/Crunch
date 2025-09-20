@@ -8,6 +8,14 @@
 #include "GAS/Core/CAttributeSet.h"
 #include "GameFramework/Actor.h"
 #include "GameFramework/PlayerState.h"
+#include "GAS/Core/CHeroAttributeSet.h"
+
+void UOverHeadStatsGauge::NativeConstruct()
+{
+	Super::NativeConstruct();
+	// 设置为整数格式
+	NumberFormattingOptions.MaximumFractionalDigits = 0;
+}
 
 void UOverHeadStatsGauge::ConfigureWithASC(UAbilitySystemComponent* AbilitySystemComponent)
 {
@@ -17,6 +25,19 @@ void UOverHeadStatsGauge::ConfigureWithASC(UAbilitySystemComponent* AbilitySyste
 		ManaBar->SetAndBoundToGameplayAttribute(AbilitySystemComponent, UCAttributeSet::GetManaAttribute(), UCAttributeSet::GetMaxManaAttribute());
 		if(!bPlayerNameTextVisible){
 			bPlayerNameSet = true;
+		}
+		if (bShowLevel)
+		{
+			// 设置等级
+			bool bFound;
+			float AttributeValue = AbilitySystemComponent->GetGameplayAttributeValue(UCHeroAttributeSet::GetLevelAttribute(), bFound);
+			if (bFound)
+			{
+				FOnAttributeChangeData OnLevelChangeData;
+				OnLevelChangeData.NewValue = AttributeValue;
+				SetLevelValue(OnLevelChangeData);
+			}
+			AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(UCHeroAttributeSet::GetLevelAttribute()).AddUObject(this, &UOverHeadStatsGauge::SetLevelValue);
 		}
 	}
 }
@@ -42,6 +63,11 @@ void UOverHeadStatsGauge::SetHealthBarColor(ETeamAttitude::Type TargetTeam)
 					HealthBar->SetBarColor(FriendlyColor);
 					// 换成一种浅蓝色
 					PlayerNameText->SetColorAndOpacity(FSlateColor(FLinearColor(0.5f, 0.5f, 1.0f)));
+					// 等级的边界颜色
+					if (bShowLevel)
+					{
+						LevelBorder->SetBrushColor(FLinearColor(0.5f, 0.5f, 1.0f, 1.0f));
+					}
 				}
 				//HealthBar->SetBarColor(HealthBar->FriendlyColor);
 				break;
@@ -49,6 +75,11 @@ void UOverHeadStatsGauge::SetHealthBarColor(ETeamAttitude::Type TargetTeam)
 				{
 					HealthBar->SetBarColor(HostileColor);
 					PlayerNameText->SetColorAndOpacity(HostileColor);
+					// 等级的边界颜色
+					if (bShowLevel)
+					{
+						LevelBorder->SetBrushColor(HostileColor);
+					}
 				}
 				//HealthBar->SetBarColor(HealthBar->HostileColor);
 				break;
@@ -57,8 +88,18 @@ void UOverHeadStatsGauge::SetHealthBarColor(ETeamAttitude::Type TargetTeam)
 					HealthBar->SetBarColor(FLinearColor(1.0f, 0.8f, 0.2f));
 					// 默认要什么颜色好呢 - 现在是偏橙色的黄色
 					PlayerNameText->SetColorAndOpacity(FSlateColor(FLinearColor(1.0f, 0.8f, 0.2f)));
+					// 等级的边界颜色
+					if (bShowLevel)
+					{
+						LevelBorder->SetBrushColor(FLinearColor(1.0f, 0.8f, 0.2f, 1.0f));
+					}
 				}
 				break;
 		}
 	}
+}
+
+void UOverHeadStatsGauge::SetLevelValue(const FOnAttributeChangeData& Data)
+{
+	PlayerLevelText->SetText(FText::AsNumber(Data.NewValue, &NumberFormattingOptions));
 }

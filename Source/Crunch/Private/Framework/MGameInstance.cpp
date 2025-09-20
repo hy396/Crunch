@@ -381,7 +381,7 @@ void UMGameInstance::GlobalSessionSearchCompleted(bool bWasSuccessful)
         	// 当前已加入人数
         	int32 CurrentPlayers = MaxPlayers - OnlineSessionSearchResult.Session.NumOpenPublicConnections;
 			// 获取玩家数量
-			SearchResult.Session.SessionSettings.Get<int>(UTNetStatics::GetPlayerCountKey(), CurrentPlayers);
+			OnlineSessionSearchResult.Session.SessionSettings.Get<int>(UTNetStatics::GetPlayerCountKey(), CurrentPlayers);
         	// 输出日志
         	UE_LOG(LogTemp, Warning, TEXT("发现会话[%s] 人数: %d / %d(全局搜索结果)"),
             *SessionName, CurrentPlayers, MaxPlayers);

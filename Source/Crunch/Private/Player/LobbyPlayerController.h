@@ -91,6 +91,8 @@ public:
 	virtual void ReceiveChatMessageFromServer(const FChatMessage& Message) override;
 
 private:
+    // 输入处理函数
+    void OnEnterPressed();
 	// 缓存的大厅UI组件
 	UPROPERTY()
 	TObjectPtr<ULobbyWidget> CachedLobbyWidget;

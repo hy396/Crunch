@@ -5,6 +5,24 @@
 #include "Net/UnrealNetwork.h"
 #include "GameplayEffectExtension.h"
 
+void UCHeroAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue)
+{
+	Super::PreAttributeChange(Attribute, NewValue);
+	if (Attribute == GetCooldownReductionAttribute())
+	{
+		NewValue = FMath::Clamp(NewValue, 0.f, GetMaxCooldownReduction());
+	}
+}
+
+void UCHeroAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data)
+{
+	Super::PostGameplayEffectExecute(Data);
+	if (Data.EvaluatedData.Attribute == GetCooldownReductionAttribute())
+	{
+		SetCooldownReduction(FMath::Clamp(GetCooldownReduction(), 0, GetMaxCooldownReduction()));
+	}
+}
+
 void UCHeroAttributeSet::GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
@@ -37,6 +55,7 @@ void UCHeroAttributeSet::GetLifetimeReplicatedProps(TArray<class FLifetimeProper
 	DOREPLIFETIME_CONDITION_NOTIFY(UCHeroAttributeSet, LifeSteal, COND_None, REPNOTIFY_Always)
 	DOREPLIFETIME_CONDITION_NOTIFY(UCHeroAttributeSet, MagicLifeSteal, COND_None, REPNOTIFY_Always)
 	DOREPLIFETIME_CONDITION_NOTIFY(UCHeroAttributeSet, CooldownReduction, COND_None, REPNOTIFY_Always)
+	DOREPLIFETIME_CONDITION_NOTIFY(UCHeroAttributeSet, MaxCooldownReduction, COND_None, REPNOTIFY_Always)
 	DOREPLIFETIME_CONDITION_NOTIFY(UCHeroAttributeSet, CriticalStrikeChance, COND_None, REPNOTIFY_Always)
 	DOREPLIFETIME_CONDITION_NOTIFY(UCHeroAttributeSet, CriticalStrikeDamage, COND_None, REPNOTIFY_Always)
 	DOREPLIFETIME_CONDITION_NOTIFY(UCHeroAttributeSet, Toughness, COND_None, REPNOTIFY_Always)
@@ -152,6 +171,11 @@ void UCHeroAttributeSet::OnRep_MagicLifeSteal(const FGameplayAttributeData& OldV
 void UCHeroAttributeSet::OnRep_CooldownReduction(const FGameplayAttributeData& OldValue)
 {
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UCHeroAttributeSet, CooldownReduction, OldValue);
+}
+
+void UCHeroAttributeSet::OnRep_MaxCooldownReduction(const FGameplayAttributeData& OldValue)
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UCHeroAttributeSet, MaxCooldownReduction, OldValue);
 }
 
 void UCHeroAttributeSet::OnRep_CriticalStrikeChance(const FGameplayAttributeData& OldValue)

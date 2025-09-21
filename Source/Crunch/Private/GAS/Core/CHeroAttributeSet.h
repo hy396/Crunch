@@ -65,6 +65,7 @@ public:
     ATTRIBUTE_ACCESSORS(UCHeroAttributeSet, MagicLifeSteal)         // 法术吸血
     
     ATTRIBUTE_ACCESSORS(UCHeroAttributeSet, CooldownReduction)      // 冷却缩减
+    ATTRIBUTE_ACCESSORS(UCHeroAttributeSet, MaxCooldownReduction)   // 冷却缩减上限
     
     ATTRIBUTE_ACCESSORS(UCHeroAttributeSet, CriticalStrikeChance)   // 暴击率
     ATTRIBUTE_ACCESSORS(UCHeroAttributeSet, CriticalStrikeDamage)   // 暴击伤害
@@ -74,6 +75,10 @@ public:
     ATTRIBUTE_ACCESSORS(UCHeroAttributeSet, DamageReduction)        // 伤害减免（减少受到的伤害百分比）
     
 
+    // 当Attribute的CurrentValue被改变之前调用
+    virtual void PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue) override;
+    // 仅在instant Gameplay Effect使Attribute的BaseValue改变时触发
+    virtual void PostGameplayEffectExecute(const FGameplayEffectModCallbackData & Data) override;
     // 属性同步（网络复制）配置
     virtual void GetLifetimeReplicatedProps( TArray< class FLifetimeProperty > & OutLifetimeProps ) const override;
 // private:
@@ -158,6 +163,10 @@ public:
     UPROPERTY(ReplicatedUsing = OnRep_CooldownReduction)
     FGameplayAttributeData CooldownReduction;
 
+    /** 冷却缩减上限（技能冷却缩减上限） */
+    UPROPERTY(ReplicatedUsing = OnRep_MaxCooldownReduction)
+    FGameplayAttributeData MaxCooldownReduction;
+
     /** 暴击率（普通攻击暴击的几率） */
     UPROPERTY(ReplicatedUsing = OnRep_CriticalStrikeChance)
     FGameplayAttributeData CriticalStrikeChance;
@@ -214,7 +223,7 @@ public:
     UPROPERTY(ReplicatedUsing = OnRep_Death)
     FGameplayAttributeData Death;
 
-    // 补兵数
+    // 补刀数
     UPROPERTY(ReplicatedUsing = OnRep_LastHit)
     FGameplayAttributeData LastHit;
 
@@ -284,6 +293,9 @@ public:
 
     UFUNCTION()
     void OnRep_CooldownReduction(const FGameplayAttributeData& OldValue);
+
+    UFUNCTION()
+    void OnRep_MaxCooldownReduction(const FGameplayAttributeData& OldValue);
 
     UFUNCTION()
     void OnRep_CriticalStrikeChance(const FGameplayAttributeData& OldValue);

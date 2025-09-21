@@ -64,6 +64,7 @@ void ULobbyWidget::NativeConstruct()
 	{
 		// 大厅聊天框一直显示，不需要隐藏
 		ChatWidget->SetVisibility(ESlateVisibility::Visible);
+		ChatWidget->ShowChatWidget();
 		// 配置大厅模式的聊天频道（移除全体聊天）
 		ConfigureLobbyModeChat();
 		UE_LOG(LogTemp, Warning, TEXT("大厅聊天组件初始化完成"));

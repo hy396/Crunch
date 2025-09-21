@@ -30,8 +30,35 @@ void UChatWidget::NativeConstruct()
     // 初始化聊天频道
     InitializeChatChannels();
 
-    // 默认隐藏聊天界面
-    SetVisibility(ESlateVisibility::Collapsed);
+    // 默认隐藏聊天消息区域，但保持输入区域可见
+    if (ChatMessagesBorder)
+    {
+        ChatMessagesBorder->SetVisibility(ESlateVisibility::Hidden);
+    }
+    if (ChatScrollBox)
+    {
+        ChatScrollBox->SetVisibility(ESlateVisibility::Hidden);
+    }
+    
+    // 输入区域始终可见，但不立即聚焦
+    SetInputAreaVisibility(true, false);
+    
+    // 初始化为非临时模式
+    bIsTemporaryMode = false;
+}
+
+void UChatWidget::NativeDestruct()
+{
+    // 清理所有定时器
+    if (GetWorld())
+    {
+        if (TemporaryMessageTimerHandle.IsValid())
+        {
+            GetWorld()->GetTimerManager().ClearTimer(TemporaryMessageTimerHandle);
+        }
+    }
+    
+    Super::NativeDestruct();
 }
 
 void UChatWidget::ShowChatWidget()
@@ -39,11 +66,21 @@ void UChatWidget::ShowChatWidget()
     // 退出临时模式（如果处于该模式）
     ExitTemporaryMode();
     
-    // 显示输入区域
-    SetInputAreaVisibility(true);
+    // 显示聊天消息区域（包括边框）
+    if (ChatMessagesBorder)
+    {
+        ChatMessagesBorder->SetVisibility(ESlateVisibility::Visible);
+    }
+    if (ChatScrollBox)
+    {
+        ChatScrollBox->SetVisibility(ESlateVisibility::Visible);
+    }
     
-    // 显示聊天界面
-    SetVisibility(ESlateVisibility::Visible);
+    // 清除之前的定时器
+    if (GetWorld() && TemporaryMessageTimerHandle.IsValid())
+    {
+        GetWorld()->GetTimerManager().ClearTimer(TemporaryMessageTimerHandle);
+    }
     
     // 设置输入焦点
     FocusChatInput();
@@ -54,8 +91,8 @@ void UChatWidget::HideChatWidget()
     // 退出临时模式（如果处于该模式）
     ExitTemporaryMode();
     
-    // 隐藏聊天界面
-    SetVisibility(ESlateVisibility::Collapsed);
+    // 隐藏聊天消息区域（包括边框）
+    HideChatMessagesArea();
     
     // 清空输入框并恢复游戏输入模式
     ClearInputAndRestoreGameMode();
@@ -63,6 +100,14 @@ void UChatWidget::HideChatWidget()
 
 void UChatWidget::ToggleChatWidget()
 {
+    // 如果处于临时模式，直接退出临时模式并显示正常聊天界面
+    if (bIsTemporaryMode)
+    {
+        ExitTemporaryMode();
+        ShowChatWidget();
+        return;
+    }
+    
     if (GetVisibility() == ESlateVisibility::Visible)
     {
         HideChatWidget();
@@ -94,7 +139,15 @@ void UChatWidget::SendChatMessage()
     if (!IsInputValid()) return;
 
     FString MessageText = ChatInputBox->GetText().ToString().TrimStartAndEnd();
-    if (MessageText.IsEmpty()) return;
+    // 如果消息为空，不发送也不聚焦
+    if (MessageText.IsEmpty()) 
+    {
+        // 清空输入框
+        ChatInputBox->SetText(FText::GetEmpty());
+        // 取消聚焦
+        UnfocusChatInput();
+        return;
+    }
 
     // 获取频道类型并发送消息
     EChatChannelType ChannelType = GetSelectedChannelType();
@@ -113,12 +166,31 @@ void UChatWidget::FocusChatInput()
     ChatInputBox->SetUserFocus(GetOwningPlayer());
 }
 
+void UChatWidget::UnfocusChatInput()
+{
+    if (!IsInputValid()) return;
+    
+    // 清除输入框焦点
+    ChatInputBox->SetKeyboardFocus();  // 先设置键盘焦点
+    FSlateApplication::Get().ClearKeyboardFocus();  // 然后清除键盘焦点
+    
+    // 恢复游戏输入模式
+    if (GetOwningPlayer())
+    {
+        UWidgetBlueprintLibrary::SetInputMode_GameOnly(GetOwningPlayer());
+    }
+    // // 取消输入框焦点并恢复游戏输入模式
+    // UnfocusChatInput();
+}
+
 FReply UChatWidget::NativeOnKeyDown(const FGeometry& InGeometry, const FKeyEvent& InKeyEvent)
 {
     // 按下ESC键关闭聊天界面
     if (InKeyEvent.GetKey() == EKeys::Escape)
     {
         HideChatWidget();
+        // 取消聚焦
+        UnfocusChatInput();
         return FReply::Handled();
     }
     
@@ -142,6 +214,11 @@ void UChatWidget::OnChatInputCommitted(const FText& Text, ETextCommit::Type Comm
     if (CommitMethod == ETextCommit::OnEnter)
     {
         SendChatMessage();
+    }
+    else if (CommitMethod == ETextCommit::OnCleared)
+    {
+        // 当输入被清除时，取消聚焦
+        UnfocusChatInput();
     }
 }
 
@@ -187,6 +264,9 @@ void UChatWidget::ExitTemporaryMode()
         UE_LOG(LogTemp, Warning, TEXT("退出临时消息模式"));
         ClearTemporaryMessageTimer();
         bIsTemporaryMode = false;
+        
+        // 显示输入区域，但不立即聚焦
+        SetInputAreaVisibility(true, false);
     }
 }
 
@@ -310,9 +390,15 @@ void UChatWidget::ShowTemporaryMessage(const FChatMessage& Message, bool bIsSelf
         UE_LOG(LogTemp, Error, TEXT("临时消息项控件创建失败"));
         return;
     }
-    
-    // 显示聊天窗口
-    SetVisibility(ESlateVisibility::Visible);
+    // 确保聊天消息区域可见
+    if (ChatMessagesBorder)
+    {
+        ChatMessagesBorder->SetVisibility(ESlateVisibility::Visible);
+    }
+    if (ChatScrollBox)
+    {
+        ChatScrollBox->SetVisibility(ESlateVisibility::Visible);
+    }
     
     // 设置定时器自动隐藏
     if (GetWorld())
@@ -334,32 +420,65 @@ void UChatWidget::HideTemporaryMessage()
     // 恢复正常模式
     bIsTemporaryMode = false;
     
-    // 显示输入区域
-    SetInputAreaVisibility(true);
+    // 显示输入区域，但不立即聚焦
+    SetInputAreaVisibility(true, false);
     
-    // 隐藏聊天窗口
-    SetVisibility(ESlateVisibility::Collapsed);
+    // 隐藏聊天消息区域
+    HideChatMessagesArea();
     
     // 清除定时器
     ClearTemporaryMessageTimer();
 }
 
-void UChatWidget::SetInputAreaVisibility(bool bVisible)
+void UChatWidget::HideChatMessagesArea()
 {
-    ESlateVisibility TargetVisibility = bVisible ? ESlateVisibility::Visible : ESlateVisibility::Collapsed;
+    // 隐藏聊天消息区域（包括边框）
+    if (ChatMessagesBorder && ChatMessagesBorder->GetVisibility() != ESlateVisibility::Hidden)
+    {
+        ChatMessagesBorder->SetVisibility(ESlateVisibility::Hidden);
+    }
+    if (ChatScrollBox && ChatScrollBox->GetVisibility() != ESlateVisibility::Hidden)
+    {
+        ChatScrollBox->SetVisibility(ESlateVisibility::Hidden);
+    }
     
+    // 清除定时器
+    if (GetWorld() && TemporaryMessageTimerHandle.IsValid())
+    {
+        GetWorld()->GetTimerManager().ClearTimer(TemporaryMessageTimerHandle);
+    }
+}
+
+void UChatWidget::SetInputAreaVisibility(bool bVisible, bool bHandleFocus)
+{
+    // 输入框、按钮和下拉框始终可见，不隐藏
     if (ChatInputBox)
     {
-        ChatInputBox->SetVisibility(TargetVisibility);
+        ChatInputBox->SetVisibility(ESlateVisibility::Visible);
     }
     
     if (SendButton)
     {
-        SendButton->SetVisibility(TargetVisibility);
+        SendButton->SetVisibility(ESlateVisibility::Visible);
     }
     
     if (ChannelComboBox)
     {
-        ChannelComboBox->SetVisibility(TargetVisibility);
+        ChannelComboBox->SetVisibility(ESlateVisibility::Visible);
+    }
+    
+    // 根据参数决定是否处理输入框的聚焦/取消聚焦
+    if (bHandleFocus)
+    {
+        if (bVisible)
+        {
+            // 当设置为可见时，聚焦到输入框
+            FocusChatInput();
+        }
+        else
+        {
+            // 当设置为不可见时，取消聚焦
+            UnfocusChatInput();
+        }
     }
 }

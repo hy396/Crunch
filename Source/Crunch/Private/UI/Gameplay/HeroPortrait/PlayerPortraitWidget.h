@@ -24,7 +24,7 @@ struct FOnAttributeChangeData;
 
 /**
  * 玩家头像控件
- * 用于显示玩家的英雄头像，并根据玩家状态（存活/死亡）切换亮显和变灰效果
+ * 用于显示玩家的英雄头像，并根据玩家状态（存活/死亡）切换亮显和变灰效果，并且拥有死亡倒数计时
  * 同时显示玩家血量条
  */
 UCLASS()
@@ -62,6 +62,8 @@ private:
 	// 死亡标签更新回调函数
 	void DeathTagUpdated(const FGameplayTag Tag, int32 NewCount);
 
+	void SetLevelValue(const FOnAttributeChangeData& Data);
+
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<USizeBox> BarBox;
 	
@@ -86,9 +88,32 @@ private:
 	UPROPERTY(VisibleAnywhere, meta = (BindWidget))
 	TObjectPtr<UProgressBar> ManaBar;
 
+	// 死亡倒数计时器
+	UPROPERTY(meta = (BindWidget))
+	TObjectPtr<UTextBlock> NumberText;
+
+	// 角色等级
+	UPROPERTY(meta = (BindWidget))
+	TObjectPtr<UTextBlock> LevelText;
+	// 数字格式化选项（整数）
+	FNumberFormattingOptions WholeNumberFormattingOptions;
+
+	// 数字格式化选项（一位小数）
+	FNumberFormattingOptions TwoDigitNumberFormattingOptions;
 	// 缓存生命、最大生命、法力、最大法力
 	float CacheHealth;
 	float CacheMaxHealth;
 	float CacheMana;
 	float CacheMaxMana;
+
+	// 控件拥有者的能力系统组件
+	UPROPERTY()
+	TObjectPtr<UAbilitySystemComponent> OwnerAbilitySystemComponent;
+	
+	// 关联死亡效果的句柄
+	FActiveGameplayEffectHandle OwnerEffectHandle;
+	// 更新定时器
+	FTimerHandle UpdateTimerHandle;
+	// 更新显示
+	void UpdateTimer();
 };

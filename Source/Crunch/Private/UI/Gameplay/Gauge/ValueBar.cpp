@@ -6,7 +6,6 @@
 #include "AbilitySystemBlueprintLibrary.h"
 #include "AbilitySystemComponent.h"
 #include "CommonNumericTextBlock.h"
-#include "K2Node_CreateDelegate.h"
 
 void UValueBar::NativeConstruct()
 {

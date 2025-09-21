@@ -28,7 +28,21 @@ void ALobbyPlayerController::BeginPlay()
 void ALobbyPlayerController::SetupInputComponent()
 {
 	Super::SetupInputComponent();
+	// 绑定回车键输入事件，用于聚焦到聊天输入框
+    if (InputComponent)
+    {
+        InputComponent->BindKey(EKeys::Enter, IE_Pressed, this, &ALobbyPlayerController::OnEnterPressed);
+    }
 	// 大厅阶段不需要特殊的输入处理，聊天框一直显示可直接输入
+}
+
+void ALobbyPlayerController::OnEnterPressed()
+{
+	// 获取大厅UI组件并聚焦到聊天输入框
+	if (ULobbyWidget* LobbyWidget = GetLobbyWidget())
+	{
+		LobbyWidget->FocusChatInput();
+	}
 }
 
 void ALobbyPlayerController::Server_RequestSlotSelectionChange_Implementation(uint8 NewSlotID)

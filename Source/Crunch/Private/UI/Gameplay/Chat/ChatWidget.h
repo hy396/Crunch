@@ -5,10 +5,12 @@
 #include "CoreMinimal.h"
 #include "GenericTeamAgentInterface.h"
 #include "Blueprint/UserWidget.h"
+#include "Components/Border.h"
 #include "Components/Button.h"
 #include "Components/ComboBoxString.h"
 #include "Components/EditableTextBox.h"
 #include "Components/ScrollBox.h"
+#include "Framework/Application/SlateApplication.h"  // 添加这个头文件用于FSlateApplication
 #include "ChatWidget.generated.h"
 
 class IChatInterface;
@@ -76,6 +78,9 @@ class CRUNCH_API UChatWidget : public UUserWidget
 public:
 	// 构建时回调
 	virtual void NativeConstruct() override;
+	
+	// 销毁时回调
+	virtual void NativeDestruct() override;
 
 	// 显示聊天界面
 	UFUNCTION(BlueprintCallable)
@@ -108,6 +113,10 @@ public:
 	// 设置输入焦点到聊天输入框
 	UFUNCTION(BlueprintCallable)
 	void FocusChatInput();
+	
+	// 取消输入焦点
+	UFUNCTION(BlueprintCallable)
+	void UnfocusChatInput();
 
 	// 检查是否处于临时消息模式
 	UFUNCTION(BlueprintCallable)
@@ -115,6 +124,10 @@ public:
 
 	// 获取频道选择下拉框
 	UComboBoxString* GetChannelComboBox() const { return ChannelComboBox; }
+	
+	// 设置聊天提示图标可见性
+	// void SetChatHintVisibility(bool bVisible);  // 已移除ChatHintIcon，不再需要这个函数
+
 protected:
 	// 处理输入框的按键事件
 	virtual FReply NativeOnKeyDown(const FGeometry& InGeometry, const FKeyEvent& InKeyEvent) override;
@@ -123,6 +136,10 @@ private:
 	// 聊天消息滚动框
 	UPROPERTY(meta=(BindWidget))
 	TObjectPtr<UScrollBox> ChatScrollBox;
+
+	// 聊天消息区域的边框
+	UPROPERTY(meta=(BindWidget))
+	TObjectPtr<UBorder> ChatMessagesBorder;
 
 	// 聊天输入框
 	UPROPERTY(meta=(BindWidget))
@@ -169,8 +186,8 @@ private:
 	void HideTemporaryMessage();
 
 	// 设置输入区域可见性
-	void SetInputAreaVisibility(bool bVisible);
-
+	void SetInputAreaVisibility(bool bVisible, bool bHandleFocus = true);
+	
 	// === 新增的统一方法 ===
 	// 验证输入组件有效性
 	bool IsInputValid() const;
@@ -204,4 +221,7 @@ private:
 
 	// 发送消息后是否自动隐藏聊天框（默认为true，适用于游戏内聊天）
 	bool bAutoHideAfterSend = true;
+	
+	// 隐藏聊天消息区域
+	void HideChatMessagesArea();
 };

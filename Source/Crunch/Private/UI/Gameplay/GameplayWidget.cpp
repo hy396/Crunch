@@ -57,6 +57,10 @@ void UGameplayWidget::NativeConstruct()
 			&UGameplayWidget::ToggleGameplayMenu
 		);
 	}
+	AttributePanelWidget->GetCloseButtonClickedEventDelegate().AddDynamic(
+		this,
+		&UGameplayWidget::ToggleAttributePanel
+	);
 }
 
 void UGameplayWidget::ConfigureAbilities(const TMap<ECAbilityInputID, TSubclassOf<UGameplayAbility>>& Abilities)
@@ -102,6 +106,47 @@ void UGameplayWidget::ToggleShop()
 		
 		// 切换到纯游戏输入模式
 		SetFocusToGameOnly();
+	}
+}
+
+void UGameplayWidget::ToggleAttributePanel()
+{
+	if (AttributePanelWidget->GetVisibility() == ESlateVisibility::HitTestInvisible)
+	{
+		// 显示商店界面
+		AttributePanelWidget->SetVisibility(ESlateVisibility::Visible);
+		
+		// 播放弹出动画
+		PlayPanelPopupAnimation(true);
+		
+		// 禁用玩家输入
+		// SetOwningPawnInputEnabled(false);
+		
+		// 显示鼠标光标
+		// SetShowMouseCursor(true);
+		
+		// 切换到游戏+UI输入模式
+		// SetFocusToGameAndUI();
+		
+		// 设置焦点到商店控件
+		// AttributePanelWidget->SetFocus();
+	}
+	else
+	{
+		// 隐藏商店界面
+		AttributePanelWidget->SetVisibility(ESlateVisibility::HitTestInvisible);
+		
+		// 播放关闭动画
+		PlayPanelPopupAnimation(false);
+		
+		// 启用玩家输入
+		// SetOwningPawnInputEnabled(true);
+		
+		// 隐藏鼠标光标
+		// SetShowMouseCursor(false);
+		
+		// 切换到纯游戏输入模式
+		// SetFocusToGameOnly();
 	}
 }
 
@@ -251,6 +296,19 @@ void UGameplayWidget::SetFocusToGameOnly()
 	
 	// 应用输入模式
 	GetOwningPlayer()->SetInputMode(GameOnlyInputMode);
+}
+
+void UGameplayWidget::PlayPanelPopupAnimation(bool bPlayForward)
+{
+	if (bPlayForward)
+	{
+		// 正常播动画
+		PlayAnimationForward(PanelPopupAnimation);
+	}else
+	{
+		// 反着播动画
+		PlayAnimationReverse(PanelPopupAnimation);
+	}
 }
 
 void UGameplayWidget::ShowBarrageMessage(const FChatMessage& Message, bool bIsSelf, bool bIsTeammate)

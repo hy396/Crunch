@@ -111,6 +111,10 @@ private:
 	// 聊天系统输入动作
 	UPROPERTY(EditDefaultsOnly, Category = "Input")
 	TObjectPtr<UInputAction> ToggleChatInputAction;
+
+	// 属性面板的开关/关闭
+	UPROPERTY(EditDefaultsOnly, Category = "Input")
+	TObjectPtr<UInputAction> ToggleAttributePanelInputAction;
 	
 	// 商店的开关/关闭
 	UFUNCTION()
@@ -123,6 +127,10 @@ private:
 	// 聊天窗口切换
 	UFUNCTION()
 	void ToggleChat();
+
+	// 属性面板的开关/关闭
+	UFUNCTION()
+	void ToggleAttributePanel();
 	
 	// 显示游戏结果
 	void ShowWinLoseState();

@@ -4,8 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "StatsGauge.h"
-#include "ValueGauge.h"
 #include "Abilities/AbilityListView.h"
+#include "AttributePanel/AttributePanelWidget.h"
 #include "Blueprint/UserWidget.h"
 #include "Chat/ChatWidget.h"
 #include "GAS/Core/CGameplayAbilityTypes.h"
@@ -38,6 +38,10 @@ public:
 
 	// 切换商店的显示和隐藏
 	void ToggleShop();
+
+	// 切换属性面板的显示和隐藏
+	UFUNCTION()
+	void ToggleAttributePanel();
 
 	// 切换游戏菜单显示/隐藏
 	UFUNCTION()
@@ -157,10 +161,18 @@ private:
 	// 聊天UI
 	UPROPERTY(meta=(BindWidget))
 	TObjectPtr<UChatWidget> ChatWidget;
+
+	// 属性面板
+	UPROPERTY(meta=(BindWidget))
+	TObjectPtr<UAttributePanelWidget> AttributePanelWidget;
 	
 	// 商店弹出动画
 	UPROPERTY(Transient, meta=(BindWidgetAnim))
 	TObjectPtr<UWidgetAnimation> ShopPopupAnimation;
+
+	// 属性面板弹出动画
+	UPROPERTY(Transient, meta=(BindWidgetAnim))
+	TObjectPtr<UWidgetAnimation> PanelPopupAnimation;
 
 	// 播放商店弹出动画
 	void PlayShopPopupAnimation(bool bPlayForward);
@@ -172,6 +184,9 @@ private:
 	void SetFocusToGameAndUI();
 	// 设置纯游戏输入模式
 	void SetFocusToGameOnly();
+
+	// 播放属性面板弹出动画
+	void PlayPanelPopupAnimation(bool bPlayForward);
 
 	UPROPERTY()
 	TObjectPtr<UAbilitySystemComponent> OwnerAbilitySystemComponent;

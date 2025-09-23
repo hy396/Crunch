@@ -74,6 +74,15 @@ void ACPlayerController::SetupInputComponent()
 
 		// 绑定聊天切换输入动作
 		EnhancedInputComponent->BindAction(ToggleChatInputAction, ETriggerEvent::Triggered, this, &ACPlayerController::ToggleChat);
+
+		// 绑定属性面板切换输入动作
+		EnhancedInputComponent->BindAction(
+			ToggleAttributePanelInputAction,
+			ETriggerEvent::Triggered,
+			this,
+			&ACPlayerController::ToggleAttributePanel
+		);
+	
 	}
 }
 
@@ -393,6 +402,14 @@ void ACPlayerController::ToggleChat()
 	{
 		// 使用智能切换：在临时模式下直接进入正常聊天，否则正常切换
 		GameplayWidget->SmartToggleChat();
+	}
+}
+
+void ACPlayerController::ToggleAttributePanel()
+{
+	if (GameplayWidget)
+	{
+		GameplayWidget->ToggleAttributePanel();
 	}
 }
 

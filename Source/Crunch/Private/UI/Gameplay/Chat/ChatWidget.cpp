@@ -146,6 +146,22 @@ void UChatWidget::SendChatMessage()
         ChatInputBox->SetText(FText::GetEmpty());
         // 取消聚焦
         UnfocusChatInput();
+        // 空消息的发送保留一会界面观看
+        // 清除之前的定时器
+        ClearTemporaryMessageTimer();
+        // 设置为临时模式
+        bIsTemporaryMode = true;
+        // 设置定时器自动隐藏
+        if (GetWorld())
+        {
+            GetWorld()->GetTimerManager().SetTimer(
+                TemporaryMessageTimerHandle,
+                this,
+                &UChatWidget::HideTemporaryMessage,
+                TemporaryMessageDuration,
+                false
+            );
+        }
         return;
     }
 

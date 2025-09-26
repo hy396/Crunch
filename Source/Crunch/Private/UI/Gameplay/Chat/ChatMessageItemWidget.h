@@ -35,11 +35,22 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void StopBarrageAnimation();
 
+	// // 设置消息换行宽度
+	// UFUNCTION(BlueprintCallable)
+	// void SetMessageWrapWidth(bool bIsAuto);
+
+	// 设置自动换行
+	UFUNCTION(BlueprintCallable)
+	void SetAutoWrapText(bool bAutoWrap);
+
 private:
 	// 消息富文本显示控件
 	UPROPERTY(meta=(BindWidget))
 	TObjectPtr<URichTextBlock> MessageRichText;
-
+	// // 尺寸框控件，用于控制消息尺寸和换行
+	// UPROPERTY(meta=(BindWidget))
+	// TObjectPtr<USizeBox> MessageSizeBox;
+	
 	// 处理消息内容中的特殊字符转义
 	FString SanitizeMessageContent(const FString& Content) const;
 

@@ -4,7 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "Components/VerticalBox.h"
+#include "Components/HorizontalBox.h"
+// #include "Components/VerticalBox.h"
 #include "TeamPlayerPortraitsWidget.generated.h"
 
 class UPlayerPortraitWidget;
@@ -28,12 +29,13 @@ public:
 	// 初始化团队头像显示
 	void InitializeTeamPortraits();
 private:
+	//HorizontalBox
 	// 己方单位头像控件容器
 	UPROPERTY(meta = (BindWidget))
-	TObjectPtr<UVerticalBox> PlayerPortraitContainer;
+	TObjectPtr<UHorizontalBox> PlayerPortraitContainer;
 	// 敌方单位头像控件容器
 	UPROPERTY(meta = (BindWidget))
-	TObjectPtr<UVerticalBox> EnemyPortraitContainer;
+	TObjectPtr<UHorizontalBox> EnemyPortraitContainer;
 
 	// 本地玩家状态
 	UPROPERTY()

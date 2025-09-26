@@ -32,7 +32,7 @@ Crunch的聊天系统是一个功能丰富的实时多人游戏通信解决方�
 ### 数据结构
 
 #### FChatMessage
-```cpp
+``cpp
 USTRUCT(BlueprintType)
 struct CRUNCH_API FChatMessage
 {
@@ -78,6 +78,7 @@ enum class EChatChannelType : uint8
 - 频道选择和切换
 - 临时模式和正常模式管理
 - 自动滚动和焦点控制
+- 弹幕模式管理
 
 #### UChatMessageItemWidget  
 单条消息显示控件，负责：
@@ -85,6 +86,7 @@ enum class EChatChannelType : uint8
 - 弹幕动画效果
 - 自适应高度计算
 - 特殊字符处理
+- 颜色分类显示
 
 #### IChatInterface
 聊天接口定义，规范：
@@ -118,22 +120,28 @@ enum class EChatChannelType : uint8
 | `RichTextBlock.EnemyChatStyle` | 敌方消息 | #D0021B | 14 |
 | `RichTextBlock.DefaultStyle` | 默认样式 | #FFFFFF | 14 |
 
-### 3. 富文本样式配置
+### 3. 弹幕系统配置
 
-1. **控件绑定**：
-   - `ChatScrollBox`: 消息列表容器
-   - `ChatInputBox`: 文本输入框
-   - `SendButton`: 发送按钮
-   - `ChannelComboBox`: 频道选择下拉框
+#### 弹幕参数设置
+```cpp
+// 弹幕消息持续时间（秒）
+UPROPERTY(EditDefaultsOnly, Category = "Barrage")
+float BarrageMessageDuration = 8.0f;
 
-2. **布局配置**：
-   - 设置适当的边距和间距
-   - 配置滚动框的自动滚动行为
-   - 确保输入框获得正确的键盘焦点
+// 弹幕移动速度（像素/秒），针对30FPS优化
+UPROPERTY(EditDefaultsOnly, Category = "Barrage")
+float BarrageMoveSpeed = 250.0f;
 
-3. **动画设置**：
-   - 添加显示/隐藏动画
-   - 配置临时消息的淡入淡出效果
+// 弹幕消息间的垂直间距
+UPROPERTY(EditDefaultsOnly, Category = "Barrage")
+float BarrageVerticalSpacing = 30.0f;
+```
+
+#### 弹幕动画实现
+- 使用CanvasPanel实现消息的移动动画
+- 通过定时器控制位置更新（30FPS）
+- 自动计算初始位置避免重叠
+- 消息移出屏幕后自动销毁
 
 ### ChatMessageItemWidget 配置
 
@@ -146,6 +154,7 @@ enum class EChatChannelType : uint8
    - 移动速度：250 像素/秒
    - 持续时间：8 秒
    - 更新频率：30 FPS
+   - 垂直间距：30 像素
 
 ## 🌐 网络配置
 
@@ -207,7 +216,54 @@ void UChatWidget::FocusChatInput()
 }
 ```
 
-### 3. 错误处理
+### 3. 弹幕系统优化
+
+```cpp
+// 弹幕位置更新
+void UChatMessageItemWidget::UpdateBarragePosition()
+{
+    if (!bIsInBarrageMode || !GetWorld()) return;
+
+    UCanvasPanelSlot* CanvasSlot = UWidgetLayoutLibrary::SlotAsCanvasSlot(this);
+    if (!CanvasSlot) return;
+
+    // 计算当前应该的X位置
+    float CurrentTime = GetWorld()->GetTimeSeconds();
+    float ElapsedTime = CurrentTime - BarrageStartTime;
+    float NewX = InitialXPosition - (BarrageMoveSpeed * ElapsedTime);
+
+    // 获取当前位置
+    FVector2D CurrentPosition = CanvasSlot->GetPosition();
+    
+    // 更新X位置
+    CanvasSlot->SetPosition(FVector2D(NewX, CurrentPosition.Y));
+
+    // 如果移出屏幕左侧，提前结束
+    if (NewX < -CanvasSlot->GetSize().X)
+    {
+        OnBarrageFinished();
+    }
+}
+
+// 特殊字符处理
+FString UChatMessageItemWidget::SanitizeMessageContent(const FString& Content) const
+{
+    // 处理消息内容中的特殊字符，避免富文本解析错误
+    if (Content.Contains(TEXT("<")) || Content.Contains(TEXT(">"))) 
+    {
+        FString SafeContent = Content;
+        SafeContent = SafeContent.Replace(TEXT("<"), TEXT("&lt;"));
+        SafeContent = SafeContent.Replace(TEXT(">"), TEXT("&gt;"));
+        
+        UE_LOG(LogTemp, Warning, TEXT("消息内容包含特殊字符，已进行转义处理: %s"), *SafeContent);
+        return SafeContent;
+    }
+    
+    return Content;
+}
+```
+
+### 4. 错误处理
 
 ```cpp
 // 消息内容验证

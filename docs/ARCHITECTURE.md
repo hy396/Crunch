@@ -148,7 +148,114 @@ class USkeletalMeshRenderWidget : public URenderActorWidget
 class ARenderActor : public AActor
 ```
 
-### 6. 网络架构 (Networking)
+### 5. 属性面板系统 (Attribute Panel System)
+
+#### 设计理念
+- **数据驱动**: 使用数据表驱动属性显示
+- **动态绑定**: 实时绑定角色属性变化
+- **网格布局**: 统一的网格布局管理
+- **模块化**: 可复用的属性显示组件
+
+#### 核心组件
+```cpp
+// 属性面板主控件
+class UAttributePanelWidget : public UUserWidget
+
+// 单个属性显示控件
+class UAttributeWidget : public UUserWidget
+
+// 属性数据结构
+USTRUCT(BlueprintType)
+struct FCharacterAttributeData : public FTableRowBase
+{
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    FText AttributeName;
+    
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    FGameplayAttribute AttributeValue;
+};
+```
+
+#### 功能特性
+- **实时更新**: 通过GAS系统实时监听属性变化
+- **动态创建**: 根据数据表动态创建属性显示项
+- **网格布局**: 使用UniformGridPanel自动排列属性项
+- **数值动画**: 使用CommonNumericTextBlock实现数值变化动画效果
+- **关闭功能**: 提供关闭面板的交互按钮
+
+#### 实现细节
+- 属性面板通过数据表驱动，每个属性项包含显示名称和对应的GameplayAttribute
+- 在面板初始化时，遍历数据表中的所有属性并动态创建对应的属性控件
+- 使用AbilitySystemComponent监听属性变化，并实时更新显示
+- 采用2列网格布局，自动计算行列位置
+
+### 6. 队伍头像状态系统 (Team Portrait Status System)
+
+#### 设计理念
+- **状态可视化**: 实时显示玩家生命值和法力值状态
+- **阵营区分**: 通过边框颜色区分友方/敌方/自己
+- **死亡提示**: 显示死亡倒计时
+- **动态更新**: 实时响应玩家状态变化
+
+#### 核心组件
+```cpp
+// 队伍头像面板控件
+class UTeamPlayerPortraitsWidget : public UUserWidget
+
+// 单个玩家头像控件
+class UPlayerPortraitWidget : public UUserWidget
+```
+
+#### 功能特性
+- **阵营识别**: 自动识别玩家阵营并设置不同边框颜色
+  - 自己: 绿色边框
+  - 队友: 蓝色边框
+  - 敌方: 红色边框
+- **状态显示**: 实时显示生命值条和法力值条
+- **死亡倒计时**: 显示死亡玩家的复活倒计时
+- **动态材质**: 使用动态材质调整头像饱和度表示生死状态
+- **定时刷新**: 自动检测新加入的玩家并更新显示
+
+#### 实现细节
+- 通过AbilitySystemComponent监听玩家属性变化
+- 使用动态材质参数调整头像显示效果
+- 根据阵营关系决定是否显示血条和蓝条
+- 通过GameplayTag系统监听死亡状态变化
+
+### 7. 聊天系统优化 (Chat System Optimization)
+
+#### 设计理念
+- **增强体验**: 优化聊天交互和视觉效果
+- **弹幕系统**: 新增弹幕聊天模式提升游戏体验
+- **消息分类**: 支持多种消息类型和发送者识别
+- **性能优化**: 优化消息处理和显示性能
+
+#### 核心组件
+```cpp
+// 聊天主控件
+class UChatWidget : public UUserWidget
+
+// 消息项控件
+class UChatMessageItemWidget : public UUserWidget
+```
+
+#### 功能特性
+- **弹幕模式**: 消息以弹幕形式从右到左滚动显示
+- **颜色区分**: 根据发送者类型使用不同颜色显示
+  - 自己: 绿色
+  - 队友: 蓝色
+  - 敌方: 红色
+- **富文本支持**: 支持时间戳、频道标识等富文本格式
+- **性能优化**: 限制消息历史数量，优化渲染性能
+- **特殊字符处理**: 自动转义特殊字符避免富文本解析错误
+
+#### 实现细节
+- 弹幕系统使用CanvasPanel实现消息的移动动画
+- 通过定时器控制弹幕移动速度和位置更新
+- 使用RichTextBlock实现富文本格式化显示
+- 支持30FPS的流畅弹幕动画效果
+
+### 8. 网络架构 (Networking)
 
 #### 网络拓扑
 ```
@@ -317,7 +424,7 @@ DECLARE_MULTICAST_DELEGATE_TwoParams(FOnItemPurchased, const UPDA_ShopItem*, int
 
 ## 🔗 模块依赖关系
 
-```mermaid
+```
 graph TB
     Framework[Framework] --> Character[Character]
     Framework --> Network[Network]
@@ -368,7 +475,7 @@ graph TB
 - **网络调试**: 网络延迟和丢包监控
 
 ### 2. 日志系统
-```cpp
+```
 // 自定义日志类别
 DECLARE_LOG_CATEGORY_EXTERN(LogCrunchGame, Log, All);
 DECLARE_LOG_CATEGORY_EXTERN(LogCrunchNetwork, Log, All);

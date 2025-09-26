@@ -92,6 +92,7 @@ void UMainMenuWidget::UpdateLobbyList(const TArray<FOnlineSessionSearchResult>& 
 
 	
 	bool bCurrentSelectedSessionValid = false;
+
 	for (const FOnlineSessionSearchResult& SearchResult : SearchResults)
 	{
 		// 创建会话条目

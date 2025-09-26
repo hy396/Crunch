@@ -344,6 +344,7 @@ bool UChatWidget::CreateAndAddMessageItem(const FChatMessage& Message, bool bIsS
 
     // 创建消息项控件
     UChatMessageItemWidget* MessageItem = CreateWidget<UChatMessageItemWidget>(this, ChatMessageItemClass);
+    
     if (!MessageItem)
     {
         UE_LOG(LogTemp, Error, TEXT("消息项控件创建失败"));
@@ -359,6 +360,8 @@ bool UChatWidget::CreateAndAddMessageItem(const FChatMessage& Message, bool bIsS
     {
         MessageItem->SetChatMessage(Message);
     }
+    // 设置消息的宽度，让其自动换行
+    MessageItem->SetAutoWrapText(true);
     
     // 添加到滚动框并滚动到底部
     ChatScrollBox->AddChild(MessageItem);

@@ -82,6 +82,7 @@ void UPlayerPortraitWidget::SetAscAndPortrait(UAbilitySystemComponent* AbilitySy
 		if (BarBox)
 		{
 			BarBox->SetWidthOverride(0.f);
+			BarBox->SetHeightOverride(0.f);
 		}
 		// 隐藏血条和蓝条
 		HealthBar->SetVisibility(ESlateVisibility::Hidden);

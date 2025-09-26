@@ -350,12 +350,16 @@ void UMGameInstance::FindGlobalSessions()
 	SessionSearch->bIsLanQuery = false;		// 设置为非局域网查询
 	SessionSearch->MaxSearchResults = 20;	// 最多搜索20个结果
 
+	// 清除缓存，强制重新搜索
+	SessionPtr->ClearOnFindSessionsCompleteDelegates(this);
 	// 重新添加会话搜索完成委托
 	SessionPtr->OnFindSessionsCompleteDelegates.RemoveAll(this);
 	SessionPtr->OnFindSessionsCompleteDelegates.AddUObject(
 		this, 
 		&UMGameInstance::GlobalSessionSearchCompleted
 	);
+
+	
 	// 搜索会话
 	if (!SessionPtr->FindSessions(0, SessionSearch.ToSharedRef()))
 	{

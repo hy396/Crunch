@@ -203,6 +203,10 @@ private:
 	
 	// 清理输入并恢复游戏模式
 	void ClearInputAndRestoreGameMode();
+	
+	// // 消息的宽度
+	// UPROPERTY(EditDefaultsOnly, Category = "Chat")
+	// float MessageWidth = 500.0f;
 
 	// 最大聊天消息数量
 	UPROPERTY(EditDefaultsOnly, Category = "Chat")

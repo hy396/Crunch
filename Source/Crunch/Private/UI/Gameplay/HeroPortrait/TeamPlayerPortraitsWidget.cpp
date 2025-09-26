@@ -7,7 +7,7 @@
 #include "Player/MPlayerState.h"
 #include "Character/CCharacter.h"
 #include "Framework/CGameState.h"
-#include "Components/VerticalBox.h"
+// #include "Components/VerticalBox.h"
 #include "AbilitySystemComponent.h"
 #include "EngineUtils.h"
 #include "Components/PanelWidget.h"
@@ -145,6 +145,8 @@ void UTeamPlayerPortraitsWidget::OnTimerCallback()
 				{
 					EnemyPortraitContainer->AddChild(NewPortraitWidget);
 				}
+				//Angle
+				// NewPortraitWidget->SetRenderTransformAngle(180);
 				// 将玩家状态添加到跟踪数组中
 				TrackedPlayerStates.Add(PlayerState);
 			}

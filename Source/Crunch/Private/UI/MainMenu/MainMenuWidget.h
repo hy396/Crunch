@@ -42,6 +42,11 @@ private:
 	/******************************/	
 	/*           会话			  */
 	/******************************/
+public:
+	// 会话条目小部件类
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Session")
+	TSubclassOf<class USessionEntryWidget> SessionEntryWidgetClass;
+private:
 	// 创建会话按钮
 	UPROPERTY(meta=(BindWidget))
 	TObjectPtr<UButton> CreateSessionButton;
@@ -76,9 +81,6 @@ private:
 	UPROPERTY(meta=(BindWidget))
 	TObjectPtr<UButton> JoinSessionBtn;
 
-	// 会话条目小部件类
-	UPROPERTY(EditDefaultsOnly, Category = "Session")
-	TSubclassOf<class USessionEntryWidget> SessionEntryWidgetClass;
 
 	// 当前选中的会话条目ID
 	FString CurrentSelectedSessionId = "";

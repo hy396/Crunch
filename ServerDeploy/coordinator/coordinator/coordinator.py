@@ -47,7 +47,7 @@ def CreateServerImpl(sessionName, sessionSearchId):
         "--rm",                                     # 容器退出后自动删除
         "-p", f"{port}:{port}/tcp",                 # 映射TCP端口
         "-p", f"{port}:{port}/udp",                 # 映射UDP端口
-        "server",                             # 使用的Docker镜像名称
+        "server",                                   # 使用的Docker镜像名称
         "-server",                                  # 服务器模式参数
         "-log",                                     # 启用日志参数
         '-epicapp="ServerClient"',                  # 应用标识参数

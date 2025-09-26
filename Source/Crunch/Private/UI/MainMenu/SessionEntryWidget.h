@@ -12,6 +12,7 @@
 // 定义一个多播委托，当玩家点击某个会话条目时触发
 // 参数：选中的 SessionId 字符串
 DECLARE_MULTICAST_DELEGATE_OneParam(FOnSessionEntrySelected, const FString& /*SelectedSessionIdStr*/)
+//DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnSessionEntrySelected, const FString&, SelectedSessionIdStr);
 
 /**
  * 会话列表中的一个条目（用于显示会话名称和点击按钮）
@@ -24,9 +25,11 @@ public:
 	virtual void NativeConstruct() override;
 
 	// 点击时对外广播的事件
+	// UPROPERTY(BlueprintAssignable)
 	FOnSessionEntrySelected OnSessionEntrySelected;
 
 	// 用于初始化显示的内容（会话名称、ID 和人数信息）
+	UFUNCTION(BlueprintCallable)
 	void InitializeEntry(const FString& Name, const FString& SessionIdStr, int32 CurrentPlayers = 0, int32 MaxPlayers = 0);
 
 	// 根据房间状态更新颜色
@@ -36,6 +39,7 @@ public:
 	FORCEINLINE FString GetCachedSessionIdStr() const { return CachedSessionIdStr; }
 
 	// 获取当前人数信息
+	
 	FORCEINLINE int32 GetCurrentPlayers() const { return CachedCurrentPlayers; }
 	FORCEINLINE int32 GetMaxPlayers() const { return CachedMaxPlayers; }
 	

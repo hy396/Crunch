@@ -59,8 +59,18 @@ FString UChatMessageItemWidget::FormatChatMessageWithColors(const FChatMessage& 
     
 	// 构建带颜色的消息格式：[时间] [频道] [发送者类型] 玩家名: 消息内容
 	// 弹幕和正常聊天使用相同的格式，保持内容一致性
+	// FString FormattedMessage = FString::Printf(
+	// 	TEXT("<RichTextBlock.TimeStyle>[%s]</><%s>[%s]</><%s>[%s]%s:</><RichTextBlock.DefaultStyle>%s</>"),
+	// 	*TimeString,
+	// 	*ChannelColorTag,
+	// 	*ChannelPrefix,
+	// 	*SenderColorTag,
+	// 	*SenderPrefix,
+	// 	*Message.SenderName,
+	// 	*SafeMessageContent
+	// );
 	FString FormattedMessage = FString::Printf(
-		TEXT("<RichTextBlock.TimeStyle>[%s]</><%s>[%s]</><%s>[%s]%s:</><RichTextBlock.DefaultStyle>%s</>"),
+		TEXT("<RichTextBlock.TimeStyle>[%s] </><%s>[%s] </><%s>[%s]%s:</><RichTextBlock.DefaultStyle>%s</>"),
 		*TimeString,
 		*ChannelColorTag,
 		*ChannelPrefix,
@@ -69,6 +79,7 @@ FString UChatMessageItemWidget::FormatChatMessageWithColors(const FChatMessage& 
 		*Message.SenderName,
 		*SafeMessageContent
 	);
+
 
 	return FormattedMessage;
 }
@@ -175,6 +186,22 @@ void UChatMessageItemWidget::StopBarrageAnimation()
 	
 	bIsInBarrageMode = false;
 	OwningBarragePanel = nullptr;
+}
+
+// void UChatMessageItemWidget::SetMessageWrapWidth(bool bIsAuto)
+// {
+// 	if (MessageRichText)
+// 	{
+// 		MessageRichText->SetAutoWrapText(bIsAuto);
+// 	}
+// }
+
+void UChatMessageItemWidget::SetAutoWrapText(bool bAutoWrap)
+{
+	if (MessageRichText)
+	{
+		MessageRichText->SetAutoWrapText(bAutoWrap);
+	}
 }
 
 FString UChatMessageItemWidget::SanitizeMessageContent(const FString& Content) const

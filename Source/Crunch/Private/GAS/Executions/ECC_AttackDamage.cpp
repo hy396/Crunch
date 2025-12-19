@@ -201,6 +201,32 @@ void UECC_AttackDamage::Execute_Implementation(const FGameplayEffectCustomExecut
 				EGameplayModOp::Override, 
 				BaseAttackDamage	//伤害
 				));
+			
+			// // 吸血效果实现
+			// float LifeStealPercent = Spec.GetSetByCallerMagnitude(TGameplayTags::Attribute_LifeSteal, false, 0.0f);
+			// if (LifeStealPercent > 0.0f)
+			// {
+			// 	float LifeStealAmount = BaseAttackDamage * LifeStealPercent / 100.0f;
+				
+			// 	// 手动获取Source的ASC并应用治疗效果
+			// 	UAbilitySystemComponent* SourceASC = ExecutionParams.GetSourceAbilitySystemComponent();
+			// 	if (SourceASC)
+			// 	{
+			// 		// 创建临时GE来治疗Source
+			// 		UGameplayEffect* LifeStealEffect = NewObject<UGameplayEffect>(GetTransientPackage(), TEXT("LifeStealEffect"));
+			// 		LifeStealEffect->DurationPolicy = EGameplayEffectDurationType::Instant;
+					
+			// 		// 添加治疗效果
+			// 		FGameplayModifierInfo HealModifier;
+			// 		HealModifier.Attribute = UCAttributeSet::GetHealthAttribute();
+			// 		HealModifier.ModifierOp = EGameplayModOp::Additive;
+			// 		HealModifier.ModifierMagnitude = FGameplayEffectModifierMagnitude(FScalableFloat(LifeStealAmount));
+			// 		LifeStealEffect->Modifiers.Add(HealModifier);
+					
+			// 		// 应用效果到Source
+			// 		SourceASC->ApplyGameplayEffectToSelf(LifeStealEffect, 1.0f, SourceASC->MakeEffectContext());
+			// 	}
+			// }
 		}
 	}
 

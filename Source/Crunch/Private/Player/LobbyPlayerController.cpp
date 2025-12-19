@@ -10,6 +10,7 @@
 #include "Engine/World.h"
 #include "GenericTeamAgentInterface.h"
 #include "MPlayerState.h"
+#include "Network/TNetStatics.h"
 
 ALobbyPlayerController::ALobbyPlayerController()
 {
@@ -227,6 +228,71 @@ ULobbyWidget* ALobbyPlayerController::GetLobbyWidget()
 	UE_LOG(LogTemp, Warning, TEXT("无法获取LobbyWidget，请检查MenuWidget是否正确设置"));
 	return nullptr;
 }
+
+void ALobbyPlayerController::LeaveLobby()
+{
+	IOnlineSessionPtr SessionInterface = UTNetStatics::GetSessionPtr();
+	const FName LevelURL = FName(*FPackageName::ObjectPathToPackageName(MainMenuLevel.ToString()));
+
+	if (!SessionInterface.IsValid())
+	{
+		ClientTravel(*LevelURL.ToString(), TRAVEL_Absolute);
+		return;
+	}
+
+	FString SessionName = UTNetStatics::GetSessionNameStr();
+
+	// 如果本地没有这个会话，就直接返回主菜单
+	if (SessionInterface->GetNamedSession(FName(*SessionName)) == nullptr)
+	{
+		ClientTravel(*LevelURL.ToString(), TRAVEL_Absolute);
+		return;
+	}
+
+	// 🔥 绑定 DestroySession 完成回调
+	// OnDestroySessionCompleteDelegateHandle =
+	// 	SessionInterface->AddOnDestroySessionCompleteDelegate_Handle(
+	// 		FOnDestroySessionCompleteDelegate::CreateUObject(
+	// 			this, &ALobbyPlayerController::OnDestroySessionComplete
+	// 		));
+	// 移除旧回调，避免重复触发
+	SessionInterface->OnDestroySessionCompleteDelegates.RemoveAll(this);
+	SessionInterface->OnDestroySessionCompleteDelegates.AddLambda(
+			[this](FName SessionNameQwQ, bool bWasSuccessful)
+			{
+				// 🔹 延迟一点再 ClientTravel，确保 EOS 内部 session 完全销毁
+				FTimerHandle TimerHandle;
+				GetWorldTimerManager().SetTimer(TimerHandle, [this]()
+				{
+					const FName LevelURL = FName(*FPackageName::ObjectPathToPackageName(MainMenuLevel.ToString()));
+					ClientTravel(*LevelURL.ToString(), TRAVEL_Absolute);
+				}, 0.2f, false); // 延迟 0.2 秒
+			});
+	// 🔥 必须 Destroy，不要 End
+	SessionInterface->DestroySession(FName(SessionName));
+}
+
+// TODO: 可能删掉，或许这个东西并没有用处
+void ALobbyPlayerController::OnDestroySessionComplete(FName SessionName, bool bWasSuccessful)
+{
+	IOnlineSessionPtr SessionInterface = UTNetStatics::GetSessionPtr();
+
+	if (SessionInterface.IsValid())
+	{
+		SessionInterface->ClearOnDestroySessionCompleteDelegate_Handle(
+			OnDestroySessionCompleteDelegateHandle);
+	}
+
+	// 🔹 延迟一点再 ClientTravel，确保 EOS 内部 session 完全销毁
+	FTimerHandle TimerHandle;
+	GetWorldTimerManager().SetTimer(TimerHandle, [this]()
+	{
+		const FName LevelURL = FName(*FPackageName::ObjectPathToPackageName(MainMenuLevel.ToString()));
+		ClientTravel(*LevelURL.ToString(), TRAVEL_Absolute);
+	}, 0.2f, false); // 延迟 0.2 秒
+}
+
+
 
 // IChatInterface 接口实现
 void ALobbyPlayerController::SendChatMessageToServer(const FString& Message, EChatChannelType ChannelType)

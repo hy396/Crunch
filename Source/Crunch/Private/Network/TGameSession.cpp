@@ -3,6 +3,7 @@
 
 #include "Network/TGameSession.h"
 
+#include "Framework/CGameState.h"
 #include "Framework/MGameInstance.h"
 
 
@@ -22,6 +23,22 @@ void ATGameSession::RegisterPlayer(APlayerController* NewPlayer, const FUniqueNe
 		// 玩家加入(传入唯一ID)
 		GameInstance->PlayerJoined(UniqueId);
 	}
+
+    // 延迟为玩家分配槽位，确保PlayerState已完全初始化
+    if (NewPlayer && NewPlayer->PlayerState)
+    {
+        FTimerHandle TimerHandle;
+        FTimerDelegate TimerDelegate;
+        TimerDelegate.BindLambda([this, NewPlayer]()
+        {
+            if (ACGameState* GameState = GetWorld()->GetGameState<ACGameState>())
+            {
+                GameState->AutoAssignEmptySlot(NewPlayer->PlayerState);
+            }
+        });
+        
+        GetWorld()->GetTimerManager().SetTimer(TimerHandle, TimerDelegate, 0.1f, false);
+    }
 }
 
 void ATGameSession::UnregisterPlayer(FName FromSessionName, const FUniqueNetIdRepl& UniqueId)

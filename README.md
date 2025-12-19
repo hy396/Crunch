@@ -86,7 +86,7 @@ Crunch/
 
 1. **克隆仓库**
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/your-username/crunch.git
    cd Crunch
    ```
 
@@ -330,11 +330,23 @@ Crunch/
 
 - **项目负责人**: 幻雨喜欢小猫咪
 - **技术支持**: [GitHub Issues](./issues)
-- **完整文档**: [项目文档库](./docs/)
+- **完整文档**: [项目文档库](./docs/INDEX.md)
 
 ## 📄 许可证
 
-本项目遵循Epic Games许可协议。详情请参阅[LICENSE](./LICENSE)文件。
+本项目代码部分采用MIT许可证，但项目中包含的资源文件（如模型、纹理、音频等）可能受版权保护。
+
+### 资源文件版权说明
+- 项目中使用的第三方资源需遵守其原有的版权许可协议
+- Unreal Engine相关的资源遵循Epic Games的许可协议
+- 自制资源的版权归项目作者所有
+
+### 使用限制
+- 未经授权，不得将受版权保护的资源用于商业用途
+- 使用本项目时，请确保遵守所有相关资源的版权许可
+- 如需商业使用，请联系相应版权持有者获得授权
+
+详情请参阅[LICENSE](./LICENSE)文件。
 
 ---
 

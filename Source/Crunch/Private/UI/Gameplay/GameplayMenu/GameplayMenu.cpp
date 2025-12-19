@@ -8,6 +8,8 @@
 #include "Components/ComboBoxString.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "GameFramework/GameUserSettings.h"
+#include "Interfaces/OnlineSessionInterface.h"
+#include "Network/TNetStatics.h"
 
 void UGameplayMenu::NativeConstruct()
 {
@@ -37,7 +39,43 @@ void UGameplayMenu::SetTitleText(const FString& NewTitle)
 
 void UGameplayMenu::BackToMainMenu()
 {
-	// TODO:返回主菜单(未实现)
+	// TODO:返回主菜单(未实现) 2025/11/25实现但暂时为实验
+	IOnlineSessionPtr SessionInterface = UTNetStatics::GetSessionPtr();
+	const FName LevelURL = FName(*FPackageName::ObjectPathToPackageName(MainMenuLevel.ToString()));
+
+	if (!SessionInterface.IsValid())
+	{
+		GetOwningPlayer()->ClientTravel(*LevelURL.ToString(), TRAVEL_Absolute);
+		// GetWorld()->GetFirstPlayerController()->ClientTravel(*LevelURL.ToString(), TRAVEL_Absolute);
+		return;
+	}
+
+	FString SessionName = UTNetStatics::GetSessionNameStr();
+
+	// 如果本地没有这个会话，就直接返回主菜单
+	if (SessionInterface->GetNamedSession(FName(*SessionName)) == nullptr)
+	{
+		GetOwningPlayer()->ClientTravel(*LevelURL.ToString(), TRAVEL_Absolute);
+		// GetWorld()->GetFirstPlayerController()->ClientTravel(*LevelURL.ToString(), TRAVEL_Absolute);
+		return;
+	}
+
+	// 🔥 绑定 DestroySession 完成回调
+	// OnDestroySessionCompleteDelegateHandle =
+	// 	SessionInterface->AddOnDestroySessionCompleteDelegate_Handle(
+	// 		FOnDestroySessionCompleteDelegate::CreateUObject(
+	// 			this, &ALobbyPlayerController::OnDestroySessionComplete
+	// 		));
+	// 移除旧回调，避免重复触发
+	SessionInterface->OnDestroySessionCompleteDelegates.RemoveAll(this);
+	SessionInterface->OnDestroySessionCompleteDelegates.AddLambda(
+			[this](FName SessionNameQwQ, bool bWasSuccessful)
+			{
+				const FName LevelURL = FName(*FPackageName::ObjectPathToPackageName(MainMenuLevel.ToString()));
+					GetOwningPlayer()->ClientTravel(*LevelURL.ToString(), TRAVEL_Absolute);
+			});
+	// 🔥 必须 Destroy，不要 End
+	SessionInterface->DestroySession(FName(SessionName));
 }
 
 void UGameplayMenu::QuitGame()

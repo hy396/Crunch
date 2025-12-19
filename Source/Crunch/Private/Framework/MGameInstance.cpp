@@ -3,11 +3,13 @@
 
 #include "MGameInstance.h"
 
+#include "CGameState.h"
 #include "HttpModule.h"
 #include "Network/TNetStatics.h"
 #include "OnlineSubsystemTypes.h"
 #include "Interfaces/OnlineSessionInterface.h"
 #include "Interfaces/OnlineIdentityInterface.h"
+#include "AsyncLoadingScreenLibrary.h"
 
 void UMGameInstance::StartMatch()
 {
@@ -480,6 +482,34 @@ void UMGameInstance::JoinSessionWithSearchResult(const class FOnlineSessionSearc
 	FString SessionName = "";
 	SearchResult.Session.SessionSettings.Get<FString>(UTNetStatics::GetSessionNameKey(), SessionName);
 
+	//TODO: 新加的不知道行不行
+	// --- 安全退出/销毁旧会话 ---
+	// 检查是否存在同名会话，如果存在则先销毁
+	if (SessionPtr->GetNamedSession(FName(SessionName)))
+	{
+		UE_LOG(LogTemp, Warning, TEXT("发现旧会话，先销毁再加入"));
+		// 移除旧回调，避免重复触发
+		SessionPtr->OnDestroySessionCompleteDelegates.RemoveAll(this);
+		// 绑定销毁完成回调
+		SessionPtr->OnDestroySessionCompleteDelegates.AddLambda(
+			[this, SearchResult](FName SessionNameQwQ, bool bWasSuccessful)
+			{
+				if (bWasSuccessful)
+				{
+					UE_LOG(LogTemp, Warning, TEXT("销毁旧会话成功，开始加入新会话"));
+					JoinSessionWithSearchResult(SearchResult);
+				}
+				else
+				{
+					UE_LOG(LogTemp, Warning, TEXT("销毁旧会话失败，无法加入新会话"));
+					OnJoinSessionFailed.Broadcast();
+				}
+			}
+			);
+		SessionPtr->DestroySession(FName(SessionName));
+		return; // 等待销毁回调
+	}
+	
 	// 从搜索结果中提取端口号(端口号默认为:7777)
 	const FOnlineSessionSetting* PortSetting = SearchResult.Session.SessionSettings.Settings.Find(UTNetStatics::GetPortKey());
 	int64 Port = 7777;
@@ -574,7 +604,12 @@ void UMGameInstance::PlayerLeft(const FUniqueNetIdRepl& UniqueId)
 	PlayerRecord.Remove(UniqueId);
 	
 	UE_LOG(LogTemp, Warning, TEXT("[服务器] 玩家离开，当前玩家数：%d"), PlayerRecord.Num());
-	
+	// 通知GameState移除玩家选择
+    if (ACGameState* CGameState = GetWorld()->GetGameState<ACGameState>())
+    {
+        // 移除该玩家的选择记录
+        CGameState->RemovePlayerSelection(UniqueId);
+    }
 	// 更新会话设置以同步当前玩家数量到在线子系统
 	UpdateSessionSettings();
 	
@@ -756,6 +791,14 @@ void UMGameInstance::WaitPlayerJoinTimeoutReached()
 
 void UMGameInstance::LoadLevelAndListen(TSoftObjectPtr<UWorld> Level)
 {
+	// 2025/11/27 添加 Begin~
+	// // 确保加载屏幕启用
+ //    UAsyncLoadingScreenLibrary::SetEnableLoadingScreen(true);
+ //    
+ //    // 预加载背景图像（如果需要）
+ //    UAsyncLoadingScreenLibrary::PreloadBackgroundImages();
+	// 2025/11/27 添加 End~
+
 	// 从软引用的 UWorld 获取包路径（比如 /Game/Maps/MyMap.MyMap）
 	const FName LevelURL = FName(*FPackageName::ObjectPathToPackageName(Level.ToString()));
 	if (LevelURL != "")
@@ -765,7 +808,7 @@ void UMGameInstance::LoadLevelAndListen(TSoftObjectPtr<UWorld> Level)
 		UE_LOG(LogTemp, Warning, TEXT("服务器地图切换至 %s"), *(TravelStr));
 		// 开启 ServerTravel（切换关卡并开启监听）
 		GetWorld()->ServerTravel(TravelStr);
-
+		
 		// 切换到指定关卡，并加上 "?listen" 参数
 		// GetWorld()->ServerTravel(LevelURL.ToString() + "?listen");
 	}

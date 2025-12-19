@@ -14,8 +14,8 @@ public class Crunch : ModuleRules
 			"GameplayAbilities", "GameplayTags", "GameplayTasks",
 			"UMG", "Slate", "SlateCore",
 			"AIModule" , "ModularGameplay", "NavigationSystem", "Niagara",
-			"OnlineSubsystem","OnlineSubsystemEOS","OnlineSubsystemUtils","Networking","HTTP","Json",
-			"MotionWarping","CommonUI"
+			"OnlineSubsystem","OnlineSubsystemEOS", "OnlineSubsystemUtils", "Networking","HTTP","Json",
+			"MotionWarping", "CommonUI", "AsyncLoadingScreen"  // 添加这一行
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });

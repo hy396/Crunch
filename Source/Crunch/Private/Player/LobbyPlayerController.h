@@ -99,4 +99,20 @@ private:
 
 	// 获取大厅UI组件
 	ULobbyWidget* GetLobbyWidget();
+public:
+	FDelegateHandle OnEndSessionCompleteDelegateHandle;
+	FDelegateHandle OnDestroySessionCompleteDelegateHandle;
+
+	UFUNCTION()
+	void OnDestroySessionComplete(FName SessionName, bool bWasSuccessful);
+
+	/**
+	 * 退出大厅并返回主菜单
+	 * 调用ClientReturnToMainMenu返回主菜单
+	 */
+	UFUNCTION(BlueprintCallable, Category = "Lobby")
+	void LeaveLobby();
+	// 主菜单关卡引用
+	UPROPERTY(EditDefaultsOnly, Category = "Map")
+	TSoftObjectPtr<UWorld> MainMenuLevel;
 };

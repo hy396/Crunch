@@ -52,6 +52,7 @@ protected:
 	// 将伤害应用到TargetDataHandle中的所有目标
 	void ApplyDamageToTargetDataHandle(const FGameplayAbilityTargetDataHandle& TargetDataHandle, const FGenericDamageEffectDef& Damage, int Level = 1);
 
+	// TODO: 废用方案
 	// 设置伤害
 	void MakeDamage(const FGenericDamageEffectDef& Damage, int Level = 1);
 	UFUNCTION()

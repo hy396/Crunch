@@ -37,6 +37,8 @@ ACCharacter::ACCharacter()
 
 	PerceptionStimuliSourceComponent = CreateDefaultSubobject<UAIPerceptionStimuliSourceComponent>("Perception Stimuli Source Component");
 
+	// 无论是否渲染都Tick和刷新骨骼变换 - 用于专用服务器上的骨骼更新
+	GetMesh()->VisibilityBasedAnimTickOption = EVisibilityBasedAnimTickOption::AlwaysTickPoseAndRefreshBones;
 	// 创建数字弹出组件
 	// NumberPopComponent = CreateDefaultSubobject<UNumberPopComponent_NiagaraText>(TEXT("NumberPopComponent"));
 

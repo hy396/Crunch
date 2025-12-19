@@ -69,5 +69,9 @@ private:
 
 	// 应用窗口模式设置
 	void ApplyWindowMode(const FString& WindowModeString);
+
+	// 主菜单关卡引用
+	UPROPERTY(EditDefaultsOnly, Category = "Map")
+	TSoftObjectPtr<UWorld> MainMenuLevel;
 };
 

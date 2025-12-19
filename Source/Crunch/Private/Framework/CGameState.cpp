@@ -3,7 +3,9 @@
 
 #include "CGameState.h"
 
+#include "GameFramework/PlayerState.h"
 #include "Net/UnrealNetwork.h"
+#include "Network/TNetStatics.h"
 
 void ACGameState::RequestPlayerSelectionChange(const APlayerState* RequestingPlayer, uint8 DesiredSlot)
 {
@@ -143,4 +145,57 @@ void ACGameState::OnRep_PlayerSelectionArray()
 {
 	// 广播玩家选择更新事件
 	OnPlayerSelectionUpdated.Broadcast(PlayerSelectionArray);
+}
+
+bool ACGameState::AutoAssignEmptySlot(const APlayerState* NewPlayerState)
+{
+    if (!NewPlayerState) return false;
+	// 查找当前玩家的已有选择
+	FPlayerSelection* PlayerSelectionPtr =
+		// 在 PlayerSelectionArray 数组中查找符合条件的元素
+		PlayerSelectionArray.FindByPredicate([&](const FPlayerSelection& PlayerSelection)
+		{
+			//对每个数组元素执行判断：是否匹配目标玩家
+			return PlayerSelection.IsForPlayer(NewPlayerState);
+		}
+	);
+	// 如果以及有了选择则退出
+	if (PlayerSelectionPtr)
+	{
+		return true;
+	}
+    // 查找第一个空槽位
+    const int32 TotalSlots = UTNetStatics::GetPlayerCountPerTeam() * 2;
+    for (int32 SlotId = 0; SlotId < TotalSlots; ++SlotId)
+    {
+        if (!IsSlotOccupied(SlotId))
+        {
+            // 分配空槽位
+            PlayerSelectionArray.Add(FPlayerSelection(SlotId, NewPlayerState));
+            OnPlayerSelectionUpdated.Broadcast(PlayerSelectionArray);
+            UE_LOG(LogTemp, Warning, TEXT("[服务器] 为玩家 %s 自动分配槽位 %d"), 
+                   *NewPlayerState->GetPlayerName(), SlotId);
+            return true;
+        }
+    }
+    
+    UE_LOG(LogTemp, Warning, TEXT("[服务器] 无法为玩家 %s 分配槽位：服务器已满"), 
+           *NewPlayerState->GetPlayerName());
+    return false;
+}
+
+void ACGameState::RemovePlayerSelection(const FUniqueNetIdRepl& LeavingPlayerId)
+{
+	// 查找并移除离开玩家的选择记录
+    int32 RemovedCount = PlayerSelectionArray.RemoveAll([&](const FPlayerSelection& PlayerSelection)
+    {
+        return PlayerSelection.GetPLayerUniqueId() == LeavingPlayerId;
+    });
+    
+    if (RemovedCount > 0)
+    {
+        UE_LOG(LogTemp, Warning, TEXT("[服务器] 移除了 %d 个离开玩家的选择记录"), RemovedCount);
+        // 广播玩家选择更新
+        OnPlayerSelectionUpdated.Broadcast(PlayerSelectionArray);
+    }
 }

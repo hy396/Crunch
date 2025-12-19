@@ -223,6 +223,9 @@ void UGA_ChainAttack::StartAttackTimer(FGameplayEventData Payload)
 	if (!OwnerAnimInst) return;
 	// 设置蒙太奇自动切换到下一个片段，达成连击的效果
 	OwnerAnimInst->Montage_SetNextSection(OwnerAnimInst->Montage_GetCurrentSection(ChargeMontage), DashName, ChargeMontage);
+
+	// 创建移动任务
+	// ApplyRootMotionSo
 	// 设置定时器，间隔执行攻击
 	GetWorld()->GetTimerManager().SetTimer(
 		ChainAttackTimerHandle,

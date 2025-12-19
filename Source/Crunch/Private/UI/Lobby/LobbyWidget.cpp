@@ -44,9 +44,16 @@ void ULobbyWidget::NativeConstruct()
 	StartHeroSelectionButton->SetIsEnabled(false);
 	StartHeroSelectionButton->OnClicked.AddDynamic(this, &ULobbyWidget::StartHeroSelectionButtonClicked);
 
+	// 在玩家加入的时候自动更新了按钮是否可点击
 	// 绑定开始比赛按钮事件
-	StartMatchButton->SetIsEnabled(false);
+	// StartMatchButton->SetIsEnabled(false);
 	StartMatchButton->OnClicked.AddDynamic(this, &ULobbyWidget::StartMatchButtonClicked);
+
+	// 绑定退出大厅按钮事件
+	if (LeaveLobbyButton)
+	{
+		LeaveLobbyButton->OnClicked.AddDynamic(this, &ULobbyWidget::LeaveLobbyButtonClicked);
+	}
 
 	// 异步加载角色定义数据
 	UCAssetManager::Get().LoadCharacterDefinitions(FStreamableDelegate::CreateUObject(this, &ULobbyWidget::CharacterDefinitionLoaded));
@@ -286,6 +293,15 @@ void ULobbyWidget::StartMatchButtonClicked()
 	{
 		// 请求服务器开始比赛
 		LobbyPlayerController->Server_RequestStartMatch();
+	}
+}
+
+void ULobbyWidget::LeaveLobbyButtonClicked()
+{
+	if (LobbyPlayerController)
+	{
+		// 请求退出大厅并返回主菜单
+		LobbyPlayerController->LeaveLobby();
 	}
 }
 

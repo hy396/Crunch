@@ -38,6 +38,11 @@ public:
      * @param TargetLocation 运动扭曲目标位置
      */
 	virtual void AddOrUpdateWarpTargetFromLocation_Implementation(const FVector& TargetLocation) override;
+
+	virtual bool IsNetRelevantFor(const AActor* RealViewer, const AActor* ViewTarget, const FVector& SrcLocation) const override
+	{
+		return true; // 始终复制，忽略距离
+	}
 private:
 	// 角色运动扭曲组件
 	UPROPERTY(VisibleDefaultsOnly, Category = "Motion Warping")

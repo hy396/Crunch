@@ -85,6 +85,10 @@ private:
 	UPROPERTY(meta=(BindWidget))
 	TObjectPtr<UButton> StartMatchButton;
 	
+	// 退出大厅按钮
+	UPROPERTY(meta=(BindWidget))
+	TObjectPtr<UButton> LeaveLobbyButton;
+	
 	// 玩家控制器
 	UPROPERTY()
 	TObjectPtr<ALobbyPlayerController> LobbyPlayerController;
@@ -135,6 +139,10 @@ private:
 	// 启动游戏按钮点击事件处理
 	UFUNCTION()
 	void StartMatchButtonClicked();
+
+	// 退出大厅按钮点击事件处理
+	UFUNCTION()
+	void LeaveLobbyButtonClicked();
 
 private:
 	// 聊天消息项控件类（用于弹幕）

@@ -87,6 +87,20 @@ public:
 	 */
 	virtual void GetLifetimeReplicatedProps(TArray< FLifetimeProperty > &OutLifetimeProps) const override;
 
+	/**
+	* 为新加入的玩家自动分配一个空槽位
+	* @param NewPlayerState 新加入的玩家状态
+	* @return 是否成功分配槽位
+	*/
+	UFUNCTION(BlueprintCallable, Category = "Player Selection")
+	bool AutoAssignEmptySlot(const APlayerState* NewPlayerState);
+	
+	/**
+	* 移除离开玩家的选择记录
+	* @param LeavingPlayerId 离开玩家的唯一ID
+	*/
+	void RemovePlayerSelection(const FUniqueNetIdRepl& LeavingPlayerId);
+		
 private:
 	/**
 	 * 玩家选择数组（网络复制）

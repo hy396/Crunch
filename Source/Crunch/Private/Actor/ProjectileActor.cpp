@@ -84,6 +84,11 @@ void AProjectileActor::NotifyActorBeginOverlap(AActor* OtherActor)
 	UAbilitySystemComponent* OtherASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(OtherActor);
 	if (IsValid(OtherASC))
 	{
+		// // 👇 新增: 检查目标是否死亡
+		// if (OtherASC->HasMatchingGameplayTag(TGameplayTags::Stats_Dead))
+        // {
+        //     return; // 跳过死亡目标
+        // }
 		// 服务器应用命中效果
 		if (HasAuthority() && HitEffectSpecHandle.IsValid())
 		{

@@ -1,0 +1,35 @@
+﻿// 幻雨喜欢小猫咪
+
+#pragma once
+
+#include "NativeGameplayTags.h"
+
+namespace FrontendGameplayTags
+{	
+	//Frontend widget stack
+	namespace WidgetStack
+	{
+		CRUNCH_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Modal);
+		CRUNCH_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(GameMenu);
+		CRUNCH_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(GameHud);
+		CRUNCH_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Frontend);
+	}
+	//Frontend widgets
+	namespace Widget
+	{
+		CRUNCH_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(PressAnyKeyScreen);
+		CRUNCH_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(MainMenuScreen);
+		CRUNCH_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(OptionsScreen);
+
+		CRUNCH_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(ConfirmScreen);
+
+		CRUNCH_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(KeyRemapScreen);
+		CRUNCH_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(CreditScreen);
+
+	}
+	//Frontend Options Image
+	namespace Image
+	{
+		CRUNCH_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(TestImage);
+	}
+}

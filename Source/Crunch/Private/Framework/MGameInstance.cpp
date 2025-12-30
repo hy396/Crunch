@@ -32,6 +32,24 @@ void UMGameInstance::Init()
 	{
 		CreateSession();
 	}
+
+	//     // 仅在非专用服务器上运行（即客户端或 listen server 的本地玩家）
+	//     if (!IsRunningDedicatedServer())
+	//     {
+	//         UFrontendGameUserSettings* Settings = UFrontendGameUserSettings::Get();
+        
+	//         // 防重复 + 首次启动检测
+	//         if (Settings->GetLastCPUBenchmarkResult() == -1.f || 
+	//             Settings->GetLastGPUBenchmarkResult() == -1)
+	//         {
+	//             // 可选：加日志便于调试
+	//             UE_LOG(LogTemp, Log, TEXT("Running hardware benchmark for local client..."));
+
+	//             Settings->RunHardwareBenchmark();
+	//             Settings->ApplyHardwareBenchmarkResults();
+	//             Settings->SaveSettings(); // 确保写入本地磁盘
+	//         }
+	//     }
 }
 
 bool UMGameInstance::IsLoggedIn() const

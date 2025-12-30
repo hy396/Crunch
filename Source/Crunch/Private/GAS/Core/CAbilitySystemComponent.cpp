@@ -351,7 +351,7 @@ void UCAbilitySystemComponent::ExperienceUpdated(const FOnAttributeChangeData& C
 	float CurrentLevel = GetNumericAttributeBase(UCHeroAttributeSet::GetLevelAttribute());
 	float CurrentUpgradePoint = GetNumericAttribute(UCHeroAttributeSet::GetUpgradePointAttribute());
 
-	UE_LOG(LogTemp, Warning, TEXT("Level:%f"),CurrentLevel);
+	// UE_LOG(LogTemp, Warning, TEXT("Level:%f"),CurrentLevel);
 	// 计算等级提升数
 	float LevelUpgraded = NewLevel - CurrentLevel;
 	// 累加升级点数(当前点数+升级的级数)

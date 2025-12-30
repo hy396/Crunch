@@ -461,6 +461,15 @@ void ACCharacter::StartDeathSequence()
 	// GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_None);
 	// 禁用碰撞
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	// TODO:2025/12/30修改
+	// 禁用碰撞（改为忽略Pawn和WorldDynamic，但仍保持WorldStatic以防止跌落）
+	// GetCapsuleComponent()->SetCollisionResponseToAllChannels(ECR_Ignore);
+	// GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Block);
+	// TODO:2025/12/30修改
+	// 👇 第1步：先清空移动速度和物理
+    GetCharacterMovement()->StopMovementImmediately();
+	// 👇 新增：禁用重力，让尸体悬空
+    GetCharacterMovement()->GravityScale = 0.0f;
 	// 死掉后禁用感知
 	SetAIPerceptionStimuliSourceEnabled(false);
 	// UE_LOG(LogTemp, Warning, TEXT("%s：狗带"),*GetName())
@@ -475,6 +484,8 @@ void ACCharacter::Respawn()
 	SetRagdollEnabled(false);
 	// 开启血条
 	SetStatusGaugeEnabled(true);
+	// 👇 新增：恢复重力
+    GetCharacterMovement()->GravityScale = 1.0f;
 	// 开启移动
 	// GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_Walking);
 	// 开启碰撞

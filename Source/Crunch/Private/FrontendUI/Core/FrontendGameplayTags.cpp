@@ -19,12 +19,13 @@ namespace FrontendGameplayTags
 	{
 		UE_DEFINE_GAMEPLAY_TAG_COMMENT(PressAnyKeyScreen, "Frontend.Widget.PressAnyKeyScreen", "任意键继续界面标签，用于标识按任意键继续界面")
 		UE_DEFINE_GAMEPLAY_TAG_COMMENT(MainMenuScreen, "Frontend.Widget.MainMenuScreen", "主菜单界面标签，用于标识游戏主菜单界面")
-		UE_DEFINE_GAMEPLAY_TAG_COMMENT(OptionsScreen, "Frontend.Widget.ConfirmScreen", "确认界面标签，用于标识确认对话框界面")
+		UE_DEFINE_GAMEPLAY_TAG_COMMENT(ConfirmScreen, "Frontend.Widget.ConfirmScreen", "确认界面标签，用于标识确认对话框界面")
 			
-		UE_DEFINE_GAMEPLAY_TAG_COMMENT(ConfirmScreen, "Frontend.Widget.OptionsScreen", "选项设置界面标签，用于标识游戏选项设置界面")
+		UE_DEFINE_GAMEPLAY_TAG_COMMENT(OptionsScreen, "Frontend.Widget.OptionsScreen", "选项设置界面标签，用于标识游戏选项设置界面")
 		UE_DEFINE_GAMEPLAY_TAG_COMMENT(KeyRemapScreen, "Frontend.Widget.KeyRemapScreen", "按键重映射界面标签，用于标识按键设置界面")
 		
 		UE_DEFINE_GAMEPLAY_TAG_COMMENT(CreditScreen, "Frontend.Widget.CreditScreen", "制作人员名单界面标签，用于标识游戏制作人员名单展示界面")
+		UE_DEFINE_GAMEPLAY_TAG_COMMENT(GameplayHUD, "Frontend.Widget.GameplayHUD", "游戏主界面HUD控件")
 	}
 	//Frontend Options Image
 	namespace Image

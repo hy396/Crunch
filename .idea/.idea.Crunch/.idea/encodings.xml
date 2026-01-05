@@ -23,6 +23,8 @@
     <file url="file://$PROJECT_DIR$/Source/Crunch/Private/Character/Interaction/CombatInterface.h" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/Crunch/Private/FrontendUI/FrontendFunctionLibrary.cpp" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/Crunch/Private/FrontendUI/FrontendFunctionLibrary.h" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Source/Crunch/Private/FrontendUI/Widgets/Components/FrontendCommonButtonBase.cpp" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Source/Crunch/Private/FrontendUI/Widgets/Components/FrontendCommonButtonBase.h" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/Crunch/Private/GAS/Abilities/GA_Combo.cpp" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/Crunch/Private/GAS/Abilities/GA_Combo.h" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/Crunch/Private/GAS/Core/CAbilitySystemComponent.cpp" charset="UTF-8" />

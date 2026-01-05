@@ -15,16 +15,22 @@
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnConfirmScreenButtonClickedDelegate, EConfirmScreenButtonType, ClickedButtonType);
 
 /**
- * 异步推送确认屏幕操作类
- * 
- * 该类提供了一种异步方式来显示确认屏幕，并在用户做出选择时通知调用者。
- * 可用于需要用户确认才能继续的操作，例如退出游戏、删除数据等场景。
- * 
- * 主要特性：
- * 1. 异步操作模式，不会阻塞游戏主线程
- * 2. 支持不同类型的确认屏幕（信息、警告、错误等）
- * 3. 提供按钮点击事件回调机制
- * 4. 自动管理生命周期，在操作完成后销毁
+ * 异步推送确认屏幕的 Blueprint 操作节点
+ *
+ * 该类封装了一个标准的 Blueprint Async Action，用于：
+ * - 显示模态确认屏幕
+ * - 等待用户输入
+ * - 将用户选择结果异步返回给 Blueprint
+ *
+ * 典型使用场景：
+ * - 退出游戏确认
+ * - 删除/覆盖数据确认
+ * - 高风险操作提示
+ *
+ * 特点：
+ * - 不阻塞游戏线程
+ * - 生命周期由 GameInstance 管理
+ * - 操作完成后自动销毁
  */
 UCLASS()
 class CRUNCH_API UAsyncAction_PushConfirmScreen : public UBlueprintAsyncActionBase
@@ -40,7 +46,15 @@ public:
 	 * @param InScreenMessage 屏幕消息内容文本
 	 * @return 异步操作实例，可用于绑定事件和监听结果；如果无法获取有效世界则返回nullptr
 	 */
-	UFUNCTION(BlueprintCallable, meta = (WorldContext = "WorldContextObject", HidePin = "WorldContextObject", BlueprintInternalUseOnly="true",DisplayName="Show Confirmation Screen"), Category = "Async Tasks")
+	UFUNCTION(
+		BlueprintCallable,
+		meta = (
+			WorldContext = "WorldContextObject",
+			HidePin = "WorldContextObject",
+			BlueprintInternalUseOnly="true",
+			DisplayName="Show Confirmation Screen"
+			),
+		Category = "Async Tasks")
 	static UAsyncAction_PushConfirmScreen* PushConfirmScreen(const UObject* WorldContextObject,
 		EConfirmScreenType ScreenType, FText InScreenTitle, FText InScreenMessage);
 
@@ -56,15 +70,15 @@ public:
 	FOnConfirmScreenButtonClickedDelegate OnButtonClicked;
 	
 private:
-	/** 缓存的世界引用 */
+	/** 异步节点所属的世界（弱引用，避免生命周期问题） */
 	TWeakObjectPtr<UWorld> CachedOwningWorld;
-	
-	/** 缓存的确认屏幕类型 */
+
+	/** 确认屏幕类型 */
 	EConfirmScreenType CachedScreenType;
-	
-	/** 缓存的屏幕标题 */
+
+	/** 确认屏幕标题文本 */
 	FText CachedScreenTitle;
-	
-	/** 缓存的屏幕消息内容 */
+
+	/** 确认屏幕正文文本 */
 	FText CachedScreenMessage;
 };

@@ -3,8 +3,11 @@
 
 #include "FrontendUISubsystem.h"
 #include "Engine/AssetManager.h"
+#include "FrontendUI/FrontendFunctionLibrary.h"
+#include "FrontendUI/Core/FrontendGameplayTags.h"
 #include "Widgets/CommonActivatableWidgetContainer.h"
 #include "FrontendUI/Widgets/Widget_ActivatableBase.h"
+#include "FrontendUI/Widgets/Widget_ConfirmScreen.h"
 #include "FrontendUI/Widgets/Widget_PrimaryLayout.h"
 
 UFrontendUISubsystem* UFrontendUISubsystem::Get(const UObject* WorldContextObject)
@@ -74,4 +77,62 @@ void UFrontendUISubsystem::PushSoftWidgetToStackAsync(const FGameplayTag& InWidg
 			}
 		)
 	);
+}
+
+void UFrontendUISubsystem::PushConfirmScreenToModalStackAsync(EConfirmScreenType InScreenType,
+	const FText& InScreenTitle, const FText& InScreenMessage,
+	TFunction<void(EConfirmScreenButtonType)> ButtonClickedCallback)
+{
+	UConfirmScreenInfoObject* CreatedInfoObject = nullptr;
+	// 根据确认屏幕类型创建对应的确认屏幕信息对象
+	switch (InScreenType)
+	{
+		case EConfirmScreenType::Ok:
+			// 创建"确定"类型的确认屏幕
+			CreatedInfoObject = UConfirmScreenInfoObject::CreateOKScreen(InScreenTitle, InScreenMessage);
+			break;
+		case EConfirmScreenType::YesNo:
+			// 创建"是/否"类型的确认屏幕
+			CreatedInfoObject = UConfirmScreenInfoObject::CreateYesNoScreen(InScreenTitle, InScreenMessage);
+			break;
+		case EConfirmScreenType::OkCancel:
+			// 创建"确定/取消"类型的确认屏幕
+			CreatedInfoObject = UConfirmScreenInfoObject::CreateOKCancelScreen(InScreenTitle, InScreenMessage);
+			break;
+		case EConfirmScreenType::Unknown:
+			// 未知类型，不创建任何对象
+			break;
+		default:
+			// 默认情况，不创建任何对象
+			break;
+	}
+	// 确保成功创建了确认屏幕信息对象
+	check(CreatedInfoObject);
+
+	// 异步将软部件推送到指定的UI堆栈
+	// 使用模态堆栈标签和确认屏幕的软部件类标签，将确认屏幕添加到UI堆栈中
+	PushSoftWidgetToStackAsync(FrontendGameplayTags::WidgetStack::Modal,
+		UFrontendFunctionLibrary::GetFrontendSoftWidgetClassByTag(FrontendGameplayTags::Widget::ConfirmScreen),
+		[CreatedInfoObject, ButtonClickedCallback](EAsyncPushWidgetState InPushState, UWidget_ActivatableBase* PushedWidget)
+		{
+			// 在小部件实例创建完成但尚未入栈时（OnCreatedBeforePush）进行初始化
+			if (InPushState == EAsyncPushWidgetState::OnCreatedBeforePush)
+			{
+				// 将推送的部件转换为确认屏幕部件类型
+				UWidget_ConfirmScreen* CreatedConfirmScreen = CastChecked<UWidget_ConfirmScreen>(PushedWidget);
+				// 初始化确认屏幕，传入信息对象和按钮点击回调函数
+				CreatedConfirmScreen->InitConfirmScreen(CreatedInfoObject, ButtonClickedCallback);
+			}
+		}
+	);
+}
+
+bool UFrontendUISubsystem::SetPrimaryLayoutVisibility(bool bVisible)
+{
+	if (CreatedPrimaryLayout)
+	{
+		CreatedPrimaryLayout->SetVisibility(bVisible ? ESlateVisibility::Visible : ESlateVisibility::Collapsed);
+		return true;
+	}
+	return false;
 }

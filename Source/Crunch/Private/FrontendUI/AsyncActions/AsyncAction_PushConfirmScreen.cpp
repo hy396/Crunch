@@ -37,5 +37,18 @@ UAsyncAction_PushConfirmScreen* UAsyncAction_PushConfirmScreen::PushConfirmScree
  */
 void UAsyncAction_PushConfirmScreen::Activate()
 {
-	// UFrontendUISubsystem::Get(CachedOwningWorld.Get())->PushSoftWidgetToStackAsync()
+	// 获取前端UI子系统实例
+	UFrontendUISubsystem::Get(CachedOwningWorld.Get())->PushConfirmScreenToModalStackAsync(
+		CachedScreenType,
+		CachedScreenTitle,
+		CachedScreenMessage,
+		// Lambda表达式定义回调函数，处理用户点击按钮后的逻辑
+		[this](EConfirmScreenButtonType ClickedButtonType)
+		{
+			// 广播按钮点击事件，通知所有监听者
+			OnButtonClicked.Broadcast(ClickedButtonType);
+			// 设置为准备销毁状态，异步操作完成
+			SetReadyToDestroy();
+		}
+	);
 }

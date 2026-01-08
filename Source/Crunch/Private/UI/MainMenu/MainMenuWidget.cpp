@@ -29,7 +29,8 @@ void UMainMenuWidget::NativeConstruct()
 	}
 
 	// 绑定登录按钮点击事件
-	LoginButton->OnClicked.AddDynamic(this, &UMainMenuWidget::OnLoginButtonClicked);
+	// LoginButton->OnClicked.AddDynamic(this, &UMainMenuWidget::OnLoginButtonClicked);
+	LoginButton->OnClicked().AddUObject(this, &UMainMenuWidget::OnLoginButtonClicked);
 	// 绑定创建会话按钮点击事件
 	CreateSessionButton->OnClicked.AddDynamic(this, &UMainMenuWidget::CreateSessionBtnClicked);
 	// 绑定新会话名称输入框内容改变事件

@@ -10,6 +10,7 @@
 #include "Components/ScrollBox.h"
 #include "Components/WidgetSwitcher.h"
 #include "Framework/MGameInstance.h"
+#include "FrontendUI/Widgets/Components/FrontendCommonButtonBase.h"
 #include "MainMenuWidget.generated.h"
 
 class UButton;
@@ -101,8 +102,11 @@ private:
 	TObjectPtr<UWidget> LoginWidgetRoot;
 
 	// 登录按钮
+	// UPROPERTY(meta = (BindWidget))
+	// TObjectPtr<UButton> LoginButton;
+
 	UPROPERTY(meta = (BindWidget))
-	TObjectPtr<UButton> LoginButton;
+	TObjectPtr<UFrontendCommonButtonBase> LoginButton;
 
 	// 登录按钮点击事件
 	UFUNCTION()

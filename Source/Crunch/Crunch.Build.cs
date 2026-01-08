@@ -12,10 +12,13 @@ public class Crunch : ModuleRules
 		{
 			"Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput",
 			"GameplayAbilities", "GameplayTags", "GameplayTasks",
-			"UMG", "Slate", "SlateCore",
 			"AIModule" , "ModularGameplay", "NavigationSystem", "Niagara",
-			"OnlineSubsystem","OnlineSubsystemEOS", "OnlineSubsystemUtils", "Networking","HTTP","Json",
-			"MotionWarping", "CommonUI", "CommonInput", "AsyncLoadingScreen"  // 添加这一行
+			"OnlineSubsystem", "OnlineSubsystemEOS", "OnlineSubsystemUtils", "Networking", "HTTP", "Json",
+			"MotionWarping", "AsyncLoadingScreen",  // 添加这一行
+			// Uncomment if you are using Slate UI
+			"UMG", "Slate", "SlateCore",
+			"CommonUI", "CommonInput", "PropertyPath",
+			
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });

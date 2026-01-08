@@ -275,3 +275,9 @@ cython_debug/
 #  refer to https://docs.cursor.com/context/ignore-files
 .cursorignore
 .cursorindexingignore
+
+
+
+# 忽略AdvancedMenu目录下的所有文件
+Content/AdvancedMenu/
+

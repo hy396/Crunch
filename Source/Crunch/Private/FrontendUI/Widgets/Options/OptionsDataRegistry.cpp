@@ -179,6 +179,15 @@ void UOptionsDataRegistry::InitAudioCollectionTab()
 			SoundFXVolume->SetShouldApplySettingsImmediately(true);
 			VolumeCategoryCollection->AddChildListData(SoundFXVolume);
 		}
+		// 用来测试 凑条数
+		{
+			UListDataObject_String* TestItem = NewObject<UListDataObject_String>();
+			TestItem->SetDataID(FName("TestItem"));
+			TestItem->SetDataDisplayName(FText::FromString(TEXT("Test Image Item")));
+			TestItem->SetSoftDescriptionImage(UFrontendFunctionLibrary::GetOptionsSoftImageByTag(FrontendGameplayTags::Image::TestImage));
+			TestItem->SetDescriptionRichText(FText::FromString(TEXT("在项目设置中指定要显示的任何图像")));
+			VolumeCategoryCollection->AddChildListData(TestItem);
+		}
 	}
 	// 音频类别
 	{
@@ -298,7 +307,6 @@ void UOptionsDataRegistry::InitVideoCollectionTab()
 			DisplayCategoryCollection->AddChildListData(ScreenResolution);
 		}
 	}
-
 	// 图形  图样类别
 	{
 		UListDataObject_Collection* GraphicsCategoryCollection = NewObject<UListDataObject_Collection>();
@@ -329,8 +337,9 @@ void UOptionsDataRegistry::InitVideoCollectionTab()
 		}
 
 		UListDataObject_StringInteger* CreatedOverallQuality = nullptr;
-		// 全局质量
 		{
+			// 微小的替换操作
+			// 全局质量
 			UListDataObject_StringInteger* OverallQuality = NewObject<UListDataObject_StringInteger>();
 			OverallQuality->SetDataID(FName("OverallQuality"));
 			OverallQuality->SetDataDisplayName(FText::FromString(TEXT("全局质量")));
@@ -343,28 +352,66 @@ void UOptionsDataRegistry::InitVideoCollectionTab()
 			OverallQuality->SetDataDynamicGetter(MAKE_OPTIONS_DATA_CONTROL(GetOverallScalabilityLevel));
 			OverallQuality->SetDataDynamicSetter(MAKE_OPTIONS_DATA_CONTROL(SetOverallScalabilityLevel));
 			OverallQuality->SetShouldApplySettingsImmediately(true);
-			
-			GraphicsCategoryCollection->AddChildListData(OverallQuality);
-			CreatedOverallQuality = OverallQuality;
-		}
-		// 分辨率缩放比例
-		{
-			UListDataObject_Scalar* ResolutionScale = NewObject<UListDataObject_Scalar>();
-			ResolutionScale->SetDataID(FName("ResolutionScale"));
-			ResolutionScale->SetDataDisplayName(FText::FromString(TEXT("3D 屏幕比例")));
-			ResolutionScale->SetDescriptionRichText(GET_DESCRIPTION("ResolutionScaleDescKey"));
-			ResolutionScale->SetDisplayValueRange(TRange<float>(0.f, 1.f));
-			ResolutionScale->SetOutputValueRange(TRange<float>(0.f, 1.f));
-			ResolutionScale->SetSliderStepSize(0.01f);// 手柄操作时滑块步长
-			ResolutionScale->SetDisplayNumericType(ECommonNumericType::Percentage);
-			ResolutionScale->SetNumberedFormattingOptions(UListDataObject_Scalar::NoDecimal());
-			ResolutionScale->SetDataDynamicGetter(MAKE_OPTIONS_DATA_CONTROL(GetResolutionScaleNormalized));
-			ResolutionScale->SetDataDynamicSetter(MAKE_OPTIONS_DATA_CONTROL(SetResolutionScaleNormalized));
-			ResolutionScale->SetShouldApplySettingsImmediately(true);
+				
+			// GraphicsCategoryCollection->AddChildListData(OverallQuality);
+			CreatedOverallQuality = OverallQuality;	
+			// 分辨率缩放比例
+			{
+				UListDataObject_Scalar* ResolutionScale = NewObject<UListDataObject_Scalar>();
+				ResolutionScale->SetDataID(FName("ResolutionScale"));
+				ResolutionScale->SetDataDisplayName(FText::FromString(TEXT("3D 屏幕比例")));
+				ResolutionScale->SetDescriptionRichText(GET_DESCRIPTION("ResolutionScaleDescKey"));
+				ResolutionScale->SetDisplayValueRange(TRange<float>(0.f, 1.f));
+				ResolutionScale->SetOutputValueRange(TRange<float>(0.f, 1.f));
+				ResolutionScale->SetSliderStepSize(0.01f);// 手柄操作时滑块步长
+				ResolutionScale->SetDisplayNumericType(ECommonNumericType::Percentage);
+				ResolutionScale->SetNumberedFormattingOptions(UListDataObject_Scalar::NoDecimal());
+				ResolutionScale->SetDataDynamicGetter(MAKE_OPTIONS_DATA_CONTROL(GetResolutionScaleNormalized));
+				ResolutionScale->SetDataDynamicSetter(MAKE_OPTIONS_DATA_CONTROL(SetResolutionScaleNormalized));
+				ResolutionScale->SetShouldApplySettingsImmediately(true);
 
-			ResolutionScale->AddEditDependencyData(CreatedOverallQuality);
-			GraphicsCategoryCollection->AddChildListData(ResolutionScale);
+				ResolutionScale->AddEditDependencyData(CreatedOverallQuality);
+				GraphicsCategoryCollection->AddChildListData(ResolutionScale);
+				// 全局质量放进去，放下面，因为这个也是滑块，这两个不放一起的话很丑
+				GraphicsCategoryCollection->AddChildListData(OverallQuality);
+			}
 		}
+		// // 全局质量
+		// {
+		// 	UListDataObject_StringInteger* OverallQuality = NewObject<UListDataObject_StringInteger>();
+		// 	OverallQuality->SetDataID(FName("OverallQuality"));
+		// 	OverallQuality->SetDataDisplayName(FText::FromString(TEXT("全局质量")));
+		// 	OverallQuality->SetDescriptionRichText(GET_DESCRIPTION("OverallQualityDescKey"));
+		// 	OverallQuality->AddIntegerOption(0, FText::FromString(TEXT("低")));
+		// 	OverallQuality->AddIntegerOption(1, FText::FromString(TEXT("一般")));
+		// 	OverallQuality->AddIntegerOption(2, FText::FromString(TEXT("高")));
+		// 	OverallQuality->AddIntegerOption(3, FText::FromString(TEXT("史诗")));
+		// 	OverallQuality->AddIntegerOption(4, FText::FromString(TEXT("电影级")));
+		// 	OverallQuality->SetDataDynamicGetter(MAKE_OPTIONS_DATA_CONTROL(GetOverallScalabilityLevel));
+		// 	OverallQuality->SetDataDynamicSetter(MAKE_OPTIONS_DATA_CONTROL(SetOverallScalabilityLevel));
+		// 	OverallQuality->SetShouldApplySettingsImmediately(true);
+		// 	
+		// 	GraphicsCategoryCollection->AddChildListData(OverallQuality);
+		// 	CreatedOverallQuality = OverallQuality;
+		// }
+		// // 分辨率缩放比例
+		// {
+		// 	UListDataObject_Scalar* ResolutionScale = NewObject<UListDataObject_Scalar>();
+		// 	ResolutionScale->SetDataID(FName("ResolutionScale"));
+		// 	ResolutionScale->SetDataDisplayName(FText::FromString(TEXT("3D 屏幕比例")));
+		// 	ResolutionScale->SetDescriptionRichText(GET_DESCRIPTION("ResolutionScaleDescKey"));
+		// 	ResolutionScale->SetDisplayValueRange(TRange<float>(0.f, 1.f));
+		// 	ResolutionScale->SetOutputValueRange(TRange<float>(0.f, 1.f));
+		// 	ResolutionScale->SetSliderStepSize(0.01f);// 手柄操作时滑块步长
+		// 	ResolutionScale->SetDisplayNumericType(ECommonNumericType::Percentage);
+		// 	ResolutionScale->SetNumberedFormattingOptions(UListDataObject_Scalar::NoDecimal());
+		// 	ResolutionScale->SetDataDynamicGetter(MAKE_OPTIONS_DATA_CONTROL(GetResolutionScaleNormalized));
+		// 	ResolutionScale->SetDataDynamicSetter(MAKE_OPTIONS_DATA_CONTROL(SetResolutionScaleNormalized));
+		// 	ResolutionScale->SetShouldApplySettingsImmediately(true);
+		//
+		// 	ResolutionScale->AddEditDependencyData(CreatedOverallQuality);
+		// 	GraphicsCategoryCollection->AddChildListData(ResolutionScale);
+		// }
 		// 全局光照质量
 		{
 			UListDataObject_StringInteger* GlobalIlluminationQuality = NewObject<UListDataObject_StringInteger>();
@@ -433,8 +480,8 @@ void UOptionsDataRegistry::InitVideoCollectionTab()
 			ViewDistanceQuality->AddIntegerOption(2, FText::FromString(TEXT("远")));
 			ViewDistanceQuality->AddIntegerOption(3, FText::FromString(TEXT("很远")));
 			ViewDistanceQuality->AddIntegerOption(4, FText::FromString(TEXT("电影级")));
-			ViewDistanceQuality->SetDataDynamicGetter(MAKE_OPTIONS_DATA_CONTROL(GetVisualEffectQuality));
-			ViewDistanceQuality->SetDataDynamicSetter(MAKE_OPTIONS_DATA_CONTROL(SetVisualEffectQuality));
+			ViewDistanceQuality->SetDataDynamicGetter(MAKE_OPTIONS_DATA_CONTROL(GetViewDistanceQuality));
+			ViewDistanceQuality->SetDataDynamicSetter(MAKE_OPTIONS_DATA_CONTROL(SetViewDistanceQuality));
 			ViewDistanceQuality->SetShouldApplySettingsImmediately(true);
 			// 两个相互依赖 如果单独设置全局光照，则全局质量变为自定义
 			ViewDistanceQuality->AddEditDependencyData(CreatedOverallQuality);

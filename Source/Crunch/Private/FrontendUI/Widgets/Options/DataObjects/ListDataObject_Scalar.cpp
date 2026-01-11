@@ -34,7 +34,8 @@ float UListDataObject_Scalar::GetCurrentValue() const
 	{
 		// 将输出值范围映射到显示值范围，并返回转换后的当前值
 		return FMath::GetMappedRangeValueClamped(
-			OutputValueRange, DisplayValueRange,
+			OutputValueRange,
+			DisplayValueRange,
 			StringToFloat(DataDynamicGetter->GetValueAsString()));
 	}
 	
@@ -49,7 +50,9 @@ void UListDataObject_Scalar::SetCurrentValueFromSlider(float InNewValue)
 	{
 		// 将显示值范围映射到输出值范围，并对新值进行限制
 		const float ClampedValue = FMath::GetMappedRangeValueClamped(
-			DisplayValueRange, OutputValueRange, InNewValue);
+			DisplayValueRange,
+			OutputValueRange,
+			InNewValue);
 			
 		// 将限制后的值转换为字符串并设置
 		DataDynamicSetter->SetValueFromString(LexToString(ClampedValue));

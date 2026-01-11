@@ -18,6 +18,7 @@ public class Crunch : ModuleRules
 			// Uncomment if you are using Slate UI
 			"UMG", "Slate", "SlateCore",
 			"CommonUI", "CommonInput", "PropertyPath",
+			// "AudioModulation"
 			
 		});
 

@@ -1,4 +1,4 @@
-﻿// 幻雨喜欢小猫咪
+// 幻雨喜欢小猫咪
 
 #pragma once
 
@@ -33,5 +33,14 @@ namespace FrontendGameplayTags
 	namespace Image
 	{
 		CRUNCH_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(TestImage);
+	}
+	//Frontend Audio
+	namespace Audio
+	{
+		CRUNCH_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(OverallVolume);
+		CRUNCH_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(MusicVolume);
+		CRUNCH_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(SoundFXVolume);
+		CRUNCH_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(AllowBackgroundAudio);
+		CRUNCH_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(UseHDRAudioMode);
 	}
 }

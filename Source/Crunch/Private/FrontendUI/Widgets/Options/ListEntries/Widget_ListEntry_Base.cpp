@@ -28,8 +28,8 @@ void UWidget_ListEntry_Base::NativeOnListEntryWidgetHovered(bool bWasHovered)
 void UWidget_ListEntry_Base::NativeOnListItemObjectSet(UObject* ListItemObject)
 {
 	IUserObjectListEntry::NativeOnListItemObjectSet(ListItemObject);
-	// TODO: 这个后面被注释了很诡异
-	SetVisibility(ESlateVisibility::Visible);
+	// TODO: 这个后面被注释了很诡异(已解决，这是在蓝图里为其单独设置，无敌了）
+	// SetVisibility(ESlateVisibility::Visible);
 	OnOwningListDataObjectSet(CastChecked<UListDataObject_Base>(ListItemObject));
 }
 

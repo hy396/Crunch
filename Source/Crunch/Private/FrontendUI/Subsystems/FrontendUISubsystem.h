@@ -4,12 +4,12 @@
 
 #include "CoreMinimal.h"
 #include "FrontendUI/FrontendTypes/FrontendEnumTypes.h"
+#include "GameplayTagContainer.h" 
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "FrontendUISubsystem.generated.h"
 
 class UWidget_ActivatableBase;
 class UWidget_PrimaryLayout;
-struct FGameplayTag;
 class UFrontendCommonButtonBase;
 
 // 异步推送小部件过程中的状态枚举

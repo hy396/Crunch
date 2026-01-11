@@ -3,8 +3,12 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GameplayTagContainer.h"
+#include "Sound/SoundClass.h"
+#include "Sound/SoundMix.h"
 #include "GameFramework/GameUserSettings.h"
 #include "FrontendGameUserSettings.generated.h"
+
 
 /**
  * UFrontendGameUserSettings
@@ -108,6 +112,18 @@ public:
 		bUseHDRAudioMode = bIsAllowed;
 	}
 
+	/**
+	 * 重写 ApplySettings 方法
+	 * 在基类应用设置后，额外应用音频设置
+	 * @param bCheckForCommandLineOverrides - 是否检查命令行覆盖
+	 */
+	virtual void ApplySettings(bool bCheckForCommandLineOverrides) override;
+
+	// TODO: 目前的音量是假的，或许成真了
+	/** 将音频设置真正推送到音频系统 */
+	UFUNCTION()
+	void ApplyAudioSettings();
+
 	// ================= Video Collection Tab =================
 
 	/**
@@ -129,6 +145,16 @@ public:
 	void SetCurrentDisplayGamma(float InNewValue);
 
 private:
+	/**
+	 * 应用音量值到指定的 SoundClass
+	 * @param World - 世界上下文
+	 * @param InVolumeTag - 音量类型的GameplayTag
+	 * @param InVolume - 音量值（0.0~1.0）
+	 * @param InMix - 主音频混音器
+	 */
+	void ApplyVolumeToSoundClass(UWorld* World, FGameplayTag InVolumeTag, float InVolume, USoundMix* InMix);
+
+private:
 	// ================= Gameplay Collection Tab =================
 	// TODO: 这个东西只图一乐，结束就删, 有个沟八的游戏难度
 	/**
@@ -142,6 +168,7 @@ private:
 	FString CurrentGameDifficulty;
 
 	// ================= Audio Collection Tab =================
+protected:
 
 	/** 总音量（Master） */
 	UPROPERTY(Config)
@@ -162,4 +189,13 @@ private:
 	/** 是否启用 HDR 音频 */
 	UPROPERTY(Config)
 	bool bUseHDRAudioMode;
+
+private:
+	/** 缓存的主音频混音器（避免频繁加载） */
+	UPROPERTY(Transient)
+	TObjectPtr<USoundMix> CachedMasterBusMix;
+
+	/** 缓存的音频类别映射表（避免频繁加载） */
+	UPROPERTY(Transient)
+	TMap<FGameplayTag, TObjectPtr<USoundClass>> CachedVolumeBusMap;
 };

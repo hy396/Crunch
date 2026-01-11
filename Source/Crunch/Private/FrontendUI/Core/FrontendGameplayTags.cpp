@@ -36,5 +36,12 @@ namespace FrontendGameplayTags
 
 	// Frontend CreditScreen
 	// UE_DEFINE_GAMEPLAY_TAG_COMMENT(Frontend_Widget_CreditScreen, "Frontend.Widget.CreditScreen", "制作人员名单界面标签，用于标识游戏制作人员名单展示界面")
-
+	namespace Audio
+	{
+		UE_DEFINE_GAMEPLAY_TAG_COMMENT(OverallVolume, "Frontend.Audio.OverallVolume", "总体音量标签，用于控制前端界面的总体音量")
+		UE_DEFINE_GAMEPLAY_TAG_COMMENT(MusicVolume, "Frontend.Audio.MusicVolume", "音乐音量标签，用于控制前端界面的音乐音量")
+		UE_DEFINE_GAMEPLAY_TAG_COMMENT(SoundFXVolume, "Frontend.Audio.SoundFXVolume", "音效音量标签，用于控制前端界面的音效音量")
+		UE_DEFINE_GAMEPLAY_TAG_COMMENT(AllowBackgroundAudio, "Frontend.Audio.AllowBackgroundAudio", "允许后台音频标签，用于控制是否允许后台播放音频")
+		UE_DEFINE_GAMEPLAY_TAG_COMMENT(UseHDRAudioMode, "Frontend.Audio.UseHDRAudioMode", "使用HDR音频模式标签，用于控制是否启用HDR音频模式")
+	}
 }

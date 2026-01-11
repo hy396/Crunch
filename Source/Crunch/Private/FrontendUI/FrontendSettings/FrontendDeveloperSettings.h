@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "Engine/DeveloperSettings.h"
+#include "Sound/SoundClass.h"
+#include "Sound/SoundMix.h"
 #include "GameplayTagContainer.h"
 #include "FrontendDeveloperSettings.generated.h"
 
@@ -25,5 +27,12 @@ public:
 	/** 选项界面软引用图像映射表：通过GameplayTag关联到具体的纹理资源 */
 	UPROPERTY(Config, EditAnywhere, Category = "Options Image Reference", meta=(ForceInlineRow, Categories = "Frontend.Image"))
 	TMap<FGameplayTag, TSoftObjectPtr<UTexture2D>> OptionsScreenSoftImageMap;
+
+	UPROPERTY(Config, EditAnywhere, Category = "Audio")
+	TSoftObjectPtr<USoundMix> MasterBusMix;
+
+	/** 各音量类别对应的 SoundClass（软引用，用于配置） */
+	UPROPERTY(Config, EditAnywhere, Category = "Audio", meta=(ForceInlineRow, Categories = "Frontend.Audio"))
+	TMap<FGameplayTag, TSoftObjectPtr<USoundClass>> VolumeBusMap;
 
 };

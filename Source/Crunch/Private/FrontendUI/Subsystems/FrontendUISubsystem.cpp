@@ -36,7 +36,7 @@ bool UFrontendUISubsystem::ShouldCreateSubsystem(UObject* Outer) const
 void UFrontendUISubsystem::RegisterCreatedPrimaryLayoutWidget(UWidget_PrimaryLayout* InCreatedWidget)
 {
 	// 检查传入的指针是否为空，如果为空则记录详细错误信息
-	checkf(InCreatedWidget, TEXT("RegisterCreatedPrimaryLayoutWidget called with null widget. This indicates a problem in the UI initialization sequence.")); // 引发运行时错误，但仍然返回 nullptr，调用代码预期会优雅地处理这种情况。
+	checkf(InCreatedWidget, TEXT("RegisterCreatedPrimaryLayoutWidget 被空小部件调用。这表明UI初始化序列存在问题。")); // 引发运行时错误，但仍然返回 nullptr，调用代码预期会优雅地处理这种情况。
 	
 	CreatedPrimaryLayout = InCreatedWidget;
 	// Debug::Print(TEXT("成功存储主要布局小部件"));
@@ -135,4 +135,9 @@ bool UFrontendUISubsystem::SetPrimaryLayoutVisibility(bool bVisible)
 		return true;
 	}
 	return false;
+}
+
+bool UFrontendUISubsystem::IsPrimaryLayoutRegistered() const
+{
+	return CreatedPrimaryLayout != nullptr;
 }

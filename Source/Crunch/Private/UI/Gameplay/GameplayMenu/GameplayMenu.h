@@ -30,7 +30,7 @@ public:
 	// 设置菜单标题文本
 	void SetTitleText(const FString& NewTitle);
 
-private:
+// private:
 	// 菜单标题文本控件
 	UPROPERTY(meta=(BindWidget))
 	TObjectPtr<UTextBlock> MenuTitle;
@@ -48,8 +48,8 @@ private:
 	TObjectPtr<UButton> QuitGameBtn;
 
 	// 窗口模式选择下拉框
-	UPROPERTY(meta=(BindWidget))
-	TObjectPtr<UComboBoxString> WindowModeComboBox;
+	// UPROPERTY(meta=(BindWidget))
+	// TObjectPtr<UComboBoxString> WindowModeComboBox;
 
 	// TODO:退出游戏有点抽象，不如返回菜单或返回房间
 	// 返回主菜单回调
@@ -60,15 +60,15 @@ private:
 	UFUNCTION()
 	void QuitGame();
 
-	// 窗口模式选择变化回调
-	UFUNCTION()
-	void OnWindowModeSelectionChanged(FString SelectedItem, ESelectInfo::Type SelectionType);
+	// // 窗口模式选择变化回调
+	// UFUNCTION()
+	// void OnWindowModeSelectionChanged(FString SelectedItem, ESelectInfo::Type SelectionType);
 
-	// 初始化窗口模式选项
-	void InitializeWindowModeOptions();
-
-	// 应用窗口模式设置
-	void ApplyWindowMode(const FString& WindowModeString);
+	// // 初始化窗口模式选项
+	// void InitializeWindowModeOptions();
+	//
+	// // 应用窗口模式设置
+	// void ApplyWindowMode(const FString& WindowModeString);
 
 	// 主菜单关卡引用
 	UPROPERTY(EditDefaultsOnly, Category = "Map")

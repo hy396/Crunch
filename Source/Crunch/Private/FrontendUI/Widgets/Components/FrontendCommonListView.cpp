@@ -9,6 +9,7 @@
 #include "FrontendUI/Widgets/Options/DataObjects/ListDataObject_Collection.h"
 #include "FrontendUI/Widgets/Options/ListEntries/Widget_ListEntry_Base.h"
 
+
 UUserWidget& UFrontendCommonListView::OnGenerateEntryWidgetInternal(UObject* Item,
                                                                     TSubclassOf<UUserWidget> DesiredEntryClass, const TSharedRef<STableViewBase>& OwnerTable)
 {

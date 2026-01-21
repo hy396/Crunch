@@ -121,24 +121,24 @@ public:
 	void AddEnumOption(EnumType InEnumOption, const FText& InDisplayText)  // 枚举值 + 显示文本
 	{
 		const UEnum* StaticEnumOption = StaticEnum<EnumType>();  //获取枚举类型的UEnum元数据
-		const FString ConveretedEnumString = StaticEnumOption->GetNameStringByValue(InEnumOption); // 将枚举值转为字符串
+		const FString ConvertedEnumString = StaticEnumOption->GetNameStringByValue(InEnumOption); // 将枚举值转为字符串
 
-		AddDynamicOption(ConveretedEnumString, InDisplayText);	
+		AddDynamicOption(ConvertedEnumString, InDisplayText);	
 	}
 
 	template<typename EnumType>
 	EnumType GetCurrentValueAsEnum() const
 	{
 		const UEnum* StaticEnumOption = StaticEnum<EnumType>();
-		return (EnumType)StaticEnumOption->GetValueByNameString(CurrentStringValue);
+		return static_cast<EnumType>(StaticEnumOption->GetValueByNameString(CurrentStringValue));
 	}
 
 	template<typename EnumType>
 	void SetDefaultValueFromEnumOption(EnumType InEnumOption)
 	{
 		const UEnum* StaticEnumOption = StaticEnum<EnumType>();  //获取枚举类型的UEnum元数据
-		const FString ConveretedEnumString = StaticEnumOption->GetNameStringByValue(InEnumOption); // 将枚举值转为字符串
-		SetDefaultValueFromString(ConveretedEnumString);
+		const FString ConvertedEnumString = StaticEnumOption->GetNameStringByValue(InEnumOption); // 将枚举值转为字符串
+		SetDefaultValueFromString(ConvertedEnumString);
 	}
 };
 

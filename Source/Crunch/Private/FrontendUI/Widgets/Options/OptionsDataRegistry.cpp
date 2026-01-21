@@ -3,8 +3,10 @@
 
 #include "OptionsDataRegistry.h"
 
+#include "EnhancedInputSubsystems.h"
 #include "OptionsDataInteractionHelper.h"
 #include "DataObjects/ListDataObject_Collection.h"
+#include "DataObjects/ListDataObject_KeyRemap.h"
 #include "DataObjects/ListDataObject_Scalar.h"
 #include "DataObjects/ListDataObject_String.h"
 #include "DataObjects/ListDataObject_StringResolution.h"
@@ -12,6 +14,7 @@
 #include "FrontendUI/Core/FrontendGameplayTags.h"
 #include "FrontendUI/FrontendSettings/FrontendGameUserSettings.h"
 #include "Internationalization/StringTableRegistry.h"
+#include "HuanYuDebugHelper.h"
 
 
 #define MAKE_OPTIONS_DATA_CONTROL(SetterOrGetterFuncName) \
@@ -253,9 +256,9 @@ void UOptionsDataRegistry::InitVideoCollectionTab()
 				const bool bIsInEditor = GIsEditor || GIsPlayInEditorWorld;
 				return !bIsInEditor;  // 如果在编辑器中则返回false
 			});
-#if WITH_EDITOR	
+// #if WITH_EDITOR	
 		PackagedBuildOnlyCondition.SetDisabledRichReason(TEXT("\n\n<Disabled>该设置只有在打包后的程序中进行设置</>"));
-#endif
+// #endif
 
 		// Window mode
 		{
@@ -296,8 +299,8 @@ void UOptionsDataRegistry::InitVideoCollectionTab()
 			WindowModeEditCondition.SetEditConditionFunc(
 				[CreatedWindowMode]()->bool
 				{
-					const bool bIsBoderlessWindow = CreatedWindowMode->GetCurrentValueAsEnum<EWindowMode::Type>() == EWindowMode::WindowedFullscreen;
-					return !bIsBoderlessWindow;
+					const bool bIsBorderlessWindow = CreatedWindowMode->GetCurrentValueAsEnum<EWindowMode::Type>() == EWindowMode::WindowedFullscreen;
+					return !bIsBorderlessWindow;
 				});
 
 			WindowModeEditCondition.SetDisabledRichReason(TEXT("\n\n<Disabled>在无边框模式下无法调整屏幕分辨率，分辨率为最大的那一项</>"));
@@ -337,47 +340,9 @@ void UOptionsDataRegistry::InitVideoCollectionTab()
 		}
 
 		UListDataObject_StringInteger* CreatedOverallQuality = nullptr;
-		{
-			// 微小的替换操作
-			// 全局质量
-			UListDataObject_StringInteger* OverallQuality = NewObject<UListDataObject_StringInteger>();
-			OverallQuality->SetDataID(FName("OverallQuality"));
-			OverallQuality->SetDataDisplayName(FText::FromString(TEXT("全局质量")));
-			OverallQuality->SetDescriptionRichText(GET_DESCRIPTION("OverallQualityDescKey"));
-			OverallQuality->AddIntegerOption(0, FText::FromString(TEXT("低")));
-			OverallQuality->AddIntegerOption(1, FText::FromString(TEXT("一般")));
-			OverallQuality->AddIntegerOption(2, FText::FromString(TEXT("高")));
-			OverallQuality->AddIntegerOption(3, FText::FromString(TEXT("史诗")));
-			OverallQuality->AddIntegerOption(4, FText::FromString(TEXT("电影级")));
-			OverallQuality->SetDataDynamicGetter(MAKE_OPTIONS_DATA_CONTROL(GetOverallScalabilityLevel));
-			OverallQuality->SetDataDynamicSetter(MAKE_OPTIONS_DATA_CONTROL(SetOverallScalabilityLevel));
-			OverallQuality->SetShouldApplySettingsImmediately(true);
-				
-			// GraphicsCategoryCollection->AddChildListData(OverallQuality);
-			CreatedOverallQuality = OverallQuality;	
-			// 分辨率缩放比例
-			{
-				UListDataObject_Scalar* ResolutionScale = NewObject<UListDataObject_Scalar>();
-				ResolutionScale->SetDataID(FName("ResolutionScale"));
-				ResolutionScale->SetDataDisplayName(FText::FromString(TEXT("3D 屏幕比例")));
-				ResolutionScale->SetDescriptionRichText(GET_DESCRIPTION("ResolutionScaleDescKey"));
-				ResolutionScale->SetDisplayValueRange(TRange<float>(0.f, 1.f));
-				ResolutionScale->SetOutputValueRange(TRange<float>(0.f, 1.f));
-				ResolutionScale->SetSliderStepSize(0.01f);// 手柄操作时滑块步长
-				ResolutionScale->SetDisplayNumericType(ECommonNumericType::Percentage);
-				ResolutionScale->SetNumberedFormattingOptions(UListDataObject_Scalar::NoDecimal());
-				ResolutionScale->SetDataDynamicGetter(MAKE_OPTIONS_DATA_CONTROL(GetResolutionScaleNormalized));
-				ResolutionScale->SetDataDynamicSetter(MAKE_OPTIONS_DATA_CONTROL(SetResolutionScaleNormalized));
-				ResolutionScale->SetShouldApplySettingsImmediately(true);
-
-				ResolutionScale->AddEditDependencyData(CreatedOverallQuality);
-				GraphicsCategoryCollection->AddChildListData(ResolutionScale);
-				// 全局质量放进去，放下面，因为这个也是滑块，这两个不放一起的话很丑
-				GraphicsCategoryCollection->AddChildListData(OverallQuality);
-			}
-		}
-		// // 全局质量
 		// {
+		// 	// 微小的替换操作
+		// 	// 全局质量
 		// 	UListDataObject_StringInteger* OverallQuality = NewObject<UListDataObject_StringInteger>();
 		// 	OverallQuality->SetDataID(FName("OverallQuality"));
 		// 	OverallQuality->SetDataDisplayName(FText::FromString(TEXT("全局质量")));
@@ -390,28 +355,66 @@ void UOptionsDataRegistry::InitVideoCollectionTab()
 		// 	OverallQuality->SetDataDynamicGetter(MAKE_OPTIONS_DATA_CONTROL(GetOverallScalabilityLevel));
 		// 	OverallQuality->SetDataDynamicSetter(MAKE_OPTIONS_DATA_CONTROL(SetOverallScalabilityLevel));
 		// 	OverallQuality->SetShouldApplySettingsImmediately(true);
-		// 	
-		// 	GraphicsCategoryCollection->AddChildListData(OverallQuality);
-		// 	CreatedOverallQuality = OverallQuality;
-		// }
-		// // 分辨率缩放比例
-		// {
-		// 	UListDataObject_Scalar* ResolutionScale = NewObject<UListDataObject_Scalar>();
-		// 	ResolutionScale->SetDataID(FName("ResolutionScale"));
-		// 	ResolutionScale->SetDataDisplayName(FText::FromString(TEXT("3D 屏幕比例")));
-		// 	ResolutionScale->SetDescriptionRichText(GET_DESCRIPTION("ResolutionScaleDescKey"));
-		// 	ResolutionScale->SetDisplayValueRange(TRange<float>(0.f, 1.f));
-		// 	ResolutionScale->SetOutputValueRange(TRange<float>(0.f, 1.f));
-		// 	ResolutionScale->SetSliderStepSize(0.01f);// 手柄操作时滑块步长
-		// 	ResolutionScale->SetDisplayNumericType(ECommonNumericType::Percentage);
-		// 	ResolutionScale->SetNumberedFormattingOptions(UListDataObject_Scalar::NoDecimal());
-		// 	ResolutionScale->SetDataDynamicGetter(MAKE_OPTIONS_DATA_CONTROL(GetResolutionScaleNormalized));
-		// 	ResolutionScale->SetDataDynamicSetter(MAKE_OPTIONS_DATA_CONTROL(SetResolutionScaleNormalized));
-		// 	ResolutionScale->SetShouldApplySettingsImmediately(true);
+		// 		
+		// 	// GraphicsCategoryCollection->AddChildListData(OverallQuality);
+		// 	CreatedOverallQuality = OverallQuality;	
+		// 	// 分辨率缩放比例
+		// 	{
+		// 		UListDataObject_Scalar* ResolutionScale = NewObject<UListDataObject_Scalar>();
+		// 		ResolutionScale->SetDataID(FName("ResolutionScale"));
+		// 		ResolutionScale->SetDataDisplayName(FText::FromString(TEXT("3D 屏幕比例")));
+		// 		ResolutionScale->SetDescriptionRichText(GET_DESCRIPTION("ResolutionScaleDescKey"));
+		// 		ResolutionScale->SetDisplayValueRange(TRange<float>(0.f, 1.f));
+		// 		ResolutionScale->SetOutputValueRange(TRange<float>(0.f, 1.f));
+		// 		ResolutionScale->SetSliderStepSize(0.01f);// 手柄操作时滑块步长
+		// 		ResolutionScale->SetDisplayNumericType(ECommonNumericType::Percentage);
+		// 		ResolutionScale->SetNumberedFormattingOptions(UListDataObject_Scalar::NoDecimal());
+		// 		ResolutionScale->SetDataDynamicGetter(MAKE_OPTIONS_DATA_CONTROL(GetResolutionScaleNormalized));
+		// 		ResolutionScale->SetDataDynamicSetter(MAKE_OPTIONS_DATA_CONTROL(SetResolutionScaleNormalized));
+		// 		ResolutionScale->SetShouldApplySettingsImmediately(true);
 		//
-		// 	ResolutionScale->AddEditDependencyData(CreatedOverallQuality);
-		// 	GraphicsCategoryCollection->AddChildListData(ResolutionScale);
+		// 		ResolutionScale->AddEditDependencyData(CreatedOverallQuality);
+		// 		GraphicsCategoryCollection->AddChildListData(ResolutionScale);
+		// 		// 全局质量放进去，放下面，因为这个也是滑块，这两个不放一起的话很丑
+		// 		GraphicsCategoryCollection->AddChildListData(OverallQuality);
+		// 	}
 		// }
+		// 全局质量
+		{
+			UListDataObject_StringInteger* OverallQuality = NewObject<UListDataObject_StringInteger>();
+			OverallQuality->SetDataID(FName("OverallQuality"));
+			OverallQuality->SetDataDisplayName(FText::FromString(TEXT("全局质量")));
+			OverallQuality->SetDescriptionRichText(GET_DESCRIPTION("OverallQualityDescKey"));
+			OverallQuality->AddIntegerOption(0, FText::FromString(TEXT("低")));
+			OverallQuality->AddIntegerOption(1, FText::FromString(TEXT("一般")));
+			OverallQuality->AddIntegerOption(2, FText::FromString(TEXT("高")));
+			OverallQuality->AddIntegerOption(3, FText::FromString(TEXT("史诗")));
+			OverallQuality->AddIntegerOption(4, FText::FromString(TEXT("电影级")));
+			OverallQuality->SetDataDynamicGetter(MAKE_OPTIONS_DATA_CONTROL(GetOverallScalabilityLevel));
+			OverallQuality->SetDataDynamicSetter(MAKE_OPTIONS_DATA_CONTROL(SetOverallScalabilityLevel));
+			OverallQuality->SetShouldApplySettingsImmediately(true);
+			
+			GraphicsCategoryCollection->AddChildListData(OverallQuality);
+			CreatedOverallQuality = OverallQuality;
+		}
+		// 分辨率缩放比例
+		{
+			UListDataObject_Scalar* ResolutionScale = NewObject<UListDataObject_Scalar>();
+			ResolutionScale->SetDataID(FName("ResolutionScale"));
+			ResolutionScale->SetDataDisplayName(FText::FromString(TEXT("3D 屏幕比例")));
+			ResolutionScale->SetDescriptionRichText(GET_DESCRIPTION("ResolutionScaleDescKey"));
+			ResolutionScale->SetDisplayValueRange(TRange<float>(0.f, 1.f));
+			ResolutionScale->SetOutputValueRange(TRange<float>(0.f, 1.f));
+			ResolutionScale->SetSliderStepSize(0.01f);// 手柄操作时滑块步长
+			ResolutionScale->SetDisplayNumericType(ECommonNumericType::Percentage);
+			ResolutionScale->SetNumberedFormattingOptions(UListDataObject_Scalar::NoDecimal());
+			ResolutionScale->SetDataDynamicGetter(MAKE_OPTIONS_DATA_CONTROL(GetResolutionScaleNormalized));
+			ResolutionScale->SetDataDynamicSetter(MAKE_OPTIONS_DATA_CONTROL(SetResolutionScaleNormalized));
+			ResolutionScale->SetShouldApplySettingsImmediately(true);
+		
+			ResolutionScale->AddEditDependencyData(CreatedOverallQuality);
+			GraphicsCategoryCollection->AddChildListData(ResolutionScale);
+		}
 		// 全局光照质量
 		{
 			UListDataObject_StringInteger* GlobalIlluminationQuality = NewObject<UListDataObject_StringInteger>();
@@ -591,9 +594,9 @@ void UOptionsDataRegistry::InitVideoCollectionTab()
 			{
 				return CreatedWindowMode->GetCurrentValueAsEnum<EWindowMode::Type>() == EWindowMode::Fullscreen;
 			});
-#if WITH_EDITOR	
+// #if WITH_EDITOR	
 			FullscreenOnlyCondition.SetDisabledRichReason(TEXT("\n\n<Disabled>只有在打包后Fullscreen下才能编辑</>"));
-#endif
+// #endif
 			FullscreenOnlyCondition.SetDisabledForcedStringValue(TEXT("false"));
 
 			VerticalSync->AddEditCondition(FullscreenOnlyCondition);
@@ -617,18 +620,392 @@ void UOptionsDataRegistry::InitVideoCollectionTab()
 			AdvancedGraphicsCategoryCollection->AddChildListData(FrameRateLimit);
 		}
 	}
+	
 	RegisteredOptionsTabCollections.Add(VideoTabCollection);
 }
 
+// void UOptionsDataRegistry::InitControlCollectionTab(ULocalPlayer* InOwningLocalPlayer)
+// {
+// 	//==============================
+// 	// Control Tab Root
+// 	//==============================	
+// 	UListDataObject_Collection* ControlTabCollection = NewObject<UListDataObject_Collection>();
+// 	ControlTabCollection->SetDataID(FName("ControlTabCollection"));
+// 	ControlTabCollection->SetDataDisplayName(FText::FromString(TEXT("控制")));
+
+// 	//==============================
+// 	// Enhanced Input Subsystem
+// 	//==============================
+// 	UEnhancedInputLocalPlayerSubsystem* EISubsystem = InOwningLocalPlayer->GetSubsystem<UEnhancedInputLocalPlayerSubsystem>();
+// 	checkf(EISubsystem, TEXT("EnhancedInputLocalPlayerSubsystem not found"));
+// 	UEnhancedInputUserSettings* EIUserSettings = EISubsystem->GetUserSettings();
+// 	checkf(EIUserSettings, TEXT("EnhancedInputUserSettings not found"));
+
+// 	//==============================
+// 	// Keyboard & Mouse Category
+// 	//==============================
+// 	{
+// 		UListDataObject_Collection* KeyboardMouseCategoryCollection = NewObject<UListDataObject_Collection>();
+// 		KeyboardMouseCategoryCollection->SetDataID(FName("KeyboardMouseCategoryCollection"));
+// 		KeyboardMouseCategoryCollection->SetDataDisplayName(FText::FromString(TEXT("键盘 & 鼠标")));
+// 		// KeyboardMouseCategoryCollection->SetDataDisplayName(FText::FromString(TEXT("Keyboard & Mouse")));
+
+// 		ControlTabCollection->AddChildListData(KeyboardMouseCategoryCollection);
+
+
+// 		// 用于缓存 DisplayCategory -> Collection
+// 		// TMap<FText, UListDataObject_Collection*> CategoryMap;
+// 		// 键盘鼠标输入
+// 		{
+// 			// 键盘
+// 			FPlayerMappableKeyQueryOptions KeyboardMouseOnly;
+// 			KeyboardMouseOnly.KeyToMatch = EKeys::S;
+// 			KeyboardMouseOnly.bMatchBasicKeyTypes = true;
+// 			// for (const TPair<FGameplayTag, UEnhancedPlayerMappableKeyProfile*>& ProfilePair : EIUserSettings->GetAllSavedKeyProfiles())
+
+// 			// UE5.6版本才有的方案
+// 			// UEnhancedPlayerMappableKeyProfile* MappableKeyProfile = EIUserSettings->GetActiveKeyProfile();
+			
+// 			for (const TPair<FGameplayTag, UEnhancedPlayerMappableKeyProfile*> ProfilePair : EIUserSettings->GetAllSavedKeyProfiles())
+// 			{
+				
+// 				UEnhancedPlayerMappableKeyProfile* MappableKeyProfile = ProfilePair.Value;
+
+// 				check(MappableKeyProfile);
+
+// 				for (const TPair<FName, FKeyMappingRow>& MappingRowPair : MappableKeyProfile->GetPlayerMappingRows())
+// 				{
+// 					for (const FPlayerKeyMapping& KeyMapping : MappingRowPair.Value.Mappings)
+// 					{	
+// 						if (MappableKeyProfile->DoesMappingPassQueryOptions(KeyMapping, KeyboardMouseOnly))
+// 						{
+// 							Debug::Print(
+// 								TEXT(" Mapping ID: ") + KeyMapping.GetMappingName().ToString() +
+// 								TEXT(" Display Name: ") + KeyMapping.GetDisplayName().ToString() +
+// 								TEXT(" Bound Key: ") + KeyMapping.GetCurrentKey().GetDisplayName().ToString()
+// 							);
+
+// 							UListDataObject_KeyRemap* KeyRemapDataObject = NewObject<UListDataObject_KeyRemap>();
+// 							KeyRemapDataObject->SetDataID(KeyMapping.GetMappingName());
+// 							KeyRemapDataObject->SetDataDisplayName(KeyMapping.GetDisplayName());
+// 							// 显示类别作为描述？？？
+// 							// KeyMapping.GetDisplayCategory();
+// 							KeyRemapDataObject->SetDescriptionRichText(KeyMapping.GetDisplayCategory());
+// 							KeyRemapDataObject->InitKeyRemapData(EIUserSettings,MappableKeyProfile,ECommonInputType::MouseAndKeyboard,KeyMapping);
+
+// 							KeyboardMouseCategoryCollection->AddChildListData(KeyRemapDataObject);
+// 						}		
+// 					}
+// 				}
+// 			}
+// 		}
+
+// 	}
+
+// 	//Gamepad Category
+// 	{
+// 		UListDataObject_Collection* GamepadCategoryCollection = NewObject<UListDataObject_Collection>();
+// 		GamepadCategoryCollection->SetDataID(FName("GamepadCategoryCollection"));
+// 		GamepadCategoryCollection->SetDataDisplayName(FText::FromString(TEXT("手柄")));
+
+// 		ControlTabCollection->AddChildListData(GamepadCategoryCollection);
+
+// 		// 手柄分类
+// 		{	
+// 			FPlayerMappableKeyQueryOptions GamepadOnly;
+// 			GamepadOnly.KeyToMatch = EKeys::Gamepad_FaceButton_Bottom;
+// 			GamepadOnly.bMatchBasicKeyTypes = true;
+
+// 			for (const TPair<FGameplayTag, UEnhancedPlayerMappableKeyProfile*> ProfilePair : EIUserSettings->GetAllSavedKeyProfiles())
+// 			{
+// 				UEnhancedPlayerMappableKeyProfile* MappableKeyProfile = ProfilePair.Value;
+
+// 				check(MappableKeyProfile);
+
+// 				for (const TPair<FName, FKeyMappingRow>& MappingRowPair : MappableKeyProfile->GetPlayerMappingRows())
+// 				{
+// 					for (const FPlayerKeyMapping& KeyMapping : MappingRowPair.Value.Mappings)
+// 					{	
+// 						if (MappableKeyProfile->DoesMappingPassQueryOptions(KeyMapping, GamepadOnly))
+// 						{
+// 							Debug::Print(
+// 								TEXT(" Mapping ID: ") + KeyMapping.GetMappingName().ToString() +
+// 								TEXT(" Display Name: ") + KeyMapping.GetDisplayName().ToString() +
+// 								TEXT(" Bound Key: ") + KeyMapping.GetCurrentKey().GetDisplayName().ToString()
+// 							);
+
+// 							UListDataObject_KeyRemap* KeyRemapDataObject = NewObject<UListDataObject_KeyRemap>();
+// 							KeyRemapDataObject->SetDataID(KeyMapping.GetMappingName());
+// 							KeyRemapDataObject->SetDataDisplayName(KeyMapping.GetDisplayName());
+// 							KeyRemapDataObject->InitKeyRemapData(EIUserSettings,MappableKeyProfile,ECommonInputType::Gamepad,KeyMapping);
+
+// 							GamepadCategoryCollection->AddChildListData(KeyRemapDataObject);
+// 						}		
+// 					}
+// 				}
+// 			}
+// 		}
+// 	}
+// 	RegisteredOptionsTabCollections.Add(ControlTabCollection);
+// }
+
 void UOptionsDataRegistry::InitControlCollectionTab(ULocalPlayer* InOwningLocalPlayer)
 {
+	//==============================
+	// Control Tab Root
+	//==============================
 	UListDataObject_Collection* ControlTabCollection = NewObject<UListDataObject_Collection>();
-	ControlTabCollection->SetDataID(FName("ControlTabCollection"));
+	ControlTabCollection->SetDataID(TEXT("ControlTabCollection"));
 	ControlTabCollection->SetDataDisplayName(FText::FromString(TEXT("控制")));
-	//TODO: 暂时没有学到不管
 
+	//==============================
+	// Enhanced Input Subsystem
+	//==============================
+	UEnhancedInputLocalPlayerSubsystem* EISubsystem =
+		InOwningLocalPlayer->GetSubsystem<UEnhancedInputLocalPlayerSubsystem>();
+	checkf(EISubsystem, TEXT("EnhancedInputLocalPlayerSubsystem not found"));
+
+	UEnhancedInputUserSettings* EIUserSettings = EISubsystem->GetUserSettings();
+	checkf(EIUserSettings, TEXT("EnhancedInputUserSettings not found"));
+
+	//==============================
+	// Keyboard & Mouse Category
+	//==============================
+	{
+		UListDataObject_Collection* KeyboardMouseRoot = NewObject<UListDataObject_Collection>();
+		KeyboardMouseRoot->SetDataID(TEXT("KeyboardMouseCategoryCollection"));
+		KeyboardMouseRoot->SetDataDisplayName(FText::FromString(TEXT("键盘 & 鼠标")));
+
+		ControlTabCollection->AddChildListData(KeyboardMouseRoot);
+
+		// 用于缓存 DisplayCategory -> Collection
+		TMap<FString, UListDataObject_Collection*> CategoryMap;
+
+		FPlayerMappableKeyQueryOptions KeyboardMouseOnly;
+		KeyboardMouseOnly.KeyToMatch = EKeys::S; // 任意键，仅用于判断设备类型
+		KeyboardMouseOnly.bMatchBasicKeyTypes = true;
+
+		for (const TPair<FGameplayTag, TObjectPtr<UEnhancedPlayerMappableKeyProfile>>& ProfilePair
+			: EIUserSettings->GetAllSavedKeyProfiles())
+		{
+			UEnhancedPlayerMappableKeyProfile* MappableKeyProfile = ProfilePair.Value;
+			check(MappableKeyProfile);
+
+			for (const TPair<FName, FKeyMappingRow>& MappingRowPair
+				: MappableKeyProfile->GetPlayerMappingRows())
+			{
+				for (const FPlayerKeyMapping& KeyMapping
+					: MappingRowPair.Value.Mappings)
+				{
+					// const UInputAction* IA =
+						// KeyMapping.GetAssociatedInputAction(); // 可以获取IA
+
+					// KeyMapping.GetAssociatedInputAction()->Modifiers// 获取到了修改器
+					
+					if (!MappableKeyProfile->DoesMappingPassQueryOptions(
+							KeyMapping, KeyboardMouseOnly))
+					{
+						continue;
+					}
+
+					//==============================
+					// Display Category Collection
+					//==============================
+					FText DisplayCategory = KeyMapping.GetDisplayCategory();
+					if (DisplayCategory.IsEmpty())
+					{
+						DisplayCategory = FText::FromString(TEXT("QwQ"));
+					}
+
+					UListDataObject_Collection* CategoryCollection = nullptr;
+
+					if (UListDataObject_Collection** Found = CategoryMap.Find(DisplayCategory.ToString()))
+					{
+						CategoryCollection = *Found;
+					}
+					else
+					{
+						CategoryCollection = NewObject<UListDataObject_Collection>();
+						CategoryCollection->SetDataID(
+							FName(*DisplayCategory.ToString()));
+						CategoryCollection->SetDataDisplayName(DisplayCategory);
+
+						KeyboardMouseRoot->AddChildListData(CategoryCollection);
+						CategoryMap.Add(DisplayCategory.ToString(), CategoryCollection);
+					}
+
+					//==============================
+					// Key Remap Entry
+					//==============================
+					UListDataObject_KeyRemap* KeyRemapDataObject =
+						NewObject<UListDataObject_KeyRemap>();
+
+					KeyRemapDataObject->SetDataID(
+						KeyMapping.GetMappingName());
+					
+					KeyRemapDataObject->SetDataDisplayName(
+						KeyMapping.GetDisplayName());
+					// 重新设置ID和DisplayName
+
+					if (const FName MappingName = KeyMapping.GetMappingName(); MappingName == "ID_Move")
+					{
+						FName NewName = NAME_None;
+
+						switch (KeyMapping.GetSlot())
+						{
+						case EPlayerMappableKeySlot::First:
+							NewName = TEXT("向前移动");
+							break;
+						case EPlayerMappableKeySlot::Second:
+							NewName = TEXT("向后移动");
+							break;
+						case EPlayerMappableKeySlot::Third:
+							NewName = TEXT("向左移动");
+							break;
+						case EPlayerMappableKeySlot::Fourth:
+							NewName = TEXT("向右移动");
+							break;
+						default:
+							break;
+						}
+
+						if (!NewName.IsNone())
+						{
+							KeyRemapDataObject->SetDataID(NewName);
+							KeyRemapDataObject->SetDataDisplayName(FText::FromName(NewName));
+						}
+					}
+					else if (MappingName == "ID_InventoryItem")
+					{
+						FName NewName = NAME_None;
+
+						switch (KeyMapping.GetSlot())
+						{
+						case EPlayerMappableKeySlot::First:
+							NewName = TEXT("使用背包物品 1");
+							break;
+						case EPlayerMappableKeySlot::Second:
+							NewName = TEXT("使用背包物品 2");
+							break;
+						case EPlayerMappableKeySlot::Third:
+							NewName = TEXT("使用背包物品 3");
+							break;
+						case EPlayerMappableKeySlot::Fourth:
+							NewName = TEXT("使用背包物品 4");
+							break;
+						case EPlayerMappableKeySlot::Fifth:
+							NewName = TEXT("使用背包物品 5");
+							break;
+						case EPlayerMappableKeySlot::Sixth:
+							NewName = TEXT("使用背包物品 6");
+							break;
+						default:
+							break;
+						}
+
+						if (!NewName.IsNone())
+						{
+							KeyRemapDataObject->SetDataID(NewName);
+							KeyRemapDataObject->SetDataDisplayName(FText::FromName(NewName));
+						}
+					}
+
+
+					KeyRemapDataObject->InitKeyRemapData(
+						EIUserSettings,
+						MappableKeyProfile,
+						ECommonInputType::MouseAndKeyboard,
+						KeyMapping);
+
+					CategoryCollection->AddChildListData(KeyRemapDataObject);
+				}
+			}
+		}
+	}
+
+	//==============================
+	// Gamepad Category（同样结构）
+	//==============================
+	{
+		UListDataObject_Collection* GamepadRoot = NewObject<UListDataObject_Collection>();
+		GamepadRoot->SetDataID(TEXT("GamepadCategoryCollection"));
+		GamepadRoot->SetDataDisplayName(FText::FromString(TEXT("手柄")));
+
+		ControlTabCollection->AddChildListData(GamepadRoot);
+
+		TMap<FString, UListDataObject_Collection*> CategoryMap;
+
+		FPlayerMappableKeyQueryOptions GamepadOnly;
+		GamepadOnly.KeyToMatch = EKeys::Gamepad_FaceButton_Bottom;
+		GamepadOnly.bMatchBasicKeyTypes = true;
+
+		for (const TPair<FGameplayTag, TObjectPtr<UEnhancedPlayerMappableKeyProfile>>& ProfilePair
+			: EIUserSettings->GetAllSavedKeyProfiles())
+		{
+			UEnhancedPlayerMappableKeyProfile* MappableKeyProfile = ProfilePair.Value;
+			check(MappableKeyProfile);
+
+			for (const TPair<FName, FKeyMappingRow>& MappingRowPair
+				: MappableKeyProfile->GetPlayerMappingRows())
+			{
+				for (const FPlayerKeyMapping& KeyMapping
+					: MappingRowPair.Value.Mappings)
+				{
+					if (!MappableKeyProfile->DoesMappingPassQueryOptions(
+							KeyMapping, GamepadOnly))
+					{
+						continue;
+					}
+
+					FText DisplayCategory = KeyMapping.GetDisplayCategory();
+					if (DisplayCategory.IsEmpty())
+					{
+						DisplayCategory = FText::FromString(TEXT("未分类"));
+					}
+
+					UListDataObject_Collection* CategoryCollection = nullptr;
+
+					if (UListDataObject_Collection** Found = CategoryMap.Find(DisplayCategory.ToString()))
+					{
+						CategoryCollection = *Found;
+					}
+					else
+					{
+						CategoryCollection = NewObject<UListDataObject_Collection>();
+						CategoryCollection->SetDataID(
+							FName(*DisplayCategory.ToString()));
+						CategoryCollection->SetDataDisplayName(DisplayCategory);
+
+						GamepadRoot->AddChildListData(CategoryCollection);
+						CategoryMap.Add(DisplayCategory.ToString(), CategoryCollection);
+					}
+
+					UListDataObject_KeyRemap* KeyRemapDataObject =
+						NewObject<UListDataObject_KeyRemap>();
+
+					KeyRemapDataObject->SetDataID(
+						KeyMapping.GetMappingName());
+					KeyRemapDataObject->SetDataDisplayName(
+						KeyMapping.GetDisplayName());
+
+					KeyRemapDataObject->InitKeyRemapData(
+						EIUserSettings,
+						MappableKeyProfile,
+						ECommonInputType::Gamepad,
+						KeyMapping);
+
+					CategoryCollection->AddChildListData(KeyRemapDataObject);
+				}
+			}
+		}
+	}
+
+	//==============================
+	// Register
+	//==============================
 	RegisteredOptionsTabCollections.Add(ControlTabCollection);
 }
+
 
 void UOptionsDataRegistry::FindChildListDataRecursively(UListDataObject_Base* InParentData,
 	TArray<UListDataObject_Base*>& OutFoundChildListData) const

@@ -174,6 +174,8 @@ void UWidget_OptionsScreen::OnBackBoundActionTriggered()
 {
 	// 返回操作：关闭 Options 界面
 	DeactivateWidget();
+	// 广播选项界面关闭事件
+	OnOptionsScreenClosed.Broadcast();
 	// Debug::Print(TEXT("back bound action triggered"));
 }
 

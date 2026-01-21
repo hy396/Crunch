@@ -106,17 +106,28 @@ void UFrontendGameUserSettings::ApplyAudioSettings()
 			return;
 		}
 	}
-	// 应用后台音频设置
-	UGameplayStatics::SetAllowBackgroundAudio(World, bAllowBackgroundAudio);
-	UE_LOG(LogTemp, Log, TEXT("后台音频设置：%s"), bAllowBackgroundAudio ? TEXT("启用") : TEXT("禁用"));
-
-	// 应用 HDR 音频设置
-	UGameplayStatics::SetUseHDRAudio(World, bUseHDRAudioMode);
-	UE_LOG(LogTemp, Log, TEXT("HDR 音频设置：%s"), bUseHDRAudioMode ? TEXT("启用") : TEXT("禁用"));
-
-
+	// // 应用后台音频设置
+	// if(GEngine)
+	// {
+	// 	GEngine->bAllowBackgroundAudio = bAllowBackgroundAudio;
+	// }
+	//
+	// UE_LOG(LogTemp, Log, TEXT("后台音频设置：%s"), bAllowBackgroundAudio ? TEXT("启用") : TEXT("禁用"));
+	//
+	// // 应用 HDR 音频设置
+	// // UGameplayStatics::SetUseHDRAudio(World, bUseHDRAudioMode); // 删除这行错误的调用
+	// if(GEngine)
+	// {
+	// 	GEngine->bUseAudioMixer = bUseHDRAudioMode;
+	// }
+	// UE_LOG(LogTemp, Log, TEXT("HDR 音频设置：%s"), bUseHDRAudioMode ? TEXT("启用") : TEXT("禁用"));
 	// 激活混音器
-	UGameplayStatics::PushSoundMixModifier(World, CachedMasterBusMix);
+	if (!bMasterMixActive)
+	{
+		UGameplayStatics::PushSoundMixModifier(World, CachedMasterBusMix);
+		bMasterMixActive = true;
+	}
+	// UGameplayStatics::PushSoundMixModifier(World, CachedMasterBusMix);
 
 	// 应用各个音量通道
 	ApplyVolumeToSoundClass(World, FrontendGameplayTags::Audio::OverallVolume, OverallVolume, CachedMasterBusMix);

@@ -32,27 +32,61 @@ void UMGameInstance::Init()
 	if (UTNetStatics::IsSessionServer(this))
 	{
 		CreateSession();
-	}
-
-	// 仅在非专用服务器上运行（即客户端或 listen server 的本地玩家）
-	if (!IsRunningDedicatedServer())
+	}else
 	{
-	    UFrontendGameUserSettings* Settings = UFrontendGameUserSettings::Get();
-		// TODO: 没什么反应byd
-		// 应用音频设置
-		// Settings->ApplyAudioSettings();
-	    // // 防重复 + 首次启动检测
-	    // if (Settings->GetLastCPUBenchmarkResult() == -1.f || 
-	    //     Settings->GetLastGPUBenchmarkResult() == -1)
-	    // {
-	    //     // 可选：加日志便于调试
-	    //     UE_LOG(LogTemp, Log, TEXT("Running hardware benchmark for local client..."));
-	    //
-	    //     Settings->RunHardwareBenchmark();
-	    //     Settings->ApplyHardwareBenchmarkResults();
-	    //     Settings->SaveSettings(); // 确保写入本地磁盘
-	    // }
+		// 初始化音频设置（延迟调用，确保世界上下文已创建）
+		if (const UWorld* World = GetWorld())
+		{
+			// UE_LOG(LogTemp, Warning, TEXT("游戏实例的Init执行"));
+			World->GetTimerManager().SetTimerForNextTick(
+				FTimerDelegate::CreateWeakLambda(this,
+					[this](){
+						// UE_LOG(LogTemp, Warning, TEXT("游戏实例的Init执行完成"));
+						// 仅在非专用服务器上运行（即客户端或 listen server 的本地玩家）
+						if (!IsRunningDedicatedServer())
+						{
+							UFrontendGameUserSettings* Settings = UFrontendGameUserSettings::Get();
+							if(!Settings) return;
+							// TODO: 没什么反应byd
+							// 应用音频设置
+							Settings->ApplyAudioSettings();
+							// 防重复 + 首次启动检测
+							if (Settings->GetLastCPUBenchmarkResult() == -1.f || 
+								Settings->GetLastGPUBenchmarkResult() == -1)
+							{
+								// 可选：加日志便于调试
+								UE_LOG(LogTemp, Warning, TEXT("Running hardware benchmark for local client..."));
+						
+								Settings->RunHardwareBenchmark();
+								Settings->ApplyHardwareBenchmarkResults();
+								Settings->SaveSettings(); // 确保写入本地磁盘
+							}
+						}
+					}
+				)
+			);
+		}
 	}
+	
+	// // 仅在非专用服务器上运行（即客户端或 listen server 的本地玩家）
+	// if (!IsRunningDedicatedServer())
+	// {
+	//     UFrontendGameUserSettings* Settings = UFrontendGameUserSettings::Get();
+	// 	// TODO: 没什么反应byd
+	// 	// 应用音频设置
+	// 	Settings->ApplyAudioSettings();
+	//     // 防重复 + 首次启动检测
+	//     if (Settings->GetLastCPUBenchmarkResult() == -1.f || 
+	//         Settings->GetLastGPUBenchmarkResult() == -1)
+	//     {
+	//         // 可选：加日志便于调试
+	//         UE_LOG(LogTemp, Log, TEXT("Running hardware benchmark for local client..."));
+	    
+	//         Settings->RunHardwareBenchmark();
+	//         Settings->ApplyHardwareBenchmarkResults();
+	//         Settings->SaveSettings(); // 确保写入本地磁盘
+	//     }
+	// }
 }
 
 bool UMGameInstance::IsLoggedIn() const
@@ -814,10 +848,10 @@ void UMGameInstance::LoadLevelAndListen(TSoftObjectPtr<UWorld> Level)
 {
 	// 2025/11/27 添加 Begin~
 	// // 确保加载屏幕启用
- //    UAsyncLoadingScreenLibrary::SetEnableLoadingScreen(true);
- //    
- //    // 预加载背景图像（如果需要）
- //    UAsyncLoadingScreenLibrary::PreloadBackgroundImages();
+ // UAsyncLoadingScreenLibrary::SetEnableLoadingScreen(true);
+ //
+ // // 预加载背景图像（如果需要）
+ // UAsyncLoadingScreenLibrary::PreloadBackgroundImages();
 	// 2025/11/27 添加 End~
 
 	// 从软引用的 UWorld 获取包路径（比如 /Game/Maps/MyMap.MyMap）

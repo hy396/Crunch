@@ -71,6 +71,12 @@ public:
 	 */
 	UFUNCTION(BlueprintCallable)
 	bool SetPrimaryLayoutVisibility(bool bVisible);
+
+	/**
+	 * CreatedPrimaryLayout是否注册
+	 */
+	UFUNCTION(BlueprintCallable)
+	bool IsPrimaryLayoutRegistered() const;
 private:
 	// 属性是瞬态的，意味着它不会被保存或加载。被这样标记的属性在加载时零填充。
 	UPROPERTY(Transient)    	// Transient  短暂的  Transient 是优化资源使用和确保数据一致性的重要工具，用于标记"不需要保存的运行时临时数据"，避免不必要的序列化和存储开销。

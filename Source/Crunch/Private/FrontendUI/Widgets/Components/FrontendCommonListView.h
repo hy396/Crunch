@@ -23,6 +23,7 @@ class CRUNCH_API UFrontendCommonListView : public UCommonListView
 	GENERATED_BODY()
 
 protected:
+	// UFrontendCommonListView();
 	// ==================== UCommonListView 接口重载 ====================
 	/**
 	 * 内部生成列表条目 Widget 的核心函数

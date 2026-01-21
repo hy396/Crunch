@@ -189,7 +189,6 @@ protected:
 	/** 是否启用 HDR 音频 */
 	UPROPERTY(Config)
 	bool bUseHDRAudioMode;
-
 private:
 	/** 缓存的主音频混音器（避免频繁加载） */
 	UPROPERTY(Transient)
@@ -198,4 +197,7 @@ private:
 	/** 缓存的音频类别映射表（避免频繁加载） */
 	UPROPERTY(Transient)
 	TMap<FGameplayTag, TObjectPtr<USoundClass>> CachedVolumeBusMap;
+	
+	// 音频类别激活状态
+	bool bMasterMixActive = false;
 };

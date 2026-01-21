@@ -45,9 +45,21 @@ protected:
 	// 返回当前界面希望首先获得输入焦点的 Widget（用于手柄/键盘导航）
 	virtual UWidget* NativeGetDesiredFocusTarget() const override;
 	// ======================================================================
-
-private:
 #pragma region 右下角的输入绑定
+public:
+	// ==================== 委托事件 ====================
+	
+	/** 
+	 * 选项界面关闭时的委托
+	 * 当用户点击返回按钮或触发返回动作时广播
+	 * 可以在蓝图中绑定此事件来响应选项界面关闭
+	 */
+	DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnOptionsScreenClosed);
+
+	/** 选项界面关闭事件，可在蓝图中绑定 */
+	UPROPERTY(BlueprintAssignable, Category = "Options Screen Events")
+	FOnOptionsScreenClosed OnOptionsScreenClosed;
+private:
 	/** 
 	 * 重置当前 Tab 下所有设置的输入动作配置
 	 * 在项目设置的 Input Action Data Table 中定义，通常绑定为手柄的特定键

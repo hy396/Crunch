@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "CommonInputTypeEnum.h"
 #include "GameplayTagContainer.h"
 #include "Sound/SoundClass.h"
 #include "Sound/SoundMix.h"
@@ -56,4 +57,21 @@ public:
 	 */
 	UFUNCTION(BlueprintPure, Category = "Frontend Function Library|Audio")
 	static TSoftObjectPtr<USoundClass> GetSoundClassByTag(UPARAM(meta=(Categories ="Frontend.Audio")) FGameplayTag InVolumeTag);
+
+	// ================= Input Functions =================
+
+	/**
+	 * 根据InputAction获取当前绑定的按键图标
+	 * @param MappingName - 输入动作名称
+	 * @param InLocalPlayer - 本地玩家，用于获取输入设置
+	 * @param DesiredInputType - 期望的输入设备类型（键盘/鼠标 或 手柄）
+	 * @return 对应的按键图标画刷，如果找不到则返回空画刷
+	 */
+	UFUNCTION(BlueprintPure, Category = "Frontend Function Library|Input")
+	static FSlateBrush GetInputActionIcon(
+	UPARAM(Meta=(GetOptions="EnhancedInput.PlayerMappableKeySettings.GetKnownMappingNames")) const FName MappingName,
+		const ULocalPlayer* InLocalPlayer,
+		ECommonInputType DesiredInputType);
+	// virtual const TSet<FPlayerKeyMapping>& FindMappingsInRow( const;
+
 };

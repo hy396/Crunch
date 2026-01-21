@@ -75,7 +75,7 @@ public:
 	
 private:
 	/**
-	 * TODO: 将GameplayWidget中的生命条以及法力条修改为Lyra的版本（尚未完成）
+	 * TODO: 将GameplayWidget中的生命条以及法力条修改为Lyra的版本（尚未完成）已经完成了忘记改而已
 	 * 预计创建一个新的进度条UI用于替代
 	 */
 	// 生命进度条
@@ -139,9 +139,9 @@ private:
 	TObjectPtr<UMatchStatWidget> MatchStatWidget;
 
 	// 游戏菜单
-	UPROPERTY(meta=(BindWidget))
+	UPROPERTY(BlueprintReadOnly, meta=(BindWidget, AllowPrivateAccess=true))
 	TObjectPtr<UGameplayMenu> GameplayMenu;
-	
+
 	// 主界面切换控件
 	UPROPERTY(meta=(BindWidget))
 	TObjectPtr<UWidgetSwitcher> MainSwitcher; 

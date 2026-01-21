@@ -7,6 +7,7 @@
 #include "FrontendUI/Core/FrontendGameplayTags.h"
 #include "FrontendUI/Subsystems/FrontendUISubsystem.h"
 #include "FrontendUI/Widgets/Components/FrontendCommonButtonBase.h"
+#include "FrontendUI/Widgets/Options/Widget_KeyRemapScreen.h"
 #include "FrontendUI/Widgets/Options/DataObjects/ListDataObject_KeyRemap.h"
 
 /**
@@ -29,9 +30,10 @@ void UWidget_ListEntry_KeyRemap::OnOwningListDataObjectModified(UListDataObject_
 	EOptionsListDataModifyReason ModifyReason)
 {
 	Super::OnOwningListDataObjectModified(OwningModifiedData, ModifyReason);
-	if (CachedOwningKeyRemapDataObject){
+	if (CachedOwningKeyRemapDataObject)
+	{
 		CommonButton_RemapKey->SetButtonDisplayImage(CachedOwningKeyRemapDataObject->GetIconFromCurrentKey());
-		}
+	}
 }
 
 /**
@@ -59,13 +61,16 @@ void UWidget_ListEntry_KeyRemap::OnRemapKeyButtonClicked()
 		{
 			if (PushState == EAsyncPushWidgetState::OnCreatedBeforePush)
 			{
-				// UWidget_KeyRemapScreen* CreatedKeyRemapScreen = CastChecked<UWidget_KeyRemapScreen>(PushedWidget);
-				// CreatedKeyRemapScreen->OnKeyRemapScreenKeyPressed.BindUObject(this, &ThisClass::OnKeyRemapPressed);
-				// CreatedKeyRemapScreen->OnKeyRemapScreenKeySelectCanceled.BindUObject(this, &ThisClass::OnKeyRemapCanceled);
-				// if (CachedOwningKeyRemapDataObject)
-				// {
-				// 	CreatedKeyRemapScreen->SetDesiredInputTypeToFilter(CachedOwningKeyRemapDataObject->GetDesiredInputKeyType());
-				// }
+				UWidget_KeyRemapScreen* CreatedKeyRemapScreen = CastChecked<UWidget_KeyRemapScreen>(PushedWidget);
+				// 绑定回调：成功捕获
+				CreatedKeyRemapScreen->OnKeyRemapScreenKeyPressed.BindUObject(this, &ThisClass::OnKeyRemapPressed);
+				// 绑定回调：取消或失败
+				CreatedKeyRemapScreen->OnKeyRemapScreenKeySelectCanceled.BindUObject(this, &ThisClass::OnKeyRemapCanceled);
+				// 传递设备类型过滤器 (避免在键盘设置里录入手柄按键)
+				if (CachedOwningKeyRemapDataObject)
+				{
+					CreatedKeyRemapScreen->SetDesiredInputTypeToFilter(CachedOwningKeyRemapDataObject->GetDesiredInputKeyType());
+				}
 				
 			}
 		}

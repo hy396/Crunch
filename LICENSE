@@ -1,0 +1,35 @@
+Copyright (c) 2025 幻雨喜欢小猫咪
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+## Copyright Notice
+
+The code portion of this project is licensed under the MIT License, but the resource files included in the project (such as models, textures, audio, etc.) may be copyrighted.
+
+### Resource File Copyright Information
+- Third-party resources used in the project must comply with their original copyright licenses
+- Unreal Engine related resources follow Epic Games' license agreement
+- Copyright of self-made resources belongs to the project author
+
+### Usage Restrictions
+- Without authorization, copyrighted resources may not be used for commercial purposes
+- When using this project, please ensure compliance with all relevant resource copyright licenses
+- For commercial use, please contact the respective copyright holders for authorization
+
+This project is based on Unreal Engine 5.4 and follows the Epic Games license agreement.

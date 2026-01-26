@@ -14,6 +14,7 @@
 #include "Net/UnrealNetwork.h"
 #include "UI/Gameplay/GameplayWidget.h"
 #include "UI/Gameplay/Chat/ChatWidget.h"
+// #include "AsyncLoadingScreenLibrary.h"
 
 ACPlayerController::ACPlayerController()
 {
@@ -49,9 +50,8 @@ void ACPlayerController::SetupInputComponent()
 {
 	Super::SetupInputComponent();
 	// 获取增强输入子系统（Enhanced Input Local Player Subsystem）
-	UEnhancedInputLocalPlayerSubsystem* InputSubsystem = GetLocalPlayer()->GetSubsystem<UEnhancedInputLocalPlayerSubsystem>();
 
-	if (InputSubsystem)
+	if (UEnhancedInputLocalPlayerSubsystem* InputSubsystem = GetLocalPlayer()->GetSubsystem<UEnhancedInputLocalPlayerSubsystem>())
 	{
 		// 移除现有的UI输入映射（避免重复添加）
 		InputSubsystem->RemoveMappingContext(UIInputMapping);
@@ -59,9 +59,10 @@ void ACPlayerController::SetupInputComponent()
 		InputSubsystem->AddMappingContext(UIInputMapping, 1);
 	}
 	// 将基础InputComponent转换为增强输入组件
-	UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(InputComponent);
-	if (EnhancedInputComponent)
+	if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(InputComponent))
 	{
+		// 原ETriggerEvent::Triggered,
+		// Started
 		// 绑定商店切换输入动作
 		EnhancedInputComponent->BindAction(
 			ShopToggleInputAction,			// 输入动作资产引用
@@ -113,6 +114,33 @@ void ACPlayerController::MatchFinished(AActor* ViewTarget, int WiningTeam)
 	
 	// 调用客户端RPC同步比赛结束状态
 	Client_MatchFinished(ViewTarget, WiningTeam);
+}
+
+void ACPlayerController::PostSeamlessTravel()
+{
+	Super::PostSeamlessTravel();
+	// UAsyncLoadingScreenLibrary::StopSeamlessLoadingScreen();
+}
+
+void ACPlayerController::Client_ShowCombatText_Implementation(int32 Amount, AActor* TargetActor, ECurrencyType CurrencyType)
+{
+	if (TargetActor)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("显示战斗数字：%d 目标：%s 类型：%d"), Amount, *TargetActor->GetName(), (int32)CurrencyType)
+	}else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("无效的目标Actor"))
+	}
+	
+	// 确保传入的目标没被销毁并且设置了组件类
+	if (TargetActor && DamageTextComponentClass && IsLocalController())
+	{
+		UDamageTextComponent* DamageText = NewObject<UDamageTextComponent>(TargetActor, DamageTextComponentClass);
+		DamageText->RegisterComponent(); //动态创建的组件需要调用注册
+		DamageText->AttachToComponent(TargetActor->GetRootComponent(), FAttachmentTransformRules::KeepRelativeTransform); //先附加到角色身上，使用角色位置
+		DamageText->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform); //然后从角色身上分离，保证在一个位置播放完成动画
+		DamageText->SetCurrencyText(Amount, CurrencyType); //设置显示的数字
+	}
 }
 
 void ACPlayerController::Server_SendChatMessage_Implementation(const FString& Message, EChatChannelType ChannelType)
@@ -260,7 +288,7 @@ void ACPlayerController::RegisterUnitForMinimap(AActor* Unit)
 // 		if (Pop && Pop->GetOwner() == TargetActor)
 // 		{
 // 			DamageText = Pop;
-// 			break;
+// 			break;F
 // 		}
 // 	}
 //
@@ -306,7 +334,7 @@ void ACPlayerController::RegisterUnitForMinimap(AActor* Unit)
 // 	// 	DamageText->AddNumberPop(NumberPopRequest);
 // 	// }
 // }
-void ACPlayerController::ShowDamageNumber_Implementation(float DamageAmount, ACharacter* TargetCharacter, bool bCriticalHit, FGameplayTag DamageType)
+void ACPlayerController::Client_ShowDamageNumber_Implementation(float DamageAmount, ACharacter* TargetCharacter, bool bCriticalHit, FGameplayTag DamageType)
 {
 	if (!IsValid(TargetCharacter) || !NumberPopComponentClass || !IsLocalController())
 		return;

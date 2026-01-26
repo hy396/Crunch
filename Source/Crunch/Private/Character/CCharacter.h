@@ -67,6 +67,8 @@ public:
 	void Server_SendGameplayEventToSelf(const FGameplayTag& EventTag, const FGameplayEventData& EventData);
 	// 获取聚焦模式
 	FORCEINLINE bool GetIsInFocusMode() const { return bIsInFocusMode; }
+	// 是否处于相位状态
+	FORCEINLINE bool IsPhasing() const { return bIsPhasing; } 
 protected:
 	// 技能升级
 	void UpgradeAbilityWithInputID(ECAbilityInputID InputID);
@@ -82,7 +84,8 @@ private:
 	void AimTagUpdated(const FGameplayTag Tag, int32 NewCount);
 	// 焦点标签变化回调
 	void FocusTagUpdated(const FGameplayTag Tag, int32 NewCount);
-
+	// 穿透标签变化回调
+	void PhasingTagUpdated(const FGameplayTag GameplayTag, int32 NewCount);
 	// 是否处于聚焦模式
 	bool bIsInFocusMode = false;
 	
@@ -100,6 +103,8 @@ private:
 	// 最大法力值改变回调
 	void MaxManaUpdated(const FOnAttributeChangeData& Data);
 
+	// 是否处于相位状态
+	bool bIsPhasing = false;
 	UPROPERTY(VisibleDefaultsOnly, Category = "Gameplay Ability")
 	TObjectPtr<UCAbilitySystemComponent> CAbilitySystemComponent;
 	UPROPERTY()
@@ -174,6 +179,10 @@ public:
 	 */
 	void RespawnImmediately();
 private:
+	// 默认重力缩放值（用于复活时恢复）
+	UPROPERTY(EditDefaultsOnly, Category = "Movement")
+	float DefaultGravityScale = 2.6f;
+
 	// 相对于网格的变换
 	FTransform MeshRelativeTransform;
 	

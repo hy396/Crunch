@@ -24,6 +24,12 @@ void AMinion::Activate()
 {
 	// 移除死亡标签，复活
 	RespawnImmediately();
+
+	// if (AAIController* AICon = GetController<AAIController>())
+	// {
+	// 	AICon->StopMovement();
+	// 	AICon->RestartLogic();
+	// }
 }
 
 void AMinion::SetGoal(AActor* Goal)

@@ -21,6 +21,9 @@
 
 UGA_ChainAttack::UGA_ChainAttack()
 {
+	// 添加相位状态标签
+	ActivationOwnedTags.AddTag(TGameplayTags::Status::Phasing);
+	//TGameplayTags::Status::Phasing
 }
 
 void UGA_ChainAttack::ActivateAbility(const FGameplayAbilitySpecHandle Handle,

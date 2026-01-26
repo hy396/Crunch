@@ -169,6 +169,9 @@ private:
 	// 商店弹出动画
 	UPROPERTY(Transient, meta=(BindWidgetAnim))
 	TObjectPtr<UWidgetAnimation> ShopPopupAnimation;
+	
+	// 是否正在播放商店弹出动画
+	// bool bIsShopOpen = false;
 
 	// 属性面板弹出动画
 	UPROPERTY(Transient, meta=(BindWidgetAnim))

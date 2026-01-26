@@ -9,12 +9,16 @@
 #include "CHeroAttributeSet.h"
 #include "GameplayEffectExtension.h"
 #include "TGameplayTags.h"
+#include "Player/CPlayerCharacter.h"
+#include "Player/CPlayerController.h"
 
 UCAbilitySystemComponent::UCAbilitySystemComponent()
 {
 	GetGameplayAttributeValueChangeDelegate(UCAttributeSet::GetHealthAttribute()).AddUObject(this, &UCAbilitySystemComponent::HealthUpdated);
 	GetGameplayAttributeValueChangeDelegate(UCAttributeSet::GetManaAttribute()).AddUObject(this, &UCAbilitySystemComponent::ManaUpdated);
 	GetGameplayAttributeValueChangeDelegate(UCHeroAttributeSet::GetExperienceAttribute()).AddUObject(this, &UCAbilitySystemComponent::ExperienceUpdated);
+	GetGameplayAttributeValueChangeDelegate(UCHeroAttributeSet::GetGoldAttribute()).AddUObject(this, &UCAbilitySystemComponent::HandleGoldChanged);
+	
 	GenericConfirmInputID = static_cast<int32>(ECAbilityInputID::Confirm);
 	GenericCancelInputID = static_cast<int32>(ECAbilityInputID::Cancel);
 }
@@ -86,6 +90,20 @@ void UCAbilitySystemComponent::ServerSideInit()
 	ApplyInitialEffects();
 	GiveInitialAbilities();
 	
+}
+
+void UCAbilitySystemComponent::ShowComboText(float Amount, ECurrencyType CurrencyType, const FVector& HitLocation)
+{
+	if (!GetOwner() || !GetOwner()->HasAuthority()) return;
+
+	// 获取当前Owner的控制器，如果该控制器实现了ICombatTextInterface接口，则调用其显示伤害数字的方法
+	if (ACPlayerCharacter* PlayerCharacter = Cast<ACPlayerCharacter>(GetOwner()))
+	{
+		if (ACPlayerController* PlayerController = Cast<ACPlayerController>(PlayerCharacter->GetController()))
+		{
+			PlayerController->Client_ShowCombatText(Amount, PlayerCharacter, CurrencyType);
+		}
+	}
 }
 
 void UCAbilitySystemComponent::ApplyInitialEffects()
@@ -362,4 +380,35 @@ void UCAbilitySystemComponent::ExperienceUpdated(const FOnAttributeChangeData& C
 	SetNumericAttributeBase(UCHeroAttributeSet::GetPrevLevelExperienceAttribute(), PrevLevelExp); // 设置当前等级经验基准
 	SetNumericAttributeBase(UCHeroAttributeSet::GetNextLevelExperienceAttribute(), NextLevelExp); // 设置下等级经验基准
 	SetNumericAttributeBase(UCHeroAttributeSet::GetUpgradePointAttribute(), NewUpgradePoint);     // 更新可分配升级点数
+
+	// 显示经验获取数字
+	ShowComboText(ChangeData.NewValue - ChangeData.OldValue, ECurrencyType::Experience, GetOwner()->GetActorLocation());
+	
+}
+
+void UCAbilitySystemComponent::HandleGoldChanged(const FOnAttributeChangeData& OnAttributeChangeData)
+{
+	if (!GetOwner() || !GetOwner()->HasAuthority()) return;
+
+	// 是否为英雄单位
+	if (HasMatchingGameplayTag(TGameplayTags::Role_Hero))
+	{
+		// 只统计增加的金币，不统计减少的金币
+		if (OnAttributeChangeData.NewValue > OnAttributeChangeData.OldValue)
+		{
+			// AddGoldEarnedMatchStatNumber(OnAttributeChangeData.NewValue - OnAttributeChangeData.OldValue);
+
+			// 显示金币获取数字
+			if (OnAttributeChangeData.GEModData)
+			{
+				FVector HitLocation = GetOwner()->GetActorLocation();
+				if (OnAttributeChangeData.GEModData->EffectSpec.GetContext().GetHitResult())
+				{
+					HitLocation = OnAttributeChangeData.GEModData->EffectSpec.GetContext().GetHitResult()->Location;
+				}
+				
+				ShowComboText(OnAttributeChangeData.NewValue - OnAttributeChangeData.OldValue, ECurrencyType::Gold, HitLocation);
+			}
+		}
+	}
 }

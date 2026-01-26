@@ -40,8 +40,7 @@ void UGA_BlackHole::ActivateAbility(const FGameplayAbilitySpecHandle Handle, con
 	WaitTargetDataTask->BeginSpawningActor(this, TargetActorClass, TargetActor);
 
 	// 设置目标Actor参数
-	ATargetActor_GroundPick* GroundPickActor = Cast<ATargetActor_GroundPick>(TargetActor);
-	if (GroundPickActor)
+	if (ATargetActor_GroundPick* GroundPickActor = Cast<ATargetActor_GroundPick>(TargetActor))
 	{
 		GroundPickActor->SetShouldDrawDebug(ShouldDrawDebug());
 		GroundPickActor->SetTargetAreaRadius(TargetAreaRadius);
@@ -166,12 +165,16 @@ void UGA_BlackHole::FinalTargetsReceived(const FGameplayAbilityTargetDataHandle&
 	FinalBlowCueParams.Location = UAbilitySystemBlueprintLibrary::GetHitResultFromTargetData(TargetDataHandle, 1).ImpactPoint;
 	FinalBlowCueParams.RawMagnitude = TargetAreaRadius;
 
-	GetAbilitySystemComponentFromActorInfo()->ExecuteGameplayCue(FinalBlowCueTag, FinalBlowCueParams);
-	GetAbilitySystemComponentFromActorInfo()->ExecuteGameplayCue(UCAbilitySystemStatics::GetCameraShakeGameplayCueTag(), FinalBlowCueParams);
+	if (UAbilitySystemComponent* OwnerAsc = GetAbilitySystemComponentFromActorInfo())
+	{
+		OwnerAsc->ExecuteGameplayCue(FinalBlowCueTag, FinalBlowCueParams);
+		OwnerAsc->ExecuteGameplayCue(UCAbilitySystemStatics::GetCameraShakeGameplayCueTag(), FinalBlowCueParams);
+	}
 }
 
 void UGA_BlackHole::AddAimEffect()
 {
+	if (!AimEffect) return;
 	// 应用瞄准GE
 	AimEffectHandle = BP_ApplyGameplayEffectToOwner(AimEffect);
 }

@@ -265,11 +265,16 @@ void UInventoryItem::ApplyConsumeEffect()
 	{
 		if (ConsumeEffect)
 		{
-			OwnerAbilitySystemComponent->BP_ApplyGameplayEffectToSelf(
-				ConsumeEffect,
-				1,
-				OwnerAbilitySystemComponent->MakeEffectContext()
-				);
+		// 	// 创建游戏效果规格句柄，用于描述要应用的效果及其上下文
+		FGameplayEffectSpecHandle EffectSpecHandle = OwnerAbilitySystemComponent->MakeOutgoingSpec(ConsumeEffect, 1, OwnerAbilitySystemComponent->MakeEffectContext());
+		// 将游戏效果应用到自身
+		OwnerAbilitySystemComponent->ApplyGameplayEffectSpecToSelf(*EffectSpecHandle.Data.Get());
+			//ApplyGameplayEffectSpecToSelf
+			// OwnerAbilitySystemComponent->BP_ApplyGameplayEffectToSelf(
+			// 	ConsumeEffect,
+			// 	1,
+			// 	OwnerAbilitySystemComponent->MakeEffectContext()
+			// 	);
 		}
 	}
 }

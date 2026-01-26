@@ -131,7 +131,7 @@ private:
 
 	// 查找已创建会话超时时间
 	UPROPERTY(EditDefaultsOnly, Category = "Session Search")
-	float FindCreatedSessionTimeoutDuration = 60.f;
+	float FindCreatedSessionTimeoutDuration = 120.f;
 
 	// 查找已创建会话
 	void FindCreatedSession(FGuid SessionSearchId);

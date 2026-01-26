@@ -55,14 +55,48 @@ namespace TGameplayTags
 	
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Ability_Generic_Damage, "Ability.Generic.Damage", "技能伤害")
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Ability_Generic_Target, "Ability.Generic.Target", "技能目标")
-	
+
+	// 将错就错了
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Stats, "Stats", "状态")
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Stats_Dead, "Stats.Dead", "死亡")
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Stats_Stun, "Stats.Stun", "眩晕")
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Stats_Aim, "Stats.Aim", "瞄准")
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Stats_Crosshair, "Stats.Crosshair", "准星")
 	//目标更新
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Target_Updated, "Target.Updated", "目标更新")
-
+	namespace Status
+	{
+		UE_DEFINE_GAMEPLAY_TAG_COMMENT(Status, "Status", "状态")
+		UE_DEFINE_GAMEPLAY_TAG_COMMENT(Phasing, "Status.Phasing", "相位状态")// 相位状态（无视角色间的碰撞）
+		
+		UE_DEFINE_GAMEPLAY_TAG_COMMENT(Freeze, "Status.Freeze", "冻结状态")
+		// 控制类
+		UE_DEFINE_GAMEPLAY_TAG_COMMENT(Stun, "Status.Stun", "眩晕状态")
+		UE_DEFINE_GAMEPLAY_TAG_COMMENT(Silence, "Status.Silence", "沉默状态")
+		UE_DEFINE_GAMEPLAY_TAG_COMMENT(Root, "Status.Root", "定身状态")
+		UE_DEFINE_GAMEPLAY_TAG_COMMENT(Slow, "Status.Slow", "减速状态")
+		UE_DEFINE_GAMEPLAY_TAG_COMMENT(Knockback, "Status.Knockback", "击退状态")
+		UE_DEFINE_GAMEPLAY_TAG_COMMENT(Knockup, "Status.Knockup", "击飞状态")
+		
+		// 生存类
+		UE_DEFINE_GAMEPLAY_TAG_COMMENT(Invisibility, "Status.Invisibility", "隐身状态")
+		UE_DEFINE_GAMEPLAY_TAG_COMMENT(Invincible, "Status.Invincible", "无敌状态")
+		UE_DEFINE_GAMEPLAY_TAG_COMMENT(Shield, "Status.Shield", "护盾状态")
+		
+		// 持续伤害
+		UE_DEFINE_GAMEPLAY_TAG_COMMENT(Burn, "Status.Burn", "燃烧状态")
+		UE_DEFINE_GAMEPLAY_TAG_COMMENT(Poison, "Status.Poison", "中毒状态")
+		UE_DEFINE_GAMEPLAY_TAG_COMMENT(Bleed, "Status.Bleed", "流血状态")
+		
+		// 移动类
+		UE_DEFINE_GAMEPLAY_TAG_COMMENT(Haste, "Status.Haste", "加速状态")
+		
+		// 特殊控制
+		UE_DEFINE_GAMEPLAY_TAG_COMMENT(Taunt, "Status.Taunt", "嘲讽状态")
+		
+		// 免疫
+		UE_DEFINE_GAMEPLAY_TAG_COMMENT(CrowdControlImmunity, "Status.CrowdControlImmunity", "控制免疫状态")
+	}
 	// 聚焦
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Stats_Focus, "Stats.Focus", "聚焦")
 	// 状态效果

@@ -11,6 +11,7 @@
 #include "Interfaces/OnlineIdentityInterface.h"
 // #include "AsyncLoadingScreenLibrary.h"
 #include "FrontendUI/FrontendSettings/FrontendGameUserSettings.h"
+#include "Player/LobbyPlayerController.h"
 
 void UMGameInstance::StartMatch()
 {
@@ -867,5 +868,18 @@ void UMGameInstance::LoadLevelAndListen(TSoftObjectPtr<UWorld> Level)
 		// 切换到指定关卡，并加上 "?listen" 参数
 		// GetWorld()->ServerTravel(LevelURL.ToString() + "?listen");
 	}
+
+	// 废物
+	// 发送给所有客户端显示加载界面
+	// if (const UWorld* World = GetWorld())
+	// {
+	// 	for (FConstPlayerControllerIterator It = World->GetPlayerControllerIterator(); It; ++It)
+	// 	{
+	// 		if (ALobbyPlayerController* PC = Cast<ALobbyPlayerController>(*It))
+	// 		{
+	// 			PC->ClientShowLoadingScreen(); // 客户端RPC，显示UI
+	// 		}
+	// 	}
+	// }
 }
 

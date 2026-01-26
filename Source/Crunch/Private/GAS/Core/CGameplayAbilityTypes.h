@@ -30,6 +30,15 @@ enum class ECAbilityInputID : uint8
 	Confirm							UMETA(DisplayName="确认"),
 	Cancel							UMETA(DisplayName="取消")
 };
+
+// 资源类型（金币/经验等）
+UENUM(BlueprintType)
+enum class ECurrencyType : uint8
+{
+	None							UMETA(DisplayName="无"),
+	Gold							UMETA(DisplayName="金币"),
+	Experience						UMETA(DisplayName="经验")
+};
 // UENUM(BlueprintType)
 // enum class ETDamageType : uint8
 // {

@@ -17,9 +17,20 @@ class ACAIController : public AAIController
 	GENERATED_BODY()
 public:
 
-	ACAIController();
-
+	// ACAIController();
+	// Sets default values for this actor's properties
+	// 设置此角色属性的默认值
+	ACAIController(const FObjectInitializer& ObjectInitializer);
+	// 当AI控制器获取到Pawn时调用
 	virtual void OnPossess(APawn* InPawn) override;
+
+	// 获取团队态度
+	virtual ETeamAttitude::Type GetTeamAttitudeTowards(const AActor& Other) const override;
+	// 设置团队ID
+	virtual void SetGenericTeamId(const FGenericTeamId& InTeamID) override;
+	// 设置视觉感知参数
+	void SetSight(float SightRadius, float LoseSightRadius, float PeripheralVisionAngleDegrees);
+
 	virtual void BeginPlay() override;
 private:
 	// 黑板中用于存储目标的Key名
@@ -72,4 +83,16 @@ private:
 	// 标记AI当前是否处于死亡状态
 	bool bIsPawnDead = false;
 
+	// 是否启用人群避让
+	UPROPERTY(EditDefaultsOnly, Category="Detor Crowd Avoidance Config")
+	bool bEnableCrowdAvoidance = true;	
+
+	// meta = (EditCondition = "bEnableCrowdAvoidance")) 意味着只有当 bEnableCrowdAvoidance 为 true 时，才会显示这个属性（即只有在启用人群避让时，才会显示这个属性，才能进行该项设置）
+	// , UIMin = "1", UIMax = "4" 则是设置了该属性的最小值和最大值，让我能在编辑器中可以像滑动条一样调整这个整数值，进而控制人群避让的质量
+	UPROPERTY(EditDefaultsOnly, Category="Detor Crowd Avoidance Config", meta = (EditCondition = "bEnableCrowdAvoidance", UIMin = "1", UIMax = "4"))
+	int32 DetourCrowdAvoidanceQuality = 4;	// 人群避让质量
+
+	// 人群避让范围
+	UPROPERTY(EditDefaultsOnly, Category="Detor Crowd Avoidance Config", meta = (EditCondition = "bEnableCrowdAvoidance"))
+	float CollisionQueryRange = 600.0f;		
 };

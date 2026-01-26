@@ -2,6 +2,8 @@
 
 
 #include "LobbyPlayerController.h"
+
+#include "AsyncLoadingScreenLibrary.h"
 #include "GameFramework/PlayerState.h"
 #include "Framework/CGameState.h"
 #include "Framework/MGameInstance.h"
@@ -293,6 +295,10 @@ void ALobbyPlayerController::OnDestroySessionComplete(FName SessionName, bool bW
 }
 
 
+void ALobbyPlayerController::ClientShowLoadingScreen_Implementation()
+{
+	UAsyncLoadingScreenLibrary::StopSeamlessLoadingScreen();
+}
 
 // IChatInterface 接口实现
 void ALobbyPlayerController::SendChatMessageToServer(const FString& Message, EChatChannelType ChannelType)

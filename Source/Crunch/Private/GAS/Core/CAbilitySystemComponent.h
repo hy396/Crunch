@@ -47,7 +47,9 @@ public:
 	 */
 	UFUNCTION(Client, Reliable)
 	void Client_AbilitySpecLevelUpdated(FGameplayAbilitySpecHandle Handle, int NewLevel);
-	
+
+	void ShowComboText(float Amount, ECurrencyType CurrencyType, const FVector& HitLocation);
+
 private:
 	// 初始效果
 	void ApplyInitialEffects();
@@ -58,7 +60,7 @@ private:
 	void HealthUpdated(const FOnAttributeChangeData& ChangeData);
 	void ManaUpdated(const FOnAttributeChangeData& ChangeData);
 	void ExperienceUpdated(const FOnAttributeChangeData& ChangeData);
-
+	void HandleGoldChanged(const FOnAttributeChangeData& OnAttributeChangeData);
 	// // 满血、满蓝效果
 	// UPROPERTY(EditDefaultsOnly, Category = "Gameplay Effects")
 	// TSubclassOf<UGameplayEffect> FullStatEffect;

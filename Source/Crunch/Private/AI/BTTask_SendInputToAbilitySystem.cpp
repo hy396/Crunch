@@ -10,15 +10,14 @@
 EBTNodeResult::Type UBTTask_SendInputToAbilitySystem::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
 	// 获取行为树组件的AI控制器
-	AAIController* OwnerAIC = OwnerComp.GetAIOwner();
-	if (OwnerAIC)
+	if (AAIController* OwnerAIC = OwnerComp.GetAIOwner())
 	{
 		// 从AI控制器获取其控制的Pawn的能力系统组件
-		UAbilitySystemComponent* OwnerASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(OwnerAIC->GetPawn());
-		if (OwnerASC)
+		if (UAbilitySystemComponent* OwnerASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(OwnerAIC->GetPawn()))
 		{
 			// 触发能力系统的输入按下事件
 			OwnerASC->PressInputID(static_cast<int32>(InputID));
+			OwnerASC->ReleaseInputID(static_cast<int32>(InputID)); // 关键
 			// 输入按下成功，返回任务执行成功的结果
 			return EBTNodeResult::Succeeded;
 		}

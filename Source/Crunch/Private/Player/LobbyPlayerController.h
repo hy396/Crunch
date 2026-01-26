@@ -70,6 +70,9 @@ public:
 	UFUNCTION(Client, Reliable)
 	void Client_StartHeroSelection();
 
+	UFUNCTION(Client, Reliable)
+	void ClientShowLoadingScreen();
+
 	// 聊天系统相关函数
 	/**
 	 * 服务器端处理聊天消息发送请求

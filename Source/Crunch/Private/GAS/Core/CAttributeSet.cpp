@@ -290,12 +290,12 @@ void UCAttributeSet::ShowFloatingText(const FEffectProperties& Props, const floa
 	// 从技能释放者身上获取PC并显示伤害数字
 	if(ACPlayerController* PC = Cast<ACPlayerController>(Props.SourceCharacter->Controller))
 	{
-		PC->ShowDamageNumber(Damage, Props.TargetCharacter, IsCriticalHit, DamageType); //调用显示伤害数字
+		PC->Client_ShowDamageNumber(Damage, Props.TargetCharacter, IsCriticalHit, DamageType); //调用显示伤害数字
 	}
 	// 从目标身上获取PC并显示伤害数字
 	if(ACPlayerController* PC = Cast<ACPlayerController>(Props.TargetCharacter->Controller))
 	{
-		PC->ShowDamageNumber(Damage, Props.TargetCharacter, IsCriticalHit, DamageType); //调用显示伤害数字
+		PC->Client_ShowDamageNumber(Damage, Props.TargetCharacter, IsCriticalHit, DamageType); //调用显示伤害数字
 	}
 }
 

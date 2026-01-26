@@ -8,6 +8,7 @@
 #include "GenericTeamAgentInterface.h"	// 团队管理接口
 #include "UI/Gameplay/Chat/Interface/ChatInterface.h"	// 聊天接口
 #include "NumberPopComponent_NiagaraText.h"
+#include "UI/Gameplay/DamageTextComponent.h"
 #include "CPlayerController.generated.h"
 
 class UChatWidget;
@@ -40,6 +41,8 @@ public:
 
 	// 比赛结束处理
 	void MatchFinished(AActor* ViewTarget, int WiningTeam);
+	virtual void PostSeamlessTravel() override;
+	
 	// 销毁
 	// virtual void BeginDestroy() override;
 	// 在每个客户端显示伤害数值
@@ -48,7 +51,11 @@ public:
 
 	// 在每个客户端显示伤害数值
 	UFUNCTION(Client, Reliable)
-	void ShowDamageNumber(float DamageAmount, ACharacter* TargetCharacter, bool bCriticalHit, FGameplayTag DamageType);
+	void Client_ShowDamageNumber(float DamageAmount, ACharacter* TargetCharacter, bool bCriticalHit, FGameplayTag DamageType);
+
+	// 在每个客户端显示战斗文本
+	UFUNCTION(Client, Reliable)
+	void Client_ShowCombatText(int32 Amount, AActor* TargetActor, ECurrencyType CurrencyType);
 
 	// 聊天系统相关函数
 	// 服务器RPC：发送聊天消息
@@ -79,6 +86,9 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = "Components")
 	TSubclassOf<UNumberPopComponent_NiagaraText> NumberPopComponentClass;
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<UDamageTextComponent> DamageTextComponentClass;
 	// 对象池管理
 	// UPROPERTY()
 	// TArray<TObjectPtr<UNumberPopComponent_NiagaraText>> ActiveNumberPops;

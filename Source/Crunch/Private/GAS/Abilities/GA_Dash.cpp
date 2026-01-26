@@ -10,6 +10,12 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GAS/TA/TargetActor_Around.h"
 
+UGA_Dash::UGA_Dash()
+{
+	// 添加相位状态标签
+	ActivationOwnedTags.AddTag(TGameplayTags::Status::Phasing);
+}
+
 void UGA_Dash::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
                                const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
 {

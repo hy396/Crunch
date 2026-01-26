@@ -34,8 +34,7 @@ bool UCGameplayAbility::CanActivateAbility(const FGameplayAbilitySpecHandle Hand
 AActor* UCGameplayAbility::GetAimTarget(float AimDistance, ETeamAttitude::Type TeamAttitude) const
 {
 	// 获取当前执行能力的角色
-	AActor* OwnerAvatarActor = GetAvatarActorFromActorInfo();
-	if (OwnerAvatarActor)
+	if (AActor* OwnerAvatarActor = GetAvatarActorFromActorInfo())
 	{
 		// 获取角色的视觉位置和视角方向
 		FVector Location;
@@ -361,7 +360,7 @@ void UCGameplayAbility::PushTargetsFromLocation(const TArray<AActor*>& Targets, 
 	for (AActor* Target : Targets)
 	{
 		FVector PushDir = Target->GetActorLocation() - FromLocation;
-		PushDir.Z = 0;
+		PushDir.Z = 0; // 只在水平面上推开
 		PushDir.Normalize();
 
 		PushTarget(Target, PushDir * PushSpeed);
@@ -379,10 +378,9 @@ void UCGameplayAbility::PlayMontageLocally(UAnimMontage* MontageToPlay)
 
 void UCGameplayAbility::StopMontageAfterCurrentSection(UAnimMontage* MontageToStop)
 {
-	UAnimInstance* OwnerAnimInst = GetOwnerAnimInstance();
-	if (OwnerAnimInst)
+	if (UAnimInstance* OwnerAnimInst = GetOwnerAnimInstance(); OwnerAnimInst && MontageToStop)
 	{
-		FName CurrentSectionName = OwnerAnimInst->Montage_GetCurrentSection(MontageToStop);
+		const FName CurrentSectionName = OwnerAnimInst->Montage_GetCurrentSection(MontageToStop);
 		OwnerAnimInst->Montage_SetNextSection(CurrentSectionName, NAME_None, MontageToStop);
 	}
 }

@@ -67,6 +67,7 @@ void AMinionBarrack::SpawnNewGroup()
 		if (!NextAvailableMinion) break;
 
 		NextAvailableMinion->SetActorTransform(SpawnTransform);
+		NextAvailableMinion->SetGoal(Goal);
 		NextAvailableMinion->Activate();
 		--i;
 	}

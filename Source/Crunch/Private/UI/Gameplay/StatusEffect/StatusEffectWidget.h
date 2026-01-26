@@ -59,7 +59,7 @@ public:
 	// 获取OwnerASC
 	UAbilitySystemComponent* GetOwnerASC() const { return OwnerAbilitySystemComponent; }
 
-private:
+// private:
 	// 包装布局容器，用于显示所有状态效果项目（支持自动换行）
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UWrapBox> StatusEffectContainer;
@@ -67,10 +67,6 @@ private:
 	// 能力系统组件引用
 	UPROPERTY()
 	TObjectPtr<UAbilitySystemComponent> OwnerAbilitySystemComponent;
-
-	// 存储当前显示的状态效果项目
-	UPROPERTY()
-	TArray<TObjectPtr<UStatusEffectItemWidget>> ActiveStatusEffectItems;
 
 	// 当前激活的状态效果句柄
 	TArray<FActiveGameplayEffectHandle> ActiveStatusEffectHandles;
@@ -83,18 +79,18 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "StatusEffect")
 	TObjectPtr<UDataTable> StatusEffectDataTable;
 
-	// // 监听状态效果添加事件
-	// void OnStatusEffectApplied(FActiveGameplayEffectHandle EffectHandle);
-	//
-	// // 监听状态效果移除事件
-	// void OnStatusEffectRemoved(FActiveGameplayEffectHandle EffectHandle);
+	void InitStatusEffectData();
+	UFUNCTION(BlueprintCallable)
+	void UpdateStatusEffectItem();
 
-	// 监听状态效果标签变化事件（备用方案）
-	void OnStatusEffectTagChanged(const FGameplayTag Tag, int32 NewCount);
+	UFUNCTION(BlueprintCallable)
+	void RemoveExpiredStatusEffectItems();
 
-	// 清除所有状态效果UI项
-	void ClearAllStatusEffectItems();
+	// 状态效果数据表, 通过标签查找
+	TMap<FGameplayTag, FStatusEffectData> StatusEffectDataMap;
 
-	// 创建所有激活的状态效果UI项
-	void CreateAllActiveStatusEffectItems();
+	// 对应Tag的UI项
+	TMap<FGameplayTag, UStatusEffectItemWidget*> StatusEffectTagMap;
+	TMap<FActiveGameplayEffectHandle, UStatusEffectItemWidget*> EffectHandleToWidget;
+
 };

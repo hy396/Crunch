@@ -24,21 +24,14 @@ class CRUNCH_API UStatusEffectItemWidget : public UUserWidget
 	GENERATED_BODY()
 	
 public:
+	void Init(
+		UAbilitySystemComponent* InASC,
+		const FActiveGameplayEffectHandle& InHandle,
+		const FStatusEffectData& InData,
+		UStatusEffectWidget* InOwner);
 	virtual void NativeConstruct() override;
 
-	// 初始化状态效果项目显示
-	void InitializeStatusEffectItem(const FActiveGameplayEffect& ActiveEffect, UStatusEffectWidget* StatusEffectWidget);
-
-	// 更新状态效果显示（持续时间等）
-	void UpdateDisplay(float RemainingDuration);
-
-	// 获取关联的GameplayEffect
-	FORCEINLINE const UGameplayEffect* GetGameplayEffect() const { return AssociatedGameplayEffect; }
-
-	// 通过标签查找状态效果数据（静态方法，可在其他类中复用）
-	static const FStatusEffectData* FindStatusEffectData(const FGameplayTagContainer& Tags, UDataTable* DataTable);
-
-private:
+// private:
 	// 状态效果图标
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UImage> StatusEffectIcon;
@@ -51,23 +44,9 @@ private:
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UTextBlock> StackCountText;
 
-	// 关联的GameplayEffect
-	UPROPERTY()
-	const UGameplayEffect* AssociatedGameplayEffect;
-
-	// 效果句柄
-	FActiveGameplayEffectHandle EffectHandle;
-
-	// 更新定时器
-	FTimerHandle UpdateTimerHandle;
-
 	// 更新间隔（秒）
 	UPROPERTY(EditDefaultsOnly, Category = "StatusEffect")
 	float UpdateInterval = 0.1f;
-
-	// AbilitySystemComponent引用，用于获取准确的剩余时间
-	UPROPERTY()
-	TObjectPtr<UAbilitySystemComponent> OwnerASC;
 
 	// 数字格式化选项（整数），参考AbilityGauge的实现
 	FNumberFormattingOptions WholeNumberFormattingOptions;
@@ -83,12 +62,20 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "Visual")
 	FName IconMaterialParamName = "Icon";
 
+	/* ---------- 状态 ---------- */
+
+	// 效果句柄
+	FActiveGameplayEffectHandle EffectHandle;
+
 	// 缓存的效果总持续时间
 	float CachedTotalDuration = 0.f;
+	// AbilitySystemComponent引用，用于获取准确的剩余时间
+	TWeakObjectPtr<UAbilitySystemComponent> OwnerAsc;
+	TWeakObjectPtr<UStatusEffectWidget> OwnerWidget;
+	// 更新定时器
+	FTimerHandle UpdateTimerHandle;
 
-	// 更新显示
-	void UpdateTimer();
-
-	// 通过标签查找状态效果数据
-	// const FStatusEffectData* FindStatusEffectData(const FGameplayTagContainer& Tags, UDataTable* DataTable) const;
+private:
+	void TickUpdate();
+	void RequestRemove();
 };

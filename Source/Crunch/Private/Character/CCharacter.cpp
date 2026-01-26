@@ -24,6 +24,8 @@ ACCharacter::ACCharacter()
 	// 忽略目标的碰撞
 	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_TARGET, ECR_Ignore);
 
+	// 👇 新增：保存默认重力缩放值
+	DefaultGravityScale = GetCharacterMovement()->GravityScale;
 	
 	CAbilitySystemComponent = CreateDefaultSubobject<UCAbilitySystemComponent>(TEXT("CAbilitySystemComponent"));
 	CAttributeSet = CreateDefaultSubobject<UCAttributeSet>(TEXT("CAttributeSet"));
@@ -119,11 +121,13 @@ FRotator ACCharacter::GetCaptureLocalRotation() const
 void ACCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+	// 👇 新增：保存默认重力缩放值（确保在所有初始化完成后）
+	DefaultGravityScale = GetCharacterMovement()->GravityScale;
 	ConfigureOverHeadStatusWidget();
 
 	MeshRelativeTransform = GetMesh()->GetRelativeTransform();
 
-	// 注册感知源
+	// 注册视觉感知，建议在BeginPlay中注册，如果在构造函数中注册那么可能会因为组件还未初始化而失败
 	PerceptionStimuliSourceComponent->RegisterForSense(UAISense_Sight::StaticClass());
 	//UE_LOG(LogTemp, Warning, TEXT("ACCharacter::BeginPlay,%hhd"),GetIsReplicated());
 	//UE_LOG(LogTemp, Warning, TEXT("True是：,%hhd"),true);
@@ -187,7 +191,7 @@ void ACCharacter::BindGASChangeDelegates()
 		CAbilitySystemComponent->RegisterGameplayTagEvent(TGameplayTags::Stats_Stun).AddUObject(this, &ACCharacter::StunTagUpdated);
 		CAbilitySystemComponent->RegisterGameplayTagEvent(TGameplayTags::Stats_Aim).AddUObject(this, &ACCharacter::AimTagUpdated);
 		CAbilitySystemComponent->RegisterGameplayTagEvent(TGameplayTags::Stats_Focus).AddUObject(this, &ACCharacter::FocusTagUpdated);
-		
+		CAbilitySystemComponent->RegisterGameplayTagEvent(TGameplayTags::Status::Phasing, EGameplayTagEventType::NewOrRemoved).AddUObject(this, &ACCharacter::PhasingTagUpdated);
 		CAbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(UCAttributeSet::GetMoveSpeedAttribute()).AddUObject(this, &ACCharacter::MoveSpeedUpdated);
 		CAbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(UCAttributeSet::GetMaxHealthAttribute()).AddUObject(this, &ACCharacter::MaxHealthUpdated);
 		CAbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(UCAttributeSet::GetMaxManaAttribute()).AddUObject(this, &ACCharacter::MaxManaUpdated);
@@ -230,6 +234,21 @@ void ACCharacter::AimTagUpdated(const FGameplayTag Tag, int32 NewCount)
 void ACCharacter::FocusTagUpdated(const FGameplayTag Tag, int32 NewCount)
 {
 	bIsInFocusMode = NewCount > 0;
+}
+
+void ACCharacter::PhasingTagUpdated(const FGameplayTag GameplayTag, int32 NewCount)
+{
+	bIsPhasing = (NewCount > 0);
+
+	// 如果进入相位状态，则禁用与Pawn，胶囊体的碰撞，否则启用碰撞
+	if (bIsPhasing)
+	{
+		GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);
+	}
+	else
+	{
+		GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_Pawn, ECR_Block);
+	}
 }
 
 void ACCharacter::SetIsAiming(bool bIsAiming)
@@ -485,9 +504,10 @@ void ACCharacter::Respawn()
 	// 开启血条
 	SetStatusGaugeEnabled(true);
 	// 👇 新增：恢复重力
-    GetCharacterMovement()->GravityScale = 1.0f;
+	// 👇 修改：使用保存的默认重力值，而不是硬编码1.0f
+	GetCharacterMovement()->GravityScale = DefaultGravityScale;
 	// 开启移动
-	// GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_Walking);
+	GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_Walking);
 	// 开启碰撞
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 	// 停止所有蒙太奇

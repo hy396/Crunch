@@ -102,7 +102,7 @@ void UStatusEffectWidget::InitStatusEffectData()
 
 void UStatusEffectWidget::UpdateStatusEffectItem()
 {
-	if (!OwnerAbilitySystemComponent)
+	if (!OwnerAbilitySystemComponent || !StatusEffectContainer)
 	{
 		return;
 	}
@@ -128,7 +128,8 @@ void UStatusEffectWidget::UpdateStatusEffectItem()
 		{
 			continue;
 		}
-
+		
+		// 获取 GE 定义（检查是否有效）
 		const UGameplayEffect* GE =
 			UAbilitySystemBlueprintLibrary::GetGameplayEffectFromActiveEffectHandle(Handle);
 
@@ -164,24 +165,24 @@ void UStatusEffectWidget::UpdateStatusEffectItem()
 
 	/* ---------- 3. 移除已经失效的 ---------- */
 
-	TArray<FActiveGameplayEffectHandle> ToRemove;
-
-	for (auto& Pair : EffectHandleToWidget)
-	{
-		if (!OwnerAbilitySystemComponent->GetActiveGameplayEffect(Pair.Key))
-		{
-			if (Pair.Value)
-			{
-				Pair.Value->RemoveFromParent();
-			}
-			ToRemove.Add(Pair.Key);
-		}
-	}
-
-	for (const FActiveGameplayEffectHandle& Handle : ToRemove)
-	{
-		EffectHandleToWidget.Remove(Handle);
-	}
+	// TArray<FActiveGameplayEffectHandle> ToRemove;
+	//
+	// for (auto& Pair : EffectHandleToWidget)
+	// {
+	// 	if (!OwnerAbilitySystemComponent->GetActiveGameplayEffect(Pair.Key))
+	// 	{
+	// 		if (Pair.Value)
+	// 		{
+	// 			Pair.Value->RemoveFromParent();
+	// 		}
+	// 		ToRemove.Add(Pair.Key);
+	// 	}
+	// }
+	//
+	// for (const FActiveGameplayEffectHandle& Handle : ToRemove)
+	// {
+	// 	EffectHandleToWidget.Remove(Handle);
+	// }
 	
 	// if (!OwnerAbilitySystemComponent)
 	// {
@@ -246,24 +247,46 @@ void UStatusEffectWidget::RemoveExpiredStatusEffectItems()
 	{
 		return;
 	}
-
+	// 🔥 关键：先收集要移除的，避免在遍历中修改 Map
 	TArray<FActiveGameplayEffectHandle> ToRemove;
 
-	for (auto& Pair : EffectHandleToWidget)
+	for (const auto& Pair : EffectHandleToWidget)
 	{
-		if (!OwnerAbilitySystemComponent->GetActiveGameplayEffect(Pair.Key))
+		const FActiveGameplayEffectHandle& Handle = Pair.Key;
+		UStatusEffectItemWidget* Widget = Pair.Value;
+        
+		// 只检查 GE 是否存在（不检查 Widget 是否 PendingKill，避免重复移除）
+		if (!OwnerAbilitySystemComponent->GetActiveGameplayEffect(Handle))
 		{
-			if (Pair.Value)
+			if (IsValid(Widget))
 			{
-				Pair.Value->RemoveFromParent();
+				// 让 Widget 自己清理（它会自己从 Map 移除，但需要防止重复）
+				Widget->RequestRemove();
 			}
-			ToRemove.Add(Pair.Key);
+			else
+			{
+				ToRemove.Add(Handle); // Widget 已死，直接记录
+			}
 		}
 	}
-
+	
+	// 统一移除
 	for (const FActiveGameplayEffectHandle& Handle : ToRemove)
 	{
 		EffectHandleToWidget.Remove(Handle);
 	}
 }
 
+void UStatusEffectWidget::RemoveStatusEffectItem(FActiveGameplayEffectHandle Handle)
+{
+	if (UStatusEffectItemWidget** WidgetPtr = EffectHandleToWidget.Find(Handle))
+	{
+		if (IsValid(*WidgetPtr))
+		{
+			// 注意：不要在这里调用 Widget->RequestRemove()，避免循环调用
+			// 只从 Map 移除即可，Widget 自己会清理自己
+			(*WidgetPtr)->RemoveFromParent();
+		}
+		EffectHandleToWidget.Remove(Handle);
+	}
+}

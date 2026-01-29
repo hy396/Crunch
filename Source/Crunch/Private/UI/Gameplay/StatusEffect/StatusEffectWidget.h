@@ -83,9 +83,11 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void UpdateStatusEffectItem();
 
+	// 当前该函数可以移除了, 已经在状态效果项目类中实现了自动移除的效果
 	UFUNCTION(BlueprintCallable)
 	void RemoveExpiredStatusEffectItems();
-
+	// 移除状态效果项目
+	void RemoveStatusEffectItem(FActiveGameplayEffectHandle Handle);
 	// 状态效果数据表, 通过标签查找
 	TMap<FGameplayTag, FStatusEffectData> StatusEffectDataMap;
 

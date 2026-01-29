@@ -15,6 +15,8 @@ class UChatWidget;
 class UGameplayWidget;
 class AActor;
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnTeamPlayerKillChangedSignature, int32, NewKillCount);
+
 /**
  * 
  */
@@ -69,6 +71,18 @@ public:
 	// IChatInterface 接口实现
 	virtual void SendChatMessageToServer(const FString& Message, EChatChannelType ChannelType) override;
 	virtual void ReceiveChatMessageFromServer(const FChatMessage& Message) override;
+	// 聊天系统相关函数 ~ End
+
+	// 团队玩家击杀数改变 ~ Start
+	UPROPERTY(BlueprintAssignable, Category="Team")
+	FOnTeamPlayerKillChangedSignature OnTeamOnePlayerKillChanged;
+
+	UPROPERTY(BlueprintAssignable, Category="Team")
+	FOnTeamPlayerKillChangedSignature OnTeamTwoPlayerKillChanged;
+
+	void UpdateTeamOnePlayerKillCount(int32 NewKillCount);
+	void UpdateTeamTwoPlayerKillCount(int32 NewKillCount);
+	// 团队玩家击杀数改变 ~ End
 private:
 	// 客户端比赛结束处理
 	UFUNCTION(Client, Reliable)

@@ -218,8 +218,25 @@ public:
 	virtual void SetGenericTeamId(const FGenericTeamId& NewTeamID) override;
 
 	// 获取团队ID
+	UFUNCTION(BlueprintPure, Category = "Team")
 	virtual FGenericTeamId GetGenericTeamId() const override;
+
+// TODO : 仅仅提供测试的代码 Begin~
+	// 蓝图调用：请求切换团队
+	UFUNCTION(BlueprintCallable, Category = "Team")
+	void RequestChangeTeamID(uint8 NewTeamID);
+
+	// 蓝图调用：刷新本地玩家的头顶UI
+	UFUNCTION(BlueprintCallable, Category = "Team")
+	void RefreshAllOverHeadUIForLocalPlayer();
 private:
+
+	// 服务器执行：真正修改 TeamID
+	UFUNCTION(Server, Reliable, WithValidation)
+	void Server_ChangeTeamID(uint8 NewTeamID);
+// TODO : 仅仅提供测试的代码 End~	
+
+
 	UPROPERTY(ReplicatedUsing = OnRep_TeamID)
 	FGenericTeamId TeamID;
 

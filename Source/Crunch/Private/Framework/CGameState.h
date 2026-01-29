@@ -80,7 +80,10 @@ public:
 	 * @return 是否满足开始比赛条件
 	 */
 	bool CanStartMatch() const;
-
+	// 添加队伍一玩家击杀数
+	void AddTeamOnePlayerKillCount();
+	// 添加队伍二玩家击杀数
+	void AddTeamTwoPlayerKillCount();
 	/**
 	 * 复制属性接口实现
 	 * 声明需要网络复制的属性
@@ -102,6 +105,17 @@ public:
 	void RemovePlayerSelection(const FUniqueNetIdRepl& LeavingPlayerId);
 		
 private:
+	UPROPERTY(ReplicatedUsing = OnRep_TeamOnePlayerKillCount)
+	int32 TeamOnePlayerKillCount;
+
+	UPROPERTY(ReplicatedUsing = OnRep_TeamTwoPlayerKillCount)
+	int32 TeamTwoPlayerKillCount;
+
+	UFUNCTION()
+	void OnRep_TeamOnePlayerKillCount();
+
+	UFUNCTION()
+	void OnRep_TeamTwoPlayerKillCount();
 	/**
 	 * 玩家选择数组（网络复制）
 	 * 存储所有玩家当前的槽位和角色选择信息

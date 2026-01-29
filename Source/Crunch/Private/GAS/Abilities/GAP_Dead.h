@@ -19,6 +19,25 @@ public:
 	virtual void ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData) override;
 
 private:
+	// 2026/1/28 New Begin~
+	// 连杀系统赏金配置
+	UPROPERTY(EditDefaultsOnly, Category = "Bounty", meta=(DisplayName="基础赏金"))
+	float BaseBounty = 300.f;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Bounty", meta=(DisplayName="每层连杀增加金币"))
+	float BountyPerStreak = 50.f;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Bounty", meta=(DisplayName="每层连败扣除金币"))
+	float PenaltyPerDeath = 40.f;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Bounty", meta=(DisplayName="最低赏金保底"))
+	float MinBounty = 20.f;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Bounty", meta=(DisplayName="最高赏金封顶"))
+	float MaxBounty = 600.f;
+
+	// 2026/1/28 End~
+
 	// 奖励分配的范围，在该范围内的队友可获得奖励
 	UPROPERTY(EditDefaultsOnly, Category = "Reward", meta=(DisplayName="奖励范围"))
 	float RewardRange = 1000.f;
@@ -56,8 +75,21 @@ private:
 	// 死亡GE
 	UPROPERTY(EditDefaultsOnly, Category = "Reward", meta=(DisplayName="死亡效果（GE类）"))
 	TSubclassOf<UGameplayEffect> DeadEffect;
+
+	// 助攻GE
+	UPROPERTY(EditDefaultsOnly, Category = "Reward", meta=(DisplayName="助攻效果（GE类）"))
+	TSubclassOf<UGameplayEffect> AssistEffect;
 	
 	// 补兵GE
 	UPROPERTY(EditDefaultsOnly, Category = "Reward", meta=(DisplayName="补兵效果（GE类）"))
 	TSubclassOf<UGameplayEffect> LastHitEffect;
+
+	// 连杀增加 GE
+	UPROPERTY(EditDefaultsOnly, Category = "Reward", meta=(DisplayName="连杀增加效果（GE类）"))
+	TSubclassOf<UGameplayEffect> KillStreakIncreaseEffect;
+
+	// 连败增加 GE
+	UPROPERTY(EditDefaultsOnly, Category = "Reward", meta=(DisplayName="连败增加效果（GE类）"))
+	TSubclassOf<UGameplayEffect> DeathStreakIncreaseEffect;
+
 };

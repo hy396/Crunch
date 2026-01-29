@@ -52,6 +52,28 @@ struct FEffectProperties
 	
 };
 
+
+
+/**
+ * 击杀事件数据包装类，用于在事件中传递击杀和助攻信息
+ */
+UCLASS(BlueprintType)
+class UDeadEventPayload : public UObject
+{
+	GENERATED_BODY()
+
+public:
+	// 击杀者（最后造成伤害的英雄）
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TObjectPtr<AActor> Killer;
+
+	// 助攻者列表（所有符合条件的伤害来源，除了击杀者）
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TArray<TObjectPtr<AActor>> AssistHeroes;
+};
+
+
+
 /**
  * 
  */
@@ -192,6 +214,9 @@ public:
 	void OnRep_TrueDamage(const FGameplayAttributeData& OldTrueDamage);
 
 private:
+    // 更新连杀/连败状态
+    static void UpdateKillAndDeathStreaks(UAbilitySystemComponent* KillerASC, UAbilitySystemComponent* DeadASC);
+
 	// 设置效果属性
 	void SetEffectProperties(const FGameplayEffectModCallbackData& Data, FEffectProperties& Props) const;
 	// 伤害处理函数
@@ -205,5 +230,12 @@ private:
 	// 用于激活角色死亡被动的函数
 	void OnDeadAbility(const FEffectProperties& Props);
 
+	// 助攻时间阈值，单位秒，在这个时间内对敌人造成伤害的角色会被计为助攻
+	UPROPERTY(EditDefaultsOnly, Category = "Match Stat")
+	float AssistTimeThreshold = 30.f; 
+
+	// TMap， Key为伤害来源Actor, Value为受到伤害的时间戳，用来统计助攻
+	UPROPERTY()
+	TMap<TWeakObjectPtr<AActor>, float> RecentDamageSourcesMap;
 	//void OnDeadAbility(const FGameplayEffectModCallbackData& Data);
 };

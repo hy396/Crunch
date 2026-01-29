@@ -6,6 +6,7 @@
 #include "EngineUtils.h"
 #include "StormCore.h"
 #include "GameFramework/PlayerStart.h"
+#include "Kismet/GameplayStatics.h"
 #include "Network/TGameSession.h"
 #include "Player/CPlayerController.h"
 #include "Player/MPlayerState.h"
@@ -14,6 +15,14 @@ ACGameMode::ACGameMode()
 {
 	// 创建游戏会话类
 	GameSessionClass = ATGameSession::StaticClass();
+}
+
+void ACGameMode::PostLogin(APlayerController* NewPlayer)
+{
+	Super::PostLogin(NewPlayer);
+	// 获取游戏状态对象
+	Hy_GameState = Hy_GameState ? Hy_GameState : Cast<ACGameState>(UGameplayStatics::GetGameState(this));
+	
 }
 
 APlayerController* ACGameMode::SpawnPlayerController(ENetRole InRemoteRole, const FString& Options)
@@ -37,8 +46,7 @@ void ACGameMode::StartPlay()
 {
 	Super::StartPlay();
 	// 游戏开始时候，绑定风暴核心中的比赛结束的委托
-	AStormCore* StormCore = GetStormCore();
-	if (StormCore)
+	if (AStormCore* StormCore = GetStormCore())
 	{
 		StormCore->OnGoalReachedDelegate.AddUObject(this, &ACGameMode::MatchFinished);
 	}
@@ -76,6 +84,21 @@ APawn* ACGameMode::SpawnDefaultPawnFor_Implementation(AController* NewPlayer, AA
 	NewPlayer->StartSpot = StartSpot;
 	
 	return Super::SpawnDefaultPawnFor_Implementation(NewPlayer, StartSpot);
+}
+
+void ACGameMode::AddPlayerKillForTeam(const FGenericTeamId& InTeamID)
+{
+	if (GameState)
+	{
+		if (InTeamID == FGenericTeamId(0))
+		{
+			Hy_GameState->AddTeamOnePlayerKillCount();
+		}
+		else if (InTeamID == FGenericTeamId(1))
+		{
+			Hy_GameState->AddTeamTwoPlayerKillCount();
+		}
+	}
 }
 
 AStormCore* ACGameMode::GetStormCore() const

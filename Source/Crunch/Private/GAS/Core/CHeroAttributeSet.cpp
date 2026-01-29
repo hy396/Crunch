@@ -39,7 +39,10 @@ void UCHeroAttributeSet::GetLifetimeReplicatedProps(TArray<class FLifetimeProper
 	DOREPLIFETIME_CONDITION_NOTIFY(UCHeroAttributeSet, Gold, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UCHeroAttributeSet, Kill, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UCHeroAttributeSet, Death, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UCHeroAttributeSet, Assists, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UCHeroAttributeSet, LastHit, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UCHeroAttributeSet, KillStreak, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UCHeroAttributeSet, DeathStreak, COND_None, REPNOTIFY_Always);
 
 	// DOREPLIFETIME_CONDITION_NOTIFY(UCHeroAttributeSet, AttackPowerGrowthRate, COND_None, REPNOTIFY_Always)
 	// DOREPLIFETIME_CONDITION_NOTIFY(UCHeroAttributeSet, MagicPowerGrowthRate, COND_None, REPNOTIFY_Always)
@@ -123,9 +126,24 @@ void UCHeroAttributeSet::OnRep_Death(const FGameplayAttributeData& OldValue)
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UCHeroAttributeSet, Death, OldValue);
 }
 
+void UCHeroAttributeSet::OnRep_Assists(const FGameplayAttributeData& OldValue)
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UCHeroAttributeSet, Assists, OldValue);
+}
+
 void UCHeroAttributeSet::OnRep_LastHit(const FGameplayAttributeData& OldValue)
 {
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UCHeroAttributeSet, LastHit, OldValue);
+}
+
+void UCHeroAttributeSet::OnRep_KillStreak(const FGameplayAttributeData& OldKillStreak)
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UCHeroAttributeSet, KillStreak, OldKillStreak);
+}
+
+void UCHeroAttributeSet::OnRep_DeathStreak(const FGameplayAttributeData& OldDeathStreak)
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UCHeroAttributeSet, DeathStreak, OldDeathStreak);
 }
 
 void UCHeroAttributeSet::OnRep_HealthRegen(const FGameplayAttributeData& OldValue)

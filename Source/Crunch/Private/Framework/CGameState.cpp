@@ -6,6 +6,8 @@
 #include "GameFramework/PlayerState.h"
 #include "Net/UnrealNetwork.h"
 #include "Network/TNetStatics.h"
+#include "Player/CPlayerCharacter.h"
+#include "Player/CPlayerController.h"
 
 void ACGameState::RequestPlayerSelectionChange(const APlayerState* RequestingPlayer, uint8 DesiredSlot)
 {
@@ -134,10 +136,24 @@ bool ACGameState::CanStartMatch() const
 	return true;
 }
 
+void ACGameState::AddTeamOnePlayerKillCount()
+{
+	if (!HasAuthority()) return;
+	TeamOnePlayerKillCount++;
+}
+
+void ACGameState::AddTeamTwoPlayerKillCount()
+{
+	if (!HasAuthority()) return;
+	TeamTwoPlayerKillCount++;
+}
+
 void ACGameState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 	// 将玩家选择数组声明为网络复制属性
+	DOREPLIFETIME(ACGameState, TeamOnePlayerKillCount);
+	DOREPLIFETIME(ACGameState, TeamTwoPlayerKillCount);
 	DOREPLIFETIME_CONDITION_NOTIFY(ACGameState, PlayerSelectionArray, COND_None, REPNOTIFY_Always);
 }
 
@@ -198,4 +214,20 @@ void ACGameState::RemovePlayerSelection(const FUniqueNetIdRepl& LeavingPlayerId)
         // 广播玩家选择更新
         OnPlayerSelectionUpdated.Broadcast(PlayerSelectionArray);
     }
+}
+
+void ACGameState::OnRep_TeamOnePlayerKillCount()
+{
+	if (ACPlayerController* PC = Cast<ACPlayerController>(GetWorld()->GetFirstPlayerController()))
+	{
+		PC->UpdateTeamOnePlayerKillCount(TeamOnePlayerKillCount);
+	}
+}
+
+void ACGameState::OnRep_TeamTwoPlayerKillCount()
+{
+	if (ACPlayerController* PC = Cast<ACPlayerController>(GetWorld()->GetFirstPlayerController()))
+	{
+		PC->UpdateTeamTwoPlayerKillCount(TeamTwoPlayerKillCount);
+	}
 }

@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "CGameState.h"
 #include "GenericTeamAgentInterface.h"
 #include "GameFramework/GameModeBase.h"
 #include "CGameMode.generated.h"
@@ -16,6 +17,8 @@ class ACGameMode : public AGameModeBase
 	GENERATED_BODY()
 public:
 	ACGameMode();
+	// 登录玩家时调用
+	virtual void PostLogin(APlayerController* NewPlayer) override;
 	
 	virtual APlayerController* SpawnPlayerController(ENetRole InRemoteRole, const FString& Options) override;
 
@@ -28,6 +31,7 @@ public:
 	// 为玩家生成默认Pawn，并分配队伍与出生点
 	virtual APawn* SpawnDefaultPawnFor_Implementation(AController* NewPlayer, AActor* StartSpot) override;
 
+	void AddPlayerKillForTeam(const FGenericTeamId& InTeamID);
 private:
 	// 获取指定玩家的队伍ID
 	FGenericTeamId GetTeamIDForPlayer(const AController* InController) const;
@@ -45,6 +49,9 @@ private:
 
 	// 获取风暴核心对象
 	class AStormCore* GetStormCore() const;
+
+	UPROPERTY()
+	ACGameState* Hy_GameState;
 
 	// 比赛结束处理
 	void MatchFinished(AActor* ViewTarget, int WiningTeam);

@@ -9,6 +9,7 @@
 #include "GameplayEffectExtension.h"
 // #include "Character/Interaction/CombatInterface.h"
 #include "TGameplayTags.h"
+#include "Framework/CGameMode.h"
 #include "Kismet/GameplayStatics.h"
 #include "Player/CPlayerController.h"
 
@@ -204,6 +205,38 @@ void UCAttributeSet::OnRep_TrueDamage(const FGameplayAttributeData& OldTrueDamag
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UCAttributeSet, TrueDamage, OldTrueDamage);
 }
 
+void UCAttributeSet::UpdateKillAndDeathStreaks(UAbilitySystemComponent* KillerASC, UAbilitySystemComponent* DeadASC)
+{
+    // 更新击杀者的连杀
+    if (KillerASC)
+    {
+        bool bFound = false;
+        float KillStreak = KillerASC->GetGameplayAttributeValue(UCHeroAttributeSet::GetKillStreakAttribute(), bFound);
+        if (bFound)
+        {
+            KillerASC->SetNumericAttributeBase(UCHeroAttributeSet::GetKillStreakAttribute(), KillStreak + 1.f);
+        }
+        
+        // 清除击杀者的连败
+        KillerASC->SetNumericAttributeBase(UCHeroAttributeSet::GetDeathStreakAttribute(), 0.f);
+    }
+    
+    // 更新死亡者的连败
+    if (DeadASC)
+    {
+        bool bFound = false;
+        float DeathStreak = DeadASC->GetGameplayAttributeValue(UCHeroAttributeSet::GetDeathStreakAttribute(), bFound);
+        if (bFound)
+        {
+            DeadASC->SetNumericAttributeBase(UCHeroAttributeSet::GetDeathStreakAttribute(), DeathStreak + 1.f);
+        }
+        
+        // 清除死亡者的连杀
+        DeadASC->SetNumericAttributeBase(UCHeroAttributeSet::GetKillStreakAttribute(), 0.f);
+    }
+}
+
+
 void UCAttributeSet::SetEffectProperties(const FGameplayEffectModCallbackData& Data, FEffectProperties& Props) const
 {
 	//Source 效果的所有者   Target 效果应用的目标
@@ -259,7 +292,17 @@ void UCAttributeSet::Damage(const FEffectProperties& Props, FGameplayTag DamageT
 			}
 		}
 	}
-			
+	// Props.SourceAvatarActor
+	// 记录最近的伤害来源及时间（只统计来自英雄角色的伤害）
+	if (Props.SourceAvatarActor && GetOwningActor() && Props.SourceAvatarActor != GetOwningActor() && Props.SourceAvatarActor->IsA<ACPlayerCharacter>())
+	{
+		RecentDamageSourcesMap.Add(Props.SourceCharacter, GetWorld()->GetTimeSeconds());
+	}
+	// if (Props.SourceAvatarActor && Props.SourceAvatarActor != Props.TargetAvatarActor && Props.SourceAvatarActor->IsA<ACPlayerCharacter>())
+	// {
+	// 	RecentDamageSourcesMap.Add(Props.SourceCharacter, GetWorld()->GetTimeSeconds());
+	// }
+	
 	const float NewHealth = GetHealth() - NewDamage;
 	SetHealth(FMath::Clamp(NewHealth, 0.f, GetMaxHealth()));
 	// UE_LOG(LogTemp, Log, TEXT("NewDamage: %f"), NewDamage)
@@ -267,6 +310,8 @@ void UCAttributeSet::Damage(const FEffectProperties& Props, FGameplayTag DamageT
 	// 如果生命小于等于0触发死亡
 	if (NewHealth <= 0.f)
 	{
+		// TODO: 分发助攻给他们
+		
 		// 触发死亡被动
 		OnDeadAbility(Props);
 	}
@@ -299,16 +344,199 @@ void UCAttributeSet::ShowFloatingText(const FEffectProperties& Props, const floa
 	}
 }
 
+// void UCAttributeSet::OnDeadAbility(const FEffectProperties& Props)
+// {
+// 	FGameplayEventData DeadAbilityEventData;
+// 	if (Props.SourceAvatarActor && GetOwningActor())
+// 	{
+// 		// UE_LOG(LogTemp, Warning, TEXT("Dead：%s"), *GetOwningActor()->GetName())
+// 		DeadAbilityEventData.Target = Props.SourceAvatarActor;
+
+// 		// ----------------------------分发助攻？？--------------------------------
+// 		// 被击杀单位是否为英雄
+// 		if (UCAbilitySystemStatics::IsHero(GetOwningActor()))
+// 		{
+// 			// 最后击杀单位为小兵，将判断谁是最后一个攻击该单位的英雄
+// 			float LastDamageTime = -1.f;
+// 			AActor* LastDamageSource = nullptr;
+// 			// 添加助攻的英雄单位
+// 			TArray<AActor*> AssistHeroes;
+// 			for (auto It = RecentDamageSourcesMap.CreateIterator(); It; ++It)
+// 			{
+// 				AActor* Damager = It.Key().Get();
+// 				float DamageTime = It.Value();
+// 				// 如果伤害来源记录时间超过一定时间（例如30秒），则移除该记录
+// 				if (GetWorld()->GetTimeSeconds() - DamageTime > AssistTimeThreshold)
+// 				{
+// 					continue;
+// 				}
+// 				if (Damager)
+// 				{
+// 					// 寻找造成伤害时间最晚的英雄（作为击杀者）
+// 					// 直接比较时间戳大小，找出最大的那个（最接近现在的）
+// 					if (DamageTime > LastDamageTime)
+// 					{
+// 						LastDamageTime = DamageTime;
+// 						LastDamageSource = Damager;
+// 					}
+// 					// 记录所有符合条件的英雄到助攻列表（用于去重给助攻）
+// 					AssistHeroes.AddUnique(Damager);
+// 				}
+// 			}
+// 			// 此人就是最终击杀者，给他加个人头
+// 			if (LastDamageSource)
+// 			{
+// 				// TODO: 给 LastDamageSource 加人头
+
+// 				// TODO: AssistHeroes中移除最后伤害者为其他人添加助攻
+// 				for (auto AssistHero : AssistHeroes)
+// 				{
+// 					if (AssistHero != LastDamageSource)
+// 					{
+// 						// TODO: 添加助攻的单位
+							
+// 					}
+// 				}
+// 			}
+// 		}		
+		
+	
+// 		// -----------------------------------------------------------------------
+// 	}
+
+// 	UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(GetOwningActor(), 
+// 		TGameplayTags::Stats_Dead, 
+// 		DeadAbilityEventData);
+// }
+
 void UCAttributeSet::OnDeadAbility(const FEffectProperties& Props)
 {
-	FGameplayEventData DeadAbilityEventData;
-	if (Props.SourceAvatarActor)
-	{
-		// UE_LOG(LogTemp, Warning, TEXT("Dead：%s"), *GetOwningActor()->GetName())
-		DeadAbilityEventData.Target = Props.SourceAvatarActor;
-	}
-	
-	UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(GetOwningActor(), 
-		TGameplayTags::Stats_Dead, 
-		DeadAbilityEventData);
+    FGameplayEventData DeadAbilityEventData;
+    
+    if (Props.SourceAvatarActor && GetOwningActor())
+    {
+        DeadAbilityEventData.Target = Props.SourceAvatarActor;
+
+		// 创建击杀事件数据对象
+        UDeadEventPayload* DeadPayload = NewObject<UDeadEventPayload>();
+        DeadPayload->Killer = nullptr;
+
+        // 分发助攻 - 被击杀单位是否为英雄
+        if (UCAbilitySystemStatics::IsHero(GetOwningActor()))
+        {
+            // 最后击杀单位为小兵，将判断谁是最后一个攻击该单位的英雄
+            float LastDamageTime = -1.f;
+            AActor* LastDamageSource = nullptr;
+            TArray<AActor*> AssistHeroes;
+            
+            for (auto It = RecentDamageSourcesMap.CreateIterator(); It; ++It)
+            {
+                AActor* Damager = It.Key().Get();
+                float DamageTime = It.Value();
+                
+                // 如果伤害来源记录时间超过一定时间，则移除该记录
+                if (GetWorld()->GetTimeSeconds() - DamageTime > AssistTimeThreshold)
+                {
+                    continue;
+                }
+                
+                if (Damager)
+                {
+                    // 寻找造成伤害时间最晚的英雄（作为击杀者）
+                    if (DamageTime > LastDamageTime)
+                    {
+                        LastDamageTime = DamageTime;
+                        LastDamageSource = Damager;
+                    }
+                    // 记录所有符合条件的英雄到助攻列表
+                    AssistHeroes.AddUnique(Damager);
+                }
+            }
+            
+            // 设置击杀者和助攻者
+            if (LastDamageSource)
+            {
+                // 有英雄造成伤害，最后一个攻击的英雄是击杀者
+                DeadPayload->Killer = LastDamageSource;
+                
+                // 设置助攻者（从助攻列表中移除击杀者）
+                for (AActor* AssistHero : AssistHeroes)
+                {
+                    if (AssistHero != LastDamageSource)
+                    {
+                        DeadPayload->AssistHeroes.Add(AssistHero);
+                    }
+                }
+				// 拥有击杀者的英雄单位
+            	if (ACGameMode* Gm = GetWorld()->GetAuthGameMode<ACGameMode>())
+            	{
+            		// 添加击杀
+            		if (const ACPlayerCharacter* PC = Cast<ACPlayerCharacter>(LastDamageSource))
+            		{
+            			// 添加团队击杀
+            			Gm->AddPlayerKillForTeam(PC->GetGenericTeamId());
+            			/*
+            			 * 下面的方案直接赋值可能不是很好，我将决定移入GAP_Dead 中 使用GE实现
+						if (UAbilitySystemComponent* KillAsc = PC->GetAbilitySystemComponent())
+						{
+							// 获取到该英雄单位的连续击杀数量
+							bool bFound = false;
+							const float KillStreak = KillAsc->GetGameplayAttributeValue(
+								UCHeroAttributeSet::GetKillStreakAttribute(), bFound);
+							// 为击杀单位添加连杀
+							if (bFound)
+								KillAsc->SetNumericAttributeBase(UCHeroAttributeSet::GetKillStreakAttribute(), KillStreak + 1.f);
+							// 清除该英雄的连续死亡
+							bFound = false;
+							KillAsc->GetGameplayAttributeValue(
+								UCHeroAttributeSet::GetDeathStreakAttribute(), bFound);
+							if (bFound)
+								KillAsc->SetNumericAttributeBase(UCHeroAttributeSet::GetDeathStreakAttribute(), 0.f);
+						}
+            			// 清空死亡单位的连续击杀，并将连续死亡加一
+            			if (UAbilitySystemComponent* TargetAsc = Props.TargetASC ? Props.TargetASC : GetOwningAbilitySystemComponent())
+            			{
+            				bool bFound = false;
+            				const float DeathStreak = TargetAsc->GetGameplayAttributeValue(
+									UCHeroAttributeSet::GetDeathStreakAttribute(), bFound);
+            				if (bFound)
+            					TargetAsc->SetNumericAttributeBase(UCHeroAttributeSet::GetDeathStreakAttribute(), DeathStreak + 1.f);
+					       
+            				bFound = false;
+            				TargetAsc->GetGameplayAttributeValue(
+								UCHeroAttributeSet::GetKillStreakAttribute(), bFound);
+            				if (bFound)
+            					TargetAsc->SetNumericAttributeBase(UCHeroAttributeSet::GetKillStreakAttribute(), 0.f);	
+            			}
+            			*/
+            			// 下面的和上面的是一样的
+            			// if (UAbilitySystemComponent* KillAsc =  PC->GetAbilitySystemComponent() , UAbilitySystemComponent* TargetAsc = Props.TargetASC ? Props.TargetASC : GetOwningAbilitySystemComponent(); KillAsc && TargetAsc)
+            			// {
+            			// 	UpdateKillAndDeathStreaks(KillAsc, TargetAsc);
+            			// }
+            		}
+            	}
+            	
+            }
+            else
+            {
+                // 没有任何英雄造成伤害，可能是被小兵、野怪或环境伤害击杀
+                // 这种情况下，伤害源就是击杀者
+                DeadPayload->Killer = Props.SourceAvatarActor;
+                
+                // 此时没有助攻者，因为只有英雄才能获得助攻
+            }
+        }else{
+			// 被击杀者不是英雄（小兵、野怪等）
+            // 简单处理：伤害源就是击杀者，没有助攻
+            DeadPayload->Killer = Props.SourceAvatarActor;
+		}
+		// 将击杀信息放入事件数据的 OptionalObject 中
+        DeadAbilityEventData.OptionalObject = DeadPayload;
+    }
+
+    // 发送死亡事件
+    UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(GetOwningActor(), 
+        TGameplayTags::Stats_Dead, 
+        DeadAbilityEventData);
 }

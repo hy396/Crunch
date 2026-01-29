@@ -481,3 +481,19 @@ void ACPlayerController::ReceiveChatMessageFromServer(const FChatMessage& Messag
 	// 调用实际的RPC函数
 	Client_ReceiveChatMessage(Message);
 }
+
+void ACPlayerController::UpdateTeamOnePlayerKillCount(int32 NewKillCount)
+{
+	if (IsLocalPlayerController())
+	{
+		OnTeamOnePlayerKillChanged.Broadcast(NewKillCount);
+	}
+}
+
+void ACPlayerController::UpdateTeamTwoPlayerKillCount(int32 NewKillCount)
+{
+	if (IsLocalPlayerController())
+	{
+		OnTeamTwoPlayerKillChanged.Broadcast(NewKillCount);
+	}
+}

@@ -37,7 +37,11 @@ public:
     ATTRIBUTE_ACCESSORS(UCHeroAttributeSet, Gold)                     // 金币
     ATTRIBUTE_ACCESSORS(UCHeroAttributeSet, Kill)                     // 击杀数
     ATTRIBUTE_ACCESSORS(UCHeroAttributeSet, Death)                    // 死亡数
+    ATTRIBUTE_ACCESSORS(UCHeroAttributeSet, Assists);                 // 助攻数
     ATTRIBUTE_ACCESSORS(UCHeroAttributeSet, LastHit)                  // 补兵数
+    ATTRIBUTE_ACCESSORS(UCHeroAttributeSet, KillStreak)               // 连续击杀数
+    ATTRIBUTE_ACCESSORS(UCHeroAttributeSet, DeathStreak)              // 连续死亡数
+    
     // ATTRIBUTE_ACCESSORS(UCHeroAttributeSet, StrengthGrowthRate)       // 力量成长率
     // ATTRIBUTE_ACCESSORS(UCHeroAttributeSet, IntelligenceGrowthRate)   // 智力成长率
 
@@ -222,6 +226,18 @@ public:
     // 死亡数
     UPROPERTY(ReplicatedUsing = OnRep_Death)
     FGameplayAttributeData Death;
+    
+    // 助攻数
+    UPROPERTY(ReplicatedUsing = OnRep_Assists)
+    FGameplayAttributeData Assists;
+
+    // 连续击杀数
+    UPROPERTY(ReplicatedUsing = OnRep_KillStreak)
+    FGameplayAttributeData KillStreak;
+
+    // 连续死亡数
+    UPROPERTY(ReplicatedUsing = OnRep_DeathStreak)
+    FGameplayAttributeData DeathStreak;
 
     // 补刀数
     UPROPERTY(ReplicatedUsing = OnRep_LastHit)
@@ -265,8 +281,16 @@ public:
     void OnRep_Death(const FGameplayAttributeData& OldValue);
 
     UFUNCTION()
-    void OnRep_LastHit(const FGameplayAttributeData& OldValue);
+    void OnRep_Assists(const FGameplayAttributeData& OldValue);
 
+    UFUNCTION()
+    void OnRep_LastHit(const FGameplayAttributeData& OldValue);
+    
+    UFUNCTION()
+    void OnRep_KillStreak(const FGameplayAttributeData& OldKillStreak);
+    UFUNCTION()
+    void OnRep_DeathStreak(const FGameplayAttributeData& OldDeathStreak);
+    
     UFUNCTION()
     void OnRep_HealthRegen(const FGameplayAttributeData& OldValue);
 
@@ -311,4 +335,7 @@ public:
 
     UFUNCTION()
     void OnRep_DamageReduction(const FGameplayAttributeData& OldValue);
+
+
+
 };

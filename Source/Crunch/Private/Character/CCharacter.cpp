@@ -3,6 +3,7 @@
 
 #include "CCharacter.h"
 #include "AbilitySystemBlueprintLibrary.h"
+#include "EngineUtils.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Crunch/Crunch.h"
@@ -12,6 +13,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Net/UnrealNetwork.h"
 #include "Perception/AISense_Sight.h"
+#include "Player/CPlayerController.h"
 #include "UI/Gameplay/OverHeadStatsGauge.h"
 
 ACCharacter::ACCharacter()
@@ -82,21 +84,19 @@ const TMap<ECAbilityInputID, TSubclassOf<UGameplayAbility>>& ACCharacter::GetAbi
 void ACCharacter::SetOverHeadWidgetColor()
 {
 	// 将头顶UI组件的用户控件对象转换为UOverHeadStatsGauge类型
-	UOverHeadStatsGauge* OverheadStatsGuage = Cast<UOverHeadStatsGauge>(OverHeadWidgetComponent->GetUserWidgetObject());
-	
+
 	// 确保在Owner变化时也刷新团队状态显示
-	if (OverheadStatsGuage)
+	if (UOverHeadStatsGauge* OverheadStatsGauge = Cast<UOverHeadStatsGauge>(OverHeadWidgetComponent->GetUserWidgetObject()))
 	{
 		APawn* LocalPlayerPawn = UGameplayStatics::GetPlayerPawn(this, 0);
 		if (LocalPlayerPawn && LocalPlayerPawn->GetClass()->ImplementsInterface(UGenericTeamAgentInterface::StaticClass()))
 		{
-			const IGenericTeamAgentInterface* LocalTeamInterface = Cast<IGenericTeamAgentInterface>(LocalPlayerPawn);
-			if (LocalTeamInterface)
+			if (const IGenericTeamAgentInterface* LocalTeamInterface = Cast<IGenericTeamAgentInterface>(LocalPlayerPawn))
 			{
 				// UE_LOG(LogTemp, Warning, TEXT("本地玩家 TeamID: %u"), LocalTeamInterface->GetGenericTeamId().GetId());
 				// UE_LOG(LogTemp, Warning, TEXT("%s的当前角色 TeamID: %u"), *GetName(),GetGenericTeamId().GetId());
 				// UE_LOG(LogTemp, Warning, TEXT("态度: %s"), *UEnum::GetValueAsString(GetTeamAttitudeTowards(*LocalPlayerPawn)));
-				OverheadStatsGuage->SetHealthBarColor(GetTeamAttitudeTowards(*LocalPlayerPawn));
+				OverheadStatsGauge->SetHealthBarColor(GetTeamAttitudeTowards(*LocalPlayerPawn));
 			}
 		}
 	}
@@ -545,7 +545,22 @@ void ACCharacter::OnRespawn()
 
 void ACCharacter::SetGenericTeamId(const FGenericTeamId& NewTeamID)
 {
+	// 原代码
+	// TeamID = NewTeamID;
+
+	// 新代码 2026/1/29
+	if (TeamID == NewTeamID)
+	{
+		return;
+	}
+
 	TeamID = NewTeamID;
+
+	// 服务器上立即更新表现
+	if (HasAuthority())
+	{
+		SetOverHeadWidgetColor();
+	}
 }
 
 FGenericTeamId ACCharacter::GetGenericTeamId() const
@@ -553,9 +568,79 @@ FGenericTeamId ACCharacter::GetGenericTeamId() const
 	return TeamID;
 }
 
+void ACCharacter::RequestChangeTeamID(uint8 NewTeamID)
+{
+	// 如果当前已经在服务器（例如 Listen Server）
+	// 可以直接修改 TeamID
+	if (HasAuthority())
+	{
+		// 1. 设置 Character 的 TeamID
+        SetGenericTeamId(FGenericTeamId(NewTeamID));
+        
+        // 2. 同步 PlayerController 的 TeamID
+        if (ACPlayerController* PC = GetController<ACPlayerController>())
+        {
+            PC->SetGenericTeamId(FGenericTeamId(NewTeamID));
+        }
+	}
+	else
+	{
+		// 客户端情况下，通过 RPC 请求服务器修改
+		Server_ChangeTeamID(NewTeamID);
+	}
+}
+
+void ACCharacter::Server_ChangeTeamID_Implementation(uint8 NewTeamID)
+{
+	// 服务器拥有最终决定权
+	// 所有客户端最终都会同步到
+	SetGenericTeamId(FGenericTeamId(NewTeamID));
+
+	// 2. 同步 PlayerController 的 TeamID
+    if (ACPlayerController* PC = GetController<ACPlayerController>())
+    {
+        PC->SetGenericTeamId(FGenericTeamId(NewTeamID));
+    }
+}
+
+bool ACCharacter::Server_ChangeTeamID_Validate(uint8 NewTeamID)
+{
+	// 你可以在这里做权限 / 范围检查
+	// 比如：NewTeamID <= 2
+	return true;
+}
+
+void ACCharacter::RefreshAllOverHeadUIForLocalPlayer()
+{
+	UWorld* World = GetWorld();  // this指针隐式传递
+	if (!World)
+	{
+		return;
+	}
+    
+    // 获取本地玩家控制器
+    APlayerController* LocalPC = World->GetFirstPlayerController<APlayerController>();
+    if (!LocalPC || !LocalPC->GetPawn())
+    {
+        return;
+    }
+    
+    // 遍历场景中所有 Character
+    for (TActorIterator<ACCharacter> It(World); It; ++It)
+    {
+    	ACCharacter* Character = *It;
+    	if (Character && Character != this) // 排除自身避免无限递归
+    	{
+    		// 重新启动头顶UI
+    		Character->SetStatusGaugeEnabled(true);
+    	}
+    }
+}
+
 void ACCharacter::OnRep_TeamID()
 {
-
+	// 团队ID更改的时候修改头顶血条
+	SetOverHeadWidgetColor();
 }
 
 void ACCharacter::SetAIPerceptionStimuliSourceEnabled(bool bIsEnabled)

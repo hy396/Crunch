@@ -12,6 +12,7 @@
 - **[项目架构 (ARCHITECTURE.md)](./ARCHITECTURE.md)** - 完整的系统架构和设计模式说明
 - **[GAS系统文档 (GAS_SYSTEM.md)](./GAS_SYSTEM.md)** - 基于UE5 GAS的完整技能系统详细文档
 - **[聊天系统文档 (CHAT_SYSTEM.md)](./CHAT_SYSTEM.md)** - 实时多人游戏聊天系统详细文档
+- **[前端UI系统 (FRONTEND_UI_SYSTEM.md)](./FRONTEND_UI_SYSTEM.md)** - 前端UI完整框架，包含选项设置、Widget系统等
 - **[API文档 (API.md)](./API.md)** - 核心类和接口的详细API说明
 
 ### 🚢 部署与运维
@@ -55,6 +56,17 @@
 - 实时滚动弹幕效果
 ```
 
+### 前端UI系统
+```
+基于UE5 CommonUI的前端界面框架：
+- 模块化Widget设计
+- 完整的选项设置系统（视频、音频、控制、游戏）
+- 键位重映射功能
+- 模态对话框系统
+- 异步Widget加载
+- GameplayTag驱动配置
+```
+
 ### 网络架构
 ```
 多人游戏网络解决方案：
@@ -81,7 +93,7 @@
 | 游戏框架 | [Framework模块](./ARCHITECTURE.md#游戏框架模块) | `UMGameInstance`, `ACPlayerController` |
 | 角色系统 | [Character模块](./ARCHITECTURE.md#角色系统) | `ACCharacter`, `UPDA_CharacterDefinition` |
 | 技能系统 | [GAS系统详解](./GAS_SYSTEM.md) | `UCAbilitySystemComponent`, `UCGameplayAbility` |
-| UI系统 | [UI架构](./ARCHITECTURE.md#ui系统架构) | `UShopWidget`, `UAbilityGauge` |
+| 前端UI | [前端UI系统](./FRONTEND_UI_SYSTEM.md) | `UFrontendUISubsystem`, `UWidget_ActivatableBase` |
 | 技能系统 | [GAS系统](./GAS_SYSTEM.md) | `UCAbilitySystemComponent`, `UCGameplayAbility` |
 | 聊天系统 | [聊天架构](./CHAT_SYSTEM.md) | `UChatWidget`, `UChatMessageItemWidget` |
 | 网络系统 | [网络架构](./ARCHITECTURE.md#网络架构) | `FPlayerSelection`, RPC函数 |
@@ -96,7 +108,9 @@
 | 角色定义 | `UPDA_CharacterDefinition` | [角色系统API](./API.md#角色系统) |
 | GAS技能 | `UCAbilitySystemComponent` | [GAS系统文档](./GAS_SYSTEM.md) |
 | 库存管理 | `UInventoryComponent` | [库存系统API](./API.md#库存系统) |
-| UI控件 | `UShopWidget`, `UAbilityGauge` | [UI系统API](./API.md#ui系统) |
+| 前端UI | `UFrontendUISubsystem` | [前端UI系统](./FRONTEND_UI_SYSTEM.md) |
+| 选项设置 | `UOptionsDataRegistry` | [前端UI系统](./FRONTEND_UI_SYSTEM.md#选项设置系统) |
+| 用户设置 | `UFrontendGameUserSettings` | [前端UI系统](./FRONTEND_UI_SYSTEM.md#设置管理) |
 | 聊天系统 | `UChatWidget`, `IChatInterface` | [聊天系统文档](./CHAT_SYSTEM.md) |
 | 连锁攻击技能 | `UGA_ChainAttack` | [连锁攻击技能](./GAS_SYSTEM.md#连锁攻击技能) |
 | 弹幕系统 | `UChatMessageItemWidget` | [弹幕系统API](./CHAT_SYSTEM.md#弹幕系统) |
@@ -175,7 +189,11 @@ Crunch/
 │   │   ├── 📁 Character/     # 角色系统
 │   │   ├── 📁 GAS/          # 技能系统
 │   │   ├── 📁 Inventory/    # 库存系统
-│   │   ├── 📁 UI/           # 用户界面
+│   │   ├── 📁 FrontendUI/   # 前端UI系统
+│   │   │   ├── 📁 Widgets/  # UI组件
+│   │   │   ├── 📁 Subsystems/ # UI子系统
+│   │   │   └── 📁 FrontendSettings/ # 设置管理
+│   │   ├── 📁 UI/           # 游戏内UI
 │   │   │   └── 📁 Chat/     # 聊天系统
 │   │   └── 📁 Network/      # 网络系统
 │   └── 📁 Public/           # 头文件
@@ -199,6 +217,12 @@ Crunch/
 2. 📚 查阅 [API文档](./API.md) 了解接口细节
 3. 🔧 参考 [最佳实践](./DEVELOPMENT.md#最佳实践)
 4. 🚀 学习 [部署方案](./DEPLOYMENT.md)
+
+### 前端UI开发者
+1. 📖 阅读 [前端UI系统文档](./FRONTEND_UI_SYSTEM.md)
+2. 🎮 了解 [Widget系统](./FRONTEND_UI_SYSTEM.md#widget系统)
+3. ⚙️ 学习 [选项设置系统](./FRONTEND_UI_SYSTEM.md#选项设置系统)
+4. 🔧 实践 [自定义组件](./FRONTEND_UI_SYSTEM.md#扩展指南)
 
 ### 运维工程师
 1. 🐳 掌握 [Docker部署](./DEPLOYMENT.md#docker-部署推荐)
@@ -230,6 +254,7 @@ Crunch/
 - **开发问题**: 查阅 [开发指南](./DEVELOPMENT.md) 或在Issues中提问
 - **部署问题**: 参考 [部署指南](./DEPLOYMENT.md) 或联系运维团队
 - **架构问题**: 阅读 [架构文档](./ARCHITECTURE.md) 了解设计理念
+- **前端UI问题**: 参考 [前端UI系统文档](./FRONTEND_UI_SYSTEM.md)
 
 ## 📄 许可证
 

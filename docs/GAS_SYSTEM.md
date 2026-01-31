@@ -29,7 +29,7 @@ GAS/
 │   ├── GA_GroundBlast         # 地面爆炸技能
 │   ├── GA_Tornado             # 龙卷风技能
 │   ├── UpperCut               # 升龙拳技能
-│   ├── GAP_Dead               # 死亡被动技能
+│   ├── GAP_Dead               # 死亡被动技能（奖励分配）
 │   └── GAP_Launched           # 击飞被动技能
 ├── 📁 Data/                   # 数据资产
 │   └── PDA_AbilitySystemGenerics # 通用能力系统配置
@@ -191,6 +191,16 @@ FGameplayAttributeData MoveAcceleration;
 #### CHeroAttributeSet
 英雄专用的额外属性集合（扩展属性）
 
+**新增属性**:
+```cpp
+// 连续击杀/死亡属性
+UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_KillStreak)
+FGameplayAttributeData KillStreak;
+
+UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_DeathStreak)
+FGameplayAttributeData DeathStreak;
+```
+
 ### 4. TGameplayTags管理系统
 
 **职责**: 统一管理项目中所有的GameplayTags
@@ -255,8 +265,52 @@ namespace TGameplayTags {
 - **GA_Combo**: 连击系统，组合攻击
 
 #### 4. 被动技能
-- **GAP_Dead**: 死亡触发被动
+- **GAP_Dead**: 死亡触发被动（奖励分配系统）
 - **GAP_Launched**: 击飞状态被动
+
+### 死亡奖励系统 (GAP_Dead)
+
+#### 职责
+处理角色死亡时的奖励分配（经验、金币、击杀数等）
+
+#### 核心功能
+- 动态赏金计算（基于KillStreak和DeathStreak）
+- 英雄击杀奖励分配（击杀者+助攻者）
+- 小兵击杀奖励分配（范围检测+比例分配）
+- 连续击杀/死亡属性更新
+- 使用Batch操作优化GE应用性能
+
+#### 赏金计算公式
+```
+总赏金 = Clamp(BaseBounty + (KillStreak * BountyPerStreak) - (DeathStreak * PenaltyPerDeath), MinBounty, MaxBounty)
+```
+
+#### 奖励分配逻辑
+- **英雄击杀**:
+  - 击杀者获得总赏金
+  - 每个助攻者获得总赏金/2
+  - 所有参与者获得连杀/连败更新
+- **小兵击杀**:
+  - 击杀者获得KillerRewardPortion比例奖励
+  - 队友平分剩余部分
+  - 范围限制：RewardRange内的队友
+
+#### UDeadEventPayload事件负载类
+**职责**: 用于传递死亡事件数据的负载类
+
+```cpp
+class UDeadEventPayload : public UObject
+{
+public:
+    /** 击杀者（最后造成伤害的英雄） */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    TObjectPtr<AActor> Killer;
+
+    /** 助攻者列表（所有符合条件的伤害来源，除了击杀者） */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    TArray<TObjectPtr<AActor>> AssistHeroes;
+};
+```
 
 ### 技能实现示例：GA_Shoot
 

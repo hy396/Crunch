@@ -459,6 +459,22 @@ public:
      */
     virtual FRotator GetCaptureLocalRotation() const override;
 
+    // === 开发调试：队伍切换 ===
+    // ⚠️ 注意：以下函数仅用于开发时调试，不应在生产环境中使用
+
+    /**
+     * 请求切换团队ID（蓝图可调用，仅调试使用）
+     * @param NewTeamID 新的团队ID
+     */
+    UFUNCTION(BlueprintCallable, Category = "Team")
+    void RequestChangeTeamID(uint8 NewTeamID);
+
+    /**
+     * 刷新本地玩家的头顶UI（仅调试使用）
+     */
+    UFUNCTION(BlueprintCallable, Category = "Team")
+    void RefreshAllOverHeadUIForLocalPlayer();
+
     // === GAS相关 ===
     
     virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
@@ -521,7 +537,6 @@ private:
     /** AI感知刺激源组件 */
     UPROPERTY()
     TObjectPtr<UAIPerceptionStimuliSourceComponent> PerceptionStimuliSourceComponent;
-};
 };
 ```
 
@@ -659,12 +674,12 @@ private:
      * 伤害处理函数
      */
     void Damage(const FEffectProperties& Props, FGameplayTag DamageType, const float Damage);
-    
+
     /**
      * 显示浮动数字
      */
     static void ShowFloatingText(const FEffectProperties& Props, float Damage, bool IsCriticalHitE, FGameplayTag DamageType);
-    
+
     /**
      * 用于激活角色死亡被动的函数
      */
@@ -697,6 +712,30 @@ private:
     void OnRep_MoveSpeed(const FGameplayAttributeData& OldMoveSpeed);
     UFUNCTION()
     void OnRep_MoveAcceleration(const FGameplayAttributeData& OldMoveAcceleration);
+};
+```
+
+### UDeadEventPayload
+
+死亡事件负载类，用于传递击杀和助攻数据。
+
+```cpp
+class CRUNCH_API UDeadEventPayload : public UObject
+{
+    GENERATED_BODY()
+
+public:
+    /**
+     * 击杀者（最后造成伤害的英雄）
+     */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    TObjectPtr<AActor> Killer;
+
+    /**
+     * 助攻者列表（所有符合条件的伤害来源，除了击杀者）
+     */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    TArray<TObjectPtr<AActor>> AssistHeroes;
 };
 ```
 
@@ -788,6 +827,30 @@ protected:
     virtual void OnRep_Mana(const FGameplayAttributeData& OldMana);
 
     // ... 其他属性的OnRep函数
+};
+```
+
+### UDeadEventPayload
+
+死亡事件负载类，用于传递击杀和助攻数据。
+
+```cpp
+class CRUNCH_API UDeadEventPayload : public UObject
+{
+    GENERATED_BODY()
+
+public:
+    /**
+     * 击杀者（最后造成伤害的英雄）
+     */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    TObjectPtr<AActor> Killer;
+
+    /**
+     * 助攻者列表（所有符合条件的伤害来源，除了击杀者）
+     */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    TArray<TObjectPtr<AActor>> AssistHeroes;
 };
 ```
 
@@ -1824,6 +1887,143 @@ struct CRUNCH_API FAbilityWidgetData
     /** 是否有升级点可用 */
     UPROPERTY(BlueprintReadWrite, Category = "Ability")
     bool bUpgradeAvailable = false;
+};
+```
+
+### UGAP_Dead
+
+死亡被动技能，处理死亡奖励分配。
+
+```cpp
+class CRUNCH_API UGAP_Dead : public UCGameplayAbility
+{
+public:
+    UGAP_Dead();
+
+    /**
+     * 激活死亡被动
+     */
+    virtual void ActivateAbility(const FGameplayAbilitySpecHandle Handle,
+                                  const FGameplayAbilityActorInfo* ActorInfo,
+                                  const FGameplayAbilityActivationInfo ActivationInfo,
+                                  const FGameplayEventData* TriggerEventData) override;
+
+private:
+    // === 赏金配置 ===
+    /**
+     * 基础赏金
+     */
+    UPROPERTY(EditDefaultsOnly, Category = "Bounty", meta=(DisplayName="基础赏金"))
+    float BaseBounty = 300.f;
+
+    /**
+     * 每层连杀增加金币
+     */
+    UPROPERTY(EditDefaultsOnly, Category = "Bounty", meta=(DisplayName="每层连杀增加金币"))
+    float BountyPerStreak = 50.f;
+
+    /**
+     * 每层连败扣除金币
+     */
+    UPROPERTY(EditDefaultsOnly, Category = "Bounty", meta=(DisplayName="每层连败扣除金币"))
+    float PenaltyPerDeath = 40.f;
+
+    /**
+     * 最低赏金保底
+     */
+    UPROPERTY(EditDefaultsOnly, Category = "Bounty", meta=(DisplayName="最低赏金保底"))
+    float MinBounty = 20.f;
+
+    /**
+     * 最高赏金封顶
+     */
+    UPROPERTY(EditDefaultsOnly, Category = "Bounty", meta=(DisplayName="最高赏金封顶"))
+    float MaxBounty = 600.f;
+
+    // === 奖励分配配置 ===
+    /**
+     * 奖励分配的范围，在该范围内的队友可获得奖励
+     */
+    UPROPERTY(EditDefaultsOnly, Category = "Reward", meta=(DisplayName="奖励范围"))
+    float RewardRange = 1000.f;
+
+    /**
+     * 基础经验奖励
+     */
+    UPROPERTY(EditDefaultsOnly, Category = "Reward", meta=(DisplayName="基础经验奖励"))
+    float BaseExperienceReward = 200.f;
+
+    /**
+     * 基础金币奖励
+     */
+    UPROPERTY(EditDefaultsOnly, Category = "Reward", meta=(DisplayName="基础金币奖励"))
+    float BaseGoldReward = 200.f;
+
+    /**
+     * 额外经验奖励系数（根据目标经验值加成）
+     */
+    UPROPERTY(EditDefaultsOnly, Category = "Reward", meta=(DisplayName="经验奖励系数（每单位经验）"))
+    float ExperienceRewardPerExperience = 0.1f;
+
+    /**
+     * 额外金币奖励系数（根据目标经验值加成）
+     */
+    UPROPERTY(EditDefaultsOnly, Category = "Reward", meta=(DisplayName="金币奖励系数（每单位经验）"))
+    float GoldRewardPerExperience = 0.05f;
+
+    /**
+     * 击杀者奖励占比（击杀者获得的奖励比例，其余分配给队友）
+     */
+    UPROPERTY(EditDefaultsOnly, Category = "Reward", meta=(DisplayName="击杀者奖励比例（0-1）"))
+    float KillerRewardPortion = 0.5f;
+
+    // === 奖励效果GE类 ===
+    /**
+     * 奖励GE（用于发放经验、金币等）
+     */
+    UPROPERTY(EditDefaultsOnly, Category = "Reward", meta=(DisplayName="奖励效果（GE类）"))
+    TSubclassOf<UGameplayEffect> RewardEffect;
+
+    /**
+     * 击杀英雄GE
+     */
+    UPROPERTY(EditDefaultsOnly, Category = "Reward", meta=(DisplayName="击杀英雄效果（GE类）"))
+    TSubclassOf<UGameplayEffect> KillHeroEffect;
+
+    /**
+     * 死亡GE
+     */
+    UPROPERTY(EditDefaultsOnly, Category = "Reward", meta=(DisplayName="死亡效果（GE类）"))
+    TSubclassOf<UGameplayEffect> DeadEffect;
+
+    /**
+     * 助攻GE
+     */
+    UPROPERTY(EditDefaultsOnly, Category = "Reward", meta=(DisplayName="助攻效果（GE类）"))
+    TSubclassOf<UGameplayEffect> AssistEffect;
+
+    /**
+     * 补兵GE
+     */
+    UPROPERTY(EditDefaultsOnly, Category = "Reward", meta=(DisplayName="补兵效果（GE类）"))
+    TSubclassOf<UGameplayEffect> LastHitEffect;
+
+    /**
+     * 连杀增加 GE
+     */
+    UPROPERTY(EditDefaultsOnly, Category = "Reward", meta=(DisplayName="连杀增加效果（GE类）"))
+    TSubclassOf<UGameplayEffect> KillStreakIncreaseEffect;
+
+    /**
+     * 连败增加 GE
+     */
+    UPROPERTY(EditDefaultsOnly, Category = "Reward", meta=(DisplayName="连败增加效果（GE类）"))
+    TSubclassOf<UGameplayEffect> DeathStreakIncreaseEffect;
+
+    /**
+     * 获取奖励目标（如附近的队友等）
+     */
+    TArray<AActor*> GetRewardTargets() const;
 };
 ```
 

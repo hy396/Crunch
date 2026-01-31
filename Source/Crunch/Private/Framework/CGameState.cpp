@@ -8,6 +8,7 @@
 #include "Network/TNetStatics.h"
 #include "Player/CPlayerCharacter.h"
 #include "Player/CPlayerController.h"
+#include "Player/MPlayerState.h"
 
 void ACGameState::RequestPlayerSelectionChange(const APlayerState* RequestingPlayer, uint8 DesiredSlot)
 {
@@ -110,6 +111,8 @@ void ACGameState::SetCharacterDeselected(const UPDA_CharacterDefinition* Definit
 		OnPlayerSelectionUpdated.Broadcast(PlayerSelectionArray);
 	}
 }
+
+
 
 const TArray<FPlayerSelection>& ACGameState::GetPlayerSelection() const
 {
@@ -230,4 +233,38 @@ void ACGameState::OnRep_TeamTwoPlayerKillCount()
 	{
 		PC->UpdateTeamTwoPlayerKillCount(TeamTwoPlayerKillCount);
 	}
+}
+
+// void ACGameState::Server_NotifyPlayerKilled_Implementation(AMPlayerState* KillerState, AMPlayerState* VictimState, const TArray<AMPlayerState*>& AssistStates)
+// {
+// 	// 在服务器上广播击杀事件
+// 	// OnPlayerKilled.Broadcast(KillerState, VictimState, AssistStates);
+//
+// 	// 发送到所有客户端
+// 	Client_OnPlayerKilled(KillerState, VictimState, AssistStates);
+// }
+//
+// bool ACGameState::Server_NotifyPlayerKilled_Validate(AMPlayerState* KillerState, AMPlayerState* VictimState, const TArray<AMPlayerState*>& AssistStates)
+// {
+// 	return true;
+// }
+void ACGameState::Server_NotifyPlayerKilled(AMPlayerState* KillerState, AMPlayerState* VictimState, const TArray<AMPlayerState*>& AssistStates)
+{
+	// 在服务器上广播击杀事件
+	// OnPlayerKilled.Broadcast(KillerState, VictimState, AssistStates);
+
+	// 发送到所有客户端
+	Client_OnPlayerKilled(KillerState, VictimState, AssistStates);
+}
+void ACGameState::Client_OnPlayerKilled_Implementation(AMPlayerState* KillerState, AMPlayerState* VictimState, const TArray<AMPlayerState*>& AssistStates)
+{
+	// 在客户端上广播击杀事件
+	OnPlayerKilled.Broadcast(KillerState, VictimState, AssistStates);
+}
+
+void ACGameState::Multicast_OnPlayerKilled_Implementation(AMPlayerState* KillerState, AMPlayerState* VictimState,
+	const TArray<AMPlayerState*>& AssistStates)
+{
+	// 在客户端上广播击杀事件
+	OnPlayerKilled.Broadcast(KillerState, VictimState, AssistStates);
 }

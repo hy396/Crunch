@@ -10,8 +10,11 @@
 // #include "Character/Interaction/CombatInterface.h"
 #include "TGameplayTags.h"
 #include "Framework/CGameMode.h"
+#include "Framework/CGameState.h"
 #include "Kismet/GameplayStatics.h"
 #include "Player/CPlayerController.h"
+#include "Player/MPlayerState.h"
+#include "Player/CPlayerCharacter.h"
 
 void UCAttributeSet::GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const
 {
@@ -516,7 +519,32 @@ void UCAttributeSet::OnDeadAbility(const FEffectProperties& Props)
             			// }
             		}
             	}
-            	
+
+            	// 广播击杀事件到GameState
+            	if (ACGameState* GameState = GetWorld()->GetGameState<ACGameState>())
+            	{
+            		// 获取击杀者、被击杀者和助攻者的PlayerState
+					ACPlayerCharacter* KillerChar = Cast<ACPlayerCharacter>(LastDamageSource);
+					AMPlayerState* KillerState = KillerChar ? KillerChar->GetPlayerState<AMPlayerState>() : nullptr;
+
+					ACPlayerCharacter* VictimChar = Cast<ACPlayerCharacter>(GetOwningActor());
+					AMPlayerState* VictimState = VictimChar ? VictimChar->GetPlayerState<AMPlayerState>() : nullptr;
+
+					TArray<AMPlayerState*> AssistStates;
+					for (AActor* AssistHero : DeadPayload->AssistHeroes)
+					{
+					    ACPlayerCharacter* AssistChar = Cast<ACPlayerCharacter>(AssistHero);
+					    if (AMPlayerState* AssistState = AssistChar ? AssistChar->GetPlayerState<AMPlayerState>() : nullptr)
+					    {
+					        AssistStates.Add(AssistState);
+					    }
+					}
+
+            		// 广播击杀事件
+            		// GameState->Server_NotifyPlayerKilled(KillerState, VictimState, AssistStates);
+            		// 添加击杀
+            		GameState->Multicast_OnPlayerKilled(KillerState, VictimState, AssistStates);
+            	}
             }
             else
             {

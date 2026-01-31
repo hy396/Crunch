@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/GameStateBase.h"
+#include "Player/MPlayerState.h"
 #include "Player/PlayerInfoTypes.h"
 #include "CGameState.generated.h"
 
@@ -14,6 +15,15 @@ class UPDA_CharacterDefinition;
  * @param NewPlayerSelection 新的玩家选择数组
  */
 DECLARE_MULTICAST_DELEGATE_OneParam(FOnPlayerSelectionUpdated, const TArray<FPlayerSelection>& /*NewPlayerSelection*/);
+
+/**
+ * 玩家击杀事件委托
+ * 当有玩家被击杀时广播
+ * @param KillerState 击杀者玩家状态
+ * @param VictimState 被击杀者玩家状态
+ * @param AssistStates 助攻者玩家状态列表
+ */
+DECLARE_MULTICAST_DELEGATE_ThreeParams(FOnPlayerKilled, AMPlayerState* /*KillerState*/, AMPlayerState* /*VictimState*/, const TArray<AMPlayerState*>& /*AssistStates*/);
 
 /**
  * 游戏状态类（CGameState）
@@ -63,6 +73,29 @@ public:
 	/** 玩家选择更新事件（多播委托） */
 	FOnPlayerSelectionUpdated OnPlayerSelectionUpdated;
 
+	/** 玩家击杀事件（多播委托） */
+	FOnPlayerKilled OnPlayerKilled;
+
+	/**
+	 * 触发玩家击杀事件（服务器调用，客户端自动同步）
+	 * @param KillerState 击杀者玩家状态
+	 * @param VictimState 被击杀者玩家状态
+	 * @param AssistStates 助攻者玩家状态列表
+	 */
+	// UFUNCTION(BlueprintCallable, Reliable, Server, WithValidation, Category = "Game State")
+	// void Server_NotifyPlayerKilled(AMPlayerState* KillerState, AMPlayerState* VictimState, const TArray<AMPlayerState*>& AssistStates);
+// 	UFUNCTION(BlueprintCallable, Reliable, Server, WithValidation, Category = "Game State")
+	void Server_NotifyPlayerKilled(AMPlayerState* KillerState, AMPlayerState* VictimState, const TArray<AMPlayerState*>& AssistStates);
+
+	/**
+	 * 客户端接收击杀事件
+	 */
+	UFUNCTION(Client, Reliable)
+	void Client_OnPlayerKilled(AMPlayerState* KillerState, AMPlayerState* VictimState, const TArray<AMPlayerState*>& AssistStates);
+
+	// 多播击杀事件
+	UFUNCTION(NetMulticast, Reliable)
+	void Multicast_OnPlayerKilled(AMPlayerState* KillerState, AMPlayerState* VictimState, const TArray<AMPlayerState*>& AssistStates);
 	/**
 	 * 获取玩家选择数组
 	 * @return 当前所有玩家的选择信息数组

@@ -13,6 +13,7 @@
 #include "Inventory/InventoryWidget.h"
 #include "Shop/ShopWidget.h"
 #include "Minimap/MinimapWidget.h"
+#include "KillFeed/KillFeedWidget.h"
 #include "GameplayWidget.generated.h"
 
 class UCrosshairWidget;
@@ -22,6 +23,7 @@ class UGameplayMenu;
 class UMatchStatWidget;
 class USkeletalMeshRenderWidget;
 class UStatusEffectWidget;
+class UKillFeedWidget;
 
 /**
  * 
@@ -69,10 +71,13 @@ public:
 	// 显示弹幕消息
 	void ShowBarrageMessage(const FChatMessage& Message, bool bIsSelf, bool bIsTeammate);
 
+	// 处理玩家击杀事件
+	void OnPlayerKilled(AMPlayerState* KillerState, AMPlayerState* VictimState, const TArray<AMPlayerState*>& AssistStates);
+
 	// // 接收聊天消息（添加到聊天记录）
 	// void ReceiveChatMessage(const FChatMessage& Message);
 
-	
+
 private:
 	/**
 	 * TODO: 将GameplayWidget中的生命条以及法力条修改为Lyra的版本（尚未完成）已经完成了忘记改而已
@@ -165,7 +170,11 @@ private:
 	// 属性面板
 	UPROPERTY(meta=(BindWidget))
 	TObjectPtr<UAttributePanelWidget> AttributePanelWidget;
-	
+
+	// 击杀播报
+	UPROPERTY(meta=(BindWidget))
+	TObjectPtr<UKillFeedWidget> KillFeedWidget;
+
 	// 商店弹出动画
 	UPROPERTY(Transient, meta=(BindWidgetAnim))
 	TObjectPtr<UWidgetAnimation> ShopPopupAnimation;

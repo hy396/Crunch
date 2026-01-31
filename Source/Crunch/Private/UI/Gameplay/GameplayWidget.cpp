@@ -14,6 +14,8 @@
 #include "GAS/Core/CHeroAttributeSet.h"
 #include "UI/Gameplay/Chat/ChatMessageItemWidget.h"
 #include "UI/Gameplay/StatusEffect/StatusEffectWidget.h"
+#include "Framework/CGameState.h"
+#include "Player/MPlayerState.h"
 
 
 void UGameplayWidget::NativeConstruct()
@@ -61,6 +63,12 @@ void UGameplayWidget::NativeConstruct()
 		this,
 		&UGameplayWidget::ToggleAttributePanel
 	);
+
+	// 监听击杀事件
+	if (ACGameState* GameState = GetWorld()->GetGameState<ACGameState>())
+	{
+		GameState->OnPlayerKilled.AddUObject(this, &UGameplayWidget::OnPlayerKilled);
+	}
 }
 
 void UGameplayWidget::ConfigureAbilities(const TMap<ECAbilityInputID, TSubclassOf<UGameplayAbility>>& Abilities)
@@ -366,5 +374,14 @@ void UGameplayWidget::ShowBarrageMessage(const FChatMessage& Message, bool bIsSe
 	else
 	{
 		UE_LOG(LogTemp, Error, TEXT("弹幕消息项创建失败"));
+	}
+}
+
+void UGameplayWidget::OnPlayerKilled(AMPlayerState* KillerState, AMPlayerState* VictimState, const TArray<AMPlayerState*>& AssistStates)
+{
+	// 添加击杀播报到UI
+	if (KillFeedWidget)
+	{
+		KillFeedWidget->AddKillFeed(KillerState, VictimState, AssistStates);
 	}
 }

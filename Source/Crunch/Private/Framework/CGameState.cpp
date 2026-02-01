@@ -248,19 +248,19 @@ void ACGameState::OnRep_TeamTwoPlayerKillCount()
 // {
 // 	return true;
 // }
-void ACGameState::Server_NotifyPlayerKilled(AMPlayerState* KillerState, AMPlayerState* VictimState, const TArray<AMPlayerState*>& AssistStates)
-{
-	// 在服务器上广播击杀事件
-	// OnPlayerKilled.Broadcast(KillerState, VictimState, AssistStates);
-
-	// 发送到所有客户端
-	Client_OnPlayerKilled(KillerState, VictimState, AssistStates);
-}
-void ACGameState::Client_OnPlayerKilled_Implementation(AMPlayerState* KillerState, AMPlayerState* VictimState, const TArray<AMPlayerState*>& AssistStates)
-{
-	// 在客户端上广播击杀事件
-	OnPlayerKilled.Broadcast(KillerState, VictimState, AssistStates);
-}
+// void ACGameState::Server_NotifyPlayerKilled(AMPlayerState* KillerState, AMPlayerState* VictimState, const TArray<AMPlayerState*>& AssistStates)
+// {
+// 	// 在服务器上广播击杀事件
+// 	// OnPlayerKilled.Broadcast(KillerState, VictimState, AssistStates);
+//
+// 	// 发送到所有客户端
+// 	Client_OnPlayerKilled(KillerState, VictimState, AssistStates);
+// }
+// void ACGameState::Client_OnPlayerKilled_Implementation(AMPlayerState* KillerState, AMPlayerState* VictimState, const TArray<AMPlayerState*>& AssistStates)
+// {
+// 	// 在客户端上广播击杀事件
+// 	OnPlayerKilled.Broadcast(KillerState, VictimState, AssistStates);
+// }
 
 void ACGameState::Multicast_OnPlayerKilled_Implementation(AMPlayerState* KillerState, AMPlayerState* VictimState,
 	const TArray<AMPlayerState*>& AssistStates)

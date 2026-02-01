@@ -85,15 +85,20 @@ public:
 	// UFUNCTION(BlueprintCallable, Reliable, Server, WithValidation, Category = "Game State")
 	// void Server_NotifyPlayerKilled(AMPlayerState* KillerState, AMPlayerState* VictimState, const TArray<AMPlayerState*>& AssistStates);
 // 	UFUNCTION(BlueprintCallable, Reliable, Server, WithValidation, Category = "Game State")
-	void Server_NotifyPlayerKilled(AMPlayerState* KillerState, AMPlayerState* VictimState, const TArray<AMPlayerState*>& AssistStates);
-
+	// void Server_NotifyPlayerKilled(AMPlayerState* KillerState, AMPlayerState* VictimState, const TArray<AMPlayerState*>& AssistStates);
+	//
+	// /**
+	//  * 客户端接收击杀事件
+	//  */
+	// UFUNCTION(Client, Reliable)
+	// void Client_OnPlayerKilled(AMPlayerState* KillerState, AMPlayerState* VictimState, const TArray<AMPlayerState*>& AssistStates);
+	
 	/**
-	 * 客户端接收击杀事件
+	 * 触发玩家击杀事件 (广播给所有人)
+	 * @param KillerState 击杀者玩家状态
+	 * @param VictimState 被击杀者玩家状态
+	 * @param AssistStates 助攻者玩家状态列表
 	 */
-	UFUNCTION(Client, Reliable)
-	void Client_OnPlayerKilled(AMPlayerState* KillerState, AMPlayerState* VictimState, const TArray<AMPlayerState*>& AssistStates);
-
-	// 多播击杀事件
 	UFUNCTION(NetMulticast, Reliable)
 	void Multicast_OnPlayerKilled(AMPlayerState* KillerState, AMPlayerState* VictimState, const TArray<AMPlayerState*>& AssistStates);
 	/**

@@ -105,9 +105,13 @@ private:
 	// UPROPERTY(meta = (BindWidget))
 	// TObjectPtr<UButton> LoginButton;
 
+	// 登录按钮
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UFrontendCommonButtonBase> LoginButton;
 
+	// 切换到登录界面
+	void SwitchToLoginWidget();
+	
 	// 登录按钮点击事件
 	UFUNCTION()
 	void OnLoginButtonClicked();
@@ -119,6 +123,10 @@ private:
 	 * @param ErrorMsg 登录失败时的错误信息
 	 */
 	void LoginCompleted(bool bWasSuccessful, const FString& PlayerNickname, const FString& ErrorMsg);
+
+	// 取消登录
+	UFUNCTION()
+	void CancelLogin();
 
 	/******************************/	
 	/*           等待			  */

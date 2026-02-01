@@ -15,10 +15,14 @@ void UMainMenuWidget::NativeConstruct()
 	MGameInstance = GetGameInstance<UMGameInstance>();
 	if (MGameInstance)
 	{
+		// 绑定登录完成事件
 		MGameInstance->OnLoginCompleted.AddUObject(this, &UMainMenuWidget::LoginCompleted);
 		if (MGameInstance->IsLoggedIn())
 		{
 			SwitchToMainWidget();
+		}else
+		{
+			SwitchToLoginWidget();
 		}
 		// 绑定加入会话失败事件
 		MGameInstance->OnJoinSessionFailed.AddUObject(this, &UMainMenuWidget::JoinSessionFailed);
@@ -208,30 +212,50 @@ void UMainMenuWidget::SessionEntrySelected(const FString& SelectedEntryIdStr)
 	JoinSessionBtn->SetIsEnabled(bCanJoin);
 }
 
+void UMainMenuWidget::SwitchToLoginWidget()
+{
+	if (MainSwitcher)
+	{
+		MainSwitcher->SetActiveWidget(LoginWidgetRoot);
+	}
+}
+
 void UMainMenuWidget::OnLoginButtonClicked()
 {
 	// 登录按钮点击时触发
-	UE_LOG(LogTemp, Warning, TEXT("正在登录!"))
+	UE_LOG(LogTemp, Warning, TEXT("#### 正在登录!"))
 	if (MGameInstance && !MGameInstance->IsLoggedIn() && !MGameInstance->IsLoggingIn())
 	{
 		// 触发登录
 		MGameInstance->ClientAccountPortalLogin();
-		// SwitchToWaitingWidget(FText::FromString("正在登录"));
-		SwitchToWaitingWidget(FText::FromString(FString(TEXT("正在登录"))));
+		// 切换到等待界面，启用取消按钮
+		SwitchToWaitingWidget(FText::FromString(FString(TEXT("正在登录"))), true)
+			.AddDynamic(this, &UMainMenuWidget::CancelLogin);
 	}
+}
+
+void UMainMenuWidget::CancelLogin()
+{
+	if (MGameInstance)
+	{
+		MGameInstance->CancelLogin();
+	}
+	// 取消登录返回登录界面
+	SwitchToLoginWidget();
 }
 
 void UMainMenuWidget::LoginCompleted(bool bWasSuccessful, const FString& PlayerNickname, const FString& ErrorMsg)
 {
 	if (bWasSuccessful)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("登录成功: %s"), *PlayerNickname)
+		UE_LOG(LogTemp, Warning, TEXT("#### 登录成功: %s"), *PlayerNickname)
+		SwitchToMainWidget();
 	}
 	else
 	{
-		UE_LOG(LogTemp, Warning, TEXT("登录失败: %s"), *ErrorMsg)
+		UE_LOG(LogTemp, Error, TEXT("#### 登录失败: %s"), *ErrorMsg)
+		SwitchToLoginWidget();
 	}
-	SwitchToMainWidget();
 }
 
 FOnButtonClickedEvent& UMainMenuWidget::SwitchToWaitingWidget(const FText& WaitInfo, bool bAllowCancel)

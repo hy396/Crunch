@@ -55,7 +55,10 @@ public:
 	
 	// 客户端通过账户门户登录
 	void ClientAccountPortalLogin();
-	
+
+	// 取消登录
+	void CancelLogin();
+
 	// 登录完成委托
 	FOnLoginCompleted OnLoginCompleted;
 	

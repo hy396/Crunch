@@ -111,23 +111,72 @@ bool UMGameInstance::IsLoggingIn() const
 void UMGameInstance::ClientAccountPortalLogin()
 {
 	// 使用账号门户登录，即不需要提供具体的账号和密码，通过网页进行登录
+	UE_LOG(LogTemp, Warning, TEXT("#### 客户端请求通过账户门户登录"));
 	// 调用统一的ClientLogin接口，使用AccountPortal方式
 	ClientLogin("AccountPortal", "", "");
+
+
+	// 绕过 EOS，使用本地开发者认证
+    // MGameInstance->ClientLogin("Developer", "localhost:8080", "Player1");
+}
+
+bool UMGameInstance::Logout()
+{
+	UE_LOG(LogTemp, Warning, TEXT("#### 请求退出登录"));
+
+	// 先取消任何正在进行的登录
+	if (IsLoggingIn())
+	{
+		CancelLogin();
+	}
+
+	// 如果未登录，直接返回成功
+	if (!IsLoggedIn())
+	{
+		UE_LOG(LogTemp, Warning, TEXT("#### 当前未登录，无需退出登录"));
+		return true;
+	}
+
+    // ====== 新增：停止所有会话查找 ======
+    StopAllSessionFindings();
+
+	// 获取 IdentityPtr
+	IOnlineIdentityPtr IdentityPtr = UTNetStatics::GetIdentityPtr();
+	if (!IdentityPtr)
+	{
+		UE_LOG(LogTemp, Error, TEXT("#### 无法获取 IdentityPtr，退出登录无法进行"));
+		return false;
+	}
+
+	// 调用 OnlineSubsystem 的登出方法
+	if (IdentityPtr->Logout(0))
+	{
+		UE_LOG(LogTemp, Warning, TEXT("#### 退出登录成功"));
+		return true;
+	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("#### 退出登录失败"));
+		return false;
+	}
 }
 
 void UMGameInstance::ClientLogin(const FString& Type, const FString& Id, const FString& Token)
 {
+	UE_LOG(LogTemp, Warning, TEXT("#### ClientLogin 被调用 - Type: %s, Id: %s"), *Type, *Id);
+
 	if (IOnlineIdentityPtr IdentityPtr = UTNetStatics::GetIdentityPtr())
 	{
 		// 如果已经有一个登录委托在监听，先移除它，避免重复绑定
 		if (LoggingInDelegateHandle.IsValid())
 		{
+			UE_LOG(LogTemp, Warning, TEXT("#### 检测到已有登录委托在监听，先移除旧委托"));
 			IdentityPtr->OnLoginCompleteDelegates->Remove(LoggingInDelegateHandle);
 			LoggingInDelegateHandle.Reset();
 		}
 		// 绑定登录完成回调
 		LoggingInDelegateHandle = IdentityPtr->OnLoginCompleteDelegates->AddUObject(this, &UMGameInstance::LoginCompleted);
-		
+
 		// 调用OnlineSubsystem的登录函数（异步）
 		if (!IdentityPtr->Login(0,FOnlineAccountCredentials(Type, Id, Token)))
 		{
@@ -140,12 +189,28 @@ void UMGameInstance::ClientLogin(const FString& Type, const FString& Id, const F
 			// 通知外部,登录失败
 			OnLoginCompleted.Broadcast(false, "", TEXT("登录失败!"));
 		}
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("#### 登录请求已成功发送到 OnlineSubsystem，等待回调"));
+		}
+	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("#### 无法获取 IdentityPtr，登录无法进行"));
 	}
 }
 
 void UMGameInstance::LoginCompleted(int32 NumOfLocalPlayer, bool bWasSuccessful, const FUniqueNetId& UserId,
 	const FString& Error)
 {
+	UE_LOG(LogTemp, Warning, TEXT("#### 登录回调被触发 - NumOfLocalPlayer: %d, bWasSuccessful: %d"), NumOfLocalPlayer, bWasSuccessful);
+    // 如果是 PIN Grant 等待状态，不要当成失败
+    if (Error.Contains("PinGrantPending") || Error.Contains("AuthorizationPending"))
+    {
+        UE_LOG(LogTemp, Warning, TEXT("#### 等待浏览器授权，请勿重复点击登录..."));
+        // 这里不广播失败，保持等待状态
+        return;
+    }
 	if (IOnlineIdentityPtr IdentityPtr = UTNetStatics::GetIdentityPtr())
 	{
 		// 移除登录完成委托
@@ -170,6 +235,7 @@ void UMGameInstance::LoginCompleted(int32 NumOfLocalPlayer, bool bWasSuccessful,
 		OnLoginCompleted.Broadcast(bWasSuccessful, PlayerNickname, Error);
 	}else
 	{
+		UE_LOG(LogTemp, Error, TEXT("#### 登录完成回调中无法找到身份指针，广播失败结果"));
 		OnLoginCompleted.Broadcast(bWasSuccessful, "", TEXT("无法找到身份指针"));
 	}
 }
@@ -181,12 +247,23 @@ void UMGameInstance::CancelLogin()
 	{
 		if (IOnlineIdentityPtr IdentityPtr = UTNetStatics::GetIdentityPtr())
 		{
+			UE_LOG(LogTemp, Warning, TEXT("#### 取消登录中，移除登录完成委托"));
 			// 移除登录完成委托
 			IdentityPtr->OnLoginCompleteDelegates->Remove(LoggingInDelegateHandle);
 			LoggingInDelegateHandle.Reset();
-		}
-		UE_LOG(LogTemp, Warning, TEXT("登录已取消"));
+		}else
+        {
+            LoggingInDelegateHandle.Reset();
+        }
+		UE_LOG(LogTemp, Warning, TEXT("#### 登录已取消"));
 	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("#### 尝试取消登录，但当前没有正在进行的登录"));
+	}
+
+	// 广播取消事件，让 UI 重置
+    OnLoginCompleted.Broadcast(false, "", TEXT("登录已取消"));
 }
 
 void UMGameInstance::RequestCreateAndJoinSession(const FName& NewSessionName)
@@ -236,7 +313,7 @@ void UMGameInstance::RequestCreateAndJoinSession(const FName& NewSessionName)
 
 void UMGameInstance::CancelSessionCreation()
 {
-	UE_LOG(LogTemp, Warning, TEXT("取消会话创建"))
+	UE_LOG(LogTemp, Warning, TEXT("#### 用户请求取消会话创建"));
 	// 停止所有会话查找
 	StopAllSessionFindings();
 
@@ -245,10 +322,12 @@ void UMGameInstance::CancelSessionCreation()
 	{
 		SessionPtr->OnFindSessionsCompleteDelegates.RemoveAll(this);
 		SessionPtr->OnJoinSessionCompleteDelegates.RemoveAll(this);
+		UE_LOG(LogTemp, Warning, TEXT("#### 已清除会话查找和加入的委托"));
 	}
 
 	// 重新开始全局会话搜索
 	StartGlobalSessionSearch();
+	UE_LOG(LogTemp, Warning, TEXT("#### 已重新启动全局会话搜索"));
 }
 
 void UMGameInstance::StartGlobalSessionSearch()
@@ -338,6 +417,7 @@ void UMGameInstance::SessionCreationRequestCompleted(FHttpRequestPtr Request, FH
 	// }
 	if (!FJsonSerializer::Deserialize(Reader, JsonObject) || !JsonObject.IsValid())
 	{
+		UE_LOG(LogTemp, Error, TEXT("#### 解析会话创建响应 JSON 失败，请检查协调器服务器"));
 		UE_LOG(LogTemp, Error, TEXT("#### Failed to parse session created response JSON，please check coordinator server."));
 		return;
 	}

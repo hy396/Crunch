@@ -39,7 +39,7 @@ void UGameplayMenu::SetTitleText(const FString& NewTitle)
 
 void UGameplayMenu::BackToMainMenu()
 {
-	// TODO:返回主菜单(未实现) 2025/11/25实现但暂时为实验，可能成功不知道是否有bug
+	// TODO:返回主菜单(已实现) 2025/11/25实现但暂时为实验，可能成功不知道是否有bug --- 测试完貌似没bug
 	IOnlineSessionPtr SessionInterface = UTNetStatics::GetSessionPtr();
 	const FName LevelURL = FName(*FPackageName::ObjectPathToPackageName(MainMenuLevel.ToString()));
 

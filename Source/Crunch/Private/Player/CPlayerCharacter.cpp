@@ -220,14 +220,18 @@ void ACPlayerCharacter::SetInputEnabledFromPlayerController(bool bEnabled)
  */
 void ACPlayerCharacter::OnStun()
 {
-	SetInputEnabledFromPlayerController(false);
+	// 禁用移动
+	GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_None);
+	// SetInputEnabledFromPlayerController(false);
 }
 
 void ACPlayerCharacter::OnRecoverFromStun()
 {
 	if (IsDead()) return;
 	
-	SetInputEnabledFromPlayerController(true);
+	// 开启移动
+	GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_Walking);
+	// SetInputEnabledFromPlayerController(true);
 }
 
 void ACPlayerCharacter::OnDead()

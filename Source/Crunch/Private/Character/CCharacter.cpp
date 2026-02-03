@@ -477,7 +477,7 @@ void ACCharacter::StartDeathSequence()
 	// 关闭头顶血条
 	SetStatusGaugeEnabled(false);
 	// 禁用移动
-	// GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_None);
+	GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_None);
 	// 禁用碰撞
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	// TODO:2025/12/30修改

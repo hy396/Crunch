@@ -8,6 +8,7 @@
 #include "Components/CanvasPanelSlot.h"
 #include "Components/WidgetSwitcher.h"
 #include "Blueprint/WidgetLayoutLibrary.h"
+#include "Character/CCharacter.h"
 #include "Engine/Engine.h"
 #include "GameplayMenu/GameplayMenu.h"
 #include "GAS/Core/CAttributeSet.h"
@@ -267,16 +268,23 @@ void UGameplayWidget::PlayShopPopupAnimation(bool bPlayForward)
 
 void UGameplayWidget::SetOwningPawnInputEnabled(bool bPawnInputEnabled)
 {
-	if (bPawnInputEnabled)
-	{
-		// 启动玩家输入
-		GetOwningPlayerPawn()->EnableInput(GetOwningPlayer());
-	}else
-	{
-		// 禁用玩家输入
-		GetOwningPlayerPawn()->DisableInput(GetOwningPlayer());
-	}
+    APawn* OwningPawn = GetOwningPlayerPawn();
+    if (!OwningPawn) return;
+
+    if (const ACCharacter* Character = Cast<ACCharacter>(OwningPawn))
+    {
+        if (Character->IsDead() && bPawnInputEnabled)
+		{
+			// UE_LOG(LogTemp, Warning, TEXT("角色已死亡，拒绝启用输入"));
+            return; // 死亡时拒绝启用
+		} 
+    }
+
+    bPawnInputEnabled 
+        ? OwningPawn->EnableInput(GetOwningPlayer())
+        : OwningPawn->DisableInput(GetOwningPlayer());
 }
+
 
 void UGameplayWidget::SetShowMouseCursor(bool bShowMouseCursor)
 {

@@ -128,7 +128,11 @@ private:
 	UFUNCTION()
 	void CancelLogin();
 
-	/******************************/	
+	// 退出登录（可在蓝图中调用）
+	UFUNCTION(BlueprintCallable, Category = "Login")
+	void Logout();
+
+	/******************************/
 	/*           等待			  */
 	/******************************/
 private:

@@ -52,9 +52,12 @@ public:
 	
 	// 检查是否正在登录中
 	bool IsLoggingIn() const;
-	
+
 	// 客户端通过账户门户登录
 	void ClientAccountPortalLogin();
+
+	// 退出登录
+	bool Logout();
 
 	// 取消登录
 	void CancelLogin();

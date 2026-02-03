@@ -17,19 +17,23 @@ void UMainMenuWidget::NativeConstruct()
 	{
 		// 绑定登录完成事件
 		MGameInstance->OnLoginCompleted.AddUObject(this, &UMainMenuWidget::LoginCompleted);
-		if (MGameInstance->IsLoggedIn())
-		{
-			SwitchToMainWidget();
-		}else
-		{
-			SwitchToLoginWidget();
-		}
 		// 绑定加入会话失败事件
 		MGameInstance->OnJoinSessionFailed.AddUObject(this, &UMainMenuWidget::JoinSessionFailed);
 		// 绑定会话搜索完成事件, 会话列表更新
 		MGameInstance->OnGlobalSessionSearchCompleted.AddUObject(this, &UMainMenuWidget::UpdateLobbyList);
+		if (MGameInstance->IsLoggedIn())
+		{
+			SwitchToMainWidget();
+			// 已登录，开始搜索会话
+            MGameInstance->StartGlobalSessionSearch();
+		}else
+		{
+			SwitchToLoginWidget();
+			// 未登录，不搜索会话，等待登录完成
+		}
+
 		// 开始全局会话搜索
-		MGameInstance->StartGlobalSessionSearch();
+		// MGameInstance->StartGlobalSessionSearch();
 	}
 
 	// 绑定登录按钮点击事件
@@ -244,12 +248,44 @@ void UMainMenuWidget::CancelLogin()
 	SwitchToLoginWidget();
 }
 
+void UMainMenuWidget::Logout()
+{
+	UE_LOG(LogTemp, Warning, TEXT("#### 用户请求退出登录"));
+	if (MGameInstance)
+	{
+		if (MGameInstance->Logout())
+		{
+			// 在Logout实现了
+			// MGameInstance->StopAllSessionFindings();
+			// 退出登录成功，返回登录界面
+			SwitchToLoginWidget();
+		}
+		else
+		{
+			UE_LOG(LogTemp, Error, TEXT("#### 退出登录失败，留在当前界面"));
+		}
+	}
+}
+
 void UMainMenuWidget::LoginCompleted(bool bWasSuccessful, const FString& PlayerNickname, const FString& ErrorMsg)
 {
+	// 如果还在等待授权，不切换界面
+    if (ErrorMsg.Contains("PinGrantPending"))
+    {
+		UE_LOG(LogTemp, Warning, TEXT("#### 等待授权完成登录"));
+        // 显示提示："请在浏览器中完成登录"
+        // LoginStatusText->SetText(FText::FromString(TEXT("请在浏览器中完成登录...")));
+        return;
+    }
 	if (bWasSuccessful)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("#### 登录成功: %s"), *PlayerNickname)
 		SwitchToMainWidget();
+		// 登录成功后开始搜索会话
+        if (MGameInstance)
+        {
+            MGameInstance->StartGlobalSessionSearch();
+        }
 	}
 	else
 	{

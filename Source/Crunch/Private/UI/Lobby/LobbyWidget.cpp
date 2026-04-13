@@ -165,17 +165,30 @@ void ULobbyWidget::UpdatePlayerSelectionDisplay(const TArray<FPlayerSelection>& 
 		// 更新槽位名称显示
 		TeamSelectionSlots[PlayerSelection.GetPlayerSlot()]->UpdateSlotInfo(PlayerSelection.GetPlayerNickName());
 
-		// 已选择的角色变成灰色让别人知道不能选了
-		if (UCharacterEntryWidget* SelectedEntry = CharacterSelectionTileView->GetEntryWidgetFromItem<UCharacterEntryWidget>(PlayerSelection.GetCharacterDefinition()))
-		{
-			SelectedEntry->SetSelected(true);
-		}
 
-		// 如果是当前玩家，更新角色预览
+		// TODO : 2026/4/13，允许重复选择，当角色足够多的时候去掉注释, 该作用域下被注释掉的代码就是原逻辑
+		// 如果是当前玩家，更新角色预览并标灰该英雄
 		if (PlayerSelection.IsForPlayer(GetOwningPlayerState()))
 		{
 			UpdateCharacterDisplay(PlayerSelection);
+
+			// 仅本地玩家自己选中的英雄在本地 UI 中标灰
+			if (UCharacterEntryWidget* SelectedEntry = CharacterSelectionTileView->GetEntryWidgetFromItem<UCharacterEntryWidget>(PlayerSelection.GetCharacterDefinition()))
+			{
+				SelectedEntry->SetSelected(true);
+			}
 		}
+		// // 已选择的角色变成灰色让别人知道不能选了
+		// if (UCharacterEntryWidget* SelectedEntry = CharacterSelectionTileView->GetEntryWidgetFromItem<UCharacterEntryWidget>(PlayerSelection.GetCharacterDefinition()))
+		// {
+		// 	SelectedEntry->SetSelected(true);
+		// }
+
+		// // 如果是当前玩家，更新角色预览
+		// if (PlayerSelection.IsForPlayer(GetOwningPlayerState()))
+		// {
+		// 	UpdateCharacterDisplay(PlayerSelection);
+		// }
 	}
 
 	if (CGameState)

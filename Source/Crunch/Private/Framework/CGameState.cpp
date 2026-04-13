@@ -44,8 +44,9 @@ void ACGameState::RequestPlayerSelectionChange(const APlayerState* RequestingPla
 void ACGameState::SetCharacterSelected(const APlayerState* SelectingPlayer,
 	const UPDA_CharacterDefinition* SelectedDefinition)
 {
+	// TODO : 2026/4/13，去除"唯一性"限制：多名玩家可以选择同一个英雄
 	// 检查角色是否已被选择
-	if (IsDefinitionSelected(SelectedDefinition)) return;
+	// if (IsDefinitionSelected(SelectedDefinition)) return;
 
 	// 查找玩家选择条目
 	FPlayerSelection* FoundPlayerSelection = PlayerSelectionArray.FindByPredicate(
@@ -95,6 +96,13 @@ void ACGameState::SetCharacterDeselected(const UPDA_CharacterDefinition* Definit
 {
 	if (!DefinitionToDeselect) return;
 
+	// // TODO : 2026/4/13，按 PlayerState 查找该玩家的条目（而非按 Definition）
+    // FPlayerSelection* FoundPlayerSelection = PlayerSelectionArray.FindByPredicate(
+    //     [&](const FPlayerSelection& PlayerSelection)
+    //     {
+    //         return PlayerSelection.IsForPlayer(DefinitionToDeselect);
+    //     }
+    // );
 	// 查找对应的角色选择条目
 	FPlayerSelection* FoundPlayerSelection = PlayerSelectionArray.FindByPredicate(
 		[&](const FPlayerSelection& PlayerSelection)
@@ -112,7 +120,28 @@ void ACGameState::SetCharacterDeselected(const UPDA_CharacterDefinition* Definit
 	}
 }
 
+// TODO : 2026/4/13，按 PlayerState 查找该玩家的条目（而非按 Definition）新添加的函数
+void ACGameState::SetCharacterDeselected(const APlayerState* DeselectingPlayer)
+{
+	if (!DeselectingPlayer) return;
 
+	// 查找对应玩家的选择条目
+	FPlayerSelection* FoundPlayerSelection = PlayerSelectionArray.FindByPredicate(
+		[&](const FPlayerSelection& PlayerSelection)
+		{
+			return PlayerSelection.IsForPlayer(DeselectingPlayer);
+		}
+	);
+
+	if (FoundPlayerSelection)
+	{
+		// 置空角色定义
+		FoundPlayerSelection->SetCharacterDefinition(nullptr);
+		// 广播更新
+		OnPlayerSelectionUpdated.Broadcast(PlayerSelectionArray);
+	}
+
+}
 
 const TArray<FPlayerSelection>& ACGameState::GetPlayerSelection() const
 {

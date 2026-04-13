@@ -69,6 +69,9 @@ public:
 	 */
 	void SetCharacterDeselected(const UPDA_CharacterDefinition* DefinitionToDeselect);
 
+	// TODO : 2026/4/13，按 PlayerState 查找该玩家的条目（而非按 Definition）上面的是原方案
+	void SetCharacterDeselected(const APlayerState* DeselectingPlayer);
+
 	
 	/** 玩家选择更新事件（多播委托） */
 	FOnPlayerSelectionUpdated OnPlayerSelectionUpdated;

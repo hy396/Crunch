@@ -67,13 +67,16 @@ void AMPlayerState::Server_SetSelectedCharacterDefinition_Implementation(const U
 	// 安全检查
 	if (!CGameState || !NewDefinition) return;
 	
+	// TODO : 2026/4/13，去除"唯一性"限制：多名玩家可以选择同一个英雄，当角色足够多的时候去掉注释
 	// 如果角色已被其他玩家选择则退出
-	if (CGameState->IsDefinitionSelected(NewDefinition)) return;
+	// if (CGameState->IsDefinitionSelected(NewDefinition)) return;
 	
 	// 如果玩家已有选择，先取消旧选择
 	if (PlayerSelection.GetCharacterDefinition())
 	{
-		CGameState->SetCharacterDeselected(PlayerSelection.GetCharacterDefinition());
+		// TODO : 2026/4/13，按 PlayerState 查找该玩家的条目（而非按 Definition）下面的是原方案
+		CGameState->SetCharacterDeselected(this);
+		// CGameState->SetCharacterDeselected(PlayerSelection.GetCharacterDefinition());
 	}
 	
 	// 更新选择并通知游戏状态

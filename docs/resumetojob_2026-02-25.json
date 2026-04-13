@@ -1,0 +1,117 @@
+{
+  "version": "1.0",
+  "exportedAt": "2026-02-25T11:31:19.069Z",
+  "resumes": [
+    {
+      "metadata": {
+        "id": "resume-1762152016127-qdrbtra68",
+        "title": "我的",
+        "tags": [],
+        "createdAt": "2025-11-03T05:46:05.441Z",
+        "updatedAt": "2026-02-25T11:31:08.553Z"
+      },
+      "content": {
+        "profile": {
+          "name": "周锦城",
+          "summary": [
+            "拥有扎实的 C++ 与数据结构基础，具备两款 UE5 多人/RPG 游戏完整开发经验。求职方向：UE客户端开发工程师。"
+          ],
+          "email": "3291587145@qq.com",
+          "phone": "13059360045",
+          "location": "广东肇庆",
+          "url": "https://github.com/hy396",
+          "photoUrl": ""
+        },
+        "workExperiences": [
+          {
+            "id": "exp-ue-client-1",
+            "company": "",
+            "jobTitle": "",
+            "date": "",
+            "descriptions": []
+          }
+        ],
+        "educations": [
+          {
+            "id": "initial-education-1",
+            "school": "南京邮电大学通达学院 ",
+            "degree": "物联网工程(嵌入式培养)（本科）",
+            "gpa": " 4.24 GPA",
+            "date": "2022/09--2026/06 ",
+            "descriptions": []
+          }
+        ],
+        "projects": [
+          {
+            "id": "initial-project-1",
+            "project": "俯视角RPG",
+            "date": "2025/01--2025/03 ",
+            "descriptions": [
+              "项目规模：10+技能、12种属性与抗性、5种Debuff，支持多人联机",
+              "GAS 核心战斗系统：基于 GAS 框架构建角色属性系统，通过 MMC 动态结算12种属性与抗性；实现支持学习、装备与加点的模块化技能系统。",
+              "伤害与状态管理：基于 ECC 实现自定义伤害结算管线；结合 GameplayTag 实现燃烧、眩晕等5种 Debuff 的叠加、刷新与中断逻辑。",
+              "数据驱动 UI：运用 MVC 架构，通过事件委托与 AttributeSet 监听实现主界面、血条与技能冷却的高效同步，消除 UI 层 Tick 开销。",
+              "AI 行为逻辑：结合行为树与黑板，通过 BTService 定时更新目标位置，实现敌人索敌与持续追踪。"
+            ]
+          },
+          {
+            "id": "17621490546329flecjj6k",
+            "project": "多人在线对战游戏",
+            "date": "2025/07—2025/09",
+            "descriptions": [
+              "多人网络同步： 基于专属服务器架构，实现状态、伤害、聊天的网络同步与权限校验。",
+              "GAS 技能与角色： 运用 GAS 构建 MOBA 技能机制（消耗、冷却、打断），利用ECC计算伤害，服务器结算后同步飘字；封装通用角色基类，提升新英雄开发效率。",
+              "背包与装备合成树： 开发背包组件（支持拖拽/交互）；购买高级装备时自动检索散件并计算差价。",
+              "通用系统开发： 基于 CommonUI 构建前端界面（分辨率/音量/按键重映射），异步加载优化体验；开发频道隔离的网络聊天系统。",
+              "服务器部署：编写 Docker + Python 部署脚本，实现专属服务器一键部署与联调。",
+              "代码库：https://github.com/hy396/Crunch",
+              "视频演示：https://www.bilibili.com/video/BV1KCn3zLEow"
+            ]
+          }
+        ],
+        "skills": {
+          "featuredSkills": [
+            {
+              "skill": "",
+              "rating": 0
+            },
+            {
+              "skill": "",
+              "rating": 5
+            },
+            {
+              "skill": "",
+              "rating": 3
+            },
+            {
+              "skill": "",
+              "rating": 4
+            },
+            {
+              "skill": "",
+              "rating": 4
+            },
+            {
+              "skill": "",
+              "rating": 2
+            }
+          ],
+          "descriptions": [
+            "引擎与语言：掌握 C++ 与 Unreal Engine 5，熟悉 C++ 与蓝图协同开发流程；了解 UnLua 与 PuerTs 脚本开发。",
+            "核心系统开发：熟悉 GAS ，能基于 Ability、Effect、Tag 独立构建技能与战斗系统。",
+            "UI与交互：掌握 UMG 与 CommonUI 框架，熟悉基于 MVC 架构与 AttributeSet 实现数据驱动 UI。",
+            "其他：熟悉网络同步（RPC、属性同步）；熟练使用 Git；了解 Docker 容器化部署。"
+          ]
+        },
+        "custom": {
+          "descriptions": [
+            "蓝桥杯（C/C++程序设计）省赛二等奖；",
+            "大学生团体程序设计天梯赛国赛三等奖、省级二等奖；",
+            "计算机能力挑战赛国赛三等奖、华东赛区一等奖/二等奖。",
+            "大学日语四级/六级 (CJT-4/6)。"
+          ]
+        }
+      }
+    }
+  ]
+}

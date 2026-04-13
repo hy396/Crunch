@@ -52,6 +52,36 @@ namespace TGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Ability_SwordAura, "Ability.SwordAura", "剑气技能")
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Ability_SwordAura_Cooldown, "Ability.SwordAura.Cooldown", "剑气技能冷却")
 
+	// ============ 大斧战士技能 ============
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Ability_WarCry, "Ability.WarCry", "战吼技能")
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Ability_WarCry_Shout, "Ability.WarCry.Shout", "战吼动画事件")
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Ability_WarCry_Cooldown, "Ability.WarCry.Cooldown", "战吼技能冷却")
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Ability_Guillotine, "Ability.Guillotine", "断头台技能")
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Ability_Guillotine_Slam, "Ability.Guillotine.Slam", "断头台劈砍动画事件")
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Ability_Guillotine_Cooldown, "Ability.Guillotine.Cooldown", "断头台技能冷却")
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Ability_AxeThrow, "Ability.AxeThrow", "掷斧技能")
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Ability_AxeThrow_Release, "Ability.AxeThrow.Release", "掷斧释放动画事件")
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Ability_AxeThrow_Return, "Ability.AxeThrow.Return", "掷斧回旋返回事件")
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Ability_AxeThrow_Cooldown, "Ability.AxeThrow.Cooldown", "掷斧技能冷却")
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Ability_Earthquake, "Ability.Earthquake", "地裂技能")
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Ability_Earthquake_Slam1, "Ability.Earthquake.Slam1", "地裂第一次砸地")
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Ability_Earthquake_Slam2, "Ability.Earthquake.Slam2", "地裂第二次砸地")
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Ability_Earthquake_Slam3, "Ability.Earthquake.Slam3", "地裂第三次砸地")
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Ability_Earthquake_Cooldown, "Ability.Earthquake.Cooldown", "地裂技能冷却")
+
+	// ============ 法师技能 ============
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Ability_ArcaneOrb, "Ability.ArcaneOrb", "奥术弹技能")
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Ability_ArcaneOrb_Cast, "Ability.ArcaneOrb.Cast", "奥术弹施法动画事件")
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Ability_ArcaneOrb_Cooldown, "Ability.ArcaneOrb.Cooldown", "奥术弹技能冷却")
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Ability_PhaseShift, "Ability.PhaseShift", "相位转移技能")
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Ability_PhaseShift_Shift, "Ability.PhaseShift.Shift", "相位转移位移动画事件")
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Ability_PhaseShift_Cooldown, "Ability.PhaseShift.Cooldown", "相位转移技能冷却")
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Ability_MeteorStrike, "Ability.MeteorStrike", "陨石打击技能")
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Ability_MeteorStrike_Impact, "Ability.MeteorStrike.Impact", "陨石落地事件")
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Ability_MeteorStrike_Cooldown, "Ability.MeteorStrike.Cooldown", "陨石打击技能冷却")
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Ability_ArcaneStorm, "Ability.ArcaneStorm", "奥术风暴技能")
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Ability_ArcaneStorm_Cooldown, "Ability.ArcaneStorm.Cooldown", "奥术风暴技能冷却")
+
 	
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Ability_Generic_Damage, "Ability.Generic.Damage", "技能伤害")
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Ability_Generic_Target, "Ability.Generic.Target", "技能目标")

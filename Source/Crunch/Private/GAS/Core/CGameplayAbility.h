@@ -52,9 +52,17 @@ protected:
 	// 将伤害应用到TargetDataHandle中的所有目标
 	void ApplyDamageToTargetDataHandle(const FGameplayAbilityTargetDataHandle& TargetDataHandle, const FGenericDamageEffectDef& Damage, int Level = 1);
 
-	// TODO: 废用方案
-	// 设置伤害
-	void MakeDamage(const FGenericDamageEffectDef& Damage, int Level = 1);
+private:
+	// 创建伤害EffectContext（提取公共逻辑，ApplyDamageToActor和ApplyDamageToTargetDataHandle共用）
+	FGameplayEffectContextHandle MakeDamageEffectContext() const;
+
+	// 根据DamageTypeDefinitions创建并设置EffectSpec（提取公共循环逻辑）
+	void ApplyDamageSpecToTarget(
+		const FGameplayEffectContextHandle& ContextHandle,
+		const FGenericDamageEffectDef& Damage,
+		int Level,
+		const FGameplayAbilityTargetDataHandle& TargetDataHandle);
+protected:
 	UFUNCTION()
 	FORCEINLINE bool ShouldDrawDebug() const { return bShouldDrawDebug; }
 

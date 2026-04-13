@@ -178,23 +178,27 @@ void UCGameplayAbility::ApplyGameplayEffectToHitResultActor(const FHitResult& Hi
 									UAbilitySystemBlueprintLibrary::AbilityTargetDataFromActor(HitResult.GetActor()));
 }
 
-void UCGameplayAbility::ApplyDamageToActor(AActor* TargetActor,const FGenericDamageEffectDef& Damage, int Level)
+FGameplayEffectContextHandle UCGameplayAbility::MakeDamageEffectContext() const
 {
 	const UAbilitySystemComponent* ASC = GetAbilitySystemComponentFromActorInfo();
-	AActor* AvatarActor				   = GetAvatarActorFromActorInfo();
-	// 创建效果上下文， 设置能力 、源对象 和 施加者
+	AActor* AvatarActor = GetAvatarActorFromActorInfo();
 	FGameplayEffectContextHandle ContextHandle = ASC->MakeEffectContext();
 	ContextHandle.SetAbility(this);
 	ContextHandle.AddSourceObject(AvatarActor);
 	ContextHandle.AddInstigator(AvatarActor, AvatarActor);
-	// // 创建效果Spec句柄，指定效果类、能力等级和上下文
-	// FGameplayEffectSpecHandle EffectSpecHandle = ASC->MakeOutgoingSpec(Damage.DamageEffect, Level, ContextHandle);
-	
-	// 配置伤害
-	// MakeDamage(Damage, Level);
+	return ContextHandle;
+}
+
+void UCGameplayAbility::ApplyDamageSpecToTarget(
+	const FGameplayEffectContextHandle& ContextHandle,
+	const FGenericDamageEffectDef& Damage,
+	int Level,
+	const FGameplayAbilityTargetDataHandle& TargetDataHandle)
+{
+	const UAbilitySystemComponent* ASC = GetAbilitySystemComponentFromActorInfo();
+
 	for (const auto& TypePair : Damage.DamageTypeDefinitions)
 	{
-		// 创建效果Spec句柄，指定效果类、能力等级和上下文
 		FGameplayEffectSpecHandle EffectSpecHandle = ASC->MakeOutgoingSpec(Damage.DamageEffect, Level, ContextHandle);
 		float TotalModifier = TypePair.Value.BaseDamage.GetValueAtLevel(Level);
 		for (const auto& Modifier : TypePair.Value.AttributeDamageModifiers)
@@ -202,86 +206,22 @@ void UCGameplayAbility::ApplyDamageToActor(AActor* TargetActor,const FGenericDam
 			UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(EffectSpecHandle, Modifier.Key, Modifier.Value);
 		}
 		UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(EffectSpecHandle, TypePair.Key, TotalModifier);
-		// 在目标上应用游戏效果规范
-		ApplyGameplayEffectSpecToTarget(GetCurrentAbilitySpecHandle(),
-										GetCurrentActorInfo(),
-										GetCurrentActivationInfo(),
-										EffectSpecHandle,
-										UAbilitySystemBlueprintLibrary::AbilityTargetDataFromActor(TargetActor));
+		K2_ApplyGameplayEffectSpecToTarget(EffectSpecHandle, TargetDataHandle);
 	}
-	// // 在目标上应用游戏效果规范
-	// ApplyGameplayEffectSpecToTarget(GetCurrentAbilitySpecHandle(),
-	// 								GetCurrentActorInfo(),
-	// 								GetCurrentActivationInfo(),
-	// 								EffectSpecHandle,
-	// 								UAbilitySystemBlueprintLibrary::AbilityTargetDataFromActor(TargetActor));
+}
+
+void UCGameplayAbility::ApplyDamageToActor(AActor* TargetActor, const FGenericDamageEffectDef& Damage, int Level)
+{
+	FGameplayEffectContextHandle ContextHandle = MakeDamageEffectContext();
+	FGameplayAbilityTargetDataHandle TargetDataHandle = UAbilitySystemBlueprintLibrary::AbilityTargetDataFromActor(TargetActor);
+	ApplyDamageSpecToTarget(ContextHandle, Damage, Level, TargetDataHandle);
 }
 
 void UCGameplayAbility::ApplyDamageToTargetDataHandle(const FGameplayAbilityTargetDataHandle& TargetDataHandle,
 	const FGenericDamageEffectDef& Damage, int Level)
 {
-	const UAbilitySystemComponent* ASC = GetAbilitySystemComponentFromActorInfo();
-	AActor* AvatarActor				   = GetAvatarActorFromActorInfo();
-	// 创建效果上下文， 设置能力 、源对象 和 施加者
-	FGameplayEffectContextHandle ContextHandle = ASC->MakeEffectContext();
-	ContextHandle.SetAbility(this);
-	ContextHandle.AddSourceObject(AvatarActor);
-	ContextHandle.AddInstigator(AvatarActor, AvatarActor);
-
-	for (const auto& TypePair : Damage.DamageTypeDefinitions)
-	{
-		// 创建效果Spec句柄，指定效果类、能力等级和上下文
-		FGameplayEffectSpecHandle EffectSpecHandle = ASC->MakeOutgoingSpec(Damage.DamageEffect, Level, ContextHandle);
-		float TotalModifier = TypePair.Value.BaseDamage.GetValueAtLevel(Level);
-		for (const auto& Modifier : TypePair.Value.AttributeDamageModifiers)
-		{
-			UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(EffectSpecHandle, Modifier.Key, Modifier.Value);
-		}
-		UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(EffectSpecHandle, TypePair.Key, TotalModifier);
-		// 在目标上应用游戏效果规范
-		K2_ApplyGameplayEffectSpecToTarget(EffectSpecHandle,TargetDataHandle);
-	}
-}
-
-void UCGameplayAbility::MakeDamage(const FGenericDamageEffectDef& Damage, int Level)
-{
-	// TODO:废弃方案，但有点感情，没删
-	// 通通置为0
-	// float BaseAttackDamage = 0.f;
-	// float BaseMagicDamage = 0.f;
-	// float BaseTrueDamage = 0.f;
-	// for (const auto& TypePair : Damage.DamageTypeDefinitions)
-	// {
-	// 	float TotalModifier = TypePair.Value.BaseDamage.GetValueAtLevel(Level);
-	// 	for (const auto& Modifier : TypePair.Value.AttributeDamageModifiers)
-	// 	{
-	// 		bool bFound ;
-	// 		float AttributeValue = GetAbilitySystemComponentFromActorInfo()->GetGameplayAttributeValue(Modifier.Key, bFound);
-	// 		if (bFound)
-	// 		{
-	// 			TotalModifier += AttributeValue * Modifier.Value / 100.0f;
-	// 		}
-	// 	}
-	// 	
-	// 	// switch (TypePair.Key)
-	// 	// {
-	// 	// 	case ETDamageType::PhysicalDamage :
-	// 	// 		BaseAttackDamage = TotalModifier;
-	// 	// 		break;
-	// 	// 	case ETDamageType::MagicDamage :
-	// 	// 		BaseMagicDamage = TotalModifier;
-	// 	// 		break;
-	// 	// 	case ETDamageType::TrueDamage :
-	// 	// 		BaseTrueDamage = TotalModifier;
-	// 	// 		break;
-	// 	// 	default:
-	// 	// 		break;
-	// 	// }
-	// 	
-	// }
-	// GetAbilitySystemComponentFromActorInfo()->ApplyModToAttribute(UCAttributeSet::GetBaseAttackDamageAttribute(), EGameplayModOp::Override, BaseAttackDamage);
-	// GetAbilitySystemComponentFromActorInfo()->ApplyModToAttribute(UCAttributeSet::GetBaseMagicDamageAttribute(), EGameplayModOp::Override, BaseMagicDamage);
-	// GetAbilitySystemComponentFromActorInfo()->ApplyModToAttribute(UCAttributeSet::GetBaseTrueDamageAttribute(), EGameplayModOp::Override, BaseTrueDamage);
+	FGameplayEffectContextHandle ContextHandle = MakeDamageEffectContext();
+	ApplyDamageSpecToTarget(ContextHandle, Damage, Level, TargetDataHandle);
 }
 
 void UCGameplayAbility::PushSelf(const FVector& PushVel)

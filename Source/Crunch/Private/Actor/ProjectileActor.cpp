@@ -175,7 +175,7 @@ void AProjectileActor::Tick(float DeltaTime)
 	// 服务器端：如果有目标则实时调整方向
 	if (HasAuthority())
 	{
-		if (Target)
+		if (Target.IsValid())
 		{
 			MoveDir = (Target->GetActorLocation() - GetActorLocation()).GetSafeNormal();
 		}

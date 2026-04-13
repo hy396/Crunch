@@ -29,14 +29,17 @@ void UCHeroAttributeSet::GetLifetimeReplicatedProps(TArray<class FLifetimeProper
 
 	// DOREPLIFETIME_CONDITION_NOTIFY(UCHeroAttributeSet, Intelligence, COND_None, REPNOTIFY_Always);
 	// DOREPLIFETIME_CONDITION_NOTIFY(UCHeroAttributeSet, Strength, COND_None, REPNOTIFY_Always);
-	DOREPLIFETIME_CONDITION_NOTIFY(UCHeroAttributeSet, Experience, COND_None, REPNOTIFY_Always);
-	DOREPLIFETIME_CONDITION_NOTIFY(UCHeroAttributeSet, PrevLevelExperience, COND_None, REPNOTIFY_Always);
-	DOREPLIFETIME_CONDITION_NOTIFY(UCHeroAttributeSet, NextLevelExperience, COND_None, REPNOTIFY_Always);
+	// 经验/升级点/金币只有自己需要看，用OwnerOnly节省带宽
+	DOREPLIFETIME_CONDITION_NOTIFY(UCHeroAttributeSet, Experience, COND_OwnerOnly, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UCHeroAttributeSet, PrevLevelExperience, COND_OwnerOnly, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UCHeroAttributeSet, NextLevelExperience, COND_OwnerOnly, REPNOTIFY_Always);
+	// 等级所有人都能看到（头顶UI等）
 	DOREPLIFETIME_CONDITION_NOTIFY(UCHeroAttributeSet, Level, COND_None, REPNOTIFY_Always);
-	DOREPLIFETIME_CONDITION_NOTIFY(UCHeroAttributeSet, UpgradePoint, COND_None, REPNOTIFY_Always);
-	DOREPLIFETIME_CONDITION_NOTIFY(UCHeroAttributeSet, MaxLevel, COND_None, REPNOTIFY_Always);
-	DOREPLIFETIME_CONDITION_NOTIFY(UCHeroAttributeSet, MaxLevelExperience, COND_None, REPNOTIFY_Always);
-	DOREPLIFETIME_CONDITION_NOTIFY(UCHeroAttributeSet, Gold, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UCHeroAttributeSet, UpgradePoint, COND_OwnerOnly, REPNOTIFY_Always);
+	// MaxLevel/MaxLevelExperience初始化后不变，用InitialOnly
+	DOREPLIFETIME_CONDITION_NOTIFY(UCHeroAttributeSet, MaxLevel, COND_InitialOnly, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UCHeroAttributeSet, MaxLevelExperience, COND_InitialOnly, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UCHeroAttributeSet, Gold, COND_OwnerOnly, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UCHeroAttributeSet, Kill, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UCHeroAttributeSet, Death, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UCHeroAttributeSet, Assists, COND_None, REPNOTIFY_Always);

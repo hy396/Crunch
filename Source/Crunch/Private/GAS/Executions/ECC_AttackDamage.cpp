@@ -119,23 +119,49 @@ UECC_AttackDamage::UECC_AttackDamage()
 	RelevantAttributesToCapture.Add(TargetDamageStatics().DamageReductionDef);
 }
 
+// 静态Tag→CaptureDef映射，程序启动时只构建一次（避免每次伤害计算都重建TMap）
+static const TMap<FGameplayTag, FGameplayEffectAttributeCaptureDefinition>& GetTagsToCaptureDefs()
+{
+	static TMap<FGameplayTag, FGameplayEffectAttributeCaptureDefinition> Map = []()
+	{
+		TMap<FGameplayTag, FGameplayEffectAttributeCaptureDefinition> M;
+		M.Add(TGameplayTags::Attribute_MaxHealth, SourceDamageStatics().MaxHealthDef);
+		M.Add(TGameplayTags::Attribute_Health, SourceDamageStatics().HealthDef);
+		M.Add(TGameplayTags::Attribute_MaxMana, SourceDamageStatics().MaxManaDef);
+		M.Add(TGameplayTags::Attribute_Mana, SourceDamageStatics().ManaDef);
+		M.Add(TGameplayTags::Attribute_AttackPower, SourceDamageStatics().AttackPowerDef);
+		M.Add(TGameplayTags::Attribute_MagicPower, SourceDamageStatics().MagicPowerDef);
+		M.Add(TGameplayTags::Attribute_Armor, SourceDamageStatics().ArmorDef);
+		M.Add(TGameplayTags::Attribute_MagicResistance, SourceDamageStatics().MagicResistanceDef);
+		M.Add(TGameplayTags::Attribute_MoveSpeed, SourceDamageStatics().MoveSpeedDef);
+		return M;
+	}();
+	return Map;
+}
+
+// 穿透计算辅助函数（物理/魔法共用，避免重复代码）
+static float ApplyPenetration(float Defense, float FlatPenetration, float PercentPenetration)
+{
+	// 1. 固定穿透
+	Defense = FMath::Max(0.0f, Defense - FlatPenetration);
+	// 2. 百分比穿透
+	Defense = FMath::Max(0.0f, Defense * (1.0f - FMath::Min(PercentPenetration, 100.0f) / 100.0f));
+	return Defense;
+}
+
+// 最终伤害减免计算（防御减免 + 通用伤害减免）
+static float ApplyDamageReduction(float BaseDamage, float DefenseReduction, float DamageReduction, float DamageAmp)
+{
+	BaseDamage *= (1.0f - FMath::Min(DefenseReduction / 100.0f + DamageReduction / 100.0f, 1.0f));
+	BaseDamage *= (1.0f + DamageAmp / 100.0f);
+	return BaseDamage;
+}
+
 void UECC_AttackDamage::Execute_Implementation(const FGameplayEffectCustomExecutionParameters& ExecutionParams,
 	FGameplayEffectCustomExecutionOutput& OutExecutionOutput) const
 {
-//#if WITH_SERVER_CODE
-	//存储标签和属性快照对应的Map
-	TMap<FGameplayTag, FGameplayEffectAttributeCaptureDefinition> TagsToCaptureDefs;
-	// TODO:添加新的需要修改的属性值，添加新的标签和值
-	//添加标签和属性快照对应的数据
-	TagsToCaptureDefs.Add(TGameplayTags::Attribute_MaxHealth, SourceDamageStatics().MaxHealthDef);
-	TagsToCaptureDefs.Add(TGameplayTags::Attribute_Health, SourceDamageStatics().HealthDef);
-	TagsToCaptureDefs.Add(TGameplayTags::Attribute_MaxMana, SourceDamageStatics().MaxManaDef);
-	TagsToCaptureDefs.Add(TGameplayTags::Attribute_Mana, SourceDamageStatics().ManaDef);
-	TagsToCaptureDefs.Add(TGameplayTags::Attribute_AttackPower, SourceDamageStatics().AttackPowerDef);
-	TagsToCaptureDefs.Add(TGameplayTags::Attribute_MagicPower, SourceDamageStatics().MagicPowerDef);
-	TagsToCaptureDefs.Add(TGameplayTags::Attribute_Armor, SourceDamageStatics().ArmorDef);
-	TagsToCaptureDefs.Add(TGameplayTags::Attribute_MagicResistance, SourceDamageStatics().MagicResistanceDef);
-	TagsToCaptureDefs.Add(TGameplayTags::Attribute_MoveSpeed, SourceDamageStatics().MoveSpeedDef);
+	// 使用静态缓存的TMap（不再每次调用都重建）
+	const TMap<FGameplayTag, FGameplayEffectAttributeCaptureDefinition>& TagsToCaptureDefs = GetTagsToCaptureDefs();
 	
 	// 获取游戏效果规范和上下文
 	const FGameplayEffectSpec& Spec = ExecutionParams.GetOwningSpec();
@@ -173,24 +199,18 @@ void UECC_AttackDamage::Execute_Implementation(const FGameplayEffectCustomExecut
 	if (BaseAttackDamage > 0.0f)
 	{
 		BaseAttackDamage += DamageAdd;
-		// 获取护甲穿透百分比
+		// 获取穿透属性
 		float ArmorPenetrationPercent = 0.0f;
 		ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(SourceDamageStatics().ArmorPenetrationPercentDef, EvaluateParameters, ArmorPenetrationPercent);
-		// 获取护甲穿透
 		float ArmorPenetration = 0.0f;
 		ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(SourceDamageStatics().ArmorPenetrationDef, EvaluateParameters, ArmorPenetration);
-		// 获取目标护甲
 		float TargetArmor = 0.0f;
 		ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(TargetDamageStatics().ArmorDef, EvaluateParameters, TargetArmor);
-		// 1. 处理固定护甲穿透
-		TargetArmor = FMath::Max(0.0f, TargetArmor - ArmorPenetration);
-		// 2. 处理百分比护甲穿透
-		TargetArmor = FMath::Max(0.0f, TargetArmor * (1.0f - FMath::Min(ArmorPenetrationPercent, 100.0f) / 100.0f));
-		// 3. 计算护甲减免（计算出来的是免伤率）
+		// 穿透计算（复用helper）
+		TargetArmor = ApplyPenetration(TargetArmor, ArmorPenetration, ArmorPenetrationPercent);
 		float ArmorReduction = TargetArmor / (TargetArmor + 100.0f);
-		BaseAttackDamage *= (1.0f - FMath::Min(ArmorReduction / 100.0f + DamageReduction/100.0f, 1.0f));
-		// 4. 应用伤害加深（百分比提升）
-		BaseAttackDamage *= (1.0f + DamageAmp / 100.0f);
+		// 减免 + 伤害加深（复用helper）
+		BaseAttackDamage = ApplyDamageReduction(BaseAttackDamage, ArmorReduction, DamageReduction, DamageAmp);
 		// 5. 输出到AttackDamage属性
 		if (BaseAttackDamage > 0.0f)
 		{
@@ -241,29 +261,18 @@ void UECC_AttackDamage::Execute_Implementation(const FGameplayEffectCustomExecut
 	if (BaseMagicDamage > 0)
 	{
 		BaseMagicDamage += DamageAdd;
-		// 获取法术穿透百分比
+		// 获取穿透属性
 		float MagicPenetrationPercent = 0.0f;
-		ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(
-			SourceDamageStatics().MagicPenetrationPercentDef,
-			EvaluateParameters, MagicPenetrationPercent);
-		// 获取法术穿透
+		ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(SourceDamageStatics().MagicPenetrationPercentDef, EvaluateParameters, MagicPenetrationPercent);
 		float MagicPenetration = 0.0f;
-		ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(
-			SourceDamageStatics().MagicPenetrationDef,
-			EvaluateParameters, MagicPenetration);
-		// 获取目标法抗
+		ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(SourceDamageStatics().MagicPenetrationDef, EvaluateParameters, MagicPenetration);
 		float TargetMagicResistance = 0.0f;
-		ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(
-			TargetDamageStatics().MagicResistanceDef, EvaluateParameters, TargetMagicResistance);
-		// 1. 处理固定法术穿透
-		TargetMagicResistance = FMath::Max(0.0f, TargetMagicResistance - MagicPenetration);
-		// 2. 处理百分比法术穿透
-		TargetMagicResistance = FMath::Max(0.0f, TargetMagicResistance * (1.0f - FMath::Min(MagicPenetrationPercent, 100.0f) / 100.0f));
-		// 3. 计算法抗减免（计算出来的是免伤率）
+		ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(TargetDamageStatics().MagicResistanceDef, EvaluateParameters, TargetMagicResistance);
+		// 穿透计算（复用helper）
+		TargetMagicResistance = ApplyPenetration(TargetMagicResistance, MagicPenetration, MagicPenetrationPercent);
 		float MagicResistanceReduction = TargetMagicResistance / (TargetMagicResistance + 100.0f);
-		BaseMagicDamage *= (1.0f - FMath::Min(MagicResistanceReduction / 100.0f + DamageReduction/100.0f, 1.0f));
-		// 4. 应用伤害加深（百分比提升）
-		BaseMagicDamage *= (1.0f + DamageAmp / 100.0f);
+		// 减免 + 伤害加深（复用helper）
+		BaseMagicDamage = ApplyDamageReduction(BaseMagicDamage, MagicResistanceReduction, DamageReduction, DamageAmp);
 		OutExecutionOutput.AddOutputModifier(
 			FGameplayModifierEvaluatedData(
 			UCAttributeSet::GetMagicDamageAttribute(), //获取到伤害属性
@@ -283,10 +292,8 @@ void UECC_AttackDamage::Execute_Implementation(const FGameplayEffectCustomExecut
 	if (BaseTrueDamage > 0.0f)
 	{
 		BaseTrueDamage += DamageAdd;
-		// 计算伤害减免
-		BaseTrueDamage *= (1.0f - FMath::Min(DamageReduction/100.0f, 1.0f));
-		// 应用伤害加深（百分比提升）
-		BaseTrueDamage *= (1.0f + DamageAmp / 100.0f);
+		// 真伤无防御减免，只受通用伤害减免影响（复用helper，DefenseReduction=0）
+		BaseTrueDamage = ApplyDamageReduction(BaseTrueDamage, 0.0f, DamageReduction, DamageAmp);
 		
 		OutExecutionOutput.AddOutputModifier(
 			FGameplayModifierEvaluatedData(

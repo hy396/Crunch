@@ -1,807 +1,199 @@
-# Crunch 开发指南
+# 开发指南
 
-## 🛠️ 开发环境搭建
+## 环境搭建
 
 ### 必需软件
-- **Unreal Engine 5.4+**: [下载地址](https://www.unrealengine.com/)
-- **Visual Studio 2022**: 包含C++开发工具
-- **Git**: 版本控制
-- **JetBrains Rider** (可选): 推荐的C++IDE
 
-### 推荐插件
-- **UnrealVS**: Visual Studio的UE集成插件
-- **RiderLink**: 已集成在项目中
-- **Visual Assist**: C++代码补全和导航
+- **Unreal Engine 5.4** — 通过 Epic Games Launcher 安装
+- **Visual Studio 2022+** — 安装"使用 C++ 的游戏开发"工作负载
+- **Git** — 版本控制
 
-## 📝 代码规范
+### 推荐工具
+
+- **JetBrains Rider** — 项目已集成 RiderLink 插件
+- **Visual Studio Code** — 轻量编辑，配合 clangd 扩展
+
+### 首次构建
+
+1. 克隆仓库
+2. 右键 `Crunch.uproject` → "Generate Visual Studio project files"
+3. 打开 `Crunch.sln`，选择 `CrunchEditor` 为启动项目
+4. 构建并运行（F5）
+
+命令行构建：
+
+```bash
+# 编辑器
+Engine/Build/BatchFiles/Build.bat CrunchEditor Win64 Development -project="<路径>/Crunch.uproject"
+
+# 专用服务器
+Engine/Build/BatchFiles/Build.bat CrunchServer Win64 Development -project="<路径>/Crunch.uproject"
+```
+
+### VRM4U 插件
+
+VRM4U 插件的 assimp 库（`Plugins/VRM4U/ThirdParty/assimp/lib/x64/Release/assimp-vc141-mt.lib`）因文件体积未纳入 Git。首次编译前需要：
+
+1. 从 [ruyo/assimp](https://github.com/ruyo/assimp) 克隆源码
+2. 用 CMake + MSVC 编译 Release 共享库
+3. 将 `.lib` 放入 `Plugins/VRM4U/ThirdParty/assimp/lib/x64/Release/`
+4. 将 `.dll` 放入 `Plugins/VRM4U/ThirdParty/assimp/bin/x64/`
+
+注意：编译产物文件名可能是 `assimp-vc14x-mt`，需重命名为 `assimp-vc141-mt`。
+
+## 编码规范
 
 ### 命名约定
 
-#### 类命名
-```cpp
-// UObject派生类使用U前缀
-class UInventoryComponent : public UActorComponent {};
+遵循 UE5 标准：
 
-// Actor派生类使用A前缀  
-class ACrunchCharacter : public ACharacter {};
-
-// 结构体使用F前缀
-struct FPlayerSelection {};
-
-// 枚举使用E前缀
-enum class ETeamSide : uint8 {};
-
-// 接口使用I前缀
-class ITreeNodeInterface {};
-```
-
-#### 变量命名
-```cpp
-// 成员变量使用驼峰命名
-int32 PlayerHealth;
-bool bIsPlayerAlive;  // 布尔值使用b前缀
-
-// 常量使用全大写+下划线
-static const float MAX_PLAYER_SPEED = 600.0f;
-
-// 临时变量使用描述性名称
-for (const auto& Character : AllCharacters)
-{
-    // 处理角色...
-}
-```
-
-#### 函数命名
-```cpp
-// 公共函数使用动词开头
-void UpdatePlayerHealth(float NewHealth);
-bool CanPlayerMove() const;
-float GetPlayerSpeed() const;
-
-// Blueprint可调用函数添加前缀
-UFUNCTION(BlueprintCallable)
-void BP_SetPlayerTeam(int32 TeamID);
-
-// 事件处理函数使用On前缀
-void OnPlayerDied();
-void OnItemPurchased(const UPDA_ShopItem* Item);
-```
+- 类前缀：`U`（UObject）、`A`（Actor）、`F`（结构体/值类型）、`E`（枚举）、`I`（接口）
+- 布尔变量：`b` 前缀（`bIsDead`、`bIsActive`）
+- 委托：`FOn...Delegate`（`FOnItemAddedDelegate`）
+- GameplayTag：`Ability.SkillName.EventName` 层级结构
+- 数据资产：`PDA_` 前缀（`PDA_CharacterDefinition`、`PDA_ShopItem`）
 
 ### 文件组织
 
-#### 头文件结构
-```cpp
-// 文件头注释
-// 幻雨喜欢小猫咪
+项目采用 Private-only 布局（头文件和实现文件都在 `Private/` 下），按功能模块分目录：
 
-#pragma once
-
-// 引擎头文件
-#include "CoreMinimal.h"
-#include "GameFramework/Character.h"
-
-// 项目头文件
-#include "Player/PlayerInfoTypes.h"
-#include "GAS/Core/CAttributeSet.h"
-
-// 生成的头文件(必须最后)
-#include "CrunchCharacter.generated.h"
-
-// 前置声明
-class UInventoryComponent;
-class UAbilitySystemComponent;
-
-/**
- * 类的详细文档注释
- * 说明类的作用和使用方法
- */
-UCLASS(BlueprintType)
-class CRUNCH_API ACrunchCharacter : public ACharacter
-{
-    GENERATED_BODY()
-
-public:
-    // 构造函数
-    ACrunchCharacter();
-
-    // 公共接口函数
-    // ...
-
-protected:
-    // 受保护的函数和变量
-    // ...
-
-private:
-    // 私有成员
-    // ...
-};
+```text
+Private/
+├── ModuleName/
+│   ├── ClassName.h
+│   └── ClassName.cpp
 ```
 
-#### 实现文件结构
+新增文件时遵循现有目录划分：
+
+- 技能类（`GA_*`）→ `GAS/Abilities/`
+- Actor 类（投射物、陷阱等）→ `Actor/`
+- UI Widget → `UI/` 对应子目录
+- 框架类 → `Framework/`
+
+### 头文件 Include 规则
+
+- 自身头文件在第一行：`#include "ClassName.h"`
+- 使用从 `Private/` 开始的相对路径：`#include "GAS/Core/CGameplayAbility.h"`
+- 同目录文件可直接引用：`#include "ClassName.h"`
+
+### 网络代码规范
+
+Server RPC 必须带 `WithValidation`：
+
 ```cpp
-#include "Character/CrunchCharacter.h"
-
-// 引擎包含
-#include "Components/SkeletalMeshComponent.h"
-#include "GameFramework/CharacterMovementComponent.h"
-
-// 项目包含
-#include "Inventory/InventoryComponent.h"
-#include "GAS/CAbilitySystemComponent.h"
-
-ACrunchCharacter::ACrunchCharacter()
-{
-    // 构造函数实现
-}
-
-void ACrunchCharacter::BeginPlay()
-{
-    Super::BeginPlay();
-    // BeginPlay实现
-}
+UFUNCTION(Server, Reliable, WithValidation)
+void Server_DoSomething(/* params */);
 ```
 
-## 🎮 核心系统开发
+属性同步选择合适的条件：
 
-### 角色系统开发
+- `COND_None` — 所有客户端都需要（血量等战斗属性）
+- `COND_OwnerOnly` — 只有属主需要（金币、经验）
+- `COND_InitialOnly` — 初始化后不变的值
 
-#### 创建新角色
-1. **创建角色定义数据资产**
-```cpp
-// 在编辑器中创建新的CharacterDefinition资产
-// Content/Characters/Definitions/DA_NewCharacter
+Meta 属性（服务器用完即清零的中间值）不要加同步标记。
+
+## 本地测试
+
+### 单机多人
+
+在编辑器中：Play → Advanced Settings → Number of Players = 2+，Net Mode = Play As Listen Server。
+
+### 独立进程
+
+```bash
+# 终端1：启动服务器
+launchScripts/launchServer.bat
+
+# 终端2：启动客户端
+launchScripts/launchGame.bat
 ```
 
-2. **配置角色属性**
+### 测试特定系统
+
+- **技能测试**：在编辑器中放置角色，赋予技能蓝图，PIE 测试
+- **网络测试**：使用 2 个客户端验证同步，观察 `Net.PackageMap.DebugObject` 日志
+- **UI 测试**：Widget Reflector（`Ctrl+Shift+W`）检查层级
+
+## 调试
+
+### 日志
+
+项目自定义日志类别：
+
 ```cpp
-// 在数据资产中设置:
-// - 角色网格体
-// - 动画蓝图
-// - 初始技能
-// - 属性值
+// GAS 系统
+DECLARE_LOG_CATEGORY_EXTERN(LogCrunchGAS, Log, All);
+
+// 使用便捷宏
+GAS_LOG(TEXT("Message %s"), *Value);
+GAS_WARN(TEXT("Warning %s"), *Value);
+GAS_LOG_ASC(ASC, TEXT("ASC state: %s"), *Info);
 ```
 
-3. **测试角色**
+### GAS 调试
+
 ```cpp
-// 在角色选择界面测试新角色
-// 确保所有动画和技能正常工作
+// 打印完整 ASC 状态
+UGASDebugHelper::PrintASCState(ASC, true);
+
+// 注册监控（技能激活/失败/结束自动打日志）
+UGASDebugHelper::RegisterPredictionFailureMonitor(ASC);
 ```
 
-#### 角色技能开发
-```cpp
-// 1. 创建技能类
-UCLASS()
-class CRUNCH_API UGA_NewAbility : public UGameplayAbility
-{
-    GENERATED_BODY()
+控制台命令：
 
-public:
-    virtual void ActivateAbility(
-        const FGameplayAbilitySpecHandle Handle,
-        const FGameplayAbilityActorInfo* ActorInfo,
-        const FGameplayAbilityActivationInfo ActivationInfo,
-        const FGameplayEventData* TriggerEventData
-    ) override;
-};
-
-// 2. 实现技能逻辑
-void UGA_NewAbility::ActivateAbility(...)
-{
-    // 检查技能条件
-    if (!CommitAbility(Handle, ActorInfo, ActivationInfo))
-    {
-        EndAbility(Handle, ActorInfo, ActivationInfo, true, true);
-        return;
-    }
-
-    // 执行技能效果
-    // ...
-
-    // 结束技能
-    EndAbility(Handle, ActorInfo, ActivationInfo, true, false);
-}
+```text
+showdebug abilitysystem          显示 GAS 调试 HUD
+AbilitySystem.Debug.NextTarget   切换调试目标
 ```
 
-#### 连锁攻击技能开发
-```cpp
-// 创建连锁攻击技能类
-UCLASS()
-class CRUNCH_API UGA_ChainAttack : public UCGameplayAbility
-{
-    GENERATED_BODY()
+### 网络调试
 
-public:
-    virtual void ActivateAbility(
-        const FGameplayAbilitySpecHandle Handle,
-        const FGameplayAbilityActorInfo* ActorInfo,
-        const FGameplayAbilityActivationInfo ActivationInfo,
-        const FGameplayEventData* TriggerEventData
-    ) override;
-
-protected:
-    // 蓄力动画蒙太奇
-    UPROPERTY(EditDefaultsOnly, Category = "Chain Attack|Animation")
-    TObjectPtr<UAnimMontage> ChargeMontage;
-    
-    // 目标检测半径
-    UPROPERTY(EditDefaultsOnly, Category = "Targeting")
-    float TargetDetectionRadius = 300.f;
-    
-    // 连锁攻击伤害效果
-    UPROPERTY(EditDefaultsOnly, Category = "Chain Attack|Damage")
-    FGenericDamageEffectDef DamageEffect;
-};
-
-// 实现连锁攻击逻辑
-void UGA_ChainAttack::ActivateAbility(...)
-{
-    // 播放蓄力动画
-    UAbilityTask_PlayMontageAndWait* PlayChargeMontage = 
-        UAbilityTask_PlayMontageAndWait::CreatePlayMontageAndWaitProxy(this, NAME_None, ChargeMontage);
-    PlayChargeMontage->ReadyForActivation();
-    
-    // 检测范围内的敌人
-    DetectTargets();
-    
-    // 开始连锁攻击定时器
-    GetWorld()->GetTimerManager().SetTimer(
-        ChainAttackTimerHandle,
-        this,
-        &UGA_ChainAttack::ExecuteSingleAttack,
-        AttackInterval,
-        true,
-        0.0f
-    );
-}
-```
-
-### UI系统开发
-
-#### 创建新的UI控件
-1. **创建C++基类**
-```cpp
-UCLASS()
-class CRUNCH_API UNewWidget : public UUserWidget
-{
-    GENERATED_BODY()
-
-public:
-    virtual void NativeConstruct() override;
-
-private:
-    // 绑定UI元素
-    UPROPERTY(meta = (BindWidget))
-    TObjectPtr<UButton> ActionButton;
-
-    UPROPERTY(meta = (BindWidget)) 
-    TObjectPtr<UTextBlock> InfoText;
-
-    // 事件处理
-    UFUNCTION()
-    void OnActionButtonClicked();
-};
-```
-
-2. **创建对应的蓝图**
-```cpp
-// 在编辑器中:
-// 1. 创建基于UNewWidget的蓝图类
-// 2. 设计UI布局
-// 3. 绑定控件名称与C++变量匹配
-```
-
-3. **集成到游戏中**
-```cpp
-// 在适当的地方显示UI
-if (NewWidgetClass)
-{
-    auto NewWidget = CreateWidget<UNewWidget>(this, NewWidgetClass);
-    NewWidget->AddToViewport();
-}
-```
-
-#### UI绑定最佳实践
-```cpp
-// ✅ 正确的绑定方式
-UPROPERTY(meta = (BindWidget))
-TObjectPtr<UButton> StartButton;
-
-// ✅ 绑定事件
-virtual void NativeConstruct() override
-{
-    Super::NativeConstruct();
-    
-    if (StartButton)
-    {
-        StartButton->OnClicked.AddDynamic(this, &ThisClass::OnStartButtonClicked);
-    }
-}
-
-// ❌ 错误的做法 - 不检查nullptr
-void BadExample()
-{
-    StartButton->SetIsEnabled(false); // 可能崩溃
-}
-```
-
-### 聊天系统开发
-
-#### 创建聊天消息处理
-1. **实现聊天接口**
-```cpp
-// 在PlayerController中实现IChatInterface
-class CRUNCH_API ACPlayerController : public APlayerController, public IChatInterface
-{
-public:
-    // 实现接口方法
-    virtual void ReceiveChatMessageFromServer(const FChatMessage& Message) override;
-    virtual void SendChatMessageToServer(const FString& Message, EChatChannelType ChannelType) override;
-
-    // 网络RPC函数
-    UFUNCTION(Server, Reliable, WithValidation)
-    void Server_SendChatMessage(const FString& Message, EChatChannelType ChannelType);
-
-    UFUNCTION(Client, Reliable)
-    void Client_ReceiveChatMessage(const FChatMessage& Message);
-};
-```
-
-2. **实现网络RPC函数**
-```cpp
-void ACPlayerController::Server_SendChatMessage_Implementation(
-    const FString& Message, EChatChannelType ChannelType)
-{
-    // 验证消息内容
-    if (Message.IsEmpty() || Message.Len() > 256)
-    {
-        return;
-    }
-
-    // 获取发送者名称
-    FString SenderName = GetPlayerState<APlayerState>()->GetPlayerName();
-    if (SenderName.IsEmpty())
-    {
-        SenderName = TEXT("Unknown Player");
-    }
-
-    // 创建消息对象
-    FChatMessage ChatMessage(SenderName, Message, ChannelType, GetGenericTeamId());
-
-    // 根据频道类型决定发送范围
-    UWorld* World = GetWorld();
-    if (!World) return;
-
-    for (TActorIterator<ACPlayerController> It(World); It; ++It)
-    {
-        ACPlayerController* PlayerController = *It;
-        if (!PlayerController) continue;
-
-        // 全体聊天：发送给所有玩家
-        if (ChannelType == EChatChannelType::All)
-        {
-            PlayerController->Client_ReceiveChatMessage(ChatMessage);
-        }
-        // 队友聊天：只发送给同队伍玩家
-        else if (ChannelType == EChatChannelType::Team)
-        {
-            if (PlayerController->GetGenericTeamId() == GetGenericTeamId())
-            {
-                PlayerController->Client_ReceiveChatMessage(ChatMessage);
-            }
-        }
-    }
-}
-
-bool ACPlayerController::Server_SendChatMessage_Validate(
-    const FString& Message, EChatChannelType ChannelType)
-{
-    return !Message.IsEmpty() && Message.Len() <= 256;
-}
-```
-
-#### 聊天UI开发
-1. **创建聊天控件**
-```cpp
-// 创建新的聊天控件
-UCLASS()
-class CRUNCH_API UMyChatWidget : public UChatWidget
-{
-    GENERATED_BODY()
-
-public:
-    virtual void NativeConstruct() override;
-
-    // 自定义消息处理
-    UFUNCTION(BlueprintCallable)
-    void CustomMessageHandler(const FChatMessage& Message);
-
-protected:
-    // 添加自定义UI元素
-    UPROPERTY(meta = (BindWidget))
-    TObjectPtr<UButton> EmojiButton;
-
-    UFUNCTION()
-    void OnEmojiButtonClicked();
-};
-```
-
-2. **集成到游戏中**
-```cpp
-// 在适当的地方显示ChatWidget
-void ACPlayerController::ToggleChat()
-{
-    if (GameplayWidget)
-    {
-        // 使用智能切换：在临时模式下直接进入正常聊天，否则正常切换
-        GameplayWidget->SmartToggleChat();
-    }
-}
-
-// 设置输入绑定
-void ACPlayerController::SetupInputComponent()
-{
-    Super::SetupInputComponent();
-    
-    // 绑定聊天快捷键
-    InputComponent->BindAction("OpenChat", IE_Pressed, this, &ACPlayerController::ToggleChat);
-}
-```
-
-#### 弹幕系统开发
-```cpp
-// 创建弹幕消息
-void UGameplayWidget::ShowBarrageMessage(const FChatMessage& Message, bool bIsSelf, bool bIsTeammate)
-{
-    if (!GameplayWidgetRootPanel || !ChatMessageItemClass)
-    {
-        return;
-    }
-
-    // 创建弹幕消息控件
-    auto BarrageWidget = CreateWidget<UChatMessageItemWidget>(this, ChatMessageItemClass);
-    if (!BarrageWidget)
-    {
-        return;
-    }
-
-    // 设置弹幕位置和动画
-    GameplayWidgetRootPanel->AddChild(BarrageWidget);
-    BarrageWidget->SetAsBarrageMode(Message, bIsSelf, bIsTeammate, GameplayWidgetRootPanel);
-}
-
-#### 弹幕系统实现
-```cpp
-// 在ChatMessageItemWidget中实现弹幕模式
-void UChatMessageItemWidget::SetAsBarrageMode(const FChatMessage& Message, bool bIsSelf, bool bIsTeammate, UCanvasPanel* BarragePanel)
-{
-    // 设置消息内容
-    SetChatMessageWithColors(Message, bIsSelf, bIsTeammate);
-    
-    // 启动弹幕动画定时器
-    GetWorld()->GetTimerManager().SetTimer(
-        BarrageTimerHandle,
-        this,
-        &UChatMessageItemWidget::UpdateBarragePosition,
-        1.0f / 30.0f, // 30FPS
-        true // 循环
-    );
-    
-    // 设置弹幕结束定时器
-    FTimerHandle FinishTimerHandle;
-    GetWorld()->GetTimerManager().SetTimer(
-        FinishTimerHandle,
-        this,
-        &UChatMessageItemWidget::OnBarrageFinished,
-        BarrageMessageDuration,
-        false
-    );
-}
-
-// 更新弹幕位置
-void UChatMessageItemWidget::UpdateBarragePosition()
-{
-    UCanvasPanelSlot* CanvasSlot = UWidgetLayoutLibrary::SlotAsCanvasSlot(this);
-    if (!CanvasSlot) return;
-
-    // 计算新位置
-    float CurrentTime = GetWorld()->GetTimeSeconds();
-    float ElapsedTime = CurrentTime - BarrageStartTime;
-    float NewX = InitialXPosition - (BarrageMoveSpeed * ElapsedTime);
-
-    // 更新位置
-    CanvasSlot->SetPosition(FVector2D(NewX, CanvasSlot->GetPosition().Y));
-}
-```
-```
-
-### 网络开发
-
-#### 创建可复制的Actor
-```cpp
-UCLASS()
-class CRUNCH_API ANetworkedActor : public AActor
-{
-    GENERATED_BODY()
-
-public:
-    ANetworkedActor();
-
-    // 设置复制属性
-    virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
-
-private:
-    // 复制的变量
-    UPROPERTY(Replicated)
-    int32 Health;
-
-    UPROPERTY(ReplicatedUsing = OnRep_PlayerName)
-    FString PlayerName;
-
-    // 复制回调
-    UFUNCTION()
-    void OnRep_PlayerName();
-
-    // 服务器RPC
-    UFUNCTION(Server, Reliable)
-    void Server_TakeDamage(int32 Damage);
-
-    // 客户端RPC  
-    UFUNCTION(Client, Reliable)
-    void Client_ShowDamageEffect();
-};
-```
-
-#### 实现网络函数
-```cpp
-void ANetworkedActor::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
-{
-    Super::GetLifetimeReplicatedProps(OutLifetimeProps);
-
-    DOREPLIFETIME(ANetworkedActor, Health);
-    DOREPLIFETIME(ANetworkedActor, PlayerName);
-}
-
-void ANetworkedActor::Server_TakeDamage_Implementation(int32 Damage)
-{
-    Health -= Damage;
-    
-    // 通知所有客户端
-    if (Health <= 0)
-    {
-        Client_ShowDamageEffect();
-    }
-}
-```
-
-#### 会话管理开发
-```cpp
-// 在MGameInstance中实现会话创建
-void UMGameInstance::RequestCreateAndJoinSession(const FName& NewSessionName)
-{
-    // 向协调器发送创建会话请求
-    FHttpRequestRef Request = FHttpModule::Get().CreateRequest();
-    Request->SetURL(FString::Printf(TEXT("%s/Sessions"), *CoordinatorURL));
-    Request->SetVerb("POST");
-    Request->SetHeader(TEXT("Content-Type"), TEXT("application/json"));
-    
-    // 设置请求体
-    TSharedPtr<FJsonObject> JsonObject = MakeShareable(new FJsonObject);
-    JsonObject->SetStringField("SessionName", NewSessionName.ToString());
-    
-    FString RequestBody;
-    TSharedRef<TJsonWriter<>> Writer = TJsonWriterFactory<>::Create(&RequestBody);
-    FJsonSerializer::Serialize(JsonObject.ToSharedRef(), Writer);
-    
-    Request->SetContentAsString(RequestBody);
-    Request->ProcessRequest();
-}
-
-// 加入会话实现
-bool UMGameInstance::JoinSessionWithId(const FString& SessionIdStr)
-{
-    // 查找匹配的会话并加入
-    const FOnlineSessionSearchResult* SessionSearchResult = SessionSearch->SearchResults.FindByPredicate(
-        [=](const FOnlineSessionSearchResult& Result)
-        {
-            return Result.GetSessionIdStr() == SessionIdStr;
-        }
-    );
-    
-    if (SessionSearchResult)
-    {
-        JoinSessionWithSearchResult(*SessionSearchResult);
-        return true;
-    }
-    return false;
-}
-```
-
-## 🧪 测试与调试
-
-### 单元测试
-```cpp
-// 创建测试类
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FCrunchInventoryTest, "Crunch.Inventory.BasicFunctionality", 
-    EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
-
-bool FCrunchInventoryTest::RunTest(const FString& Parameters)
-{
-    // 创建测试组件
-    UInventoryComponent* TestInventory = NewObject<UInventoryComponent>();
-    
-    // 测试添加物品
-    bool bAddResult = TestInventory->AddItem(TestItem, 5);
-    TestTrue("Should be able to add items", bAddResult);
-    
-    // 测试物品数量
-    int32 ItemCount = TestInventory->GetItemCount(TestItem);
-    TestEqual("Item count should be 5", ItemCount, 5);
-    
-    return true;
-}
-```
-
-### 网络测试
-```cpp
-// 在编辑器中测试多人游戏
-// Play -> Advanced Settings -> 
-// - Number of Players: 2+
-// - Run Under One Process: false
-// - Editor Multiplayer Mode: Play as Listen Server
+```text
+net.PackageMap.DebugObject       网络对象追踪
+stat net                         网络统计
+p.NetShowCorrections 1           显示位置校正
 ```
 
 ### 性能分析
-```cpp
-// 使用性能分析工具
-// 控制台命令:
-stat fps          // 显示帧率
-stat unit         // 显示各个线程耗时
-stat memory       // 显示内存使用
-stat networking   // 显示网络统计
 
-// 代码中添加性能标记
-SCOPE_CYCLE_COUNTER(STAT_InventoryUpdate);
-void UInventoryComponent::UpdateInventory()
-{
-    // 函数实现...
-}
+```text
+stat fps                         帧率
+stat unit                        帧耗时分解
+stat game                        游戏线程
+stat gpu                         GPU 耗时
+profilegpu                       GPU 详细分析
 ```
 
-## 🔧 调试技巧
+## 添加新内容的常见流程
 
-### 日志使用
-```cpp
-// 在模块中定义日志类别
-DEFINE_LOG_CATEGORY(LogCrunchInventory);
+### 添加新英雄技能
 
-// 使用不同级别的日志
-UE_LOG(LogCrunchInventory, Log, TEXT("Item added: %s"), *ItemName);
-UE_LOG(LogCrunchInventory, Warning, TEXT("Inventory full!"));
-UE_LOG(LogCrunchInventory, Error, TEXT("Failed to add item: %s"), *Error);
+1. 在 `GAS/Abilities/` 创建 `GA_NewSkill.h/.cpp`，继承 `UCGameplayAbility`
+2. 在 `TGameplayTags.h/.cpp` 添加标签
+3. 如需 Actor（投射物/陷阱），在 `Actor/` 创建
+4. 创建蓝图（GE、技能蓝图、蒙太奇）
+5. 添加到角色的 `PDA_CharacterDefinition`
 
-// 带格式化的日志
-UE_LOG(LogCrunchInventory, Log, TEXT("Player %s bought %d items for %f gold"), 
-    *PlayerName, ItemCount, TotalPrice);
-```
+详见 [GAS_Mage_Abilities.md](GAS_Mage_Abilities.md)。
 
-### 断点调试
-```cpp
-// 条件断点
-if (PlayerHealth <= 0)
-{
-    UE_LOG(LogTemp, Warning, TEXT("Player died!")); // 在这里设置断点
-}
+### 添加新商店物品
 
-// 使用check和ensure
-check(PlayerController != nullptr); // Debug版本中断言
-ensure(IsValid(TargetActor));       // 即使在Release版本也检查
-```
+1. 创建 `UPDA_ShopItem` 数据资产
+2. 配置属性：名称、价格、图标、效果
+3. 如需主动技能，创建 `UGameplayAbility` 子类
+4. 如有合成关系，在 `IngredientItems` 中设置材料引用
 
-### Blueprint调试
-- 使用Print String节点输出调试信息
-- 设置断点观察变量值
-- 使用Debug Filter查看特定对象
+### 添加新 UI Widget
 
-## 📚 最佳实践
+游戏内 HUD：
+1. 创建 `UUserWidget` C++ 类（如需逻辑）
+2. 创建蓝图 Widget，绑定组件
+3. 在 `ACPlayerController` 中添加创建和显示逻辑
 
-### 性能优化
-```cpp
-// ✅ 缓存频繁访问的组件
-void ACrunchCharacter::BeginPlay()
-{
-    Super::BeginPlay();
-    CachedInventoryComponent = GetComponentByClass<UInventoryComponent>();
-}
-
-// ✅ 使用对象池避免频繁创建销毁
-TArray<AProjectile*> ProjectilePool;
-
-// ✅ 合理使用Tick
-virtual void Tick(float DeltaTime) override
-{
-    // 只在必要时才Tick
-    if (bNeedsTick)
-    {
-        Super::Tick(DeltaTime);
-        // Tick逻辑...
-    }
-}
-```
-
-### 内存管理
-```cpp
-// ✅ 使用TObjectPtr管理UObject引用
-UPROPERTY()
-TObjectPtr<UInventoryComponent> InventoryComponent;
-
-// ✅ 及时清理委托绑定
-virtual void BeginDestroy() override
-{
-    if (SomeDelegate.IsValid())
-    {
-        SomeDelegate.Unbind();
-    }
-    Super::BeginDestroy();
-}
-
-// ✅ 使用智能指针管理非UObject
-TSharedPtr<FComplexData> ComplexDataPtr;
-```
-
-### 错误处理
-```cpp
-// ✅ 检查指针有效性
-if (IsValid(TargetActor))
-{
-    TargetActor->TakeDamage(DamageAmount);
-}
-
-// ✅ 使用Optional处理可能失败的操作
-TOptional<FVector> GetPlayerLocation(int32 PlayerID)
-{
-    if (auto* Player = FindPlayerByID(PlayerID))
-    {
-        return Player->GetActorLocation();
-    }
-    return {};
-}
-
-// 使用方式
-if (auto Location = GetPlayerLocation(PlayerID))
-{
-    // 使用Location.GetValue()
-}
-```
-
-## 🔄 版本控制
-
-### Git工作流
-```bash
-# 功能分支开发
-git checkout -b feature/new-character-system
-git add .
-git commit -m "Add: 新角色系统基础框架"
-git push origin feature/new-character-system
-
-# 合并到主分支
-git checkout main
-git merge feature/new-character-system
-git push origin main
-```
-
-### 提交信息规范
-```
-类型: 简要描述
-
-详细描述 (可选)
-
-类型包括:
-- Add: 新增功能
-- Fix: 修复bug
-- Update: 更新现有功能
-- Remove: 删除代码
-- Refactor: 重构代码
-- Docs: 文档更新
-```
-
-这个开发指南为Crunch项目的开发者提供了详细的开发流程和最佳实践，确保代码质量和团队协作效率。
+前端界面：
+1. 创建继承 `UWidget_ActivatableBase` 的类
+2. 在 `UFrontendDeveloperSettings::FrontendWidgetMap` 注册 Tag → Class 映射
+3. 通过 `UFrontendUISubsystem::PushSoftWidgetToStackAsync()` 推入

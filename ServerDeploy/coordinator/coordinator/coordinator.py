@@ -62,7 +62,8 @@ def CreateServerImpl(sessionName, sessionSearchId):
 
 # TODO: 将来使用 Docker 时移除该变量
 # 当前用作测试的可用端口（后续可以根据需求动态分配）
-nextAvailablePort = 7777
+# nextAvailablePort = 7777
+nextAvailablePort = 7799
 
 
 # 用于本地测试时创建服务器进程

@@ -28,9 +28,8 @@ void UCAttributeSet::GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>&
 	// DOREPLIFETIME_CONDITION_NOTIFY(UCAttributeSet, BaseMagicDamage, COND_None, REPNOTIFY_Always);
 	// DOREPLIFETIME_CONDITION_NOTIFY(UCAttributeSet, BaseTrueDamage, COND_None, REPNOTIFY_Always);
 	
-	DOREPLIFETIME_CONDITION_NOTIFY(UCAttributeSet, AttackDamage, COND_None, REPNOTIFY_Always);
-	DOREPLIFETIME_CONDITION_NOTIFY(UCAttributeSet, MagicDamage, COND_None, REPNOTIFY_Always);
-	DOREPLIFETIME_CONDITION_NOTIFY(UCAttributeSet, TrueDamage, COND_None, REPNOTIFY_Always);
+	// AttackDamage/MagicDamage/TrueDamage 是Meta属性（服务器用完即清零），不需要同步
+	// 移除同步可节省大量网络带宽（每次伤害计算都会触发同步）
 
 	DOREPLIFETIME_CONDITION_NOTIFY(UCAttributeSet, AttackPower, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UCAttributeSet, MagicPower, COND_None, REPNOTIFY_Always);
@@ -148,11 +147,6 @@ void UCAttributeSet::OnRep_MaxMana(const FGameplayAttributeData& OldMaxMana)
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UCAttributeSet, MaxMana, OldMaxMana);
 }
 
-void UCAttributeSet::OnRep_AttackDamage(const FGameplayAttributeData& OldValue)
-{
-	GAMEPLAYATTRIBUTE_REPNOTIFY(UCAttributeSet, AttackDamage, OldValue);
-}
-
 void UCAttributeSet::OnRep_Armor(const FGameplayAttributeData& OldValue)
 {
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UCAttributeSet, Armor, OldValue);
@@ -197,16 +191,6 @@ void UCAttributeSet::OnRep_MagicResistance(const FGameplayAttributeData& OldValu
 // {
 // 	GAMEPLAYATTRIBUTE_REPNOTIFY(UCAttributeSet, BaseTrueDamage, OldBaseTrueDamage);
 // }
-
-void UCAttributeSet::OnRep_MagicDamage(const FGameplayAttributeData& OldMagicDamage)
-{
-	GAMEPLAYATTRIBUTE_REPNOTIFY(UCAttributeSet, MagicDamage, OldMagicDamage);
-}
-
-void UCAttributeSet::OnRep_TrueDamage(const FGameplayAttributeData& OldTrueDamage)
-{
-	GAMEPLAYATTRIBUTE_REPNOTIFY(UCAttributeSet, TrueDamage, OldTrueDamage);
-}
 
 void UCAttributeSet::UpdateKillAndDeathStreaks(UAbilitySystemComponent* KillerASC, UAbilitySystemComponent* DeadASC)
 {

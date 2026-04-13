@@ -24,12 +24,15 @@ FGameplayTag UCAbilitySystemStatics::GetBasicAttackAbilityTag()
 
 FGameplayTag UCAbilitySystemStatics::GetCameraShakeGameplayCueTag()
 {
-	return FGameplayTag::RequestGameplayTag("GameplayCue.CameraShake");
+	// 缓存为static，避免每次调用都做字符串查找
+	static const FGameplayTag Tag = FGameplayTag::RequestGameplayTag("GameplayCue.CameraShake");
+	return Tag;
 }
 
 FGameplayTag UCAbilitySystemStatics::GetDamageNumberGameplayCueTag()
 {
-	return FGameplayTag::RequestGameplayTag("GameplayCue.Damage.Number");
+	static const FGameplayTag Tag = FGameplayTag::RequestGameplayTag("GameplayCue.Damage.Number");
+	return Tag;
 }
 
 bool UCAbilitySystemStatics::IsActorDead(const AActor* ActorToCheck)

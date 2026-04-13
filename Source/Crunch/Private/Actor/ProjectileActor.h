@@ -78,9 +78,8 @@ private:
 	UPROPERTY(Replicated)
 	float ProjectileSpeed;
 
-	// 当前目标Actor
-	UPROPERTY()
-	const AActor* Target;
+	// 当前目标Actor（使用弱指针，防止目标销毁后悬空指针崩溃）
+	TWeakObjectPtr<const AActor> Target;
 
 	// 命中时应用的效果句柄
 	FGameplayEffectSpecHandle HitEffectSpecHandle;

@@ -297,7 +297,7 @@ void ALobbyPlayerController::OnDestroySessionComplete(FName SessionName, bool bW
 
 void ALobbyPlayerController::ClientShowLoadingScreen_Implementation()
 {
-	UAsyncLoadingScreenLibrary::StopSeamlessLoadingScreen();
+	UAsyncLoadingScreenLibrary::StopLoadingScreen();
 }
 
 // IChatInterface 接口实现

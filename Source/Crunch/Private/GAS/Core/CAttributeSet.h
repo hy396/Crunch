@@ -124,18 +124,18 @@ public:
 	// FGameplayAttributeData BaseTrueDamage;
 	// ATTRIBUTE_ACCESSORS(UCAttributeSet, BaseTrueDamage)
 
-	// 物理伤害
-	UPROPERTY(ReplicatedUsing = OnRep_AttackDamage)
+	// 物理伤害（Meta属性，服务器用完即清零，不需要网络同步）
+	UPROPERTY(BlueprintReadOnly)
 	FGameplayAttributeData AttackDamage;
 	ATTRIBUTE_ACCESSORS(UCAttributeSet, AttackDamage)
 
-	// 法术伤害
-	UPROPERTY(ReplicatedUsing = OnRep_MagicDamage)
+	// 法术伤害（Meta属性）
+	UPROPERTY(BlueprintReadOnly)
 	FGameplayAttributeData MagicDamage;
 	ATTRIBUTE_ACCESSORS(UCAttributeSet, MagicDamage)
 
-	// 真实伤害
-	UPROPERTY(ReplicatedUsing = OnRep_TrueDamage)
+	// 真实伤害（Meta属性）
+	UPROPERTY(BlueprintReadOnly)
 	FGameplayAttributeData TrueDamage;
 	ATTRIBUTE_ACCESSORS(UCAttributeSet, TrueDamage)
 
@@ -188,8 +188,6 @@ public:
 	UFUNCTION()
 	void OnRep_MaxMana(const FGameplayAttributeData& OldMaxMana);
 	UFUNCTION()
-	void OnRep_AttackDamage(const FGameplayAttributeData& OldAttackDamage);
-	UFUNCTION()
 	void OnRep_Armor(const FGameplayAttributeData& OldArmor);
 	UFUNCTION()
 	void OnRep_MoveSpeed(const FGameplayAttributeData& OldMoveSpeed);
@@ -208,10 +206,6 @@ public:
 	// void OnRep_BaseMagicDamage(const FGameplayAttributeData& OldBaseMagicDamage);
 	// UFUNCTION()
 	// void OnRep_BaseTrueDamage(const FGameplayAttributeData& OldBaseTrueDamage);
-	UFUNCTION()
-	void OnRep_MagicDamage(const FGameplayAttributeData& OldMagicDamage);
-	UFUNCTION()
-	void OnRep_TrueDamage(const FGameplayAttributeData& OldTrueDamage);
 
 private:
     // 更新连杀/连败状态

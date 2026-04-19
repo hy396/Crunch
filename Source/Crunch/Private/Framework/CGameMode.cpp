@@ -21,8 +21,37 @@ void ACGameMode::PostLogin(APlayerController* NewPlayer)
 {
 	Super::PostLogin(NewPlayer);
 	// 获取游戏状态对象
-	Hy_GameState = Hy_GameState ? Hy_GameState : Cast<ACGameState>(UGameplayStatics::GetGameState(this));
+	// Hy_GameState = Hy_GameState ? Hy_GameState : Cast<ACGameState>(UGameplayStatics::GetGameState(this));
 	
+}
+
+void ACGameMode::PreLogin(const FString& Options, const FString& Address, const FUniqueNetIdRepl& UniqueId,
+	FString& ErrorMessage)
+{
+	Super::PreLogin(Options, Address, UniqueId, ErrorMessage);
+
+	// 如果父类已经拒接了直接返回
+	if (!ErrorMessage.IsEmpty())
+	{
+		return;
+	}
+
+	// 遍历当前 GameState 的 PlayerArray，检查是否已有相同 UniqueId 的玩家
+	if (AGameStateBase* GS = GetGameState<AGameStateBase>())
+	{
+		for (APlayerState* PS : GS->PlayerArray)
+		{
+			if (PS && PS->GetUniqueId() == UniqueId)
+			{
+				// 发现重复登录，设置错误信息拒绝连接
+				ErrorMessage = TEXT("该账号已在其他客户端登录");
+				UE_LOG(LogTemp, Warning,
+					TEXT("#### PreLogin 拒绝重复登录: %s"),
+					*UniqueId.GetUniqueNetId()->ToDebugString());
+				return;
+			}
+		}
+	}
 }
 
 APlayerController* ACGameMode::SpawnPlayerController(ENetRole InRemoteRole, const FString& Options)
@@ -50,6 +79,9 @@ void ACGameMode::StartPlay()
 	{
 		StormCore->OnGoalReachedDelegate.AddUObject(this, &ACGameMode::MatchFinished);
 	}
+	// 获取游戏状态对象
+	// Hy_GameState = Hy_GameState ? Hy_GameState : Cast<ACGameState>(UGameplayStatics::GetGameState(this));
+	
 }
 
 UClass* ACGameMode::GetDefaultPawnClassForController_Implementation(AController* Controller)
@@ -88,16 +120,24 @@ APawn* ACGameMode::SpawnDefaultPawnFor_Implementation(AController* NewPlayer, AA
 
 void ACGameMode::AddPlayerKillForTeam(const FGenericTeamId& InTeamID)
 {
-	if (GameState)
+	// ✅ 最优解：每次都直接 GetGameState，不依赖任何成员变量
+	ACGameState* MyGameState = GetGameState<ACGameState>();
+	
+	// ✅ 严格的 IsValid 检查
+	if (!IsValid(MyGameState))
 	{
-		if (InTeamID == FGenericTeamId(0))
-		{
-			Hy_GameState->AddTeamOnePlayerKillCount();
-		}
-		else if (InTeamID == FGenericTeamId(1))
-		{
-			Hy_GameState->AddTeamTwoPlayerKillCount();
-		}
+		UE_LOG(LogTemp, Error, TEXT("#### AddPlayerKillForTeam 失败：无法获取 ACGameState！"));
+		return;
+	}
+
+	// ✅ 现在可以安全调用了
+	if (InTeamID == FGenericTeamId(0))
+	{
+		MyGameState->AddTeamOnePlayerKillCount();
+	}
+	else if (InTeamID == FGenericTeamId(1))
+	{
+		MyGameState->AddTeamTwoPlayerKillCount();
 	}
 }
 

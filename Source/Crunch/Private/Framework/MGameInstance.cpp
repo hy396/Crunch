@@ -88,6 +88,8 @@ void UMGameInstance::Init()
 	//         Settings->SaveSettings(); // 确保写入本地磁盘
 	//     }
 	// }
+	// 注册引擎的网络错误委托
+	GEngine->OnNetworkFailure().AddUObject(this, &UMGameInstance::OnNetworkError);
 }
 
 bool UMGameInstance::IsLoggedIn() const
@@ -238,6 +240,23 @@ void UMGameInstance::LoginCompleted(int32 NumOfLocalPlayer, bool bWasSuccessful,
 		UE_LOG(LogTemp, Error, TEXT("#### 登录完成回调中无法找到身份指针，广播失败结果"));
 		OnLoginCompleted.Broadcast(bWasSuccessful, "", TEXT("无法找到身份指针"));
 	}
+}
+
+void UMGameInstance::OnNetworkError(UWorld* World, UNetDriver* NetDriver, ENetworkFailure::Type FailureType,
+	const FString& ErrorString)
+{
+	// ErrorString 就是 PreLogin 中设置的 ErrorMessage
+	// 例如 "该账号已在其他客户端登录"
+	UE_LOG(LogTemp, Warning, TEXT("#### 网络错误: [%d] %s"),
+		(int32)FailureType, *ErrorString);
+
+	// 方案 A：直接回到主菜单（最简单）
+	// 引擎默认就会断开连接，客户端留在当前地图
+	// 如果当前已经在主菜单就不需要额外跳转
+
+	// 方案 B：通知 UI 显示错误信息（推荐）
+	// 可以复用已有的 OnLoginCompleted 委托，把错误信息传给 MainMenuWidget
+	OnLoginCompleted.Broadcast(false, "", ErrorString);
 }
 
 void UMGameInstance::CancelLogin()

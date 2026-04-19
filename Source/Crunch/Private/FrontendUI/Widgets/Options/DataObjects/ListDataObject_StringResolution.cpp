@@ -45,7 +45,7 @@ void UListDataObject_StringResolution::OnDataObjectInitialized()
 	// 如果在有效列表中获取不到分辨率，则去配置文件中获取
 	if (!TrySetDisplayTextFromStringValue(CurrentStringValue))
 	{
-		CurrentDisplayText= ResToDisplayText(UFrontendGameUserSettings::Get()->GetScreenResolution());
+		CurrentDisplayText = ResToDisplayText(UFrontendGameUserSettings::Get()->GetScreenResolution());
 	}
 	// }
 }
@@ -53,12 +53,13 @@ void UListDataObject_StringResolution::OnDataObjectInitialized()
 FString UListDataObject_StringResolution::ResToValueString(const FIntPoint& InResolution) const
 {
 	// 格式化为"(X=1920,Y=1080)"形式的字符串
-	return FString::Printf(TEXT("X=%i, Y=%i"), InResolution.X, InResolution.Y);
+	return FString::Printf(TEXT("(X=%i,Y=%i)"),InResolution.X,InResolution.Y);
 }
 
 FText UListDataObject_StringResolution::ResToDisplayText(const FIntPoint& InResolution) const
 {
-	// 格式化为"1920 * 1080"形式的显示文本
-	const FString DisplayString = FString::Printf(TEXT("%i * %i"), InResolution.X, InResolution.Y);
+	// 格式化为"1920 x 1080"形式的显示文本
+	const FString DisplayString = FString::Printf(TEXT("%i x %i"),InResolution.X,InResolution.Y);
+
 	return FText::FromString(DisplayString);
 }

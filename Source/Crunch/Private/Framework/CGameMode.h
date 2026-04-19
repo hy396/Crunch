@@ -19,6 +19,9 @@ public:
 	ACGameMode();
 	// 登录玩家时调用
 	virtual void PostLogin(APlayerController* NewPlayer) override;
+
+	// 
+	virtual void PreLogin(const FString& Options, const FString& Address, const FUniqueNetIdRepl& UniqueId, FString& ErrorMessage) override;
 	
 	virtual APlayerController* SpawnPlayerController(ENetRole InRemoteRole, const FString& Options) override;
 
@@ -50,8 +53,8 @@ private:
 	// 获取风暴核心对象
 	class AStormCore* GetStormCore() const;
 
-	UPROPERTY()
-	ACGameState* Hy_GameState;
+	// UPROPERTY()
+	// ACGameState* Hy_GameState;
 
 	// 比赛结束处理
 	void MatchFinished(AActor* ViewTarget, int WiningTeam);

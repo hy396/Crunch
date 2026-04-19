@@ -256,9 +256,9 @@ void UOptionsDataRegistry::InitVideoCollectionTab()
 				const bool bIsInEditor = GIsEditor || GIsPlayInEditorWorld;
 				return !bIsInEditor;  // 如果在编辑器中则返回false
 			});
-// #if WITH_EDITOR	
+#if WITH_EDITOR	
 		PackagedBuildOnlyCondition.SetDisabledRichReason(TEXT("\n\n<Disabled>该设置只有在打包后的程序中进行设置</>"));
-// #endif
+#endif
 
 		// Window mode
 		{
@@ -594,9 +594,9 @@ void UOptionsDataRegistry::InitVideoCollectionTab()
 			{
 				return CreatedWindowMode->GetCurrentValueAsEnum<EWindowMode::Type>() == EWindowMode::Fullscreen;
 			});
-// #if WITH_EDITOR	
+#if WITH_EDITOR	
 			FullscreenOnlyCondition.SetDisabledRichReason(TEXT("\n\n<Disabled>只有在打包后Fullscreen下才能编辑</>"));
-// #endif
+#endif
 			FullscreenOnlyCondition.SetDisabledForcedStringValue(TEXT("false"));
 
 			VerticalSync->AddEditCondition(FullscreenOnlyCondition);

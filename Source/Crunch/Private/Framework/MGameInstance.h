@@ -72,6 +72,15 @@ private:
 	// 登录完成回调
 	void LoginCompleted(int32 NumOfLocalPlayer, bool bWasSuccessful, const FUniqueNetId& UserId, const FString& Error);
 
+
+	/** 网络错误回调（PreLogin 拒绝、连接超时等都会触发） */
+	void OnNetworkError(
+		UWorld* World,
+		UNetDriver* NetDriver,
+		ENetworkFailure::Type FailureType,
+		const FString& ErrorString
+	);
+	
 	// 登录委托句柄
 	FDelegateHandle LoggingInDelegateHandle;
 	/*************************************/

@@ -3,6 +3,8 @@
 
 #include "AI/MinionBarrack.h"
 
+#include "AIController.h"
+#include "BrainComponent.h"
 #include "GameFramework/PlayerStart.h"
 
 // Sets default values
@@ -68,6 +70,9 @@ void AMinionBarrack::SpawnNewGroup()
 
 		NextAvailableMinion->SetActorTransform(SpawnTransform);
 		NextAvailableMinion->SetGoal(Goal);
+		// TODO 2026/05/10 2:18 确认复用小兵的Goal是否有效、是否成功激活
+		UE_LOG(LogTemp, Warning, TEXT("[MinionBug] 复用小兵: %s | Goal=%s"),
+			*NextAvailableMinion->GetName(), Goal ? *Goal->GetName() : TEXT("NULL"));
 		NextAvailableMinion->Activate();
 		--i;
 	}
@@ -93,12 +98,40 @@ void AMinionBarrack::SpawnNewMinions(int Amt)
 		
 		// 设置小兵的队伍ID
 		NewMinion->SetGenericTeamId(BarrackTeamId);
+
 		// 完成小兵的生成
 		NewMinion->FinishSpawning(SpawnTransform);
+
 		// 设置小兵的目标
 		NewMinion->SetGoal(Goal);
+		// TODO 2026/05/10 2:18 检查新生小兵是否成功创建且Goal被正确设置
+		UE_LOG(LogTemp, Warning, TEXT("[MinionBug] 新生小兵: %s | Goal=%s | TeamID=%d"),
+			*NewMinion->GetName(), Goal ? *Goal->GetName() : TEXT("NULL"), BarrackTeamId.GetId());
 		// 添加小兵到小兵池中
 		MinionPool.Add(NewMinion);
+	}
+}
+
+void AMinionBarrack::StopSpawning()
+{
+	// TODO 2026/05/10 2:18 游戏结束时停止小兵生成，防止结束后还在繁殖
+	GetWorldTimerManager().ClearTimer(SpawnIntervalTimerHandle);
+	UE_LOG(LogTemp, Warning, TEXT("[MinionBug] %s StopSpawning — 生成定时器已清除"), *GetName());
+
+	// 停止场上所有活跃小兵的行为树和移动
+	for (AMinion* M : MinionPool)
+	{
+		if (M && M->IsActive())
+		{
+			if (AAIController* AIC = Cast<AAIController>(M->GetController()))
+			{
+				AIC->StopMovement();
+				if (UBrainComponent* Brain = AIC->GetBrainComponent())
+				{
+					Brain->StopLogic("GameOver");
+				}
+			}
+		}
 	}
 }
 
@@ -106,7 +139,7 @@ AMinion* AMinionBarrack::GetNextAvailableMinion() const
 {
 	for (AMinion* Minion : MinionPool)
 	{
-		if (!Minion->IsActive())
+		if (Minion && !Minion->IsActive())
 		{
 			return Minion;
 		}

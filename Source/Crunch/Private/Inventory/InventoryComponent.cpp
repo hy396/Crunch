@@ -441,10 +441,12 @@ void UInventoryComponent::Server_SellItem_Implementation(FInventoryItemHandle It
 	if (!InventoryItem || !InventoryItem->IsValid()) return;
 	if (!OwnerAbilitySystemComponent) return;
 
-	// 获取售出价格，并给玩家添加金币
+	// 每次出售仅移除 1 层（ReduceStackCount 或整件 RemoveItem），所以金币只按 1 单位返还
 	float SellPrice = InventoryItem->GetShopItem()->GetSellPrice();
 
-	OwnerAbilitySystemComponent->ApplyModToAttribute(UCHeroAttributeSet::GetGoldAttribute(), EGameplayModOp::Additive, SellPrice * InventoryItem->GetStackCount());
+	// 唉我真是服了，这么不小心没有移除掉这个乘法
+	// OwnerAbilitySystemComponent->ApplyModToAttribute(UCHeroAttributeSet::GetGoldAttribute(), EGameplayModOp::Additive, SellPrice * InventoryItem->GetStackCount());
+	OwnerAbilitySystemComponent->ApplyModToAttribute(UCHeroAttributeSet::GetGoldAttribute(), EGameplayModOp::Additive, SellPrice);
 	// 移除物品
 	// RemoveItem(InventoryItem);
 	// TODO:如果物品是堆叠的，则需要计算价格，205/08/04修改，不知道是否有bug

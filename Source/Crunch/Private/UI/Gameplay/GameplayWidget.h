@@ -55,6 +55,9 @@ public:
 	// 设置游戏菜单标题文本
 	void SetGameplayMenuTitle(const FString& NewTitle);
 
+	// 设置继续游戏按钮的可见性
+	void SetResumeButtonVisible(bool bVisible);
+
 	// 聊天系统相关函数
 	// 智能切换聊天：在临时模式下直接进入正常聊天，否则正常切换
 	void SmartToggleChat();

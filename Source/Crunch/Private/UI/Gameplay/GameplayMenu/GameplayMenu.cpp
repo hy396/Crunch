@@ -37,6 +37,14 @@ void UGameplayMenu::SetTitleText(const FString& NewTitle)
 	MenuTitle->SetText(FText::FromString(NewTitle));
 }
 
+void UGameplayMenu::SetResumeButtonVisible(bool bVisible)
+{
+	if (ResumeBtn)
+	{
+		ResumeBtn->SetVisibility(bVisible ? ESlateVisibility::Visible : ESlateVisibility::Collapsed);
+	}
+}
+
 void UGameplayMenu::BackToMainMenu()
 {
 	// TODO:返回主菜单(已实现) 2025/11/25实现但暂时为实验，可能成功不知道是否有bug --- 测试完貌似没bug

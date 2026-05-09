@@ -4,6 +4,7 @@
 #include "Crunch/Private/Framework/CGameMode.h"
 
 #include "EngineUtils.h"
+#include "AI/MinionBarrack.h"
 #include "StormCore.h"
 #include "GameFramework/PlayerStart.h"
 #include "Kismet/GameplayStatics.h"
@@ -165,6 +166,12 @@ void ACGameMode::MatchFinished(AActor* ViewTarget, int WiningTeam)
 		for (TActorIterator<ACPlayerController> It(World); It; ++It)
 		{
 			It->MatchFinished(ViewTarget, WiningTeam);
+		}
+
+		// TODO 2026/05/10 2:18 游戏结束时停止所有兵营生成小兵
+		for (TActorIterator<AMinionBarrack> It(World); It; ++It)
+		{
+			It->StopSpawning();
 		}
 	}
 }

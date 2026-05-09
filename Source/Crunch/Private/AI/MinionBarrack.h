@@ -31,7 +31,9 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-	
+	// 游戏结束时停止生成小兵
+    void StopSpawning();
+
 private:
 	// 兵营所属队伍ID
 	UPROPERTY(EditAnywhere, Category = "Spawn", meta = (DisplayName = "队伍ID"))

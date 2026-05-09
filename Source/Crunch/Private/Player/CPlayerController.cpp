@@ -256,6 +256,9 @@ void ACPlayerController::Client_MatchFinished_Implementation(AActor* ViewTarget,
 	// 设置游戏菜单标题为胜负提示
 	GameplayWidget->SetGameplayMenuTitle(WinLoseMsg);
 	
+	// 游戏结束，隐藏"继续游戏"按钮
+	GameplayWidget->SetResumeButtonVisible(false);
+
 	// 延迟一段时间后显示胜负界面
 	FTimerHandle ShowWinLoseStateTimerHandle;
 	GetWorldTimerManager().SetTimer(ShowWinLoseStateTimerHandle, this, &ACPlayerController::ShowWinLoseState, MatchFinishViewBlendTimeDuration);

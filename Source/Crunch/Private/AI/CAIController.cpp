@@ -6,6 +6,7 @@
 #include "AbilitySystemBlueprintLibrary.h"
 #include "AbilitySystemComponent.h"
 #include "BrainComponent.h"
+#include "BehaviorTree/BehaviorTree.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "GAS/Core/TGameplayTags.h"
 #include "Navigation/CrowdFollowingComponent.h"
@@ -101,6 +102,13 @@ void ACAIController::BeginPlay()
 	// 运行行为树
 	RunBehaviorTree(BehaviorTree);
 
+	// TODO 2026/05/10 2:18 确认行为树是否成功启动、黑板是否存在
+	UE_LOG(LogTemp, Warning, TEXT("[MinionBug] %s BeginPlay | BT=%s | BB=%s | Pawn=%s"),
+		*GetName(),
+		BehaviorTree ? *BehaviorTree->GetName() : TEXT("NULL"),
+		GetBlackboardComponent() ? TEXT("OK") : TEXT("NULL"),
+		GetPawn() ? *GetPawn()->GetName() : TEXT("NULL"));
+
 	if (UCrowdFollowingComponent* CrowdFollowingComp = Cast<UCrowdFollowingComponent>(GetPathFollowingComponent()))
 	{
 		// 是否启用人群避让
@@ -135,6 +143,13 @@ void ACAIController::BeginPlay()
 
 void ACAIController::TargetPerceptionUpdated(AActor* TargetActor, FAIStimulus Stimulus)
 {
+	// TODO 2026/05/10 2:18 确认AI是否感知到敌方单位、当前是否有目标
+	UE_LOG(LogTemp, Warning, TEXT("[MinionBug] %s 感知更新: Target=%s | Sensed=%d | CurrentTarget=%s"),
+		*GetPawn()->GetName(),
+		*TargetActor->GetName(),
+		Stimulus.WasSuccessfullySensed(),
+		GetCurrentTarget() ? *GetCurrentTarget()->GetName() : TEXT("NULL"));
+
 	// 检查是否成功感知到目标
 	if (Stimulus.WasSuccessfullySensed())
 	{
@@ -267,6 +282,11 @@ void ACAIController::EnableAllSenses()
 
 void ACAIController::PawnDeadTagUpdated(const FGameplayTag Tag, int32 Count)
 {
+	// TODO 2026/05/10 2:18 确认小兵死亡/复活时行为树是否正确启停
+	UE_LOG(LogTemp, Warning, TEXT("[MinionBug] %s DeadTagChanged | Count=%d | BrainRunning=%d"),
+		*GetPawn()->GetName(), Count,
+		GetBrainComponent() ? GetBrainComponent()->IsRunning() : -1);
+
 	if (Count != 0)
 	{
 		GetBrainComponent()->StopLogic("Dead"); // 停止死亡状态下的逻辑

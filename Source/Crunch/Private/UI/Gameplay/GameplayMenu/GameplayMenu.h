@@ -30,6 +30,9 @@ public:
 	// 设置菜单标题文本
 	void SetTitleText(const FString& NewTitle);
 
+	// 设置继续游戏按钮的可见性
+	void SetResumeButtonVisible(bool bVisible);
+
 // private:
 	// 菜单标题文本控件
 	UPROPERTY(meta=(BindWidget))

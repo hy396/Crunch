@@ -204,6 +204,14 @@ void UGameplayWidget::SetGameplayMenuTitle(const FString& NewTitle)
 	GameplayMenu->SetTitleText(NewTitle);
 }
 
+void UGameplayWidget::SetResumeButtonVisible(bool bVisible)
+{
+	if (GameplayMenu)
+	{
+		GameplayMenu->SetResumeButtonVisible(bVisible);
+	}
+}
+
 void UGameplayWidget::SmartToggleChat()
 {
 	if (ChatWidget)

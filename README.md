@@ -1,261 +1,280 @@
-# Crunch
+# 🏰 MOBA
 
-![Unreal Engine](https://img.shields.io/badge/Unreal%20Engine-5.4-blue)
-![C++](https://img.shields.io/badge/C%2B%2B-17-red)
-![License](https://img.shields.io/badge/License-MIT-green)
+> UE 5.4 + GAS 驱动的 **5v5 MOBA 多人对战游戏**：双方选择英雄，在对称地图上推进**风暴核心**冲入敌方基地即获胜。包含完整 C++ 源码、专用服务器、自建 Python 协调器与 Docker 部署。
 
-Crunch 是一款基于 Unreal Engine 5.4 的多人在线竞技场（MOBA）游戏。两支队伍各自选择英雄，通过技能对抗、击杀小兵、购买装备来积累优势，最终推进并夺取对方的风暴核心（Storm Core）获得胜利。
+![UE](https://img.shields.io/badge/Unreal_Engine-5.4-0D47A1?logo=unrealengine&logoColor=white)
+![C++](https://img.shields.io/badge/Language-C%2B%2B-00599C)
+![GAS](https://img.shields.io/badge/Combat-GameplayAbilitySystem-00A86B)
+![Network](https://img.shields.io/badge/Network-DedicatedServer-E4405F)
+![Platform](https://img.shields.io/badge/Platform-Windows-0078D6?logo=windows)
 
-## 核心玩法
+> 📸 游戏截图 / 对局演示视频放这里
 
-- **英雄对战** — 多角色可选，每个英雄拥有 4 个主动技能（QERF）+ 普攻连段
-- **风暴核心** — 地图中央的核心目标，队伍在范围内施加影响力来争夺控制权
-- **装备系统** — 金币经济 + 商店购买 + 装备合成树
-- **小兵与推进** — AI 小兵从兵营周期性刷新，沿路线向敌方推进
-- **团队协作** — 队内实时聊天、小地图、击杀播报、队友状态显示
+---
 
-## 已实现英雄技能
+## 📑 目录
 
-### 通用
-| 技能 | 类型 | 说明 |
-|------|------|------|
-| GA_Combo | 普攻 | 多段连击 |
-| GA_Shoot | 远程 | 远程射击 |
-| GA_ChainAttack | 连锁 | 多目标连续攻击 |
-| GA_Dash | 位移 | 冲刺 |
-| GA_Blink | 位移 | 闪现 |
-| GA_Freeze | 控制 | 冰冻 |
-| GA_Tornado | 控制 | 龙卷风 |
-| GA_BlackHole | 控制 | 黑洞吸引 + 持续伤害 |
-| GA_GroundBlast | 伤害 | 地面冲击 |
-| GA_Laser | 伤害 | 激光 |
-| GA_SwordAura | 伤害 | 剑气 |
-| UpperCut | 伤害 | 上挑 |
+- [🎮 游戏概览](#-游戏概览)
+- [🕐 创建时间](#-创建时间)
+- [✨ 项目亮点](#-项目亮点)
+- [🛠 技术栈](#-技术栈)
+- [🧱 核心系统](#-核心系统)
+- [🚀 当前进度](#-当前进度)
+- [🏃 运行](#-运行)
+- [📁 目录结构](#-目录结构)
+- [📚 文档](#-文档)
 
-### 法师
-| 技能 | 按键 | 说明 |
-|------|------|------|
-| GA_ArcaneOrb | Q | 穿透奥术球，距离越远伤害越高，命中回蓝 |
-| GA_PhaseShift | E | 无敌后撤 + 原地放置奥术陷阱（定身） |
-| GA_MeteorStrike | F | 地面选点陨石打击 + 燃烧地面 DOT |
-| GA_ArcaneStorm | R | 持续 AOE 减速 + 最终爆发沉默（大招） |
+---
 
-### 大斧战士
-| 技能 | 按键 | 说明 |
-|------|------|------|
-| GA_WarCry | Q | AOE 伤害 + 减甲减速 |
-| GA_Guillotine | E | 锥形劈砍 + 低血量斩杀加成 + 流血 |
-| GA_AxeThrow | F | 回旋飞斧，去程回程双段伤害 |
-| GA_Earthquake | R | 三段砸地，前两段眩晕，第三段击飞（大招） |
+## 🎮 游戏概览
 
-### 被动
-| 技能 | 说明 |
-|------|------|
-| GAP_Dead | 死亡奖励分配（击杀/助攻金币 + 连杀连败机制） |
-| GAP_Launched | 击飞状态处理 |
+5v5 MOBA 多人对战：两支队伍在对称地图上争夺**风暴核心**，把核心推入对方基地的一方获胜。
 
-## 技术架构
+- ⚔️ **3 个可玩英雄**（13 个技能）：Crunch / Kisara / Reimu，全部由 GAS 驱动
+- 🗺 **完整对局链路**：登录 → 创建/搜索房间 → 大厅选人 → 对局 → 结算
+- 🛡 **小兵 AI**：BehaviorTree + AI Perception 驱动兵线
+- 🏪 **商店系统**：物品数据资产 + 服务端校验的购买/合成流程
+- 🌐 **多人网络**：专用服务器 + EOS 会话 + Python 协调器分配端口 + Docker 部署
 
-```
-                  ┌──────────────────┐
-                  │   Coordinator    │
-                  │    (Python)      │
-                  │  会话调度/负载均衡 │
-                  └────────┬─────────┘
-                           │ HTTP
-            ┌──────────────┼──────────────┐
-            ▼              ▼              ▼
-   ┌────────────┐  ┌────────────┐  ┌────────────┐
-   │  DS Server │  │  DS Server │  │  DS Server │
-   │  (UE5)     │  │  (UE5)     │  │  (UE5)     │
-   └──────┬─────┘  └──────┬─────┘  └──────┬─────┘
-          │ Replication    │               │
-     ┌────┴────┐      ┌───┴───┐       ┌───┴───┐
-     │ Clients │      │Clients│       │Clients│
-     └─────────┘      └───────┘       └───────┘
-```
+## 🕐 创建时间
 
-### 核心技术栈
-| 层面 | 技术 |
-|------|------|
-| 引擎 | Unreal Engine 5.4 |
-| 技能系统 | Gameplay Ability System (GAS) |
-| UI 框架 | CommonUI + UMG |
-| 在线服务 | Epic Online Services (EOS) |
-| 输入系统 | Enhanced Input System |
-| AI | Behavior Tree + AI Perception |
-| 动画 | Motion Warping + KawaiiPhysics |
-| 角色模型 | VRM4U（VRM 格式支持） |
-| 部署 | Docker + Python Coordinator |
+2025-06 开始开发（持续迭代中，已经弃坑）
 
-### GAS 架构
+## ✨ 项目亮点
 
-```
-CAbilitySystemComponent (扩展ASC)
-├── CGameplayAbility (技能基类)
-│   ├── 伤害管线: MakeDamageEffectContext → ApplyDamageSpecToTarget
-│   ├── 推力系统: PushCharacterFromLocation
-│   └── 所有 GA_* 技能继承此类
-├── CAttributeSet (基础属性集)
-│   ├── Health/MaxHealth, Mana/MaxMana
-│   ├── AttackPower, MagicPower, Armor, MagicResistance
-│   ├── AttackDamage/MagicDamage/TrueDamage (Meta属性，不同步)
-│   └── MoveSpeed, ArmorPen, MagicPen, DamageAmp/Reduction
-├── CHeroAttributeSet (英雄属性集)
-│   └── Experience, Level, Gold, UpgradePoint
-├── ECC_AttackDamage (伤害执行计算)
-│   └── 物理穿透 → 护甲减免 → 伤害加深/减免 → 最终伤害
-├── TargetActor (目标检测)
-│   ├── TargetActor_Around (圆形范围)
-│   ├── TargetActor_Line (线性/锥形)
-│   ├── TargetActor_BlackHole (黑洞吸引)
-│   └── TargetActor_GroundPick (地面选点)
-└── TGameplayTags (统一标签管理)
+1. **5v5 多人对局全链路** — 从登录、房间会话（EOS OnlineSubsystem）到大厅选人、对局、结算的完整网络流程，`CrunchServer` 独立专用服务器构建目标
+2. **GAS 全栈驱动战斗** — 3 英雄 13 个技能全部由 GameplayAbility + GameplayEffect + AnimMontage + TargetActor 组成，伤害计算走 GameplayEffect 管道（Executions / MMC）
+3. **自建 Python 协调器 + Docker 部署** — `Coordinator`（HTTP 分配端口）编排多服务器实例，`ServerDeploy/docker-compose` 一键部署生产环境
+4. **数据驱动内容** — 英雄用 `DA_CharacterDefinition` 数据资产定义、商店物品用 `PDA_ShopItem` 资产配置，核心系统与游戏内容解耦
+5. **完整工程化配套** — 单模块 Private-only 分层（GAS/Framework/Character/AI/Network），配套 Wiki 设计文档 + Docs 技术文档双体系
+
+## 🛠 技术栈
+
+| 类别 | 技术                                                                     |
+| ---- | ------------------------------------------------------------------------ |
+| 引擎 | UE 5.4（客户端 / 编辑器 /**专用服务器**三构建目标）                |
+| 战斗 | Gameplay Ability System（GA / GE / AttributeSet / Executions / MMC）     |
+| 网络 | Dedicated Server + EOS OnlineSubsystem + Python Coordinator（HTTP）      |
+| 动画 | MotionWarping + AnimNotify / AnimNotifyState（伤害窗口 + GameplayEvent） |
+| AI   | BehaviorTree + AI Perception                                             |
+| UI   | UMG（游戏内 HUD）+ CommonUI Widget Stack（前端菜单）                     |
+| 部署 | Docker / docker-compose（`ServerDeploy/`）                             |
+
+## 🧱 核心系统
+
+| 系统     | 位置                               | 关键类                                                                       |
+| -------- | ---------------------------------- | ---------------------------------------------------------------------------- |
+| GAS 技能 | `GAS/`                           | `UCAbilitySystemComponent` / `UCGameplayAbility` / `UCAttributeSet`    |
+| 角色     | `Character/` `Player/` `AI/` | `ACCharacter` / `ACPlayerCharacter` / `AMinion` / `ICombatInterface` |
+| 框架     | `Framework/`                     | `CGameMode` / `CGameState` / `AStormCore` / `LobbyGameMode`          |
+| 装备     | `Inventory/`                     | `UInventoryComponent` / `UPDA_ShopItem`                                  |
+| 网络     | `Network/` + `Coordinator/`    | `ATGameSession` / `UTNetStatics` / `coordinator.py`                    |
+| UI       | `UI/` `FrontendUI/`            | `UFrontendUISubsystem` / `UWidget_PrimaryLayout`                         |
+
+## 🚀 当前进度
+
+| 模块                                                            | 状态                              |
+| --------------------------------------------------------------- | --------------------------------- |
+| 框架层（GameMode/GameState/GameInstance/大厅-对局链路）         | ✅ 已实现                         |
+| 英雄：Crunch（5 技能）/ Kisara（5 技能）/ Reimu（3 技能）       | ✅ 可玩（GA+GE+Montage 齐全）     |
+| 小兵 AI（BehaviorTree + 兵营）                                  | ✅ 已实现                         |
+| 风暴核心 / 商店 / 物品（17 项数据资产）                         | ✅ 已实现                         |
+| 大厅 / 主菜单 / CommonUI 前端框架                               | ✅ 已实现                         |
+| 其余技能类（`GA_ArcaneOrb` 等仅 C++ 占位）、法师/大斧战士英雄 | ⏳ 规划中（见`Wiki/Heroes.md`） |
+
+## 🏃 运行
+
+```bash
+# 环境：UE 5.4 + VS2022；DS + 客户端双终端本地运行：
+set UNREAL_EDITOR=<UE根目录>
+launchScripts/launchServer.bat   # 终端1：DS 监听 7779
+launchScripts/launchGame.bat     # 终端2：客户端连接 127.0.0.1:7779
 ```
 
-## 项目结构
+- 编辑器 2 人测试：PIE → Advanced Settings → Number of Players = 2+，Net Mode = **Play As Listen Server**
+- 生产部署：`cd ServerDeploy && docker-compose up -d`（详见 `Docs/DEPLOYMENT.md`）
+- ⚠️ **VRM4U 插件**需自行构建 `assimp-vc141-mt.lib` 放入 ThirdParty 目录后编译
+
+## 📁 目录结构
 
 ```
 Crunch/
-├── Source/
-│   ├── Crunch/
-│   │   ├── Crunch.Build.cs            # 模块依赖配置
-│   │   └── Private/
-│   │       ├── AI/                     # AI控制器、小兵、兵营
-│   │       ├── Actor/                  # 投射物、陷阱、燃烧地面等Actor
-│   │       ├── Animations/             # 动画实例、AnimNotify
-│   │       ├── Character/              # 角色基类、玩家角色、角色数据定义
-│   │       ├── Framework/              # GameMode/State/Instance、风暴核心
-│   │       ├── FrontendUI/             # CommonUI前端系统（选项、键位绑定）
-│   │       ├── GAS/                    # 技能系统
-│   │       │   ├── Abilities/          # 所有技能实现
-│   │       │   ├── Core/               # ASC、属性集、标签、调试工具
-│   │       │   ├── Data/               # 技能数据资产
-│   │       │   ├── Executions/         # 伤害执行计算
-│   │       │   ├── MMC/                # 自定义幅度计算
-│   │       │   └── TA/                 # 目标Actor
-│   │       ├── Inventory/              # 背包、物品、商店数据
-│   │       ├── Network/                # 会话管理、网络工具
-│   │       ├── Player/                 # 玩家控制器、PlayerState
-│   │       └── UI/                     # 游戏内UI
-│   │           ├── Ability/            # 技能栏、技能提示
-│   │           ├── Chat/               # 聊天系统
-│   │           ├── Common/             # 十字准心、物品提示、3D渲染
-│   │           ├── Gameplay/           # 战斗HUD、属性面板
-│   │           ├── Inventory/          # 背包界面、拖拽
-│   │           ├── KillFeed/           # 击杀播报
-│   │           ├── Lobby/              # 角色选择、队伍编排
-│   │           ├── MainMenu/           # 主菜单、房间列表
-│   │           ├── Minimap/            # 小地图
-│   │           ├── Portrait/           # 队友头像状态
-│   │           ├── Shop/               # 商店、合成树
-│   │           └── StatusEffect/       # 状态效果图标
-│   ├── Crunch.Target.cs                # 客户端构建
-│   ├── CrunchEditor.Target.cs          # 编辑器构建
-│   └── CrunchServer.Target.cs          # 专用服务器构建
-├── Plugins/
-│   ├── VRM4U/                          # VRM 模型导入支持
-│   ├── KawaiiPhysics/                  # 物理弹簧骨骼动画
-│   └── Developer/RiderLink/            # Rider IDE 集成
-├── Config/                             # 引擎/输入/标签配置
-├── Content/                            # 蓝图、资产、地图
-├── ServerDeploy/                       # Docker 部署配置
-│   ├── server/                         # 游戏服务器镜像
-│   ├── coordinator/                    # 协调器镜像
-│   └── docker-compose.yaml
-├── Coordinator/                        # Python 协调器源码
-│   ├── coordinator.py
-│   └── consts.py
-├── launchScripts/                      # 本地启动脚本
-└── docs/                               # 项目文档
+├── Source/Crunch/Private/    # 单主模块（Private-only）
+│   ├── GAS/                  # 技能（Abilities/Core/Executions/MMC/TargetActor）
+│   ├── Framework/            # GameMode/GameState/GameInstance/StormCore
+│   ├── Character/ Player/    # 角色基类 + 玩家派生
+│   ├── AI/                   # CAIController/Minion/MinionBarrack
+│   ├── Actor/ Animations/    # 投射物/陷阱 + 动画通知
+│   ├── Inventory/ Network/   # 背包商店 + 会话
+│   └── UI/ FrontendUI/       # 游戏内 HUD + CommonUI 前端
+├── Coordinator/              # Python 会话分配服务
+├── ServerDeploy/             # Docker 镜像与 compose
+├── Wiki/                     # 游戏设计文档（玩法/英雄/机制/经济）
+├── Docs/                     # 技术文档（架构/GAS/网络/UI/部署）
+└── Content/ Config/ Plugins/
 ```
+
+## 📚 文档
+
+- 游戏设计、机制详解：[`Wiki/Home.md`](Wiki/Home.md)
+- 系统架构、网络拓扑、GAS 管线：[`Docs/INDEX.md`](Docs/INDEX.md)
+
+## 📄 许可
+
+代码遵循 MIT；第三方插件（VRM4U、KawaiiPhysics 等）与部分资源遵循各自许可，见 [`Docs/COPYRIGHT.m`](Docs/COPYRIGHT.md)
+
+# Crunch
+
+一款基于 Unreal Engine 5.4 的 5v5 MOBA 多人对战游戏。两支队伍选择英雄，在对称地图上推进**风暴核心**——把核心推入对方基地的一方获胜。
+
+本仓库包含游戏的完整 C++ 源码、蓝图资产、网络服务器与协调器（Coordinator），以及配套的 Wiki 与技术文档。
+
+## 技术栈
+
+- **引擎**：Unreal Engine 5.4（`EngineAssociation` GUID 见 `Crunch.uproject`）
+- **核心系统**：Gameplay Ability System（GAS）驱动所有战斗逻辑
+- **网络**：自建 Python Coordinator（HTTP 分配端口）+ EOS OnlineSubsystem 做会话发现与大厅
+- **UI**：游戏内 HUD 用 UMG；前端菜单/选项用 CommonUI Widget Stack
+- **动画**：MotionWarping 驱动技能位移，AnimNotify / AnimNotifyState 控制伤害窗口与 GameplayEvent 触发
+- **AI**：BehaviorTree + AI Perception 驱动小兵
+- **C++ 模块**：单主模块 `Crunch`（`Source/Crunch/`），Private-only 布局
+- **构建目标**：`Crunch`（客户端）、`CrunchEditor`（编辑器）、`CrunchServer`（专用服务器）
 
 ## 快速开始
 
 ### 环境要求
 
-- Windows 10/11
-- Unreal Engine 5.4
-- Visual Studio 2022+（需安装 C++ 游戏开发工作负载）
-- 16GB+ RAM
+- UE 5.4（通过 Epic Launcher 安装）
+- Visual Studio 2022 + “使用 C++ 的游戏开发”工作负载
+- Git
 
-### 构建步骤
+> ⚠️ **VRM4U 插件**需要额外的 `assimp-vc141-mt.lib`，仓库里没有。从 [ruyo/assimp](https://github.com/ruyo/assimp) 自行 CMake 构建 Release，将 `.lib`/`.dll` 放入 `Plugins/VRM4U/ThirdParty/assimp/lib/x64/Release/` 与 `bin/x64/` 后再编译。
 
-1. 克隆仓库并确保 UE 5.4 已安装
-
-2. 右键 `Crunch.uproject` → Generate Visual Studio project files
-
-3. 打开 `Crunch.sln`，设置 `CrunchEditor` 为启动项目，编译运行
-
-4. 或通过命令行构建：
-   ```bash
-   # 编辑器版本
-   Engine/Build/BatchFiles/Build.bat CrunchEditor Win64 Development -project="<路径>/Crunch.uproject"
-
-   # 专用服务器
-   Engine/Build/BatchFiles/Build.bat CrunchServer Win64 Development -project="<路径>/Crunch.uproject"
-   ```
-
-### 本地测试
+### 构建
 
 ```bash
-# 启动服务器
-launchScripts/launchServer.bat
+# 编辑器（开发主力）
+"<UE5.4>/Engine/Build/BatchFiles/Build.bat" CrunchEditor Win64 Development -project="$PWD/Crunch.uproject"
 
-# 启动客户端
-launchScripts/launchGame.bat
+# 专用服务器
+"<UE5.4>/Engine/Build/BatchFiles/Build.bat" CrunchServer Win64 Development -project="$PWD/Crunch.uproject"
+
+# 客户端（打包用）
+"<UE5.4>/Engine/Build/BatchFiles/Build.bat" Crunch Win64 Development -project="$PWD/Crunch.uproject"
 ```
 
-### Docker 部署
+或直接用 VS/Rider 打开 `Crunch.sln`，将 `CrunchEditor` 设为启动项目后 F5。
+
+### 本地运行（专用服务器 + 客户端）
+
+需要先设置环境变量 `UNREAL_EDITOR` 指向 UE 根目录。两个终端：
+
+```bash
+launchScripts/launchServer.bat   # 终端1：DS，监听 7779
+launchScripts/launchGame.bat     # 终端2：客户端，连接 127.0.0.1:7779
+```
+
+WSL 环境可使用 `launchScripts/wsl_S.bat`。
+
+编辑器内 2 人测试：PIE → Advanced Settings → Number of Players = 2+，Net Mode = Play As Listen Server。
+
+### 部署
+
+生产部署走 Docker，详见 `Docs/DEPLOYMENT.md`：
 
 ```bash
 cd ServerDeploy
 docker-compose up -d
 ```
 
-## 网络同步设计
+## 项目结构
 
-| 数据 | 同步策略 | 说明 |
-|------|----------|------|
-| 生命/法力/护甲等 | `COND_None` | 所有客户端都需要（头顶血条） |
-| 经验/金币/升级点 | `COND_OwnerOnly` | 只有本人需要 |
-| 等级 | `COND_None` | 所有人需要看到（头顶UI） |
-| 最大等级/最大经验 | `COND_InitialOnly` | 初始化后不变 |
-| 伤害 Meta 属性 | 不同步 | 服务器计算后即清零 |
-| 角色选择 | `GameState` 广播 | 大厅阶段全员可见 |
-| 击杀事件 | `Multicast RPC` | 全员播报 |
-| 聊天消息 | `Client RPC` | 服务器转发到目标客户端 |
+```text
+Crunch/
+├── Crunch.uproject              # 项目入口（引擎版本 + 模块/插件声明）
+├── Source/Crunch/               # 唯一主模块（Private-only 布局）
+│   ├── Crunch.Build.cs          # 依赖：GAS、OnlineSubsystemEOS、CommonUI...
+│   └── Private/
+│       ├── GAS/                 # 技能系统（Abilities/Core/Data/Executions/MMC/TA）
+│       ├── Framework/           # GameMode/GameState/GameInstance/StormCore
+│       ├── Character/           # ACCharacter 基类 + Player/AI 派生
+│       ├── Player/              # PlayerController、PlayerState、大厅控制器
+│       ├── AI/                  # CAIController、Minion、MinionBarrack
+│       ├── Actor/               # 投射物、陷阱、地面效果
+│       ├── Animations/          # AnimInstance、AnimNotify(State)
+│       ├── Inventory/           # 背包组件 + 商店物品数据资产
+│       ├── Network/             # GameSession、NetStatics
+│       ├── UI/                  # 游戏内 UMG Widget（按特性分子目录）
+│       └── FrontendUI/          # CommonUI 前端（菜单/选项/键位）
+├── Content/                     # 蓝图资产、地图、UI、音频、VFX
+├── Config/                      # DefaultEngine/Game/Input/Tags
+├── Plugins/                     # VRM4U、KawaiiPhysics、RiderLink
+├── Coordinator/                 # Python 会话分配服务（coordinator.py）
+├── ServerDeploy/                # Docker 镜像与 compose
+├── Wiki/                        # 游戏设计文档（玩法、英雄、机制）
+└── Docs/                        # 技术文档（架构、GAS、网络、UI、部署）
+```
 
-## 第三方插件
+## 核心系统一览
 
-| 插件 | 用途 |
-|------|------|
-| [VRM4U](https://github.com/ruyo/VRM4U) | VRM 格式角色模型导入和运行时加载 |
-| [KawaiiPhysics](https://github.com/pafuhana1213/KawaiiPhysics) | 头发、衣物等弹簧骨骼物理动画 |
-| [AsyncLoadingScreen](https://github.com/truong-bui/AsyncLoadingScreen) | 异步加载界面 |
-| Epic Online Services (EOS) | 在线会话、语音聊天 |
-| GameplayAbilities | 技能系统框架 |
-| CommonUI | 现代化 UI 框架（Widget Stack、输入路由） |
-| MotionWarping | 动画驱动的位移（技能位移贴合目标） |
+| 系统     | 实现位置                             | 关键类                                                                                                                |
+| -------- | ------------------------------------ | --------------------------------------------------------------------------------------------------------------------- |
+| GAS 技能 | `GAS/`                             | `UCAbilitySystemComponent`, `UCGameplayAbility`, `UCAttributeSet`, `UCHeroAttributeSet`, `ECC_AttackDamage` |
+| 角色     | `Character/`, `Player/`, `AI/` | `ACCharacter`, `ACPlayerCharacter`, `AMinion`, `ICombatInterface`                                             |
+| 框架     | `Framework/`                       | `CGameMode`, `CGameState`, `MGameInstance`, `LobbyGameMode`, `AStormCore`                                   |
+| 装备     | `Inventory/`                       | `UInventoryComponent`, `UPDA_ShopItem`, `UInventoryItem`                                                        |
+| 网络     | `Network/` + `Coordinator/`      | `ATGameSession`, `UTNetStatics`, `coordinator.py`                                                               |
+| UI       | `UI/`, `FrontendUI/`             | `UFrontendUISubsystem`, `UWidget_PrimaryLayout`                                                                   |
 
-## 文档
+## 当前已实现内容
 
-详细文档位于 [docs/](docs/) 目录：
+以下每一项都在 `Content/` 下有对应的蓝图 / 数据资产，不是仅有 C++ 类。
 
-| 文档 | 内容 |
-|------|------|
-| [INDEX.md](docs/INDEX.md) | 文档索引 |
-| [ARCHITECTURE.md](docs/ARCHITECTURE.md) | 系统架构 |
-| [GAS_SYSTEM.md](docs/GAS_SYSTEM.md) | GAS 技能系统详解 |
-| [GAS_Mage_Abilities.md](docs/GAS_Mage_Abilities.md) | 法师技能蓝图配置指南 |
-| [GAS_Warrior_Abilities.md](docs/GAS_Warrior_Abilities.md) | 战士技能蓝图配置指南 |
-| [GAS_Optimization_Changelog.md](docs/GAS_Optimization_Changelog.md) | GAS 性能优化记录 |
-| [FRONTEND_UI_SYSTEM.md](docs/FRONTEND_UI_SYSTEM.md) | CommonUI 前端框架 |
-| [CHAT_SYSTEM.md](docs/CHAT_SYSTEM.md) | 聊天系统 |
-| [DEPLOYMENT.md](docs/DEPLOYMENT.md) | 部署指南 |
-| [DEVELOPMENT.md](docs/DEVELOPMENT.md) | 开发环境 |
-| [API.md](docs/API.md) | 核心类 API |
+### 框架层
 
-## 许可证
+- **GameMode / GameState / GameInstance**：`BP_CGameMode`、`BP_GameState`、`BP_GameInstance` 均已配置。
+- **Player 侧**：`BP_CPlayerController`、`BP_PlayerState`、`BP_UNumberPopComponent_NiagaraText`。
+- **大厅到对局的链路**：登录 → 创建/搜索房间 → 大厅选人 → 对局 → 结算。
 
-代码部分采用 [MIT License](LICENSE)。项目中使用的第三方资源（模型、纹理、音频等）遵循各自的版权协议，Unreal Engine 相关资源遵循 Epic Games 许可协议。
+### 英雄与角色
+
+- **Crunch**：5 个技能（Combo / Dash / GroundBlast / Tornado / UpperCut）均有 `GA_*` BP、GameplayEffect、AnimMontage。
+- **Kisara**：5 个技能（ChainAttack / Combo / Dash / SwordAura / UpperCut）均有 `GA_*` BP 与 AnimMontage。
+- **Reimu**：3 个技能（Blackhole / Blink / Freeze）均有 `GA_*` BP、GameplayEffect、AnimMontage、TargetActor。
+- 三个英雄均有对应的 `DA_CharacterDefinition_*.uasset` 数据资产。
+
+> `Source/Crunch/Private/GAS/Abilities/` 下还有大量仅有 C++、未配蓝图 / 数据资产的技能类（`GA_ArcaneOrb`、`GA_Blink`、`GA_MeteorStrike`、`GA_ArcaneStorm`、`GA_WarCry`、`GA_Guillotine`、`GA_AxeThrow`、`GA_Earthquake` 等），以及 `GAP_Dead`、`GAP_Launched` 等被动——它们是占位实现，目前没有任何英雄 / 数据资产引用，**不在「已实现」范围内**。`Wiki/Heroes.md` 中描述的「法师 / 大斧战士」同样仅停留在设计文档阶段。
+
+### AI 与小兵
+
+- **小兵 BP**：`BP_Minion`、`BP_MinionBarrack`、`BP_AIC_Minion`。
+- **行为树**：`BT_Minion`、`BB_Minion`、`ABP_Minion`、`AM_Minion_Death`、`AM_Minion_Stun`。
+- **小兵技能**：`GA_Combo_Minion` + 对应 GE。
+- **初始化**：`GE_Init_Minion`。
+
+### 风暴核心
+
+- `BP_StormCore`（带 `ViewCam` 作为结算镜头），地面贴花 + 材质已配置。
+
+### 商店与物品
+
+- **商店 UI**：`WBP_Shop`、`WBP_ShopItem`、`IA_ToggleShop`。
+- **已配物品数据资产**：`HealthPack`、`Vanguard`、`BootsOfCharges`、`PhaseShield`、`RingOfPower`、`RingOfVoid`、`RingOfLengend`、`PotionOfPurity`、`Biji`、`Shifu`、`MingwenJujian`、`KuangbaoJujian`、`Caonijian`、`Wuduzhang`、`ShenqiNaifu`、`Huimiemozhang`、`Goddess_Wisdom`。
+- **服务端校验的购买 / 合成流程**在 `InventoryComponent` 中实现。
+
+### UI
+
+- **HUD**：`W_Healthbar`、`W_Manabar2` + 配套材质 / 字体。
+- **大厅**：`WBP_Lobby`、`WBP_AbilityGauge_Lobby`、`WBP_PlayerTeamLayout`、`WBP_PlayerTeamSlot`、`WBP_TeamSelectionWidget`。
+- **主菜单**：`WBP_MainMenu` + SessionEntry 子项。
+- **前端框架**：`WBP_Template_Layout`（CommonUI Widget Stack）+ `DA_DataListEntryMapping`。
+- **通用资产**：UI 字体（Orbitron、NotoSans 多语言变体）、HUD / Menu 的样式与图标材质。
+
+## 扩展阅读
+
+- 游戏设计、机制详解：见 [`Wiki/Home.md`](Wiki/Home.md)
+- 系统架构、网络拓扑、GAS 管线：见 [`Docs/INDEX.md`](Docs/INDEX.md)
+
+## 许可
+
+本项目代码遵循 MIT 许可证，详见 [LICENSE](LICENSE)。项目中包含的第三方插件（VRM4U、KawaiiPhysics、RiderLink 等）以及部分资源遵循各自的原始许可协议——使用前请阅读 [Docs/COPYRIGHT.md](Docs/COPYRIGHT.md)。

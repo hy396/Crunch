@@ -8,8 +8,6 @@
 ![Network](https://img.shields.io/badge/Network-DedicatedServer-E4405F)
 ![Platform](https://img.shields.io/badge/Platform-Windows-0078D6?logo=windows)
 
-> 📸 游戏截图 / 对局演示视频放这里
-
 ---
 
 ## 📑 目录
